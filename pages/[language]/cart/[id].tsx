@@ -83,9 +83,7 @@ const Home: NextPage = () => {
             </div>
           }
         </div>
-        <div style={{ position: 'fixed', bottom: 0 }}>
           <Footer />
-        </div>
       </div>
     </>
   );
