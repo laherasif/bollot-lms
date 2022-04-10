@@ -2,9 +2,6 @@ import {
   REG_CART,
   GET_CART,
   DELETE_CART,
-  UPDATE_CART_QUANTITY_CLIENT,
-  INCREMENT,
-  DECREMENT,
   REG_CHECKOUT_DATA,
   FETCH_CHECKOUT_DATA,
   RESET_CART,
@@ -66,26 +63,7 @@ const CartReducer = (state = initialState, action) => {
         ...state,
         payment_method: action.payload,
       };
-    case INCREMENT:
-      state.localD[state.localD.findIndex((item) => item._id === action.id)]
-        .Quantity++;
-
-      localStorage.setItem("carts", JSON.stringify(state.localD));
-
-      return {
-        ...state,
-        localD: [...state.localD],
-      };
-
-    case DECREMENT:
-      state.localD[state.localD.findIndex((item) => item._id === action.id)]
-        .Quantity--;
-
-      localStorage.setItem("carts", JSON.stringify(state.localD));
-      return {
-        ...state,
-        localD: [...state.localD],
-      };
+   
 
     default:
       return state;

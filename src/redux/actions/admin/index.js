@@ -3,12 +3,12 @@ import {
     LOGIN_ADMIN,
     GET_ALL_INSTRUCTOR,
     GET_ALL_STUDENT,
-    DELETE_INT,
-    UPDATE_INT,
     DELETE_STU,
     UPDATE_STU,
+    DELETE_INS,
+    UPDATE_INS,
 } from '../../types/types'
-import instance from '../../../confiq/axios/instance'
+import axios from 'axios'
 
 
 
@@ -20,7 +20,7 @@ import instance from '../../../confiq/axios/instance'
 // Register User 
 export const loginAdmin = (data) => async  dispatch => {
     try {
-        let res = await instance.post('api//admin/login', data)
+        let res = await axios.post('api//admin/login', data)
         dispatch({
             type: LOGIN_ADMIN,
             payload: res.data
@@ -38,7 +38,7 @@ export const loginAdmin = (data) => async  dispatch => {
 export const getAllStudent = () => async dispatch => {
    
     try {
-        let res = await instance.get('api//admin/students')
+        let res = await axios.get('api//admin/students')
         dispatch({
             type: GET_ALL_STUDENT,
             payload: res.data.response.students
@@ -51,7 +51,7 @@ export const getAllStudent = () => async dispatch => {
 
 export const getAllInstructor = () => async dispatch => {
     try {
-        let res = await instance.get('api//admin/instructors')
+        let res = await axios.get('api//admin/instructors')
 
         dispatch({
             type: GET_ALL_INSTRUCTOR,
@@ -65,7 +65,7 @@ export const getAllInstructor = () => async dispatch => {
 
 export const delStuIns = (id) => async dispatch => {
     try {
-        await instance.post('api//admin/user/delete', id)
+        await axios.post('api//admin/user/delete', id)
         if (role === "student") {
             dispatch({
                 type: DELETE_STU,
@@ -74,7 +74,7 @@ export const delStuIns = (id) => async dispatch => {
         }
         else {
             dispatch({
-                type: DELETE_INT,
+                type: DELETE_INS,
                 payload: id
             })
         }
@@ -86,7 +86,7 @@ export const delStuIns = (id) => async dispatch => {
 
 export const updateStuIns = (id) => async dispatch => {
     try {
-         await instance.post('api//admin/user/update', id)
+         await axios.post('api//admin/user/update', id)
         if (role === "student") {
             dispatch({
                 type: UPDATE_STU,
@@ -95,7 +95,7 @@ export const updateStuIns = (id) => async dispatch => {
         }
         else {
             dispatch({
-                type: UPDATE_INT,
+                type: UPDATE_INS,
                 payload: id
             })
         }
