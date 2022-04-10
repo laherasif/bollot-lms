@@ -44,7 +44,7 @@ const Home: NextPage = () => {
             <h3>Shopping Cart</h3>
             <p>{carts && carts.length} Course in cart</p>
           </div>
-          {loading ? <div style={{ textAlign: 'center' }}><Spinner animation="border" size="xxlg" /> </div> :
+          {loading ? <div style={{ textAlign: 'center' , margin :'30px' }}><Spinner animation="border" size="xxlg" /> </div> :
             <div className="d-flex hdsafjf-dsa">
               {carts.length > 0 ? <>
                 <div>
