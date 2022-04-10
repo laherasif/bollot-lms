@@ -3,7 +3,8 @@ import { useIntl } from "react-intl";
 import React, { useState } from 'react'
 import { useRouter } from "next/router";
 import Icons from "../../../src/icons";
-import instance from "../../../src/instance/axios";
+// import instance from "../../../src/instance/axios";
+import axios from 'axios'
 const Home: NextPage = () => {
     const intl = useIntl();
     const router = useRouter();
@@ -31,7 +32,7 @@ const Home: NextPage = () => {
     const handleClick = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         try {
-            await instance.post("/api/login", {
+            await axios.post("/api/login", {
                 // "username",
                 // "password",
             });
