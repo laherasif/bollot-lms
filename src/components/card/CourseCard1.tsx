@@ -3,7 +3,7 @@ import Image from "next/image";
 const CardImage=require('../../images/unsplash-2.jpeg');
 export default ()=>{
     return <div className="card-course-1">
-   <Image className="images-2" src={CardImage} alt=""   />
+   <Image className="images-2" src={CardImage} alt="image"   />
 
     <h4>Become A Social Media Expert</h4>
     <div className="making">

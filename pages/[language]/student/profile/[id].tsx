@@ -30,7 +30,7 @@ const Home: NextPage = () => {
                   <div className="umpire w-100">
                     <div className="umpire-1 ">
                       <div>
-                        <img src="/assets/images/umpire-1.svg" alt="" />
+                        <img src="/assets/images/umpire-1.svg" alt="image" />
                       </div>
                       <div className="maxima">
                         <button className="upload-1">Upload New</button>

@@ -40,7 +40,7 @@ const Home: NextPage = () => {
                 <button className="get-started-btn">Get Started</button>
               </div>
               <div className="boost-ch-2 col-md-6">
-                <img className="w-100" src="/girls-doc.svg" alt="" />
+                <img className="w-100" src="/girls-doc.svg" alt="image_tag" />
               </div>
             </div>
           </section>
@@ -48,17 +48,17 @@ const Home: NextPage = () => {
             <h3 className="work-design-sec text-center">How it works</h3>
             <div className="main-pro-sec">
               <div className="parts-1 wh-249 pt-21">
-                <img src="/pro-1.svg" alt="" />
+                <img src="/pro-1.svg" alt="image_tag" />
                 <h3>Join Bolloot</h3>
                 <p>It’s free to get started. Refer a friend via link</p>
               </div>
               <div className="parts-1 wh-279">
-                <img src="/pr-2.svg" alt="" />
+                <img src="/pr-2.svg" alt="image_tag" />
                 <h3>Promote Bolloot</h3>
                 <p>Your friend registers and you promote Bolloot</p>
               </div>
               <div className="parts-1 wh-320 pt-20">
-                <img src="/pro-3.svg" alt="" />
+                <img src="/pro-3.svg" alt="image_tag" />
                 <h3>Start Earning</h3>
                 <p>
                   Earn right from the moment your traffic converts. Check out
@@ -76,15 +76,15 @@ const Home: NextPage = () => {
             </div>
             <div className="main-comission">
               <div className="commission-ch-1">
-                <img src="/com-1.svg" alt="" />
+                <img src="/com-1.svg" alt="image_tag" />
                 <h3>Commission of 2.5% if you refer a student </h3>
               </div>
               <div className="commission-ch-1">
-                <img src="/com-2.svg" alt="" />
+                <img src="/com-2.svg" alt="image_tag" />
                 <h3>Commission of 2.5% if you refer a student </h3>
               </div>
               <div className="commission-ch-1">
-                <img src="/com-3.svg" alt="" />
+                <img src="/com-3.svg" alt="image_tag" />
                 <h3>Commission of 2.5% if you refer a student </h3>
               </div>
             </div>
@@ -95,7 +95,7 @@ const Home: NextPage = () => {
             </div>
             <div className="main-affliate">
               <div className="affliate-img">
-                <img src="/dollar.svg" alt="" />
+                <img src="/dollar.svg" alt="image_tag" />
               </div>
               <div className="affliate-text">
                 <div className="affliate-ch">

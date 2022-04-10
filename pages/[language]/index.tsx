@@ -216,7 +216,7 @@ const Home: NextPage = () => {
           <section className="instructor-section pos-rel">
             <div className="all-ins">
               <div className="ins">
-                <img src="/abt.png" alt="" />
+                <img src="/abt.png" alt="instructor_img" />
               </div>
               <div className="instruc">
                 <h3 className="bold brown">Become an Instructor</h3>
@@ -258,7 +258,7 @@ const Home: NextPage = () => {
               <div className="all-div-p">
                 <section className="all-build">
                   <div className="build">
-                    <img src="/bg2.png" alt="" />
+                    <img src="/bg2.png" alt="alt_img" />
                   </div>
                   <div className="build-text">
                     <h3 className="bold">

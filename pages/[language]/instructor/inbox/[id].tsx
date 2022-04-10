@@ -104,7 +104,7 @@ const Home: NextPage = () => {
                             variant="success"
                             id="dropdown-basic"
                           >
-                            <img src="/assets/images/black..svg" alt="" />
+                            <img src="/assets/images/black..svg" alt="image" />
                           </Dropdown.Toggle>
 
                           <Dropdown.Menu>

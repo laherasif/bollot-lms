@@ -4,7 +4,7 @@ export default ()=>{
     return <div className='kajsdooad-saewjn'>
        <div className="photo-maker ">
     <div className="photo-maker-1">
-      <img src="/Image15.png" alt="" />
+      <img src="/Image15.png" alt="image" />
       <div className="w-100">
         <div className="sajkdf-dasas">
           <div className="f-col">

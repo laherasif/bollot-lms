@@ -51,12 +51,12 @@ const Home: NextPage = () => {
               </p>
             </div>
             <div className="col-md-6">
-              <Image className="images-2" src={CardImage} alt="" />
+              <Image className="images-2" src={CardImage} alt="image_2" />
             </div>
           </div>
           <div className="row my-5">
             <div className="col-md-6">
-              <Image className="images-2" src={CardImage2} alt="" />
+              <Image className="images-2" src={CardImage2} alt="image_2" />
             </div>
             <div className="col-md-6">
               <h4>Our Services for Students</h4>
@@ -91,7 +91,7 @@ const Home: NextPage = () => {
               </p>
             </div>
             <div className="col-md-6">
-              <Image className="images-2" src={CardImage3} alt="" />
+              <Image className="images-2" src={CardImage3} alt="image" />
             </div>
           </div>
         </section>

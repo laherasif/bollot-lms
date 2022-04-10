@@ -105,7 +105,7 @@ const Home: NextPage = () => {
               </p>
             </div>
             <div className="music-text">
-              <img className="lptp" src="/bg4.png" alt="aaa" />
+              <img className="lptp" src="/bg4.png" alt="image_tagaaa" />
             </div>
             <div className="music-text">
               <p className="mb-62">
@@ -134,9 +134,9 @@ const Home: NextPage = () => {
                 </div>
                 <div className="jaskdf-sdda">
                   <h3>Share with</h3>
-                  <img src="/s1.png" alt="" />
-                  <img src="/s2.png" alt="" />
-                  <img src="/s3.png" alt="" />
+                  <img src="/s1.png" alt="image_tag" />
+                  <img src="/s2.png" alt="image_tag" />
+                  <img src="/s3.png" alt="image_tag" />
                 </div>
               </div>
             </div>

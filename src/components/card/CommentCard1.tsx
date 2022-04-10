@@ -3,7 +3,7 @@ import Image from "next/image";
 const CardImage=require('../../images/blog1.png');
 export default ()=>{
     return <div className="card-item">
-    <Image className="images-2" src={CardImage} alt="" />
+    <Image className="images-2" src={CardImage} alt="image" />
     <h3>The hate you give is the hate you’ll eventually get</h3>
     <h4>By <span>Tommy Land</span></h4>
     <div className="mon">

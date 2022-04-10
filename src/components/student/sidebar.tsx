@@ -26,9 +26,9 @@ export default ()=>{
   }
     return <div className="dash-1 mnsada-3ej" id='sidebar-cst' >
     <div className="dash-ch-1">
-      <img src="/assets/images/small-logo.svg" alt="" />
+      <img src="/assets/images/small-logo.svg" alt="image" />
       <button className='jdsaif-dsnd' onClick={()=>openPan()} >
-      <img src="/assets/images/lines.svg" alt="" className='ajsdhsia-dsadas' />
+      <img src="/assets/images/lines.svg" alt="image" className='ajsdhsia-dsadas' />
       </button>
     </div>
     <Link href="/en/student/dashboard" >
@@ -98,28 +98,28 @@ export default ()=>{
     <div className="client-img">
       <h3>Recommended Tutors</h3>
       <div className="client ">
-        <img src="/assets/images/client-1.svg" alt="" />
+        <img src="/assets/images/client-1.svg" alt="image" />
         <div className="client-ch">
           <h3>John Doe</h3>
           <p>42 Listed Courses</p>
         </div>
       </div>
       <div className="client ">
-        <img src="/assets/images/cliet-2.svg" alt="" />
+        <img src="/assets/images/cliet-2.svg" alt="image" />
         <div className="client-ch">
           <h3>John Doe</h3>
           <p>42 Listed Courses</p>
         </div>
       </div>
       <div className="client ">
-        <img src="/assets/images/client-3.svg" alt="" />
+        <img src="/assets/images/client-3.svg" alt="image" />
         <div className="client-ch">
           <h3>John Doe</h3>
           <p>42 Listed Courses</p>
         </div>
       </div>
       <div className="client mb-27">
-        <img src="/assets/images/client-4.svg" alt="" />
+        <img src="/assets/images/client-4.svg" alt="image" />
         <div className="client-ch">
           <h3>John Doe</h3>
           <p>42 Listed Courses</p>

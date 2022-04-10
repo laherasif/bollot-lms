@@ -23,7 +23,7 @@ export default ({ course , key } : any ) => {
           <div className="assahdwe0-ass">
             <Dropdown>
               <Dropdown.Toggle variant="success" id="dropdown-basic">
-                <img src="/assets/images/black..svg" alt="" />
+                <img src="/assets/images/black..svg" alt="image" />
               </Dropdown.Toggle>
 
               <Dropdown.Menu>

@@ -47,7 +47,7 @@ const Home: NextPage = () => {
                 <div className="container-main">
                     <div className="container logo-sec">
                         <div className="logo-1">
-                            <img src="assets\images\ballot-1-logo.svg" alt="" />
+                            <img src="assets\images\ballot-1-logo.svg" alt="image_tag" />
                         </div>
                         <div className="logo-2">
                             <h3>Don’t have an account?</h3>

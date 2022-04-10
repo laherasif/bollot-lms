@@ -8,7 +8,7 @@ export default () => {
       <div className="cm-web">
         <div className="dhafusd9we0sd-p">
           <div>
-            <img src="/assets/images/purple.svg" className="osaidjs-dsadjd" alt="" />
+            <img src="/assets/images/purple.svg" className="osaidjs-dsadjd" alt="image" />
           </div>
           <div className="dhafusd9we0sd">
             <div className="dhafusd9we0sd1">
@@ -19,7 +19,7 @@ export default () => {
           <div className="assahdwe0-ass">
             <Dropdown>
               <Dropdown.Toggle variant="success" id="dropdown-basic">
-              <img src="/assets/images/black..svg" alt="" />
+              <img src="/assets/images/black..svg" alt="image" />
               </Dropdown.Toggle>
 
               <Dropdown.Menu>

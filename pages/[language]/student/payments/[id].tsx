@@ -56,7 +56,7 @@ const Home: NextPage = () => {
                           </div>
                           <div className="jdsa0-sdsmd">
                             <div className="jsodisd-dsd">
-                              <img src="/assets/images/pay-1.svg" alt="" />
+                              <img src="/assets/images/pay-1.svg" alt="imageimages" />
                               <p>
                                 Your paypal account has been authorized for
                                 checkout at Bollot
@@ -74,7 +74,7 @@ const Home: NextPage = () => {
                             </div>
                             <div className="jdsa0-sdsmd">
                               <div className="jsodisd-dsd">
-                                <img src="/assets/images/debit.svg" alt="" />
+                                <img src="/assets/images/debit.svg" alt="image" />
                               </div>
                             </div>
                           </div>
@@ -84,7 +84,7 @@ const Home: NextPage = () => {
                             </div>
                             <div className="jdsa0-sdsmd">
                               <div className="jsodisd-dsd">
-                                <img src="/assets/images/google.svg" alt="" />
+                                <img src="/assets/images/google.svg" alt="image" />
                               </div>
                             </div>
                           </div>

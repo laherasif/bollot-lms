@@ -11,7 +11,7 @@ export default () => {
             <img
               src="/assets/images/purple.svg"
               className="osaidjs-dsadjd"
-              alt=""
+              alt="image"
             />
           </div>
           <div className="dhafusd9we0sd">
@@ -23,7 +23,7 @@ export default () => {
           <div className="assahdwe0-ass">
             <Dropdown>
               <Dropdown.Toggle variant="success" id="dropdown-basic">
-                <img src="/assets/images/black..svg" alt="" />
+                <img src="/assets/images/black..svg" alt="image" />
               </Dropdown.Toggle>
 
               <Dropdown.Menu>
