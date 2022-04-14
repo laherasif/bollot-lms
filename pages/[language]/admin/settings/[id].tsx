@@ -14,7 +14,6 @@ import Link from "next/link";
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   const intl = useIntl();
-
   return (
     <>
     <NavigationBar1/>
