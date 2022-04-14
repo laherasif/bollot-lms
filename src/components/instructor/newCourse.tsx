@@ -51,13 +51,12 @@ export default (catagory: any) => {
   const [item, setItem] = useState<Outcomes[]>([''])
   const [request, setRequest] = useState<Requirements[]>([''])
   const [course, setCourse] = useState<Courses[]>([''])
-  const [state, setState] = useState<Course>('')
+  const [state, setState] = useState<Course[]>([])
   const [Courses, setCourses] = useState([])
   const [url, setUrl] = useState()
-  const [showCirculm, setShowCirculm] = useState(false )
+  const [showCirculm, setShowCirculm] = useState(true)
   const [errors, setErrors] = useState()
   const [loading, setLoading] = useState(false)
-  const [courseId, setcourseId] = useState('')
 
 
   const token = useSelector((state: RootStateOrAny) => state?.userReducer?.token)
@@ -70,13 +69,15 @@ export default (catagory: any) => {
     }
   });
 
-  console.log("newcourse", courseId)
+  console.log("Errors", errors)
 
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         let res = await AxInstance.get('api//instructor/courses/categories')
+        console.log("resres", res)
+
         setCourses(res.data.response.categories)
       }
       catch (err) {
@@ -187,10 +188,10 @@ export default (catagory: any) => {
     try {
       setLoading(true)
       let res = await AxInstance.post('api//instructor/courses/store', data)
+      console.log("REs", res)
       if (res.data.success === true) {
-        setLoading(false)
-        setcourseId(res.data.response.course.id)
         setShowCirculm(true)
+        setLoading(false)
 
       }
       else {
@@ -222,15 +223,15 @@ export default (catagory: any) => {
         >
           <Offcanvas.Header closeButton>
             <Offcanvas.Title id="offcanvasNavbarLabel">
-              { showCirculm ? "Add Curriculum" :  "Add New Course"}
+              Add New Course
             </Offcanvas.Title>
           </Offcanvas.Header>
-          {showCirculm ?
+          {/* {showCirculm ?
 
             <Offcanvas.Body>
-              <Circulum course_id={courseId}/>
+              <Circulum />
             </Offcanvas.Body>
-            :
+            : */}
           <Offcanvas.Body>
 
             <div className="p-field">
@@ -383,11 +384,11 @@ export default (catagory: any) => {
               </div>
             </div>
             <div className="d-flex">
-              {/* <div className="idfadsf-sads kajfds-sdfe hfdajss-3ersad">
+              <div className="idfadsf-sads kajfds-sdfe hfdajss-3ersad">
                 <button onClick={() => Video()} className="upload-1 sdisad-dsdactive ">
                   Preview
                 </button>
-              </div> */}
+              </div>
               <div className="idfadsf-sads kajfds-sdfe">
                 <button onClick={() => SaveCourse()} className="upload-1 sdisad-dsdactive">
                   {loading ?
@@ -395,13 +396,13 @@ export default (catagory: any) => {
                     <div className="spinner-border text-light" role="status">
                     </div>
                     :
-                    "Save & Next "
+                    " Submit for review"
                   }
                 </button>
               </div>
             </div>
           </Offcanvas.Body>
-           } 
+          {/* } */}
 
 
 

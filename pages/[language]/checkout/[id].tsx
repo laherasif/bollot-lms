@@ -82,6 +82,7 @@ const Home: NextPage = () => {
 
   const token = useSelector((state: RootStateOrAny) => state?.userReducer?.token)
 
+  console.log("token", token)
   const AxInstance = axios.create({
     // .. where we make our configurations
     baseURL: 'https://dev.thetechub.us/bolloot/',

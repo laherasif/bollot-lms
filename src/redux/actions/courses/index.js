@@ -11,7 +11,6 @@ import {
     GET_SEARCH_COURSE,
     DELETE_CART,
     GET_BY_CATAGORY_COURSE,
-    LIVE_COURSE
 } from '../../types/types'
 import instance from '../../../confiq/axios/instance'
 
@@ -46,15 +45,6 @@ export const GetCourse = () => async dispatch => {
             rows_per_page: 10,
 
         }
-
-
-       let liveCourse = {
-        page_no: 1,
-        rows_per_page: 10,
-        course_type: "live"
-    }
-
-
         let AllCourse = await instance.post('api//courses', all)
         dispatch({
             type: GET_ALL_COURSES,
@@ -76,11 +66,8 @@ export const GetCourse = () => async dispatch => {
             type: GET_LATEST,
             payload: latests.data.response.courses
         })
-        let live = await instance.post('api//courses', liveCourse)
-        dispatch({
-            type:LIVE_COURSE,
-            payload : live.data.response.courses
-        })
+        // let top = await instance.post('api//courses', feature)
+        // dispatch({})
 
 
 

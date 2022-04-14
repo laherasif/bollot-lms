@@ -1,19 +1,20 @@
 import type { NextPage } from "next";
-import Dropdown from "../../../../src/components/admin/dropdown";
+import Dropdown from "../../../src/components/dropdown";
 import { useIntl } from "react-intl";
-import Sidebar from "../../../../src/components/admin/sidebar";
+import Sidebar from "../../../src/components/sidebar";
 import { FiSearch } from "react-icons/fi";
 import { BiBell } from "react-icons/bi";
 import { IoMailOutline } from "react-icons/io5";
-import Icons from "../../../../src/icons";
-import TopNavbar from "../../../../src/components/admin/TopNavbar";
-import CourseCard from "../../../../src/components/admin/CourseCard1";
-import BookmarkCard from "../../../../src/components/admin/BookmarkCard";
-import NavigationBar1 from "../../../../src/components/admin/NavigationBar1";
+import Icons from "../../../src/icons";
+import TopNavbar from "../../../src/components/TopNavbar";
+import CourseCard from "../../../src/components/CourseCard1";
+import BookmarkCard from "../../../src/components/BookmarkCard";
+import NavigationBar1 from "../../../src/components/NavigationBar1";
 import Link from "next/link";
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   const intl = useIntl();
+
   return (
     <>
     <NavigationBar1/>

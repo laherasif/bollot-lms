@@ -34,9 +34,9 @@ const Home: NextPage = () => {
     dispatch(GetCourse())
   }, [])
 
-  // const getCatagory = (id: number) => {
-  //   dispatch(GetCatagory(id, "getfet"))
-  // }
+  const getCatagory = (id: number) => {
+    dispatch(GetCatagory(id, "getfet"))
+  }
 
   return (
     <>
@@ -46,7 +46,7 @@ const Home: NextPage = () => {
         </div>
       </div>
       <Carousel />
-      {loader ? <div style={{margin:'50px'}}> <Catagories /> </div>
+      {loader ? <Catagories />
         :
         <div className="">
 

@@ -2,8 +2,8 @@ import type { NextPage } from "next";
 import { useIntl } from "react-intl";
 import React, { useState } from 'react'
 import { useRouter } from "next/router";
-import Icons from "../../../../src/icons";
-import instance from "../../../../src/confiq/axios/instance";
+import Icons from "../../../src/icons";
+import instance from "../../../src/instance/axios";
 const Home: NextPage = () => {
     const intl = useIntl();
     const router = useRouter();

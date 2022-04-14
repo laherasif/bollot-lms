@@ -41,7 +41,7 @@ const Home: NextPage = () => {
   // Here we use item offsets; we could also use page offsets
   // following the API or data you're working with.
   const [itemOffset, setItemOffset] = useState(0);
-  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInput = (e) => {
     set_minValue(e.minValue);
     set_maxValue(e.maxValue);
   };
@@ -142,10 +142,6 @@ const Home: NextPage = () => {
   };
 
 
-
-  console.log("loader" , loader)
-
-
   return (
     <>
       <div className="navBar-cst">
@@ -198,7 +194,7 @@ const Home: NextPage = () => {
         ) : (
           <></>
         )}
-        {loader || loading  ?
+        {loading ?
           <div style={{ margin: '20px 40px' }}>
             <Catagories />
           </div>

@@ -5,20 +5,29 @@ import {
   GET_BY_CATAGORY,
   GET_SORTED_COURSE,
   GET_SEARCH_COURSE,
-  GET_BY_CATAGORY_COURSE,
-  GET_BY_CATAGORY_FEATURE,
-  GET_ALL_COURSES,
-  LIVE_COURSE,
-  GET_FILTER_PRICE,
+  GET_BY_CATAGORY_COURSE
 } from "../../types/types";
-
+import {
+  REG_CART,
+  GET_CART,
+  GET_FILTER_PRICE,
+  GET_ALL_COURSES,
+  DELETE_CART,
+  UPDATE_CART_QUANTITY_CLIENT,
+  INCREMENT,
+  GET_BY_CATAGORY_FEATURE,
+  DECREMENT,
+  INSERT_LOCAL_DATA,
+  FETCH_LOCAL_DATA,
+  FILTER_CART_BY_CATA,
+} from "../../types/types";
 
 const initialState = {
   Catagory: [],
   Latest: [],
   Feature: [],
   AllCourse: [],
-  loader : true , 
+  loader : false , 
 };
 
 const CourseReducer = (state = initialState, action) => {
@@ -107,33 +116,27 @@ const CourseReducer = (state = initialState, action) => {
         loader : false
 
       };
-      case LIVE_COURSE:
-        debugger
-        return{
-          ...state ,
-          LiveCouse : action.payload
-        }
 
-    // case INCREMENT:
-    //   state.localD[state.localD.findIndex((item) => item._id === action.id)]
-    //     .Quantity++;
+    case INCREMENT:
+      state.localD[state.localD.findIndex((item) => item._id === action.id)]
+        .Quantity++;
 
-    //   localStorage.setItem("carts", JSON.stringify(state.localD));
+      localStorage.setItem("carts", JSON.stringify(state.localD));
 
-    //   return {
-    //     ...state,
-    //     localD: [...state.localD],
-    //   };
+      return {
+        ...state,
+        localD: [...state.localD],
+      };
 
-    // case DECREMENT:
-    //   state.localD[state.localD.findIndex((item) => item._id === action.id)]
-    //     .Quantity--;
+    case DECREMENT:
+      state.localD[state.localD.findIndex((item) => item._id === action.id)]
+        .Quantity--;
 
-    //   localStorage.setItem("carts", JSON.stringify(state.localD));
-    //   return {
-    //     ...state,
-    //     localD: [...state.localD],
-    //   };
+      localStorage.setItem("carts", JSON.stringify(state.localD));
+      return {
+        ...state,
+        localD: [...state.localD],
+      };
 
     
     default:

@@ -23,7 +23,8 @@ export const GET_FILTER_PRICE = "GET_FILTER_PRICE"
 
 export const GET_ALL_COURSES = "GET_ALL_COURSES"
 export const GET_SORTED_COURSE = "GET_SORTED_COURSE"
-export const LIVE_COURSE = "LIVE_COURSE"
+
+
 
 export const REG_CART = 'REG_CART'
 export const GET_CART = 'GET_CART'

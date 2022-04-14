@@ -93,7 +93,6 @@ const Home: NextPage = () => {
               <img src="/assets/images/umpire-1.svg" />
               <p>Andrei Neagoie</p>
             </div>
-            
             <div className="hsaid9iawdeka">
               <div >
                 <h2 className="ksdfhd-active">Overview</h2>
