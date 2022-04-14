@@ -2,7 +2,6 @@ import React from 'react';
 import Icons from '../../icons';
 import Image from 'next/image'
 import Link  from 'next/link'
-const notfound = require('../../assests/notfun.png')
 export default ({ icon, catagory, key }: { icon: string, catagory: any, key: string }) => {
   return (
     <Link href={`/en/courses/${catagory?.slug}`}>
