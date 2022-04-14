@@ -117,27 +117,7 @@ const CourseReducer = (state = initialState, action) => {
 
       };
 
-    case INCREMENT:
-      state.localD[state.localD.findIndex((item) => item._id === action.id)]
-        .Quantity++;
-
-      localStorage.setItem("carts", JSON.stringify(state.localD));
-
-      return {
-        ...state,
-        localD: [...state.localD],
-      };
-
-    case DECREMENT:
-      state.localD[state.localD.findIndex((item) => item._id === action.id)]
-        .Quantity--;
-
-      localStorage.setItem("carts", JSON.stringify(state.localD));
-      return {
-        ...state,
-        localD: [...state.localD],
-      };
-
+   
     
     default:
       return state;
