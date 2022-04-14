@@ -240,7 +240,7 @@ export function OTPInputComponent(props: OTPInputProps) {
         <div className="container-main">
           <div className="container logo-sec">
             <div className="logo-1">
-              <img src="assets\images\ballot-1-logo.svg" alt="image" />
+              <img src="assets\images\ballot-1-logo.svg" alt="" />
             </div>
             <div className="logo-2">
               <h3>Didn’t get the code?</h3>
@@ -250,7 +250,7 @@ export function OTPInputComponent(props: OTPInputProps) {
         </div>
         <div className=" login-sec ">
           <div className="container lock-img">
-            <img src="assets\images\lock.svg" alt="image" />
+            <img src="assets\images\lock.svg" alt="" />
           </div>
           <div className="container two-step">
             <h3 className="text-center mb-21">Two-Step Verification</h3>

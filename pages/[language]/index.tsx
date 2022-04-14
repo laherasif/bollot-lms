@@ -34,9 +34,9 @@ const Home: NextPage = () => {
     dispatch(GetCourse())
   }, [])
 
-  const getCatagory = (id: number) => {
-    dispatch(GetCatagory(id, "getfet"))
-  }
+  // const getCatagory = (id: number) => {
+  //   dispatch(GetCatagory(id, "getfet"))
+  // }
 
   return (
     <>
@@ -216,7 +216,7 @@ const Home: NextPage = () => {
           <section className="instructor-section pos-rel">
             <div className="all-ins">
               <div className="ins">
-                <img src="/abt.png" alt="instructor_img" />
+                <img src="/abt.png" alt="" />
               </div>
               <div className="instruc">
                 <h3 className="bold brown">Become an Instructor</h3>
@@ -258,7 +258,7 @@ const Home: NextPage = () => {
               <div className="all-div-p">
                 <section className="all-build">
                   <div className="build">
-                    <img src="/bg2.png" alt="alt_img" />
+                    <img src="/bg2.png" alt="" />
                   </div>
                   <div className="build-text">
                     <h3 className="bold">

@@ -15,7 +15,7 @@ export default ({type}:{type?:string})=>{
 
     </p>
     <div className="client">
-      <img src='/Mask.png' alt="image" />
+      <img src='/Mask.png' alt="" />
       <div className="name-1">
         <h5>Aurther Broklyn</h5>
         <p className="jdkslfsa-wmeds">Categories: 3d Modelling</p>

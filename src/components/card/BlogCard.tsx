@@ -7,7 +7,7 @@ export default ({type}:{type?:string}) => {
     <Link href="/en/blogpost">
       <a className="card-item">
         <div className="">
-          <Image className="images-2" src={CardImage} alt="image" />
+          <Image className="images-2" src={CardImage} alt="" />
           <h3>The hate you give is the hate you’ll eventually get</h3>
           <h4>
             By <span>Tommy Land</span>

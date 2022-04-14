@@ -41,7 +41,7 @@ const Home: NextPage = () => {
   // Here we use item offsets; we could also use page offsets
   // following the API or data you're working with.
   const [itemOffset, setItemOffset] = useState(0);
-  const handleInput = (e) => {
+  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     set_minValue(e.minValue);
     set_maxValue(e.maxValue);
   };

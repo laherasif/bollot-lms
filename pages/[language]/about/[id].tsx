@@ -50,12 +50,12 @@ const Home: NextPage = () => {
               </p>
             </div>
             <div className="col-md-6">
-              <Image className="images-2" src={CardImage} alt="image_tag" />
+              <Image className="images-2" src={CardImage} alt="" />
             </div>
           </div>
           <div className="row my-5">
             <div className="col-md-6">
-              <Image className="images-2" src={CardImage} alt="image_tag" />
+              <Image className="images-2" src={CardImage} alt="" />
             </div>
             <div className="col-md-6">
               <h4>Our Services for Students</h4>

@@ -4,10 +4,10 @@ export default ()=>{
     return     <div className="cm-web kdsjf0ew-ew">
     <div className="dhafusd9we0sd-p">
       <div>
-        <img src="/assets/images/purple.svg" alt="image" />
+        <img src="/assets/images/purple.svg" alt="" />
       </div>
       <div className="assahdwe0-ass">
-        <img src="/assets/images/heart.svg" alt="image" />
+        <img src="/assets/images/heart.svg" alt="" />
       </div>
     </div>
     <div className="sdhafadsie-sd">

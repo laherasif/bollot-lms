@@ -33,57 +33,63 @@ const Home: NextPage = () => {
   console.log(totalamount)
   return (
     <>
-      <div style={{position:'relative'}}>
+      <div>
         <div className="navBar-cst">
           <div className="container-nav">
             <Navbar />
           </div>
         </div>
         <div className="container-3">
-          <div className="shipping-2">
-            <h3>Shopping Cart</h3>
-            <p>{carts && carts.length} Course in cart</p>
-          </div>
-          {loading ? <div style={{ textAlign: 'center', margin: '50px' }}><Spinner animation="border" size="xxlg" /> </div> :
-            <div className="d-flex hdsafjf-dsa">
-              {carts.length > 0 ? <>
-                <div>
-                  {
-                    carts.map((item: object, index: number) => <CartCard item={item} key={index} />)}
+          {loading ? <div style={{ textAlign: 'center', margin: '9rem' }}>
+            <Spinner animation="border" />
+          </div> :
+            <>
+              <div className="shipping-2">
+                <h3>Shopping Cart</h3>
+                <p>{carts && carts.length} Course in cart</p>
+              </div>
 
-                </div>
-                <div className="photo-maker-2">
-                  <h4>
-                    ${totalamount} <span>$49.99 (76% off)</span>
-                  </h4>
-                  <Link href="/en/checkout">
-                    <button className="btn-2s w-100 my-4">Checkout</button>
-                  </Link>
-                  <h5>Promotions:</h5>
-                  <h6>
-                    <Icons name="c34" />
-                    <p className="mt-4" style={{ paddingLeft: '10px' }}>
-                      ST11MT22122 is applied
+              <div className="d-flex hdsafjf-dsa">
+                {carts.length > 0 ? <>
+                  <div>
+                    {
+                      carts.map((item: object, index: number) => <CartCard item={item} key={index} />)}
 
-                    </p>
-                  </h6>
-                  <div className="btnn-1">
-                    <input placeholder="Enter Coupon" />
-                    <button>Apply</button>
                   </div>
-                </div>
-              </> :
-                <div className="nofdaisf-sdnew">
-                  <Icons name="c43" />
-                  <p>Your cart is empty. Keep shopping to find a course!</p>
-                  <Link href="/en/courses">
-                    <button className="btn-2s my-4">Keep Shopping</button>
-                  </Link>
-                </div>}
-            </div>
+                  <div className="photo-maker-2">
+                    <h4>
+                      ${totalamount} <span>$49.99 (76% off)</span>
+                    </h4>
+                    <Link href="/en/checkout">
+                      <button className="btn-2s w-100 my-4">Checkout</button>
+                    </Link>
+                    <h5>Promotions:</h5>
+                    <h6>
+                      <Icons name="c34" />
+                      <p className="mt-4" style={{ paddingLeft: '10px' }}>
+                        ST11MT22122 is applied
+
+                      </p>
+                    </h6>
+                    <div className="btnn-1">
+                      <input placeholder="Enter Coupon" />
+                      <button>Apply</button>
+                    </div>
+                  </div>
+                </> :
+                  <div className="nofdaisf-sdnew">
+                    <Icons name="c43" />
+                    <p>Your cart is empty. Keep shopping to find a course!</p>
+                    <Link href="/en/courses">
+                      <button className="btn-2s my-4">Keep Shopping</button>
+                    </Link>
+                  </div>
+                }
+              </div>
+            </>
           }
         </div>
-          <Footer />
+        <Footer />
       </div>
     </>
   );

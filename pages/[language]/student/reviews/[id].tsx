@@ -49,7 +49,7 @@ const Home: NextPage = () => {
                     <div className="reviews-section">
                       <div className="first-rev-sec">
                         <div className="rev-img pb-41">
-                          <img src="/assets/images/first-sec.svg" alt="image" />
+                          <img src="/assets/images/first-sec.svg" alt="" />
                           <div className="you-rev">
                             <h3>Your Review</h3>
                             <p>12 Jul 2022</p>
@@ -68,7 +68,7 @@ const Home: NextPage = () => {
                     <div className="reviews-section">
                       <div className="first-rev-sec">
                         <div className="rev-img pb-41">
-                          <img src="/assets/images/first-sec.svg" alt="image" />
+                          <img src="/assets/images/first-sec.svg" alt="" />
                           <div className="you-rev">
                             <h3>Your Review</h3>
                             <p>12 Jul 2022</p>

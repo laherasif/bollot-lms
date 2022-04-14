@@ -11,7 +11,7 @@ const instance = axios.create({
 
 
 // 'Authorization' header, etc ...
-instance.defaults.headers.common['token'] = token;
+// instance.defaults.headers.common['token'] = token;
 
 
 //Error Handling

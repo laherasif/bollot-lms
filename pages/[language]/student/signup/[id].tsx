@@ -3,8 +3,7 @@ import { useIntl } from "react-intl";
 import React, { useState } from 'react'
 import { useRouter } from "next/router";
 import Icons from "../../../src/icons";
-// import instance from "../../../src/instance/axios";
-import axios from 'axios'
+import instance from "../../../src/instance/axios";
 const Home: NextPage = () => {
     const intl = useIntl();
     const router = useRouter();
@@ -32,7 +31,7 @@ const Home: NextPage = () => {
     const handleClick = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         try {
-            await axios.post("/api/login", {
+            await instance.post("/api/login", {
                 // "username",
                 // "password",
             });
@@ -48,7 +47,7 @@ const Home: NextPage = () => {
                 <div className="container-main">
                     <div className="container logo-sec">
                         <div className="logo-1">
-                            <img src="assets\images\ballot-1-logo.svg" alt="image" />
+                            <img src="assets\images\ballot-1-logo.svg" alt="" />
                         </div>
                         <div className="logo-2">
                             <h3>Don’t have an account?</h3>
