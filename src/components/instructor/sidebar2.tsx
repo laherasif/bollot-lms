@@ -36,6 +36,12 @@ export default () => {
               <h3>My courses</h3>
             </div>
           </Link>
+          <Link href="/en/instructor/liveCourses">
+            <div className="dash-ch-2">
+              <Icons name="i2" />
+              <h3>Live courses</h3>
+            </div>
+          </Link>
           <Link href="/en/instructor/earning">
             <div className="dash-ch-2">
               <Icons name="i3" />

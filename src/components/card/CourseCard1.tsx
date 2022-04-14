@@ -1,27 +1,28 @@
 import React from 'react';
 import Image from "next/image";
+import moment from 'moment'
 const CardImage=require('../../images/unsplash-2.jpeg');
-export default ()=>{
+export default ({live , i } : any )=>{
     return <div className="card-course-1">
-   <Image className="images-2" src={CardImage} alt=""   />
+   <img className="images-2" src={live?.cover_image} alt=""   />
 
-    <h4>Become A Social Media Expert</h4>
+    <h4>{live?.title}</h4>
     <div className="making">
-      <span>Digital Marketing</span>
-      <h3>$19.9</h3>
+      <span>{live?.category_tree[0]}</span>
+      <h3>${live?.price}</h3>
     </div>
     <div className="start">
       <h2>Starting from:</h2>
-      <span>MAR 01,2022</span>
+      <span>{moment(live?.schedule[0].date).format('LL')}</span>
     </div>
     <div className='card-course-rel align-items-center '>
     
  <div>
-   <img src='/bosan.png'/>
+   <img src={live?.instructor?.image}/>
  </div>
  <div>
- <h5>Bosun Jones</h5>
- <p>Digital Marketing Expert at Bolloot</p>
+ <h5>{live?.instructor?.fullname}</h5>
+ <p>{live?.category_tree[0]} Expert at Bolloot</p>
  </div>
     </div>
   </div>

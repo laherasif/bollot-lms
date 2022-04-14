@@ -5,8 +5,8 @@ import Icons from "../../icons";
 export default ({ course, key }: any) => {
   return (
     <div className="cm-web" key={key}>
-      <Link href="/en/instructor/details">
-        <>
+      <Link href={`/en/instructor/details/?liveCourse=${course?.id}`}>
+        <div>
           <div className="dhafusd9we0sd-p">
             <div>
               <img
@@ -27,17 +27,17 @@ export default ({ course, key }: any) => {
             <h3>{course?.title}</h3>
             <p className="mt-2">By {course?.instructor} </p>
           </div>
-        </>
+        </div>
       </Link>
       <div className="assahdwe0-ass">
         <Dropdown>
           <Dropdown.Toggle variant="success" id="dropdown-basic">
-            <img src="../../assets/images/black..svg" alt="" style={{ width:'20px'}}  />
+            <img src="../../assets/images/black..svg" alt="" style={{ width: '20px' }} />
           </Dropdown.Toggle>
 
           <Dropdown.Menu>
-            {/* <Dropdown.Item href={`/en/instructor/liveCourses`}>Live </Dropdown.Item> */}
-            <Dropdown.Item href="#/action-3">Check Criculum</Dropdown.Item>
+            <Dropdown.Item as={Link} href={`/en/instructor/liveClassSedule/${course?.id}`}>Live </Dropdown.Item>
+            <Dropdown.Item as={Link} href={`/en/instructor/enrolledStudent/${course?.id}`}>Enrolled Student</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
       </div>
