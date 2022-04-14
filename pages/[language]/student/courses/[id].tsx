@@ -10,20 +10,38 @@ import TopNavbar from "../../../../src/components/student/TopNavbar";
 import CourseCard from "../../../../src/components/student/CourseCard";
 import NavigationBar1 from "../../../../src/components/student/NavigationBar1";
 const options = ["one", "two", "three"];
-import React , { useState , useEffect}  from 'react'
+import React, { useState, useEffect } from 'react'
 import instance from "../../../../src/confiq/axios/instance";
 import withAuth from "../../../../src/components/Hoc/authRoute";
+import { useSelector, RootStateOrAny } from "react-redux";
+import axios from 'axios'
+import { Small } from "../../../../src/components/student/loader";
+
 const Home: NextPage = () => {
   // const intl = useIntl();
-  const [course , setCourse] = useState([])
-  useEffect(()=>{
-      let fetchCourse = async () =>{
-        let res = await instance.get('api//student/my-courses')
-        console.log("res" , res )
+  const [course, setCourse] = useState([])
+  const [loading, setLoading] = useState(false)
+  const token = useSelector((state: RootStateOrAny) => state?.userReducer?.token)
+
+  console.log("token", token)
+  const AxInstance = axios.create({
+    // .. where we make our configurations
+    baseURL: 'https://dev.thetechub.us/bolloot/',
+    headers: {
+      token: token
+    }
+  });
+  useEffect(() => {
+    let fetchCourse = async () => {
+      setLoading(true)
+      let res = await AxInstance.get('api//student/my-courses')
+      if (res.data.success === true) {
+        setLoading(false)
         setCourse(res.data.response.courses)
       }
-      fetchCourse()
-  },[])
+    }
+    fetchCourse()
+  }, [])
 
   return (
     <>
@@ -34,16 +52,20 @@ const Home: NextPage = () => {
           <div className="dash-2">
             <div className="my-course">
               <TopNavbar />
-              <div className="hdsf0s-sadmsa">
-                <h3>My Courses</h3>
-                <div className="complete-web-1">
-                  { course && course.map((course:any)=>(
-                    <CourseCard  course={ course } key={course.id}/>
-                  ))}
-                  
+              {loading ? Small()
+                :
+                <div className="hdsf0s-sadmsa">
+                  <h3>My Courses</h3>
+                  <div className="complete-web-1">
+                    {course && course.length > 0 ? course.map((course: any) => (
+                      <CourseCard course={course} key={course.id} />
+                    ))
+                      : <div>Record not found </div>
+                    }
 
+                  </div>
                 </div>
-              </div>
+              }
 
             </div>
           </div>

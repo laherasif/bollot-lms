@@ -14,20 +14,20 @@ import NavigationBar1 from "../../../../src/components/instructor/NavigationBar3
 import Link from "next/link";
 // import instance from "../../../../src/confiq/axios/instance";
 import axios from 'axios'
-import CourseCard from "../../../../src/components/instructor/CourseCard1";
+import EnrolledStudent from "../../../../src/components/instructor/EnrolledStudent";
 import NewCourse from "../../../../src/components/instructor/newCourse";
 import withAuth from "../../../../src/components/Hoc/authRoute";
 import { useSelector, RootStateOrAny } from "react-redux";
 import { useEffect, useState } from "react";
-import { Main } from "../../../../src/components/instructor/loader";
-
+import { useRouter } from 'next/router'
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
-
-  const [courses, setCourses] = useState([])
+  const router = useRouter()
+  const [students, setStudents] = useState([])
   const [loading, setLoading] = useState(false)
 
+  let CourseId = router.query.id
   const { token } = useSelector((state: RootStateOrAny) => state?.userReducer)
 
   const AxInstance = axios.create({
@@ -38,15 +38,18 @@ const Home: NextPage = () => {
     }
   });
 
+
+
   useEffect(() => {
     let fetchCourse = async () => {
       try {
         setLoading(true)
-        let res = await AxInstance.get('api//instructor/courses')
+        let res = await AxInstance.post('api//instructor/courses/stundets-enrolled', { course_id: CourseId })
         if (res.data.success === true) {
+          setStudents(res.data.response.students)
           setLoading(false)
         }
-        setCourses(res.data.response.courses)
+        
       } catch (error) {
 
       }
@@ -56,29 +59,27 @@ const Home: NextPage = () => {
 
 
   return (
-    <div className="inst">
-      <NavigationBar1 />
-      <section className="dash-board jadsifd-asdasid">
-        <div className="jcoiasd03-eakw3e1">
-          <Sidebar />
-        </div>
-        {loading ? Main()
-
-          :
+    <>
+      <div className="inst">
+        <NavigationBar1 />
+        <section className="dash-board jadsifd-asdasid">
+          <div className="jcoiasd03-eakw3e1">
+            <Sidebar />
+          </div>
           <div className="dash-board-1">
             <div className="dash-2 ">
               <div className="my-course">
                 <div className="hdsf0s-sadmsa">
                   <div>
-                    <h3>My Courses</h3>
+                    <Link href='/en/instructor/liveCourses'>
+                      <h3 style={{ cursor: 'pointer' }}>
+                        <i className="fa fa-arrow-left "></i>
+                        Back
+                      </h3>
+                    </Link>
+                    <h3>Enrolled Students</h3>
                   </div>
-                  <div className=" jidfjsd-asjreid">
-                    <div className="dsnodi-sdjsad">
-                      <FiSearch color="#8A8A8A" size={17} />
-                      <input type="text" placeholder="Search" />
-                    </div>
-                    <NewCourse />
-                  </div>
+
                 </div>
 
                 <div className="complete-web-1 ">
@@ -87,35 +88,33 @@ const Home: NextPage = () => {
                       <div className="maxima ">
                         <div className="idfadsf-sads">
                           <button className="upload-1 sdisad-dsdactive">
-                           All Courses
+                            <i className="fa fa-refresh"></i>
                           </button>
                         </div>
-                        <div>
-                          <Link href="/en/payments">
-                            <button className="upload-1">Published</button>
-                          </Link>
-                        </div>
-                        <div>
-                          <Link href="/en/payments">
-                            <button className="upload-1">In Review</button>
-                          </Link>
-                        </div>
+                        {/* <div>
+                        <Link href="/en/payments">
+                          <button className="upload-1">Published</button>
+                        </Link>
+                      </div>
+                      <div>
+                        <Link href="/en/payments">
+                          <button className="upload-1">In Review</button>
+                        </Link>
+                      </div> */}
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className="complete-web-1">
-                  {courses && courses.map((cours: any, i: number) => (
-                    <CourseCard course={cours} key={i} />
-                  ))}
+                <div className="w-100">
+                  <EnrolledStudent students={students} />
 
                 </div>
               </div>
             </div>
           </div>
-        }
-      </section>
-    </div>
+        </section>
+      </div>
+    </>
   );
 };
 

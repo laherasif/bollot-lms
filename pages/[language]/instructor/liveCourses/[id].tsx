@@ -14,22 +14,23 @@ import NavigationBar1 from "../../../../src/components/instructor/NavigationBar3
 import Link from "next/link";
 // import instance from "../../../../src/confiq/axios/instance";
 import axios from 'axios'
-import CourseCard from "../../../../src/components/instructor/CourseCard1";
+import LiveCourse from "../../../../src/components/instructor/liveCourseCard";
 import NewCourse from "../../../../src/components/instructor/newCourse";
 import withAuth from "../../../../src/components/Hoc/authRoute";
 import { useSelector, RootStateOrAny } from "react-redux";
 import { useEffect, useState } from "react";
-import { Main } from "../../../../src/components/instructor/loader";
-
+import { Main , Small } from "../../../../src/components/instructor/loader";
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
 
   const [courses, setCourses] = useState([])
   const [loading, setLoading] = useState(false)
+  const [reload, setReLoading] = useState(false)
 
-  const { token } = useSelector((state: RootStateOrAny) => state?.userReducer)
+  const { token, User } = useSelector((state: RootStateOrAny) => state?.userReducer)
 
+  console.log("token", token)
   const AxInstance = axios.create({
     // .. where we make our configurations
     baseURL: 'https://dev.thetechub.us/bolloot/',
@@ -38,11 +39,13 @@ const Home: NextPage = () => {
     }
   });
 
+  console.log("load" , loading )
+
   useEffect(() => {
     let fetchCourse = async () => {
       try {
         setLoading(true)
-        let res = await AxInstance.get('api//instructor/courses')
+        let res = await AxInstance.get('api//instructor/courses/live-courses')
         if (res.data.success === true) {
           setLoading(false)
         }
@@ -55,6 +58,8 @@ const Home: NextPage = () => {
   }, [])
 
 
+  console.log("cours", courses)
+
   return (
     <div className="inst">
       <NavigationBar1 />
@@ -63,14 +68,14 @@ const Home: NextPage = () => {
           <Sidebar />
         </div>
         {loading ? Main()
-
           :
+
           <div className="dash-board-1">
             <div className="dash-2 ">
               <div className="my-course">
                 <div className="hdsf0s-sadmsa">
                   <div>
-                    <h3>My Courses</h3>
+                    <h3>My Live Courses</h3>
                   </div>
                   <div className=" jidfjsd-asjreid">
                     <div className="dsnodi-sdjsad">
@@ -86,27 +91,29 @@ const Home: NextPage = () => {
                     <div className="umpire-1 umpire-1-cst ">
                       <div className="maxima ">
                         <div className="idfadsf-sads">
-                          <button className="upload-1 sdisad-dsdactive">
-                           All Courses
+                          <button className="upload-1 sdisad-dsdactive" >
+                           {/* { reload ? Small() : */}
+                            <i className="fa fa-refresh" ></i>
                           </button>
                         </div>
-                        <div>
-                          <Link href="/en/payments">
-                            <button className="upload-1">Published</button>
-                          </Link>
-                        </div>
-                        <div>
-                          <Link href="/en/payments">
-                            <button className="upload-1">In Review</button>
-                          </Link>
-                        </div>
+                        {/* <div>
+                        <Link href="/en/payments">
+                          <button className="upload-1">Published</button>
+                        </Link>
+                      </div>
+                      <div>
+                        <Link href="/en/payments">
+                          <button className="upload-1">In Review</button>
+                        </Link>
+                      </div> */}
                       </div>
                     </div>
                   </div>
                 </div>
                 <div className="complete-web-1">
                   {courses && courses.map((cours: any, i: number) => (
-                    <CourseCard course={cours} key={i} />
+                    <LiveCourse course={cours} key={i} />
+
                   ))}
 
                 </div>
