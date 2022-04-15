@@ -86,7 +86,7 @@ const Home: NextPage = () => {
             <h3 className="future text-center">Top Category</h3>
             <div className="container-3">
               <div className="all-category">
-                {Catagory && Catagory.length > 0 ? Catagory.map((cat: any) => (
+                {Catagory  ? Catagory.map((cat: any) => (
                   <CategoryCard icon={cat.icon} catagory={cat} key={cat.id} />
                 ))
                   : <div>Catagory not Avaliable </div>
