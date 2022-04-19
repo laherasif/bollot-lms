@@ -10,7 +10,7 @@ import Icons from "../../../src/icons";
 import CourseCardBig from "../../../src/components/card/CourseCardBig";
 import { RootStateOrAny, useSelector, useDispatch } from 'react-redux'
 import { Catagories } from '../../../src/components/skeleton'
-import { GetCatagory, priceFilter, GetSorted, GetSearchCourse } from '../../../src/redux/actions/courses'
+import { GetCatagory, priceFilter, GetSorted, GetSearchCourse , GetAllCatagory} from '../../../src/redux/actions/courses'
 import dynamic from "next/dynamic";
 import ReactPaginate from "react-paginate";
 import { useRouter } from "next/router";
@@ -53,6 +53,8 @@ const Home: NextPage = () => {
   // console.log();
   // console.log("router" , router.query.id )
 
+ 
+
   const getCatagory = (id: number) => {
     setMainLoading(true)
     dispatch(GetCatagory(id, "getall"))
@@ -61,6 +63,14 @@ const Home: NextPage = () => {
     }, 2000);
   }
 
+  const getAllCatagory = () => {
+    setMainLoading(true)
+    dispatch(GetAllCatagory())
+    setTimeout(() => {
+      setMainLoading(false)
+    }, 2000);
+
+  }
 
   const filterPrice = () => {
     setMainLoading(true)
@@ -111,7 +121,7 @@ const Home: NextPage = () => {
 
     let findCatagory = Catagory.find((i: any) => i.slug === param)
     getCourseCata(findCatagory?.id)
-  }, [])
+  }, [param])
 
 
 
@@ -143,7 +153,6 @@ const Home: NextPage = () => {
 
 
 
-  console.log("loader" , loader)
 
 
   return (
@@ -209,9 +218,11 @@ const Home: NextPage = () => {
                 <div className="name">
                   {view == false ? (
                     <>
-                      <h3 id="all">All</h3>
+                  <h3 id="all" onClick={() =>  getAllCatagory()}>All</h3> 
                       {Catagory && Catagory.map((cata: any) => (
+                        <>
                         <h3 id="web" key={cata.id} onClick={() => getCourseCata(cata.id)}>{cata.name}</h3>
+                       </>
                       ))}
 
                     </>
@@ -241,20 +252,21 @@ const Home: NextPage = () => {
                     <div className="mx-2 sortdrp">
                       <Form.Select name="sorting" value={sorting} onChange={(e) => getSorted(e)}>
                         <option defaultChecked>Sort By </option>
-                        <option value="low">Sort by low price</option>
-                        <option value="high">Sort by hight price</option>
-                        <option value="rating">Sort by rating</option>
+                        <option value="low">Sort by Price - Low to High</option>
+                        <option value="high">Sort by Price - High to Low</option>
+                        <option value="rating">Sort by Top Rated</option>
+                        <option value="recent">Sort by most recent</option>
                       </Form.Select>
                     </div>
                   </div>
                   : null}
               </div>
             </section>
-            <section className="container-3 all-of">
-              <div className="d-flex justify-content-between w-100 ahsdad-we">
+            <section className=" all-of">
+              <div className="container-3 d-flex justify-content-between w-100 ahsdad-we">
                 {view ? (
-                  <div className="jadsf-dsddasdn" >
-                    <h3>All Courses</h3>
+                  <div className="jadsf-dsddasdn " >
+                    <h3 onClick={() =>  getAllCatagory()}>All Courses</h3>
                     {Catagory && Catagory.map((cat: any) => (
                       <Link href={`/en/courses/${cat.slug}`}>
                         <h5 key={cat.id} style={{ cursor: 'pointer' }} onClick={() => getCatagory(cat.id)}>{cat.name}</h5>
@@ -291,7 +303,7 @@ const Home: NextPage = () => {
                 ) : (
                   <></>
                 )}
-                <div className={`all-of ${view ? "asdjfi-dasd my-3" : ""}`}>
+                <div className={`all-of ${view ? "asdjfi-dasd" : ""}`}>
                   {currentItems && currentItems?.length > 0 ? currentItems.map((cours: any) =>
                     view == false ? <CourseCard f={cours} key={cours.id} /> : <CourseCardBig cours={cours} key={cours.id} />
                   )
@@ -300,7 +312,7 @@ const Home: NextPage = () => {
                 </div>
               </div>
             </section>
-            <section className="container-3 number">
+            <section className="container-3 number mt-2">
               {currentItems && currentItems?.length > 0 ?
                 <ReactPaginate
                   previousLabel={"Previous"}

@@ -264,6 +264,10 @@
   margin-bottom: 10px;
   width: 100%;
 }
+.dash-ch-2  h3 {
+  padding-top: 8px;
+}
+
 .dash-ch-2:hover h3 {
   color: white;
 }
@@ -483,6 +487,9 @@
   border-radius: 100px;
   padding: 5px;
 }
+.dhafusd9we0sd1 p{
+  color:white;
+}
 .dhafusd9we0sd {
   position: absolute;
   bottom: 10%;
@@ -529,9 +536,12 @@
   width: 100%;
   max-width: 1334px;
   flex-wrap: wrap;
+  align-items: unset;
 }
 .cm-web img {
   width: 100%;
+  /* height: 150px; */
+  object-fit: fill;
 }
 .osaidjs-dsadjd {
   border-top-left-radius: 15px;
@@ -2729,9 +2739,7 @@
 .inst .cm-web {
   max-width: 310px;
 }
-.inst .cm-web p {
-  color: black !important;
-}
+
 .inst .aifjdas-asdawie svg {
   width: 18px;
   margin-right: 6px;
@@ -3391,8 +3399,8 @@ input[type=number] {
 /* quiz style */
 
 .inputGroup {
-  background-color: #fff;
-  display: block;
+  /* background-color: #fff; */
+  display: flex;
   margin: 10px 0;
   position: relative;
 }
@@ -3408,60 +3416,6 @@ input[type=number] {
   transition: color 200ms ease-in;
   overflow: hidden;
 }
-.inputGroup label:before {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  content: '';
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%) scale3d(1, 1, 1);
-  transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
-  opacity: 0;
-  z-index: -1;
-}
-.inputGroup label:after {
-  width: 32px;
-  height: 32px;
-  content: '';
-  border: 2px solid #d1d7dc;
-  background-color: #fff;
-  background-image: url("data:image/svg+xml,%3Csvg width='32' height='32' viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5.414 11L4 12.414l5.414 5.414L20.828 6.414 19.414 5l-10 10z' fill='%23fff' fill-rule='nonzero'/%3E%3C/svg%3E ");
-  background-repeat: no-repeat;
-  background-position: 2px 3px;
-  border-radius: 50%;
-  z-index: 2;
-  position: absolute;
-  right: 30px;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
-  transition: all 200ms ease-in;
-}
-.inputGroup input:checked ~ label {
-  /* color: #fff; */
-}
-.inputGroup input:checked ~ label:before {
-  transform: translate(-50%, -50%) scale3d(56, 56, 1);
-  opacity: 1;
-}
-.inputGroup input:checked ~ label:after {
-  background-color: #54e0c7;
-  border-color: #54e0c7;
-}
-.inputGroup input {
-  width: 32px;
-  height: 32px;
-  order: 1;
-  z-index: 2;
-  position: absolute;
-  right: 30px;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
-  visibility: hidden;
-}
 
 .quiz{
   border:1pt solid #cccc;
@@ -3471,6 +3425,7 @@ input[type=number] {
   margin-top: 10px;
   
 }
+
 
 
 .containers {
@@ -3600,4 +3555,75 @@ input[type=number] {
   width: 100%;
 }
 
+/* instructor ciriculum */
 
+
+.up-button-box{
+  border: 1pt solid lightgray;
+  border-radius: 10px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.up-radio{
+text-align: right;
+}
+
+.up-button-box:hover{
+background-color:#f2f7f2;
+}
+
+
+.up-button-box.active {
+color: inherit;
+border-color: #30748b ;
+background-color: transparent
+}
+
+.up-radio [type=radio]::-ms-check{
+color: #30748b ;
+}
+
+.up-button-box-labels h4{
+  font-size: 12px;
+}
+
+
+:disabled{
+cursor: not-allowed;
+}
+
+
+.up-illustrations{
+margin-left: 30%;
+}
+
+
+.up-illustrations svg{
+  width: 50%;
+  }
+  
+
+.button-box .up-radio {
+border: 1pt solid;
+}
+
+
+/* course add form  */
+
+input[type='text' ]::placeholder{
+  color: lightgray;
+}
+
+input[type='number' ]::placeholder{
+  color: lightgray;
+}
+
+textarea::placeholder{
+  color: lightgray;
+}
+
+.p-field span{
+  color: lightgray;
+  font-size: 14px;
+}

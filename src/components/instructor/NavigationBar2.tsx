@@ -7,6 +7,7 @@ import { BiBell } from "react-icons/bi";
 import { FiSearch } from "react-icons/fi";
 import { IoMailOutline } from "react-icons/io5";
 import { Header2Item } from "../../../pages/[language]/instructor/details/[id]";
+import { useSelector  , RootStateOrAny} from "react-redux";
 export default () => {
   const isTab = useMediaQuery({
     query: "(max-width: 991px)",
@@ -14,6 +15,9 @@ export default () => {
   const isTabsm = useMediaQuery({
     query: "(max-width: 767px)",
   });
+
+  const {User } = useSelector((state: RootStateOrAny) => state?.userReducer)
+
   return (
     <>
       {isTabsm ? (
@@ -22,7 +26,7 @@ export default () => {
             <div className="w-100">
               <div className="hdsf-sdsa">
                 <Navbar.Brand>
-                  <Link href="/en/dashboard">
+                  <Link href="/en/instructor">
                     <img src="/assets/images/small-logo.svg" />
                   </Link>
                 </Navbar.Brand>
@@ -47,9 +51,9 @@ export default () => {
                       <p>1</p>
                     </div>
 
-                    <p>John Doe</p>
+                    <p>{User.fullname || "instructor "}</p>
                     <Link href={"/en/profile"}>
-                      <img src="/assets/images/umpire-1.svg" />
+                      <img src={User.image || "/assets/images/umpire-1.svg"} />
                     </Link>
                   </div>
                 </Nav>
@@ -79,8 +83,11 @@ export default () => {
                 <Offcanvas.Body>
                   <div className=" ">
                     <div className="aksldnsd-sdnaskdse-1">
-                      <img src="/assets/images/umpire-1.svg" />
-                      <p>Andrei Neagoie</p>
+                      
+                    <Link href={"/en/profile"}>
+                      <img src={User.image || "/assets/images/umpire-1.svg"} />
+                    </Link>
+                      <p>{User.fullname || "instructor "}</p>
                     </div>
                     <div className="hsaid9iawdeka">
                       <div>

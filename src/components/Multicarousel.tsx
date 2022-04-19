@@ -38,7 +38,7 @@ export default ({ cata }: any) => {
   return (<div>
     <Carousel responsive={responsive}>
       {cata === "feature" ? (
-        Feature  ? Feature.map((fet: any) => (
+        Feature ? Feature.map((fet: any) => (
           <CourseCard f={fet} key={fet.id} />
         ))
           : <div>Course not avalible</div>

@@ -5,8 +5,7 @@ const  largeSpinner:any  = () =>  (
             <Spinner animation="border" size="lg" />
         </div>
     )
-
-    export default largeSpinner
+ export default largeSpinner
 
 // export const smallSpinner = () => {
 //     return (

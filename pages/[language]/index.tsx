@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import { Dropdown } from "react-bootstrap";
@@ -21,17 +21,28 @@ import Multicarousel from "../../src/components/Multicarousel";
 import Multicarousel1 from "../../src/components/Multicarousel1";
 import MulticarouselReviews from "../../src/components/MulticarouselReviews";
 import { useDispatch, useSelector, RootStateOrAny } from "react-redux";
-import { GetCourse, GetCatagory } from '../../src/redux/actions/courses'
+import { GetCourse, GetCatagory, GetCat } from '../../src/redux/actions/courses'
 import { Catagories } from '../../src/components/skeleton'
+import instance from "../../src/confiq/axios/instance";
+import { GET_CATAGORY } from "../../src/redux/types/types";
 const Home: NextPage = () => {
   // const intl = useIntl();
 
   const dispatch = useDispatch()
 
-  const { Catagory, loader } = useSelector((state: RootStateOrAny) => state.course)
+  const { Catagory, loader, AllCourse } = useSelector((state: RootStateOrAny) => state.course)
+
+  const [cata, setCata] = useState([])
+  const [feat, setFeat] = useState([])
+  const [latest, setLatest] = useState([])
+  const [all, setAll] = useState([])
+  const [live, setLive] = useState([])
 
   useEffect(() => {
-    dispatch(GetCourse())
+  
+    
+      dispatch(GetCourse())
+     
   }, [])
 
   // const getCatagory = (id: number) => {
@@ -46,7 +57,7 @@ const Home: NextPage = () => {
         </div>
       </div>
       <Carousel />
-      {loader ? <div style={{margin:'50px'}}> <Catagories /> </div>
+      {loader ? <div style={{ margin: '50px' }}> <Catagories /> </div>
         :
         <div className="">
 
@@ -67,7 +78,7 @@ const Home: NextPage = () => {
               <h3>Featured Courses</h3>
             </div>
             <div className="container-3">
-              <div className=" ">
+              <div className="" >
                 <Multicarousel cata="feature" />
               </div>
             </div>
@@ -86,7 +97,7 @@ const Home: NextPage = () => {
             <h3 className="future text-center">Top Category</h3>
             <div className="container-3">
               <div className="all-category">
-                {Catagory  ? Catagory.map((cat: any) => (
+                {Catagory ? Catagory.map((cat: any) => (
                   <CategoryCard icon={cat.icon} catagory={cat} key={cat.id} />
                 ))
                   : <div>Catagory not Avaliable </div>
@@ -280,7 +291,7 @@ const Home: NextPage = () => {
           </div>
           <Footer />
         </div>
-      }
+       } 
     </>
   );
 };

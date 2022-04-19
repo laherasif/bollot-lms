@@ -11,14 +11,14 @@ import {
     GET_SEARCH_COURSE,
     DELETE_CART,
     GET_BY_CATAGORY_COURSE,
+    LIVE_COURSE
 } from '../../types/types'
 import instance from '../../../confiq/axios/instance'
+import axios from 'axios'
 
 
 
-
-export const GetCourse = () => async dispatch => {
-
+export const GetCourse = () => async (dispatch) => {
 
     try {
         let feature = {
@@ -45,6 +45,15 @@ export const GetCourse = () => async dispatch => {
             rows_per_page: 10,
 
         }
+
+
+        let liveCourse = {
+            page_no: 1,
+            rows_per_page: 10,
+            course_type: "live"
+        }
+
+
         let AllCourse = await instance.post('api//courses', all)
         dispatch({
             type: GET_ALL_COURSES,
@@ -66,8 +75,11 @@ export const GetCourse = () => async dispatch => {
             type: GET_LATEST,
             payload: latests.data.response.courses
         })
-        // let top = await instance.post('api//courses', feature)
-        // dispatch({})
+        let live = await instance.post('api//courses', liveCourse)
+        dispatch({
+            type:LIVE_COURSE,
+            payload : live.data.response.courses
+        })
 
 
 
@@ -75,6 +87,25 @@ export const GetCourse = () => async dispatch => {
 
     }
 
+}
+
+
+export const GetAllCatagory = () => async dispatch => {
+    let all = {
+        page_no: 1,
+        rows_per_page: 10,
+
+    }
+
+    try {
+        let res = await instance.post('api//courses', all)
+        dispatch({
+            type: GET_BY_CATAGORY,
+            payload: res.data.response.courses
+        })
+    } catch (error) {
+        
+    }
 }
 
 
@@ -141,15 +172,15 @@ export const priceFilter = (data) => async dispatch => {
 }
 
 export const GetSorted = (name) => async dispatch => {
-
+     debugger
     try {
 
         let filterPrice = {
             page_no: 1,
             rows_per_page: 10,
             sorting: {
-                sort_by: name === "low" ? "price" : name === "high" ? "price" : "rating",
-                sort_direction: name === "low" ? "desc" : name === "high" ? "asc" : "desc"
+                sort_by: name === "low" ? "price" : name === "high" ? "price" : name === "recent" ? "id" : "rating",
+                sort_direction: name === "low" ? "asc" : name === "desc" ? "asc" : name === "recent" ? "desc" : "desc"
             }
         }
 

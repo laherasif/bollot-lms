@@ -14,10 +14,16 @@ import BarChart from '../../../../src/components/student/barchart'
 import withAuth from "../../../../src/components/Hoc/authRoute";
 import { useEffect, useState } from "react";
 import { Main } from "../../../../src/components/student/loader";
+import { RootStateOrAny, useSelector } from "react-redux";
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
   const [loading, setLoading] = useState(true)
+
+  const { User } = useSelector((state: RootStateOrAny) => state.userReducer)
+
+
+
   useEffect(() => {
     setTimeout(() => {
       setLoading(false)
@@ -39,7 +45,7 @@ const Home: NextPage = () => {
                   <TopNavbar />
                   <div className="hdsf0s-sadmsa">
                     <h3 className="lsjadf-sadnsd">
-                      <span>Hi Tam Tran,</span>
+                      <span>Hi {User?.fullname}</span>
                     </h3>
                     <h3>Welcome back👋</h3>
                   </div>

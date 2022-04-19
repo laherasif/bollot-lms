@@ -1,6 +1,7 @@
 import React from 'react';
 import Image from "next/image";
 import Link from 'next/link';
+import { add3Dots } from '../../function/hooks';
 // const CardImage = require('../../images/unsplah-1.svg');
 export default ({ f, key }: any) => {
 
@@ -8,17 +9,17 @@ export default ({ f, key }: any) => {
   // const srcIns = f?.instructor?.image
   return (
     <Link href={`/en/course/${f?.slug}`} passHref>
-      <div className="card-course" key={key}>
+      <div className="card-course "  key={key}>
         {f?.cover_image.length > 0 && (
           <Image
             src={src}
             alt="img"
-            width={300}
-            height={200}
+            width="300"
+            height="200"
             objectFit="cover"
           />
         )}
-        < h4 > {f?.title}</h4>
+        < h4 > { add3Dots(f?.title , 25)}</h4>
         <div className="digit">
           <span>{f?.category_tree[0]}</span>
           <h3>${f?.price}</h3>

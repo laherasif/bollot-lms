@@ -6,7 +6,7 @@ body {
   font-family: Roboto;
 }
 a {
-  /* color: #af656d !important; */
+  color: black ;
   text-decoration: none !important;
 }
 * {
@@ -42,7 +42,7 @@ body {
 }
 .dsifs-sadi3adasd,
 .dsifs-sadi3adasd::placeholder {
-  font-weight: 100;
+  /* font-weight: 100; */
   font-size: 12px;
   line-height: 14px;
   /* identical to box height */
@@ -350,6 +350,10 @@ body .kdsfdpd-dsfasdnf .control-dots .selected {
 }
 #bol {
   font-weight: 700;
+}
+
+#bol:hover {
+  color: #751b2b;
 }
 .brd-btm1 {
 }
@@ -5523,3 +5527,62 @@ input[type=number] {
 }
 
 
+/* sign up */
+
+
+.up-button-box{
+    border: 1pt solid lightgray;
+    border-radius: 10px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.up-radio{
+  text-align: right;
+}
+
+.up-button-box:hover{
+  background-color:#f2f7f2;
+}
+
+
+.up-button-box.active {
+  color: inherit;
+  border-color: #30748b ;
+  background-color: transparent
+}
+
+.up-radio [type=radio]::-ms-check{
+  color: #30748b ;
+}
+
+
+:disabled{
+  cursor: not-allowed;
+}
+
+
+.up-illustration{
+  width: 32%;
+  margin-left: 30%;
+}
+
+.button-box .up-radio {
+border: 1pt solid;
+}
+
+
+/* inout field error */
+
+.input_filed_error{
+  border:1pt solid red 
+}
+
+.check-input input::placeholder {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 175.78%;
+  color: lightgray;
+}

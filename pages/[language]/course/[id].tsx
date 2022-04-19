@@ -378,7 +378,7 @@ const Home: NextPage = ({ Course }: any) => {
                         </div>
                         : message ?
                           <Link href="/en/checkout">
-                            <p> {"Go to Cart"}</p>
+                            <p> {"Proceed to Cart"}</p>
                           </Link>
                           : <p> {"Added to cart"}</p>
 

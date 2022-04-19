@@ -7,6 +7,8 @@ import { useState, useEffect } from 'react'
 import { useSelector, RootStateOrAny } from 'react-redux'
 import axios from 'axios'
 import { Small } from "../../../../src/components/student/loader";
+import Link from "next/link";
+import { SweetAlert } from "../../../../src/function/hooks";
 const Home: NextPage = () => {
   // const intl = useIntl();
 
@@ -60,15 +62,15 @@ const Home: NextPage = () => {
     let findIndx = Object.keys(quiz).length ? quiz.quiz[currentStep] : null
 
     if (type === "next") {
-      if (currentStep !== quiz?.quiz?.length - 1) {
-        let answser = findIndx?.options?.find((i: any) => quizValue?.some((f: any) => f?.option_id === i?.id))
+      if (currentStep !== quiz?.quiz?.length) {
+        let answser = findIndx?.options?.find((i: any) => quizValue?.some((f: any) => f?.option_id == i?.id))
         if (answser) {
-          setCurrentStep(++currentStep);
+          setCurrentStep(currentStep + 1);
           setSelectedAns(answser?.option)
 
         }
         else {
-          setCurrentStep(++currentStep);
+          setCurrentStep(currentStep + 1);
           setSelectedAns('')
           let question = findIndx?.id
           let ans = findIndx?.options?.find((i: any) => i.option === selectedAns)
@@ -82,10 +84,10 @@ const Home: NextPage = () => {
 
       }
     }
-    else if (currentStep > 0) {
+    else {
       debugger
       setCurrentStep(--currentStep);
-      let ans = findIndx?.options?.find((i: any) => quizValue.some((f: any) => i?.id === f?.option_id))
+      let ans = findIndx?.options.find((i: any) => quizValue?.some((f: any) => i?.id == f?.option_id))
       setSelectedAns(ans?.option)
 
     }
@@ -103,13 +105,22 @@ const Home: NextPage = () => {
 
       let res = await AxInstance.post('api//student/my-courses/quiz/submit', value)
       console.log("REa", res)
+      if(res.data.success === true ){
+        SweetAlert({ icon : "success" , text : res.data.message })
+        router.push('/en/student/courses')
+      }
+      else{
+        SweetAlert({ icon : "error" , text : "Please Atttempted all Question / Answer" })
+        router.push('/en/student/courses')
+
+
+      }
 
     } catch (error) {
 
     }
   }
 
-  console.log("quiz", quizValue)
 
   let geneteRandom = quiz ? Object.keys(quiz).length && quiz.quiz[currentStep] : null
 
@@ -126,6 +137,12 @@ const Home: NextPage = () => {
               {loading ? Small()
                 :
                 <div className="hdsf0s-sadmsa">
+                  <Link href="/en/student/courses">
+                    <h3 style={{cursor:'pointer'}}>
+                      <i className="fa fa-arrow-left"></i>
+                      Back
+                    </h3>
+                  </Link>
                   <h3>My Quiz</h3>
                   <div className="complete-web-1">
 
@@ -136,9 +153,10 @@ const Home: NextPage = () => {
                         <div className="containers my-1">
                           <div className="question ">
                             <div className="py-2 h5">
-                              <b>Q.{currentStep + 1} {geneteRandom?.question}</b>
+                            {currentStep  === quiz?.quiz?.length ? " " :  <b>Q.{ currentStep + 1} {geneteRandom?.question}</b>}
                             </div>
                             {/* <form onSubmit={handleSubmit}> */}
+                            {quiz?.quiz?.length ?
                             <div className="ml-md-3 ml-sm-3 pl-md-5 pt-sm-0 pt-3" id="options">
 
                               {geneteRandom?.options?.map((op: any, index: number) => (
@@ -157,24 +175,26 @@ const Home: NextPage = () => {
 
 
                             </div>
+                            : <div>Quiz not found </div>
 
                             {/* </form> */}
                           </div>
                           <div className="d-flex align-items-center pt-3 justify-content-between">
-                            {currentStep > 0 ?
+                            {/* {currentStep > 0 ?
                               <div id="prev">
 
                                 <button onClick={() => handleSubmit("prev")} className="btn btn-primary">Previous</button>{" "}
                               </div>
                               : ""
-                            }
+                            } */}
                             <div className="ml-auto mr-sm-5">
                               {" "}
                               <button onClick={() =>
-                                // QuizSubmit() 
+                               {currentStep > quiz?.quiz?.length -1  ? QuizSubmit() :
                                 handleSubmit("next")
+                               }
                               } className="btn btn-success">
-                                {currentStep === quiz?.quiz?.length ?
+                                {currentStep > quiz?.quiz?.length -1    ?
                                   "Submit"
                                   :
                                   "Next"

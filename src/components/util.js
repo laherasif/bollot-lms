@@ -63,8 +63,8 @@ export function formatExpirationDate(value) {
 export function formatMonth(value) {
   const clearValue = clearNumber(value);
 
-  if (clearValue.length >= 2) {
-    return `${clearValue.slice(0, 2)}`;
+  if (clearValue.length >= 4) {
+    return `${clearValue.slice(2, 4)}/${clearValue.slice(0, 2)}`;
   }
 
   return clearValue;

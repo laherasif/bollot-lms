@@ -3,9 +3,13 @@ import React from 'react';
 import { BiBell } from 'react-icons/bi';
 import { FiSearch } from 'react-icons/fi';
 import { IoMailOutline } from 'react-icons/io5';
+import { useSelector, RootStateOrAny } from 'react-redux';
 import Dropdown from './dropdown';
-export default ()=>{
-    return <div className="jsad-asdnsake">
+
+export default () => {
+  const { User } = useSelector((state: RootStateOrAny) => state?.userReducer)
+
+  return <div className="jsad-asdnsake">
     <div className="nadjfksad-asds">
       <Dropdown />
       <div className="dsnodi-sdjsad">
@@ -23,12 +27,11 @@ export default ()=>{
         <IoMailOutline color="#A2A2A2" size={20} />
         <p>1</p>
       </div>
-
-      <p>John Doe</p>
+      <p className="mt-3">{User.fullname || "instructor "}</p>
       <Link href={"/en/profile"}>
-      <img src="/assets/images/umpire-1.svg" />
+        <img src={User.image || "/assets/images/umpire-1.svg"} />
       </Link>
-      
+
     </div>
   </div>
 }

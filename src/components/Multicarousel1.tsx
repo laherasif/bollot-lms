@@ -34,15 +34,15 @@ import { useSelector, RootStateOrAny } from 'react-redux'
 export default () => {
   const { LiveCouse } = useSelector((state: RootStateOrAny) => state.course)
   return (
-    <>
-      <Carousel responsive={responsive}>
-        {LiveCouse ? LiveCouse.map((li, i) => (
-          <CourseCard1 live={li} key={i} />
-        ))
-        :<div>Record not found </div>
-      }
+  <>
+    <Carousel responsive={responsive}>
+      {LiveCouse ? LiveCouse.map((li, i) => (
+        <CourseCard1 live={li} key={i} />
+      ))
+      : <div>Not Found </div>
+    }
 
-      </Carousel>
-    </>
+    </Carousel>
+  </>
   )
 }

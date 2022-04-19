@@ -12,7 +12,10 @@ import { useDispatch, useSelector, RootStateOrAny } from "react-redux";
 import Otp from '../student/otp'
 import { SignUp, CleanState } from '../../../src/redux/actions/auth/user'
 import { Firebaseapp } from "../../../src/confiq/firebase/firebase";
+import insImg from '../../../src/assets/images/instructor.png'
+import stuImg from '../../../src/assets/images/student.png'
 import { getAuth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider } from "firebase/auth";
+import Image from "next/image";
 const Home: NextPage = () => {
   // const intl = useIntl();
 
@@ -57,8 +60,8 @@ const Home: NextPage = () => {
   const signInGog = async () => {
     const { user } = await signInWithPopup(firebaseAuth, provider);
     const { refreshToken, providerData } = user;
-     
-    dispatch(SocialRegMedia(providerData, role === 0 ? "student" : "instructor"))
+
+    dispatch(SocialRegMedia(providerData, role === 1 ? "student" : "instructor"))
 
     let object = Object.assign({}, ...providerData);
     setTimeout(() => {
@@ -75,7 +78,7 @@ const Home: NextPage = () => {
   const signInFb = async () => {
     const { user } = await signInWithPopup(firebaseAuth, Fbprovider);
     const { refreshToken, providerData } = user;
-    dispatch(SocialRegMedia(providerData, role === 0 ? "student" : "instructor"))
+    dispatch(SocialRegMedia(providerData, role === 1 ? "student" : "instructor"))
 
     // localStorage.setItem("user", JSON.stringify(providerData));
     // localStorage.setItem("accessToken", JSON.stringify(refreshToken));
@@ -105,8 +108,8 @@ const Home: NextPage = () => {
         fullname: fullname,
         email: email,
         password: password,
-        role: role === 0 ? "student" : "instructor"
-    }
+        role: role === 1 ? "student" : "instructor"
+      }
 
 
       let res = await instance.post("api//signup", value)
@@ -131,7 +134,7 @@ const Home: NextPage = () => {
 
 
   let { fullname, email, password } = authValue
-      
+
   return (
     <div>
       <div className="navBar-cst">
@@ -146,44 +149,95 @@ const Home: NextPage = () => {
               <h3>Sign Up</h3>
               <p>Sign Up and Start Learning!</p>
               <br />
-              <div className="d-flex">
-                <div className="hasdfkj">
-                  <input className="full-2"
-                    type="radio"
-                    value={role}
-                    checked={role === 0}
-                    name="student"
-                    onChange={(e) => setRole(0 )}
-                  />
-                  <p>Student</p>
+
+              <div className="row">
+                <div className="col-12 col-md-6 mt-10 col-md-offset-1 " >
+                  <div
+                    data-cy="button-box"
+                    id="up-button-box"
+                    className={`up-button-box ${role === 1 ? 'up-button-box  up-button-box-radio active' : ''} `}
+                    style={{ height: '100%' }}
+                    onClick={() => setRole((1))}
+                  >
+                    <div className="up-radio">
+                      <label className="up-checkbox-label" htmlFor="up-button-box">
+                        <input
+                          type="radio"
+                          checked={role === 1}
+                          name="student"
+                          onChange={(e) => setRole(1)}
+                        />
+                        <span className="up-checkbox-replacement-helper">
+                          {/**/} {/**/}{" "}
+                        </span>{" "}
+                      </label>
+                    </div>{" "}
+                    <div className="up-illustration">
+                    <Image src={stuImg} width={40} height={40}/>
+                      
+                    </div>{" "}
+                    <div id="button-box-1" className="up-button-box-labels">
+                      <div className="up-button-box-label">
+                        <h4>I want to learn</h4>
+                      </div>{" "}
+                      {/**/}
+                    </div>
+                  </div>
                 </div>
-                <div className="hasdfkj">
-                  <input className="full-2"
-                    type="radio" 
-                    value={role}
-                    checked={role === 1}
+                <div className="col-12 col-md-6 mt-10">
+                  <div data-cy="button-box"
+                    className={`up-button-box ${role === 2 ? 'up-button-box  up-button-box-radio active' : ''} `}
+                    onClick={() => setRole((2))}
 
-                    name="instructor"
-                    onChange={(e) => setRole( 1 )}
-
-                  />
-                  <p>Instructor</p>
-
+                  >
+                    <div className="up-radio">
+                      <label className="up-checkbox-label">
+                        <input
+                          type="radio"
+                          value={role}
+                          checked={role === 2}
+                          name="instructor"
+                          onChange={(e) => setRole(2)}
+                        />{" "}
+                        <span className="up-checkbox-replacement-helper">
+                          {/**/} {/**/}{" "}
+                        </span>{" "}
+                      </label>
+                    </div>{" "}
+                    <div className="up-illustration">
+                      <Image src={insImg} width={40} height={40}/>
+                    </div>{" "}
+                    <div id="button-box-2" className="up-button-box-labels">
+                      <div className="up-button-box-label">
+                        <h4>I am here to Teach</h4>
+                      </div>{" "}
+                      {/**/}
+                    </div>
+                  </div>
                 </div>
-
               </div>
-              {errors.fullname && <div className="invalid mb-1">{errors?.fullname[0]}</div>}
-              <div className="hasdfkj">
-                <input className="full-2" style={errors.fullname && { border: '1pt solid red' }} type="text" value={fullname} name="fullname" onChange={handleChange} placeholder="Full Name" />
+
+
+              <div className="hasdfkj mt-3">
+                <input className={ `full-2 ${errors.fullname && 'full-2 input_filed_error'}` } disabled={role === 0 ? true : false} type="text" value={fullname} name="fullname" onChange={handleChange} placeholder="Full Name" />
                 {errors.fullname && <div className="invalid mb-1">{errors?.fullname[0]}</div>}
               </div>
               <div className="hasdfkj">
-                <input className="full-3" style={errors.email && { border: '1pt solid red' }} type="email" value={email} name="email" onChange={handleChange} placeholder="Email" />
+                <input className={ `full-3 ${errors.email && 'full-3 input_filed_error'}` }
+                  disabled={role === 0 ? true : false}
+                  type="email"
+                  value={email}
+                  name="email" onChange={handleChange} placeholder="Email" />
                 {errors.email && <div className="invalid mb-1">{errors?.email[0]}</div>}
 
               </div>
               <div className="hasdfkj">
-                <input className="full-3" style={errors.password && { border: '1pt solid red' }} type="password" value={password} name="password" onChange={handleChange} placeholder="Password" />
+                <input className={ `full-3 ${errors.password && 'full-3 input_filed_error'}` }
+                  disabled={role === 0 ? true : false}
+                  type="password"
+                  value={password}
+                  name="password"
+                  onChange={handleChange} placeholder="Password" />
                 {errors.password && <div className="invalid mb-1">{errors?.password[0]}</div>}
 
               </div>
@@ -198,7 +252,7 @@ const Home: NextPage = () => {
               </div>
 
               <div className="hasdfkj">
-                <button className="btn-9">
+                <button className="btn-9" disabled={role === 0 ? true : false}>
                   {loader ?
                     <div className="spinner-border text-light" role="status">
                     </div>
@@ -218,18 +272,20 @@ const Home: NextPage = () => {
             <h4>OR</h4>
 
 
-            <button className="apples-1 w-100">
+            {/* <button className="apples-1 w-100">
               <Icons name="c20" />
               <h4>Sign in with Apple</h4>
-            </button>
+            </button> */}
             <button
               onClick={signInFb}
+              disabled={role === 0 ? true : false}
               className="face-book-1 w-100">
               <Icons name="c21" />
               <h4>Sign in with Facebook</h4>
             </button>
             <button
               onClick={signInGog}
+              disabled={role === 0 ? true : false}
               className="google-1 w-100">
               <Icons name="c22" />
               <h4>Sign in with Google</h4>

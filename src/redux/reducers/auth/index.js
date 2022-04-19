@@ -5,6 +5,7 @@ import {
   SIGNUP_USER,
   OPT_VERIFY,
   CLEAN_STATE,
+  LOGOUT_INST,
 } from "../../types/types";
 const initialState = {
   token: null,
@@ -38,7 +39,7 @@ const userReducer = (state = initialState, action) => {
     }
 
     case LOGIN_USER: {
-   
+
       return {
         ...state,
         User: action.payload.response.student,
@@ -54,8 +55,14 @@ const userReducer = (state = initialState, action) => {
         isAuth: true,
       };
     }
+    case LOGOUT_INST: {
+      return {
+        ...state,
+        User: null
+      }
+    }
     case ERROR: {
-   
+
       return {
         ...state,
         error: action.payload.error,

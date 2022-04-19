@@ -23,14 +23,13 @@ export const GET_FILTER_PRICE = "GET_FILTER_PRICE"
 
 export const GET_ALL_COURSES = "GET_ALL_COURSES"
 export const GET_SORTED_COURSE = "GET_SORTED_COURSE"
-
-
+export const LIVE_COURSE = "LIVE_COURSE"
 
 export const REG_CART = 'REG_CART'
 export const GET_CART = 'GET_CART'
 export const DELETE_CART = 'DELETE_CART'
 
-
+export const LOGOUT_INST = "LOGOUT_INST"
 export const REG_CHECKOUT_DATA = 'REG_CHECKOUT_DATA'
 export const FETCH_CHECKOUT_DATA = 'FETCH_CHECKOUT_DATA'
 export const RESET_CART = "RESET_CART"

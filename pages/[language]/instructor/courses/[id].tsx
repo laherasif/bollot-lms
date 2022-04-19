@@ -19,7 +19,7 @@ import NewCourse from "../../../../src/components/instructor/newCourse";
 import withAuth from "../../../../src/components/Hoc/authRoute";
 import { useSelector, RootStateOrAny } from "react-redux";
 import { useEffect, useState } from "react";
-import { Main } from "../../../../src/components/instructor/loader";
+import { Small } from "../../../../src/components/instructor/loader";
 
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
@@ -27,6 +27,8 @@ const Home: NextPage = () => {
 
   const [courses, setCourses] = useState([])
   const [loading, setLoading] = useState(false)
+  const [all, setAll] = useState(false)
+  const [search, setSearch] = useState('')
 
   const { token } = useSelector((state: RootStateOrAny) => state?.userReducer)
 
@@ -45,15 +47,63 @@ const Home: NextPage = () => {
         let res = await AxInstance.get('api//instructor/courses')
         if (res.data.success === true) {
           setLoading(false)
+          setCourses(res.data.response.courses)
         }
-        setCourses(res.data.response.courses)
       } catch (error) {
 
       }
     }
     fetchCourse()
-  }, [])
+  }, [all])
 
+
+  // const GetCouse = async (type: any) => {
+  //   debugger
+  //   try {
+  //     if (type === "liveCourse") {
+  //       // setLoading(true)
+  //       // setCourses([])
+  //       let res = await AxInstance.get('api//instructor/courses/live-courses')
+  //       if (res.data.success === true) {
+  //         // setLoading(false)
+  //         setCourses(res.data.response.courses)
+  //       }
+  //     }
+  //     else {
+  //       setLoading(true)
+  //       let res = await AxInstance.get('api//instructor/courses')
+  //       if (res.data.success === true) {
+  //         setLoading(false)
+  //         setCourses(res.data.response.courses)
+  //       }
+  //     }
+  //   } catch (error) {
+
+  //   }
+  // }
+
+
+  const SearchCourse = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    try {
+      let value = {
+        page_no: 1,
+        rows_per_page: 10,
+        search: search
+      }
+       setLoading(true)
+      let res = await AxInstance.post('/api//courses' ,  value )
+      setLoading(false)
+
+       console.log("res" ,res)
+      if(res.data.success === true ){
+        setCourses(res.data.response.courses)
+      }
+    }
+    catch (err) {
+
+    }
+  }
 
   return (
     <div className="inst">
@@ -62,7 +112,7 @@ const Home: NextPage = () => {
         <div className="jcoiasd03-eakw3e1">
           <Sidebar />
         </div>
-        {loading ? Main()
+        {loading ? Small()
 
           :
           <div className="dash-board-1">
@@ -73,10 +123,12 @@ const Home: NextPage = () => {
                     <h3>My Courses</h3>
                   </div>
                   <div className=" jidfjsd-asjreid">
-                    <div className="dsnodi-sdjsad">
-                      <FiSearch color="#8A8A8A" size={17} />
-                      <input type="text" placeholder="Search" />
-                    </div>
+                    <form onSubmit={SearchCourse}>
+                      <div className="dsnodi-sdjsad">
+                        <FiSearch color="#8A8A8A" size={17} />
+                        <input type="text" placeholder="Search" onChange={(e) => setSearch(e.target.value)} />
+                      </div>
+                    </form>
                     <NewCourse />
                   </div>
                 </div>
@@ -86,11 +138,17 @@ const Home: NextPage = () => {
                     <div className="umpire-1 umpire-1-cst ">
                       <div className="maxima ">
                         <div className="idfadsf-sads">
-                          <button className="upload-1 sdisad-dsdactive">
-                           All Courses
+                          <button className="upload-1 sdisad-dsdactive" onClick={() => setAll(true)}>
+                            All Courses
                           </button>
                         </div>
                         <div>
+                          <Link href="/en/instructor/liveCourses">
+
+                            <button className="upload-1" >Live Courses</button>
+                          </Link>
+                        </div>
+                        {/* <div>
                           <Link href="/en/payments">
                             <button className="upload-1">Published</button>
                           </Link>
@@ -99,7 +157,7 @@ const Home: NextPage = () => {
                           <Link href="/en/payments">
                             <button className="upload-1">In Review</button>
                           </Link>
-                        </div>
+                        </div> */}
                       </div>
                     </div>
                   </div>

@@ -9,7 +9,7 @@ const CourseSideBar = ({courseId}:any) => {
         <>
             <div className="aksldnsd-sdnaskdse">
                 <div className="aksldnsd-sdnaskdse-1">
-                    <img src={User?.cover_image} alt="user_image" />
+                    <img src={User?.image} alt="user_image" />
                     <p>{User?.fullname}</p>
                 </div>
                 <div className="hsaid9iawdeka">

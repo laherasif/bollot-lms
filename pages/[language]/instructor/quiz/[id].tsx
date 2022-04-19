@@ -21,6 +21,8 @@ import { useSelector, RootStateOrAny } from "react-redux";
 import { useEffect, useState } from "react";
 import { Main } from "../../../../src/components/instructor/loader";
 import { Spinner } from "react-bootstrap";
+import { useRouter } from "next/router";
+import { SweetAlert } from "../../../../src/function/hooks";
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
@@ -28,7 +30,8 @@ const Home: NextPage = () => {
   const [loading, setLoading] = useState(true)
   const [saveQuiz, setSaveQuiz] = useState(false)
   const [message, setMessage] = useState(false)
-
+ 
+  const router = useRouter()
 
   useEffect(() => {
     setTimeout(() => {
@@ -50,12 +53,10 @@ const Home: NextPage = () => {
     {
       question: '',
       options: [
-        { name: "one", option: "Option number 1", correct: false, },
-        { name: "two", option: "Option number 2", correct: false },
-        { name: "three", option: "Option number 3", correct: false },
-        { name: "fort", option: "Option number 4", correct: false },
+        { option: "", correct: false, }
       ]
     }
+
   ])
 
   const Questions = () => {
@@ -63,10 +64,8 @@ const Home: NextPage = () => {
       {
         question: '',
         options: [
-          { name: "one", option: "Option number 1", correct: false, },
-          { name: "two", option: "Option number 2", correct: false },
-          { name: "three", option: "Option number 3", correct: false },
-          { name: "fort", option: "Option number 4", correct: false },
+          { option: "", correct: false, },
+
         ]
       },
       ...ques,
@@ -74,11 +73,84 @@ const Home: NextPage = () => {
 
     ])
   }
+
+  const Addmore = (index: number) => {
+    const list: any = [...ques];
+    for (let i = 0; i < list.length; i++) {
+      if (i === index) {
+        const element = list[i];
+        element?.options.push({ name: "", correct: false, })
+      }
+
+    }
+    setQues(list)
+  }
+
+
   const removeInputFields = (index: number) => {
+    debugger
+
     const rows = [...ques];
     rows.splice(index, 1);
     setQues(rows);
   }
+
+
+  
+  const removeOptionFields = (index: number, i  : number ) => {
+
+   
+    const list: any = [...ques];
+    for (let j = 0; j < list.length; j++) {
+      if (j === index) {
+        const element = list[j];
+        let find  = element.options
+        find.splice(i , 1 )
+      }
+
+    }
+    setQues(list)
+  }
+  const handleChangeOptions = (index: number, i: number, evnt: React.ChangeEvent<HTMLInputElement>) => {
+    debugger
+    const { name, value } = evnt.target;
+    const list: any = [...ques];
+    for (let j = 0; j < list.length; j++) {
+      if (j === index) {
+        const element = list[j];
+        element.options[i][name] = value;
+      }
+
+    }
+    setQues(list)
+
+  }
+
+  const handleChangeRadio = (index: number, i: number, evnt: React.ChangeEvent<HTMLInputElement>) => {
+    debugger
+    const { name, value } = evnt.target;
+    const list: any = [...ques];
+    for (let j = 0; j < list.length; j++) {
+      if (j === index) {
+        const element = list[j];
+        for (let b = 0; b < element.options.length; b++) {
+          let elements = element.options[b];
+          if (elements.correct === true) {
+            elements.correct = false
+          }
+          element.options[i][name] = true;
+        }
+
+      }
+
+    }
+    setQues(list)
+
+  }
+
+  let courseId = router.query.id
+
+
   const handleChange = (index: number, evnt: React.ChangeEvent<HTMLInputElement>) => {
     debugger
     const { name, value } = evnt.target;
@@ -90,40 +162,27 @@ const Home: NextPage = () => {
 
   }
 
-  const handleChangeRadio = (index: number, i: number, evnt: React.ChangeEvent<HTMLInputElement>) => {
-    debugger
-    const { name, value } = evnt.target;
-    const list: any = [...ques];
-
-    // for (let i = 0; i < list.length; i++) {
-    //   const element = list[i];
-    //   if (index === i) {
-    //     for (let j = 0; j < element.options.length; j++) {
-    //       const elements = element.options[j];
-    //       elements.correct = false
-    //     }
-    //   }
-    // }
-
-    // list[index].options[i].correct = true;
-    // setQues(list);
-
-
-
-  }
 
 
   const SaveQuiz = async () => {
     let value = {
-      course_id: 1,
+      course_id: courseId,
       questions: ques
     }
-    setSaveQuiz(true )
     try {
+      setSaveQuiz(true)
       let res = await AxInstance.post('api//instructor/courses/quiz/store', value)
       if (res.data.success === true) {
         setSaveQuiz(false)
         setMessage(true)
+        SweetAlert({ icon : "success" , text : "Quiz are successfuly created "})
+        router.push('/en/instructor/courses')
+      }
+      else {
+        setSaveQuiz(false)
+
+        SweetAlert({ icon : "error" , text : "Quiz and options are required "})
+
       }
 
     } catch (error) {
@@ -136,7 +195,7 @@ const Home: NextPage = () => {
 
 
   return (
-    <div className="inst" style={{position:'relative'}}>
+    <div className="inst" style={{ position: 'relative' }}>
       <NavigationBar1 />
       <section className="dash-board jadsifd-asdasid">
         <div className="jcoiasd03-eakw3e1">
@@ -145,8 +204,7 @@ const Home: NextPage = () => {
         {loading ? Main()
           :
           <div className="dash-board-1">
-            {message ? <div className="alert alert-success">Quiz are Successfully Saved </div>
-              :
+            
               <div className="dash-2 ">
                 <div className="my-course" style={{ position: 'relative' }}>
                   <div className="hdsf0s-sadmsa">
@@ -165,8 +223,8 @@ const Home: NextPage = () => {
                               + Add More
                             </button>
                           </div>
-                          <div style={{ marginLeft: '20px' }}>
-                            <button className="btn-2s" onClick={() => SaveQuiz()}>Save Quiz</button>
+                          <div style={{ marginLeft: '20px' }} className="idfadsf-sads">
+                            <button className="upload-1 sdisad-dsdactive" onClick={() => SaveQuiz()}>Save Quiz</button>
                           </div>
                           {/* <div>
                       </div>
@@ -183,12 +241,12 @@ const Home: NextPage = () => {
                     {/* <QuizCard /> */}
 
                     {ques && ques.map((q, index) => (
-                      <div className="p-3 quiz" key={index}>
+                      <div className="p-3 quiz" style={{height:'410px'}} key={index}>
                         <div className="p-field  ">
                           <div className="d-flex " style={{ justifyContent: 'space-between' }}>
                             <Icons name="i24" />
                             <label>Question : {index + 1}</label>
-                            {(ques.length !== 1) ? <i className="fa fa-trash mb-2" onClick={() => removeInputFields(index)}>Delete</i> : ""}
+                            {(ques.length !== 1) ? <div onClick={(e) => removeInputFields(index)}> <i className="fa fa-trash mb-2"></i></div> : ""}
                           </div>
                           <input
                             type="text"
@@ -200,12 +258,37 @@ const Home: NextPage = () => {
 
                         </div>
                         {q.options.map((op, i) => (
-                          <div className="inputGroup" key={i}>
-                            <input id={op.option} onChange={(e) => handleChangeRadio(index, i, e)} checked={op.correct} name={op.name} type="radio" />
-                            <label htmlFor={op.option}>{op.option}</label>
-                          </div>
+                          <>
+                            <div className="p-field" style={{ display: 'flex', marginTop: '10px' }} key={i}>
+                              <div style={{ width: '20%' }}>
+                                <input style={{ marginTop: '10px' }}
+                                  onChange={(e) => handleChangeRadio(index, i, e)}
+                                  checked={op.correct} name="correct" type="checkbox" />
+                              </div>
+                              <div style={{ width: '100%' }}>
+                                <input
+                                  type="text"
+                                  name="option"
+                                  className="w-100"
+                                  value={op.option}
+                                  onChange={(e) => handleChangeOptions(index, i, e)}
+                                  placeholder="Write here...." />
+                              </div>
+                              <div style={{marginTop:'5px' , marginLeft:'10px'}} onClick={()=> removeOptionFields(index , i )}>
+                                <i className="fa fa-trash"></i>
+                                </div>
+                            </div>
+                            {/* <p>+Add more </p> */}
 
+
+                          </>
                         ))}
+                        {q.options.length < 6 ?
+                          <h3 style={{ cursor: 'pointer', textAlign: 'right', fontSize: '14px', marginTop: '10px' }}
+                            onClick={() => Addmore(index)}
+                          >+ Add more </h3>
+                          : ""
+                        }
                       </div>
                     ))}
 
@@ -214,12 +297,11 @@ const Home: NextPage = () => {
 
                 </div>
               </div>
-            }
           </div>
         }
       </section>
       {
-        saveQuiz && 
+        saveQuiz &&
         <div style={{ position: 'absolute', backgroundColor: 'rgba(255,255,255,0.7)', opacity: '1', textAlign: 'center', top: 0, left: 0, right: 0, bottom: 0, zIndex: '999' }}>
           <div style={{ marginTop: '20rem', zIndex: '9999' }}>
             <Spinner animation="border" variant="primary" />

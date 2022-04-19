@@ -54,7 +54,7 @@ export default (catagory: any) => {
   const [state, setState] = useState<Course>('')
   const [Courses, setCourses] = useState([])
   const [url, setUrl] = useState()
-  const [showCirculm, setShowCirculm] = useState(false )
+  const [showCirculm, setShowCirculm] = useState(false)
   const [errors, setErrors] = useState()
   const [loading, setLoading] = useState(false)
   const [courseId, setcourseId] = useState('')
@@ -70,7 +70,6 @@ export default (catagory: any) => {
     }
   });
 
-  console.log("newcourse", courseId)
 
 
   useEffect(() => {
@@ -145,10 +144,6 @@ export default (catagory: any) => {
   };
 
 
-  const Video = () => {
-
-
-  }
 
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -222,186 +217,195 @@ export default (catagory: any) => {
         >
           <Offcanvas.Header closeButton>
             <Offcanvas.Title id="offcanvasNavbarLabel">
-              { showCirculm ? "Add Curriculum" :  "Add New Course"}
+              {showCirculm ? "Plan your course" : "Add New Course"}
             </Offcanvas.Title>
           </Offcanvas.Header>
           {showCirculm ?
 
             <Offcanvas.Body>
-              <Circulum course_id={courseId}/>
+              <Circulum course_id={courseId} />
             </Offcanvas.Body>
             :
-          <Offcanvas.Body>
+            <Offcanvas.Body>
 
-            <div className="p-field">
-              <label>Category</label>
-              <div className="kns-sanweso02e">
-                <Form.Select name="category_id"
-                  value={state.category_id} onChange={(e) => hendleFields(e)}>
-                  <option defaultChecked>Select Catagory</option>
-                  {Courses && Courses.map((cata) => (
-                    <option key={cata.id} value={cata.id}>{cata.name}</option>
-                  ))}
-                </Form.Select>
-                {errors?.category_id && <div className="invalid mt-1">{errors?.category_id[0]}</div>}
+              <div className="p-field">
+                <div style={{display:'flex' , flexDirection:'column'}}>
+                  <label>Category</label>
+                  <span>Which category suites the best for this course</span>
 
-
-              </div>
-
-            </div>
-
+                </div>
+                <div className="kns-sanweso02e">
+                  <Form.Select name="category_id"
+                    value={state.category_id} onChange={(e) => hendleFields(e)}>
+                    <option defaultChecked>Select Catagory</option>
+                    {Courses && Courses.map((cata) => (
+                      <option key={cata.id} value={cata.id}>{cata.name}</option>
+                    ))}
+                  </Form.Select>
+                  {errors?.category_id && <div className="invalid mt-1">{errors?.category_id[0]}</div>}
 
 
-            <div className="p-field">
-
-              <div className="mt-2">
-                <label>Course title</label>
-                <input type="text"
-                  name="title"
-                  value={state.title}
-                  onChange={(e) => hendleFields(e)}
-                  placeholder="Write here..." />
-                {errors?.title && <div className="invalid mt-1">{errors?.title[0]}</div>}
+                </div>
 
               </div>
 
-              <div className="mt-2">
 
-                <label>Short Description</label>
-                <input type="text"
-                  name="short_desc"
-                  value={state.short_desc}
-                  onChange={(e) => hendleFields(e)}
-                  placeholder="Write here..." />
-                {errors?.short_desc && <div className="invalid mt-1">{errors?.short_desc[0]}</div>}
 
-              </div>
+              <div className="p-field">
 
-              <div className="mt-2">
-                <label>Course subtitle</label>
-                <textarea
-                  rows={4}
-                  name="long_desc"
-                  value={state.long_desc}
-                  onChange={(e) => hendleFields(e)}
-                  className="asndkmc03e-dm3e"
-                  placeholder="Write here..."
-                ></textarea>
-                {errors?.long_desc && <div className="invalid mt-1">{errors?.long_desc[0]}</div>}
-
-              </div>
-
-              <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <label>Course Image</label>
-                <label className="drop-box" htmlFor="img" style={{ cursor: 'pointer' }}>
-                  <div className="kvjadsd-j43rm iasdufhvs-ernd">
-                    <Icons name="i29" />
-                    {url ? <img src={url} alt="course_img" style={{ width: '100%', objectFit: 'cover' }} /> : ""}
-                    {!url && <p>Drag your photos here</p>}
-                    {/* <p>Add at least 5 photos</p> */}
-                  </div>
-                  <input type="file" name="cover_image" onChange={(e) => handleInputChange(e)} id="img" style={{ display: 'none' }} />
-                </label>
-              </div>
-              {errors?.cover_image && <div className="invalid mt-1">{errors?.cover_image[0]}</div>}
-
-              <div>
-                <div className="p-field my-4 mt-0">
-                  <div className="d-flex">
-                    <Icons name="i24" />
-                    <label>Pricing</label>
-                  </div>
-                  <input
-                    type="number"
-                    name="price"
-                    value={state.price}
+                <div className="mt-2">
+                  <label>Course title</label>
+                  <br />
+                  <span>The first information to user describing your course</span>
+                  <input type="text"
+                    name="title"
+                    value={state.title}
                     onChange={(e) => hendleFields(e)}
                     placeholder="Write here..." />
-                  {errors?.price && <div className="invalid mt-1">{errors?.price[0]}</div>}
+                  {errors?.title && <div className="invalid mt-1">{errors?.title[0]}</div>}
 
                 </div>
 
-                <div className="p-field my-4 mt-0">
-                  <div className="d-flex">
-                    <Icons name="i24" />
-                    <label>Outcomes</label>
+                <div className="mt-2">
+                  <label>Short Description</label>
+                  <br />
+                  <span>Complete details about your course</span>
+                  <input type="text"
+                    name="short_desc"
+                    value={state.short_desc}
+                    onChange={(e) => hendleFields(e)}
+                    placeholder="Write here..." />
+                  {errors?.short_desc && <div className="invalid mt-1">{errors?.short_desc[0]}</div>}
+
+                </div>
+
+                <div className="mt-2">
+                  <label>Course subtitle</label><br />
+                  <span>A prescribed informaiton about your course</span>
+                  <textarea
+                    rows={4}
+                    name="long_desc"
+                    value={state.long_desc}
+                    onChange={(e) => hendleFields(e)}
+                    className="asndkmc03e-dm3e"
+                    placeholder="Write here..."
+                  ></textarea>
+                  {errors?.long_desc && <div className="invalid mt-1">{errors?.long_desc[0]}</div>}
+
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <label>Course Image</label>
+                  <span>A cover photo show on website and landing page</span>
+                  <label className="drop-box" htmlFor="img" style={{ cursor: 'pointer' }}>
+                    <div className="kvjadsd-j43rm iasdufhvs-ernd">
+                      <Icons name="i29" />
+                      {url ? <img src={url} alt="course_img" style={{ width: '100%', objectFit: 'cover' }} /> : ""}
+                      {!url && <p>Drag your photos here</p>}
+                      {/* <p>Add at least 5 photos</p> */}
+                    </div>
+                    <input type="file" name="cover_image" onChange={(e) => handleInputChange(e)} id="img" style={{ display: 'none' }} />
+                  </label>
+                </div>
+                {errors?.cover_image && <div className="invalid mt-1">{errors?.cover_image[0]}</div>}
+
+                <div>
+                  <div className="p-field my-4 mt-0">
+                    <div >
+                      <label>Pricing</label><br />
+                      <span>How much to charge a student for this course</span>
+                    </div>
+                    <input
+                      type="number"
+                      name="price"
+                      value={state.price}
+                      onChange={(e) => hendleFields(e)}
+                      placeholder="Write here..." />
+                    {errors?.price && <div className="invalid mt-1">{errors?.price[0]}</div>}
+
                   </div>
-                  {/* <input type="text" placeholder="Write here..." /> */}
-                  {item.map((data: any, index: number) => {
-                    return (
-                      < div style={{ display: 'flex' }}>
-                        <input type="text" placeholder="Write here..." className="mt-1" onChange={(evnt) => handleChange(index, evnt, "outcoms")} value={data} name="desc" />
-                        {(item.length !== 1) ? <button className="mt-1" onClick={(evnt) => removeInputFields(index, "outcoms")}>Del</button> : null}
-                      </div>
 
-                    )
-                  })
-                  }
+                  <div className="p-field my-4 mt-0">
+                    <div >
+                      <label>Outcomes</label><br />
+                      <span>List down the consequences of this course</span>
+                    </div>
+                    {/* <input type="text" placeholder="Write here..." /> */}
+                    {item.map((data: any, index: number) => {
+                      return (
+                        < div style={{ display: 'flex' }}>
+                          <input type="text" placeholder="Write here..." className="mt-1" onChange={(evnt) => handleChange(index, evnt, "outcoms")} value={data} name="desc" />
+                          {(item.length !== 1) ? <div style={{ marginLeft: '4px' }}> <i className="fa fa-trash mt-3 " onClick={(evnt) => removeInputFields(index, "outcoms")}></i> </div> : null}
+                        </div>
 
-                  <h3 style={{ cursor: 'pointer' }} onClick={() => addItem('outcoms')} >+ Add more to your response</h3>
+                      )
+                    })
+                    }
 
-                </div>
-                <div className="p-field my-4 mt-0">
-                  <div className="d-flex">
-                    <Icons name="i24" />
-                    <label>Requirements</label>
+                    <h3 style={{ cursor: 'pointer' }} onClick={() => addItem('outcoms')} >+ Add more </h3>
+
                   </div>
-                  {/* <input type="text" placeholder="Write here..." /> */}
-                  {request.map((data: any, index: number) => {
-                    return (
-                      < div style={{ display: 'flex' }}>
-                        <input type="text" placeholder="Write here..." className="mt-1" onChange={(evnt) => handleChange(index, evnt, "request")} value={data.desc} name="desc" />
-                        {(request.length !== 1) ? <button className="mt-1" onClick={(evnt) => removeInputFields(index, "request")}>Del</button> : null}
-                      </div>
+                  <div className="p-field my-4 mt-0">
+                    <div >
+                      <label>Requirements</label><br />
+                      <span>Education required for enrolling in this course</span>
+                    </div>
+                    {/* <input type="text" placeholder="Write here..." /> */}
+                    {request.map((data: any, index: number) => {
+                      return (
+                        < div style={{ display: 'flex' }}>
+                          <input type="text" placeholder="Write here..." className="mt-1" onChange={(evnt) => handleChange(index, evnt, "request")} value={data.desc} name="desc" />
+                          {(request.length !== 1) ? <div style={{ marginLeft: '4px' }} > <i className="fa fa-trash mt-3 " onClick={(evnt) => removeInputFields(index, "request")}></i> </div> : null}
+                        </div>
 
-                    )
-                  })
-                  }
-                  <h3 style={{ cursor: 'pointer' }} onClick={() => addItem('request')} >+ Add more to your response</h3>
+                      )
+                    })
+                    }
+                    <h3 style={{ cursor: 'pointer' }} onClick={() => addItem('request')} >+ Add more </h3>
 
-                </div>
-                <div className="p-field my-4 mt-0">
-                  <div className="d-flex">
-                    <Icons name="i24" />
-                    <label>Course for</label>
                   </div>
-                  {/* <input type="text" placeholder="Write here..." /> */}
-                  {course.map((data: any, index: number) => {
-                    return (
-                      < div style={{ display: 'flex' }}>
-                        <input type="text" className="mt-1" placeholder="Write here..." onChange={(evnt) => handleChange(index, evnt, "course")} value={data.desc} name="desc" />
-                        {(course.length !== 1) ? <button className="mt-1" onClick={(evnt) => removeInputFields(index, "course")}>Del</button> : null}
-                      </div>
+                  <div className="p-field my-4 mt-0">
+                    <div >
+                      <label>Course for</label><br />
+                      <span>List down who should take this course</span>
+                    </div>
+                    {/* <input type="text" placeholder="Write here..." /> */}
+                    {course.map((data: any, index: number) => {
+                      return (
+                        < div style={{ display: 'flex' }}>
+                          <input type="text" className="mt-1" placeholder="Write here..." onChange={(evnt) => handleChange(index, evnt, "course")} value={data.desc} name="desc" />
+                          {(course.length !== 1) ? <div style={{ marginLeft: '4px' }}> <i className="fa fa-trash mt-3 " onClick={(evnt) => removeInputFields(index, "course")}></i></div> : null}
+                        </div>
 
-                    )
-                  })
-                  }
-                  <h3 style={{ cursor: 'pointer' }} onClick={() => addItem("course")} >+ Add more to your response</h3>
+                      )
+                    })
+                    }
+                    <h3 style={{ cursor: 'pointer' }} onClick={() => addItem("course")} >+ Add more </h3>
+
+                  </div>
 
                 </div>
-
               </div>
-            </div>
-            <div className="d-flex">
-              {/* <div className="idfadsf-sads kajfds-sdfe hfdajss-3ersad">
+              <div className="d-flex">
+                {/* <div className="idfadsf-sads kajfds-sdfe hfdajss-3ersad">
                 <button onClick={() => Video()} className="upload-1 sdisad-dsdactive ">
                   Preview
                 </button>
               </div> */}
-              <div className="idfadsf-sads kajfds-sdfe">
-                <button onClick={() => SaveCourse()} className="upload-1 sdisad-dsdactive">
-                  {loading ?
-                    // <Spinner animation="border" varient="loght" />
-                    <div className="spinner-border text-light" role="status">
-                    </div>
-                    :
-                    "Save & Next "
-                  }
-                </button>
+                <div className="idfadsf-sads kajfds-sdfe">
+                  <button onClick={() => SaveCourse()} className="upload-1 sdisad-dsdactive">
+                    {loading ?
+                      // <Spinner animation="border" varient="loght" />
+                      <div className="spinner-border text-light" role="status">
+                      </div>
+                      :
+                      "Save & Next "
+                    }
+                  </button>
+                </div>
               </div>
-            </div>
-          </Offcanvas.Body>
-           } 
+            </Offcanvas.Body>
+          }
 
 
 

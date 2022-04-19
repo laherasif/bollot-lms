@@ -39,7 +39,6 @@ const Home: NextPage = () => {
     }
   });
 
-  console.log("load" , loading )
 
   useEffect(() => {
     let fetchCourse = async () => {
@@ -47,6 +46,9 @@ const Home: NextPage = () => {
         setLoading(true)
         let res = await AxInstance.get('api//instructor/courses/live-courses')
         if (res.data.success === true) {
+          setLoading(false)
+        }
+        else{
           setLoading(false)
         }
         setCourses(res.data.response.courses)
@@ -57,9 +59,6 @@ const Home: NextPage = () => {
     fetchCourse()
   }, [])
 
-
-  console.log("cours", courses)
-
   return (
     <div className="inst">
       <NavigationBar1 />
@@ -67,7 +66,7 @@ const Home: NextPage = () => {
         <div className="jcoiasd03-eakw3e1">
           <Sidebar />
         </div>
-        {loading ? Main()
+        {loading ? Small()
           :
 
           <div className="dash-board-1">
@@ -82,7 +81,6 @@ const Home: NextPage = () => {
                       <FiSearch color="#8A8A8A" size={17} />
                       <input type="text" placeholder="Search" />
                     </div>
-                    <NewCourse />
                   </div>
                 </div>
 
@@ -111,10 +109,12 @@ const Home: NextPage = () => {
                   </div>
                 </div>
                 <div className="complete-web-1">
-                  {courses && courses.map((cours: any, i: number) => (
+                  {courses ? courses.map((cours: any, i: number) => (
                     <LiveCourse course={cours} key={i} />
 
-                  ))}
+                  )) 
+                  : <div>Live Course Not Avaliable</div>
+                }
 
                 </div>
               </div>

@@ -13,8 +13,8 @@ export const Main = () => {
 export const Small = () => {
     return (
         <>
-            <div style={{ textAlign: 'center' }}>
-                <Spinner animation="border" size="sm" />
+            <div style={{ textAlign: 'center' , margin:'auto' }}>
+                <Spinner animation="border" />
             </div>
         </>
     )

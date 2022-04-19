@@ -30,7 +30,7 @@ const Home: NextPage = () => {
       setLoading(false)
     }, 2000);
   }, [])
-  console.log(totalamount)
+  console.log(carts)
   return (
     <>
       <div>
@@ -58,19 +58,20 @@ const Home: NextPage = () => {
                   </div>
                   <div className="photo-maker-2">
                     <h4>
-                      ${totalamount} <span>$49.99 (76% off)</span>
+                      ${totalamount} 
+                      {/* <span>$49.99 (76% off)</span> */}
                     </h4>
                     <Link href="/en/checkout">
                       <button className="btn-2s w-100 my-4">Checkout</button>
                     </Link>
-                    <h5>Promotions:</h5>
+                    {/* <h5>Promotions:</h5>
                     <h6>
                       <Icons name="c34" />
                       <p className="mt-4" style={{ paddingLeft: '10px' }}>
                         ST11MT22122 is applied
 
                       </p>
-                    </h6>
+                    </h6> */}
                     <div className="btnn-1">
                       <input placeholder="Enter Coupon" />
                       <button>Apply</button>

@@ -1,5 +1,5 @@
 
-import { LOGIN_USER, ERROR, REGISTER_SOCIAL_MEDIA , SIGNUP_USER , OPT_VERIFY, CLEAN_STATE} from '../../types/types'
+import { LOGIN_USER, ERROR, LOGOUT_INST , REGISTER_SOCIAL_MEDIA , SIGNUP_USER , OPT_VERIFY, CLEAN_STATE} from '../../types/types'
 import { Dispatch } from 'redux';
 import instance from '../../../confiq/axios/instance'
 
@@ -109,4 +109,12 @@ export const loginUser = (data: []) => {
             console.log("error in token ")
         }
     }
+}
+
+
+export const LogoutIns = () => (dispatch: any ) => {
+     dispatch({
+          type: LOGOUT_INST,
+          
+     })  
 }

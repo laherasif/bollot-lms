@@ -2,8 +2,9 @@ import React from "react";
 import Link from "next/link";
 import { MdOutlineReviews } from "react-icons/md";
 import { BsWallet2 } from "react-icons/bs";
-import Icons from "../../icons";
+import Icons from "./icons";
 import { Container, Nav, Navbar, Offcanvas } from "react-bootstrap";
+import { useRouter } from "next/router";
 export default () => {
   const openPan = () => {
     const element = document.querySelector("#sidebar-cst");
@@ -21,41 +22,43 @@ export default () => {
   };
 
   const SideBarChild = () => {
+    const router = useRouter()
+    console.log("router" , router )
     return (
       <div className="inst-side">
         <div className="dash-1" id="sidebar-cst">
           <Link href="/en/instructor">
-            <div className="dash-ch-2 sdisad-dsdactive">
+            <div className={`dash-ch-2 sdisad-dsd ${router.asPath === "/en/instructor" ? " dash-ch-2 sdisad-dsdactive" :""}`}>
               <Icons name="i1" />
               <h3>Dashboard</h3>
             </div>
           </Link>
           <Link href="/en/instructor/courses">
-            <div className="dash-ch-2">
+            <div className={`dash-ch-2 sdisad-dsd ${router.asPath === "/en/instructor/courses" ? "dash-ch-2 sdisad-dsdactive" :""}`}>
               <Icons name="i2" />
               <h3>My courses</h3>
             </div>
           </Link>
-          <Link href="/en/instructor/liveCourses">
-            <div className="dash-ch-2">
+          {/* <Link href="/en/instructor/liveCourses">
+            <div className={`dash-ch-2 sdisad-dsd ${router.asPath === "/en/instructor" ? "dash-ch-2 sdisad-dsdactive" :""}`}>
               <Icons name="i2" />
               <h3>Live courses</h3>
             </div>
-          </Link>
+          </Link> */}
           <Link href="/en/instructor/earning">
-            <div className="dash-ch-2">
+            <div className={`dash-ch-2 sdisad-dsd ${router.asPath === "/en/instructor/earning" ? "dash-ch-2 sdisad-dsdactive" :""}`}>
               <Icons name="i3" />
               <h3>Earnings</h3>
             </div>
           </Link>
           <Link href="/en/instructor/inbox">
-            <div className="dash-ch-2">
+            <div className={`dash-ch-2 sdisad-dsd ${router.asPath === "/en/instructor/inbox" ? "dash-ch-2 sdisad-dsdactive" :""}`}>
               <Icons name="i4" />
               <h3>Inbox</h3>
             </div>
           </Link>
           <Link href="/en/instructor/profile">
-            <div className="dash-ch-2">
+            <div className={`dash-ch-2 sdisad-dsd ${router.asPath === "/en/instructor" ? "dash-ch-2 sdisad-dsdactive" :""}`}>
               <Icons name="i5" />
               <h3>Profile</h3>
             </div>

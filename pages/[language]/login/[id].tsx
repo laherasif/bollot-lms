@@ -165,12 +165,12 @@ const Home: NextPage = () => {
               <p>Log In to Your Bolloot Account!</p>
               <br />
               <div className="hasdfkj">
-                <input className="full-2" name="email" value={email} onChange={handleChange} type="email" placeholder="Email" />
+                <input className={ `full-2 ${errors.email && 'full-2 input_filed_error'}` } name="email" value={email} onChange={handleChange} type="email" placeholder="Email" />
                 {errors?.email && <div className="invalid mb-1">{errors?.email[0]}</div>}
 
               </div>
               <div className="hasdfkj">
-                <input className="full-3" name="password" value={password} onChange={handleChange} type="password" placeholder="Password" />
+                <input className={ `full-3 ${errors.password && 'full-3 input_filed_error'}` } name="password" value={password} onChange={handleChange} type="password" placeholder="Password" />
                 {errors?.password && <div className="invalid mb-1">{errors?.password[0]}</div>}
 
                 <br />
@@ -192,10 +192,7 @@ const Home: NextPage = () => {
             <h6>Forgot Password?</h6>
             <h6>Don't have an account?    <Link href={"/en/signup"}>Sign Up</Link></h6>
             <h4>OR</h4>
-            <div className="apples-1">
-              <Icons name="c20" />
-              <h4>Sign in with Apple</h4>
-            </div>
+           
             <button
               onClick={() => { setPlateform('facebook.com'), setToggal(true) }}
               className="face-book-1 w-100">

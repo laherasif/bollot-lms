@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Icons from "../../icons";
 import {
@@ -12,17 +12,28 @@ import {
 } from "react-bootstrap";
 import Link from "next/link";
 const LogoImage = require("../../images/logo.png");
+import { useRouter } from 'next/router'
 import { useIntl } from "react-intl";
 import { useSelector, RootStateOrAny } from "react-redux";
 const App = () => {
   // const intl = useIntl();
+  const router = useRouter()
+  const [search, setSearch] = useState('')
   const carts = useSelector((state: RootStateOrAny) => state.cartReducer.AddCart)
   const { User } = useSelector((state: RootStateOrAny) => state.userReducer)
+
+  const searchCourse = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    router.push(`/en/courses/${search}`)
+  }
+  
+
+
   return (
     <Navbar expand="lg" expand="xl">
       <Container fluid>
-        <Navbar.Brand>
-          <Link href="/">
+        <Navbar.Brand style={{ cursor: 'pointer' }}>
+          <Link href="/" >
             <Image width={170} height={40} src={LogoImage} />
           </Link>
         </Navbar.Brand>
@@ -43,19 +54,27 @@ const App = () => {
             <Nav.Link href="">
               <Link href="/en/about">About Us</Link>
             </Nav.Link>
-            <Link href="/en/contact">Contact Us</Link>
+            <Nav.Link href="">
 
-            <div className="search-bar">
-              <input
-                placeholder="Search here"
-                type="text"
-                className="dsifs-sadi3adasd"
-              />
-              <Icons name="search" />
-            </div>
+              <Link href="/en/contact">Contact Us</Link>
+            </Nav.Link>
+            <Nav.Link href="">
+              <form onSubmit={searchCourse}>
+                <div className="search-bar">
+                  <input
+                    placeholder="Search here"
+                    type="text"
+                    className="dsifs-sadi3adasd"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                  />
+                  <Icons name="search" />
+                </div>
+              </form>
+            </Nav.Link >
 
             {User ?
-              
+
               <Link href={User.role === "student" ? "/en/student/dashboard" : "/en/instructor"}>
                 <button className="btn-1s">Go to Dashaord</button>
               </Link>

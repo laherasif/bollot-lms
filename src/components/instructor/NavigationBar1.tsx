@@ -21,7 +21,7 @@ export default () => {
             <div className="w-100" >
                 <div className="hdsf-sdsa">
                 <Navbar.Brand  > 
-                    <Link href="/en/dashboard" >
+                    <Link href="/en/instructor" >
                     <img src="/assets/images/small-logo.svg" />
                     </Link>
                 
@@ -47,7 +47,7 @@ export default () => {
         <p>1</p>
       </div>
 
-      <p>John Doe</p>
+      <p></p>
       <Link href={"/en/profile"}>
       <img src="/assets/images/umpire-1.svg" /></Link>
     </div>

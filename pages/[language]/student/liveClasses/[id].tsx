@@ -33,6 +33,7 @@ const Home: NextPage = () => {
       try {
         setLoading(true)
         let res = await AxInstance.get(`api//student/my-live-courses/schedule/${CourseId}`)
+        console.log("REs" , res )
         if (res.data.success === true) {
           setLoading(false)
           setQuiz(res.data.response.course_with_schedule)
@@ -68,7 +69,7 @@ const Home: NextPage = () => {
                       Back
                     </h3>
                   </Link>
-                  <h3>My Live Classes </h3>
+                  <h3>Schedule of upcoming classes </h3>
                   <div className="complete-web-1">
                     <div className="umpire w-100">
 
@@ -96,7 +97,7 @@ const Home: NextPage = () => {
                                         </tr>
                                       </thead>
                                       <tbody>
-                                        {quiz && quiz?.schedule?.map((s: any, i: numeber) => (
+                                        {quiz && quiz.length ? quiz?.schedule?.map((s: any, i: numeber) => (
                                           <tr key={i}>
                                             <td>
 
@@ -118,7 +119,9 @@ const Home: NextPage = () => {
                                           </td> */}
                                           </tr>
 
-                                        ))}
+                                        ))
+                                        : <div>Record Not Found</div>
+                                      }
 
 
                                       </tbody>

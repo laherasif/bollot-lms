@@ -1,13 +1,27 @@
 import Link from 'next/link';
-import React from 'react';
+import React, { useState } from 'react';
 import { BiBell } from 'react-icons/bi';
 import { FiSearch } from 'react-icons/fi';
 import { IoMailOutline } from 'react-icons/io5';
-import Dropdown from './dropdown';
-export default ()=>{
-    return <div className="jsad-asdnsake">
+import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
+import { Dropdown } from 'react-bootstrap'
+import Dropdowns from './dropdown';
+import { LogoutIns } from '../../redux/actions/auth/user';
+import { useRouter } from 'next/router';
+export default () => {
+  const { User } = useSelector((state: RootStateOrAny) => state.userReducer)
+  const dispatch = useDispatch()
+  const router = useRouter()
+  const Logout = () => {
+    dispatch(LogoutIns())
+    setTimeout(() => {
+      router.push('/en/login')
+    }, 2000);
+  }
+
+  return <div className="jsad-asdnsake">
     <div className="nadjfksad-asds">
-      <Dropdown />
+      <Dropdowns />
       <div className="dsnodi-sdjsad">
         <FiSearch color="#8A8A8A" size={17} />
         <input type="text" placeholder="Search" />
@@ -24,11 +38,32 @@ export default ()=>{
         <p>1</p>
       </div>
 
-      <p>John Doe</p>
+      <div className="kjdshfi-serjh">
+        <Dropdown>
+          <Dropdown.Toggle variant="success" id="dropdown-basic" style={{ display: 'flex', alignItems: 'center' }}>
+            <div className="d-flex">
+              <p className="mt-3">{User?.fullname}</p>
+              <img src={User?.image || "/assets/images/umpire-1.svg"} className="mt-2" alt="profile_img" />
+            </div>
+          </Dropdown.Toggle>
+
+
+          <Dropdown.Menu >
+            <Dropdown.Item as={Link} href="/" >Go to website</Dropdown.Item>
+            <Dropdown.Item >Edit profile</Dropdown.Item>
+            <Dropdown.Item as={Link} href="/en/instructor/courses" >My Courses</Dropdown.Item>
+            {/* <Dropdown.Item >Logout</Dropdown.Item> */}
+            <Dropdown.Item ><span onClick={() => Logout()}>Logout</span></Dropdown.Item>
+
+          </Dropdown.Menu>
+        </Dropdown>
+      </div>
+
+      {/* <p className="mt-4">{User?.fullname }</p>
       <Link href={"/en/profile"}>
-      <img src="/assets/images/umpire-1.svg" />
-      </Link>
-      
+      <img src={User?.image || "/assets/images/umpire-1.svg"} />
+      </Link> */}
+
     </div>
   </div>
 }

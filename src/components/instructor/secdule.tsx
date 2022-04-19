@@ -12,7 +12,7 @@ const Secdule = ({ course_id }: any) => {
     let router = useRouter()
     const [loading, setLoading] = useState(false);
     let currentDate = new Date()
-    const [dateTime, setDateTime] = useState([{ date: moment(currentDate).toDate(), from_time: new Date(), to_time: new Date() }])
+    const [dateTime, setDateTime] = useState([{ date: '', from_time: '', to_time: '' }])
 
     const { token } = useSelector((state: RootStateOrAny) => state?.userReducer)
 
@@ -43,7 +43,7 @@ const Secdule = ({ course_id }: any) => {
 
     const addFormFields = () => {
 
-        setDateTime([...dateTime, { date: new Date(), from_time: new Date(), to_time: new Date() }])
+        setDateTime([...dateTime, { date: '', from_time: '', to_time: '' }])
     }
 
 
@@ -88,10 +88,10 @@ const Secdule = ({ course_id }: any) => {
 
     return (
         <div>
-            <div className=" mb-3">
+            <div className="mt-3 pb-3">
                 <div className="kvjadsd-j43rm">
                     <div className="jodsa-wnedas">
-                        <h6>Add live classes Sedule</h6>
+                        <h6>Schedule your classes</h6>
 
                     </div>
                     {/* <Icons name="i26" /> */}
@@ -100,7 +100,7 @@ const Secdule = ({ course_id }: any) => {
                     return (
                         <div style={{ border: '1pt solid lightgray', marginBottom: '10px', padding: '10px', borderRadius: '10px' }} key={i}>
                             <div className="p-field mt-2 ">
-                                <p>Sedule no {i + 1}</p>
+                                <p>Sedule no </p>
                                 <div className="d-flex" style={{ justifyContent: 'space-between' }}>
                                     <div>
                                         {/* <Icons name="i24" /> */}
@@ -126,7 +126,7 @@ const Secdule = ({ course_id }: any) => {
                             <div className="p-field mt-2 ">
                                 <div className="d-flex">
                                     {/* <Icons name="i24" /> */}
-                                    <label>Start Time</label>
+                                    <label>From</label>
                                 </div>
                                 <DatePicker
                                     onKeyDown={(e) => {
@@ -144,7 +144,7 @@ const Secdule = ({ course_id }: any) => {
                             <div className="p-field mt-2 ">
                                 <div className="d-flex">
                                     {/* <Icons name="i24" /> */}
-                                    <label>End Time </label>
+                                    <label>To </label>
                                 </div>
                                 <DatePicker
                                     onKeyDown={(e) => {
@@ -165,7 +165,8 @@ const Secdule = ({ course_id }: any) => {
 
                     )
                 })}
-                <p onClick={() => addFormFields()}>+ Add more </p>
+              <h3 style={{ cursor: 'pointer' }}  onClick={() => addFormFields()} >+ Add more </h3>
+
             </div>
             <div className="d-flex">
                 <div className="idfadsf-sads kajfds-sdfe hfdajss-3ersad">

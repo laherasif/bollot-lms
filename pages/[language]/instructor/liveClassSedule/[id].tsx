@@ -10,9 +10,16 @@ import withAuth from "../../../../src/components/Hoc/authRoute";
 import { useSelector, RootStateOrAny } from "react-redux";
 import { useEffect, useState } from "react";
 import moment from 'moment'
+import "react-datepicker/dist/react-datepicker.css";
+
 import { useRouter } from "next/router";
+
+
+
 import { Main } from "../../../../src/components/instructor/loader";
 import Link from "next/link";
+import DatePicker from "react-datepicker";
+import { parse } from "date-fns";
 const Home: NextPage = () => {
   // const intl = useIntl();
 
@@ -40,15 +47,97 @@ const Home: NextPage = () => {
         setLoading(true)
         let res = await AxInstance.get(`api//instructor/courses/live-courses/schedule/${CourseId}`)
         if (res.data.success === true) {
+          setCourses(res.data.response.course_with_schedule.schedule)
           setLoading(false)
         }
-        setCourses(res.data.response.course_with_schedule)
       } catch (error) {
 
       }
     }
     fetchCourse()
-  }, [])
+  }, [CourseId])
+
+
+  const handleDateChange = (name: string, i: number, date: any) => {
+    debugger
+    let formValues: any = [...courses];
+    formValues[i][name] = date;
+    setCourses(formValues)
+
+
+  }
+
+
+  // const removeInputFields = (index: number, i: number) => {
+
+
+  //   const list: any = [...courses];
+  //   for (let j = 0; j < list.length; j++) {
+  //     if (j === index) {
+  //       const element = list[j];
+  //       let find = element.lectures
+  //       find.splice(i, 1)
+  //     }
+
+  //   }
+  //   setCourses(list)
+  // }
+
+  const removeInputField = (index: number,) => {
+    debugger
+    const rows = [...courses];
+    rows.splice(index, 1);
+    setCourses(rows);
+
+
+    setCourses(rows)
+  }
+
+
+
+
+
+  const addFormFields = () => {
+    debugger
+
+    //  courses?.schedule.push(  { date: '', from_time: '', to_time: '' })
+
+    setCourses([...courses, { date: new Date(), from_time: '', to_time: '' }])
+  }
+
+
+  const SaveForm = async () => {
+    try {
+
+      let arr = [];
+      for (let i = 0; i < courses.length; i++) {
+        const element = courses[i];
+        element.date = moment(element.date).format('YYYY-MM-DD')
+        if (!element.id) {
+          element.from_time = moment(element.from_time).format('HH:mm:ss'),
+            element.to_time = moment(element.to_time).format('HH:mm:ss')
+        }
+        // let value = {  date: moment(element.date).format('YYYY-MM-DD'), from_time: moment(element.from_time).format('HH:mm:ss'), to_time: moment(element.to_time).format('HH:mm:ss') }
+        // arr.concat(...element ,  value)
+        arr.push(element)
+
+
+      }
+
+      let values = {
+        course_id: CourseId,
+        schedule: arr
+      }
+      console.log("values", values)
+
+      let res = await AxInstance.post('api//instructor/courses/schedule/update', values)
+      if (res.data.success === true) {
+          // setLoading()
+          router.push('/en/instructor/liveCourses')
+      }
+    }
+    catch (err) { }
+  }
 
 
   return (
@@ -66,20 +155,14 @@ const Home: NextPage = () => {
                 <div className="hdsf0s-sadmsa">
                   <div>
                     <Link href='/en/instructor/liveCourses'>
-                      <h3 style={{cursor:'pointer'}}>
+                      <h3 style={{ cursor: 'pointer' }}>
                         <i className="fa fa-arrow-left "></i>
                         Back
                       </h3>
                     </Link>
                     <h3 className="ml-2">My Live Courses</h3>
                   </div>
-                  <div className=" jidfjsd-asjreid">
-                    <div className="dsnodi-sdjsad">
-                      <FiSearch color="#8A8A8A" size={17} />
-                      <input type="text" placeholder="Search" />
-                    </div>
-                    <NewCourse />
-                  </div>
+
                 </div>
                 <div className="complete-web-1 ">
                   <div className="umpire w-100">
@@ -90,6 +173,18 @@ const Home: NextPage = () => {
                             <i className="fa fa-refresh"></i>
                           </button>
                         </div>
+                        <div className="idfadsf-sads">
+                          <button className="upload-1 sdisad-dsdactive" onClick={() => addFormFields()}>
+                            + Add more
+                          </button>
+                        </div>
+
+                        <div className="idfadsf-sads">
+                          <button className="upload-1 sdisad-dsdactive" onClick={() => SaveForm()}>
+                            Save
+                          </button>
+                        </div>
+
                         {/* <div>
                         <Link href="/en/payments">
                           <button className="upload-1">Published</button>
@@ -122,30 +217,64 @@ const Home: NextPage = () => {
                                       <th>Start Time</th>
                                       <th>End Time</th>
                                       <th>Hours</th>
-                                      {/* <th>Activity</th> */}
+                                      <th>Actions</th>
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    {courses && courses?.schedule?.map((s: any, i: numeber) => (
-                                      <tr key={i}>
+                                    {courses && courses?.map((s: any, i: number) => (
+                                      <tr key={i} className="p-field">
                                         <td>
 
                                           {i + 1}
                                         </td>
-                                        <td>{moment(s?.date).format("LL")}</td>
-                                        <td>
-                                          <span>{s?.from_time}</span>{" "}
+                                        <td >
+                                          <DatePicker
+                                            onKeyDown={(e) => {
+                                              e.preventDefault();
+                                            }}
+                                            selected={moment(s?.date).toDate()}
+                                            onChange={(date) => handleDateChange("date", i, date)}
+                                            dateFormat="yyyy-MM-dd"
+                                          />
+                                        </td>
+                                        <td >
+                                          <DatePicker
+                                            onKeyDown={(e) => {
+                                              e.preventDefault();
+                                            }}
+                                            selected={s?.course_id ? parse(s?.from_time, "HH:mm:ss", new Date()) : s?.from_time}
+                                            onChange={(date) => handleDateChange("from_time", i, date)}
+                                            showTimeSelect
+                                            showTimeSelectOnly
+                                            timeIntervals={24}
+                                            timeCaption="Time"
+                                            dateFormat="HH:mm:ss"
+                                          />
+                                          {/* <span>{s?.from_time}</span>{" "} */}
                                         </td>
                                         <td>
-                                          <span>{s?.to_time}</span>
+                                          <DatePicker
+                                            onKeyDown={(e) => {
+                                              e.preventDefault();
+                                            }}
+                                            // selected={moment(s?.date).toDate()}
+                                            selected={s?.course_id ? parse(s?.to_time, "HH:mm:ss", new Date()) : s?.to_time}
+
+                                            onChange={(date) => handleDateChange("to_time", i, date)}
+                                            showTimeSelect
+                                            showTimeSelectOnly
+                                            timeIntervals={24}
+                                            timeCaption="Time"
+                                            dateFormat="HH:mm:ss "
+                                          />
                                         </td>
                                         <td>
-                                          <span>{s?.hours}</span>
+                                          <p>{s?.hours}</p>
                                         </td>
-                                        {/* <td>
-                                            <span>Ordered</span>{" "}
-                                            <span className="m-0 pl-3">10 sec ago</span>{" "}
-                                          </td> */}
+                                        <td>
+
+                                          <p style={{cursor:'pointer'}} onClick={() => removeInputField(i)}> <i className="fa fa-trash"  ></i></p>
+                                        </td>
                                       </tr>
 
                                     ))}

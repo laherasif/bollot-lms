@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { MdOutlineReviews } from "react-icons/md";
 import { BsWallet2 } from "react-icons/bs";
-import Icons from "../icons";
+import Icons from "../../icons";
 import { Container, Nav, Navbar, Offcanvas } from "react-bootstrap";
 export default () => {
   const openPan = () => {
