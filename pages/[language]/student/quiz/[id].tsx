@@ -176,6 +176,7 @@ const Home: NextPage = () => {
 
                             </div>
                             : <div>Quiz not found </div>
+}
 
                             {/* </form> */}
                           </div>
