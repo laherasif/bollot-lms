@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import { Dropdown } from "react-bootstrap";
+import { Dropdown, Spinner } from "react-bootstrap";
 // import ReactStars from "react-rating-stars-component";
 // import { useIntl } from "react-intl";
 // import BlogCard from "../../../src/components/card/BlogCard";
@@ -27,14 +27,17 @@ import { useState, useEffect } from "react";
 import Link from 'next/link'
 import InfoCart from "../../../src/components/cartInfoPopup";
 import PreviewModel from "../../../src/components/preview";
+import { loginUser } from "../../../src/redux/actions/auth/user";
+import { SweetAlert } from "../../../src/function/hooks";
+import { useRouter } from "next/router";
 
 
-const Home: NextPage = ({ Course }: any) => {
+const Home: NextPage = ({ Course, invite }: any) => {
   // const intl = useIntl();
 
-  console.log("course", Course)
+  console.log("course", invite)
   const [message, setMessage] = useState(false)
-  const [popUp, setPopUp] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [Info, setInfo] = useState(false)
   const [show, setShow] = useState(false)
   const [preview, setPreview] = useState(false)
@@ -43,35 +46,58 @@ const Home: NextPage = ({ Course }: any) => {
 
   const dispatch = useDispatch()
 
+  const router = useRouter()
 
- 
+  const { AddCart } = useSelector((state: RootStateOrAny) => state.cartReducer)
+
+  useEffect(() => {
+    // let findCart = AddCart?.includes({id : 3} )
+    for (let index = 0; index < AddCart?.length; index++) {
+      const element = AddCart[index].id;
+      if (element === Course?.id) {
+        setMessage(true)
+
+      }
+    }
+  }, [])
 
 
+  // const ratings = () => {
+
+  //   Object.entries(Cours?.ratings_breakdown).map((key, value) => {
+  //     return (
+  //       <RatingBar stars={key} rates={value} />
+  //     )
+  //   });
+  // }
 
 
 
 
 
   let numberofLect = 0
-  Course?.course_details?.sections?.forEach(datum => numberofLect += datum?.lectures?.length)
+  Course?.sections?.forEach(datum => numberofLect += datum.lectures.length)
 
 
 
-  const RegisterCart = async () => {
-    if (message === true) {
-      setPopUp(false)
-    }
-    else {
-      setPopUp(true)
-      let pair = { Quantity: 1 };
-      let newObj = { ...Course, ...pair }
-      dispatch(SaveCart(newObj))
-      setTimeout(() => {
-        setPopUp(false)
-        setMessage(true)
-        setInfo(true)
+  const AcceptInv = async () => {
+    try {
+      setLoading(true)
+      let res = await instance.post('api//company/accept-invite',{ invite_code :  invite?.invite_code } ) 
+      if (res.data.response === true) {
+        setLoading(false)
+        dispatch(loginUser(res))
+        
+        router.push('/en/instructor/profile')
+      }
+      else{
+        SweetAlert({icon : "error" , text :res.data.error})
+        setLoading(false)
 
-      }, 1000);
+      }
+
+    } catch (error) {
+
     }
   }
 
@@ -82,12 +108,21 @@ const Home: NextPage = ({ Course }: any) => {
           <div className="container-nav">
             <Navbar />
           </div>
+
+        </div>
+        <div className="info ">
+
+          <div className="info-bar">
+            <h5>information from Invitaion  </h5>
+            <button onClick={() => AcceptInv()}> Accept</button>
+
+          </div>
         </div>
         <section className="browse browse-bgc">
           <div className="container-3 all-browse">
             <div className="adsmfsf-w3rmasidw">
               <h5>
-                {Course?.Course?.category_tree.map((tre: any) => (
+                {Course?.category_tree.map((tre: any) => (
                   <>
                     {tre}
                     <Icons name="p3" />
@@ -95,12 +130,12 @@ const Home: NextPage = ({ Course }: any) => {
                 ))}
 
               </h5>
-              <h4>{Course?.Course?.title}</h4>
+              <h4>{Course?.title}</h4>
               <p>
-                {Course?.Course?.short_desc}
+                {Course?.short_desc}
               </p>
               <p>
-                <span>{Course?.Course?.avg_rating.aggr_rating}</span>
+                <span>{Course?.avg_rating.aggr_rating}</span>
                 <Rating value={3.5} />
 
                 {/* <Icons name="p1" />
@@ -111,7 +146,7 @@ const Home: NextPage = ({ Course }: any) => {
                 {/* (513 ratings) 13,107 students */}
               </p>
               <p>
-                <span>Created by</span> {Course?.course_details?.instructor.fullname}
+                <span>Created by</span> {Course?.instructor.fullname}
               </p>
               {/* <div className="skdnasdsda-weiad">
                 <p>Last updated 12/2021</p>
@@ -127,7 +162,7 @@ const Home: NextPage = ({ Course }: any) => {
               <h5>What you'll learn</h5>
               <div className="outcoms">
                 <ul>
-                  {Course?.course_details?.outcomes.map((out: any) => (
+                  {Course?.outcomes.map((out: any) => (
 
                     <li>
                       <div className="course_outcoms">
@@ -159,12 +194,12 @@ const Home: NextPage = ({ Course }: any) => {
                 </div>
               </div>
             </div> */}
-            {Course?.course_details?.sections?.length ?
+            {Course?.sections?.length > 0 ?
               <div className="learning-jsiae">
                 <h5>Course content</h5>
                 <div className="jdisad0ewew-2edsad">
                   <div className="jksad-sadsnkd">
-                    <h6 className="kasjdasd-aweaidae">• {Course?.course_details?.sections?.length} sections</h6>
+                    <h6 className="kasjdasd-aweaidae">• {Course?.sections?.length} sections</h6>
                     <h6 className="kasjdasd-aweaidae">• {numberofLect} lectures </h6>
                     <h6 className="kasjdasd-aweaidae">• 8h 39m total length</h6>
                   </div>
@@ -174,7 +209,7 @@ const Home: NextPage = ({ Course }: any) => {
                   </div>
                 </div>
                 <div className="cosaidjse-wea">
-                  <CourseAccordian section={Course?.course_details?.sections} />
+                  <CourseAccordian section={Course?.sections} />
 
                 </div>
               </div>
@@ -184,7 +219,7 @@ const Home: NextPage = ({ Course }: any) => {
               <h5>Requirements</h5>
               <div className="outcoms">
                 <ul>
-                  {Course?.course_details?.requirements.map((req: any) => (
+                  {Course?.requirements.map((req: any) => (
 
                     <li>
                       <div className="course_outcoms">
@@ -201,14 +236,14 @@ const Home: NextPage = ({ Course }: any) => {
 
               <h5>Description</h5>
               <div className="kasjdasd-aweaidae">
-                <h6>{Course?.course_details?.long_desc}</h6>
+                <h6>{Course?.long_desc}</h6>
 
               </div>
 
               <h5>Who this course is for:</h5>
               <div className="outcoms">
                 <ul>
-                  {Course?.course_details?.course_for.map((req: any) => (
+                  {Course?.course_for.map((req: any) => (
 
                     <li>
                       <div className="course_outcoms">
@@ -227,9 +262,9 @@ const Home: NextPage = ({ Course }: any) => {
 
             <div className="learning-jsiae">
               <FeaturedReview
-                instructor={Course?.course_details?.instructor}
-                allCourses={Course?.course_details?.all_courses_count}
-                reviews={Course?.course_details?.reviews_count} />
+                instructor={Course?.instructor}
+                allCourses={Course?.all_courses_count}
+                reviews={Course?.reviews_count} />
             </div>
             <div className="learning-jsiae no-brd ">
               <h5>See Also</h5>
@@ -248,18 +283,18 @@ const Home: NextPage = ({ Course }: any) => {
             <div className="learning-jsiae no-brd">
               <h5>Instructor</h5>
               <InstructorCard
-                allCourses={Course?.course_details?.all_courses_count}
-                instructor={Course?.course_details?.instructor}
-                enrolled={Course?.course_details?.students_enrolled}
-                reviews={Course?.course_details?.reviews_count} />
+                allCourses={Course?.all_courses_count}
+                instructor={Course?.instructor}
+                enrolled={Course?.students_enrolled}
+                reviews={Course?.reviews_count} />
             </div>
             <div className="hasjdiaw-sD no-brd">
               <h2>Student feedback</h2>
               <div className="dosjafos-ewwae">
                 <div className="sdjafis-awjes">
-                  <h1>{Course?.course_details?.avg_rating.avg_rating || 0}</h1>
+                  <h1>{Course?.avg_rating.avg_rating || 0}</h1>
                   <div className="njadfsdz-aenwew">
-                    <Rating value={Course?.course_details?.avg_rating.avg_rating || 0} />
+                    <Rating value={Course?.avg_rating.avg_rating || 0} />
                     {/* <Icons name="ipc4" />
                     <Icons name="ipc4" />
                     <Icons name="ipc4" />
@@ -269,7 +304,7 @@ const Home: NextPage = ({ Course }: any) => {
                   <h3>Course Rating</h3>
                 </div>
                 <div className="w-100">
-                  {Course?.course_details?.ratings_breakdown.map((rat: any, i: number) => (
+                  {Course?.ratings_breakdown.map((rat: any, i: number) => (
                     <RatingBar stars={i} rates={rat} />
                   ))}
                   {/* <RatingBar stars={4} rates="12%" />
@@ -322,7 +357,7 @@ const Home: NextPage = ({ Course }: any) => {
               <h4 className="jkdasfasd-neidasd">
                 More Courses{" "}
                 <span>
-                  by {Course?.course_details?.instructor?.fullname}
+                  by {Course?.instructor?.fullname}
                 </span>
               </h4>
               <MulticarouselCourse OtherCourse={Course?.other_courses} />
@@ -331,30 +366,28 @@ const Home: NextPage = ({ Course }: any) => {
           </section>
           <section className="kasjdsaidw-asjew">
             <div className="card-bar-sec-1">
-              <div className="image_container" onClick={() => Course?.course_details?.previews.length ? setPreview(true) : null}>
-                <img src={Course?.course_details?.cover_image} />
-                {Course?.course_details?.previews.length ?
+              <div className="image_container" onClick={() => Course?.previews.length ? setPreview(true) : null}>
+                <img src={Course?.cover_image} />
+                {Course?.previews.length ?
                   <div className="play_icon">
                     <i className="fa fa-play-circle" id="icon" ></i>
                   </div>
-                  : null 
+                  : null
                 }
 
               </div>
               <div className="kjisdofa-0ewkraf">
                 <div className="num-flex-1">
                   <h3>${Course?.price}</h3>
-                  <h5 className="text-decoration-line">${Course?.course_details?.discounted_price}</h5>
+                  <h5 className="text-decoration-line">${Course?.discounted_price}</h5>
                   {/* <h5>84% off</h5>4 */}
                 </div>
                 {/* <p className="text-center day-one">1 day left at this price!</p> */}
                 <div className="">
-                  
-                  
-                    <div className="btn-add">
-                      <button className="buy-now">Accept Invitation</button>
+
+                    <div className="btn-add" onClick={() => AcceptInv()}>
+                      <button className="buy-now" style={{ fontSize: '18px' }}>Accept Invitation</button>
                     </div>
-                  
                 </div>
                 <h6 className="text-center">30-Day Money-Back Guarantee</h6>
                 <h5>This course includes:</h5>
@@ -377,21 +410,36 @@ const Home: NextPage = ({ Course }: any) => {
             </div>
           </section>
         </div>
+
+        
+        {
+              loading &&
+              <div style={{ position: 'absolute', backgroundColor: 'rgba(255,255,255,0.7)', opacity: '1', textAlign: 'center', top: 0, left: 0, right: 0, bottom: 0, zIndex: '999' }}>
+                <div style={{ marginTop: '20rem', zIndex: '9999' }}>
+                  <Spinner animation="border" variant="primary" />
+                </div>
+
+              </div>
+            }
+
+
         <Footer />
-        {preview && <PreviewModel previews={Course?.course_details?.previews} Toggle={(value: any) => setPreview(value)} />}
-        {Info && <InfoCart Course={Course?.Course} />}
+        {preview && <PreviewModel previews={Course?.previews} Toggle={(value: any) => setPreview(value)} />}
+        {Info && <InfoCart Course={Course} />}
       </div >
     </>
   );
 };
 
 export const getServerSideProps = async ({ params }: any) => {
+
   const res = await instance.get(
-    `api//cour/api//company/invite-details/${params.id || "graphic-1651083779"}`,
+    `api//company/invite-details/${params.id}`,
   );
   return {
     props: {
-      Course: res.data.response.invite_details,
+      Course: res.data.response.course_details,
+      invite: res.data.response.invite_details,
     },
   };
 };

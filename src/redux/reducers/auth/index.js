@@ -66,7 +66,8 @@ const userReducer = (state = initialState, action) => {
     case LOGOUT_INST: {
       return {
         ...state,
-        User: null
+        User: null,
+        token : null 
       }
     }
     case ERROR: {

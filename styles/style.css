@@ -6570,3 +6570,34 @@ strong {
     border-radius: 5px;
     padding: 10px 0px 40px 20px;
 }
+
+
+/* sticky navbar */
+
+.info{
+  position:-webkit-sticky;
+  position:sticky;
+  top:10px;
+  z-index: 2;
+  color: white;
+}
+
+
+
+.info-bar{
+    display: flex;
+    justify-content: space-between;
+    height: 80px;
+    align-items: center;
+    padding-left: 3rem;
+    padding-right: 5rem;
+    background: linear-gradient(253.58deg,#751b2b,#30748b);
+
+    
+}
+
+.info-bar button{
+  width: 15%;
+  height: 50px;
+  border-radius: 30px;
+}
