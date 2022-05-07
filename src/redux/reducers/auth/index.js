@@ -6,6 +6,7 @@ import {
   OPT_VERIFY,
   CLEAN_STATE,
   LOGOUT_INST,
+  UPDATE_USER,
 } from "../../types/types";
 const initialState = {
   token: null,
@@ -45,6 +46,13 @@ const userReducer = (state = initialState, action) => {
         User: action.payload.response.student,
         token: action.payload.response.token.token,
         isAuth: true,
+      };
+    }
+    case UPDATE_USER: {
+      
+      return {
+        ...state,
+        User: action.payload.response.user,
       };
     }
     case REGISTER_SOCIAL_MEDIA: {

@@ -23,7 +23,14 @@ const Home: NextPage = () => {
 
   const carts = useSelector((state: RootStateOrAny) => state.cartReducer.AddCart)
 
-  let totalamount = carts.reduce((total: number, product: any) => total + product.price * product.Quantity, 0).toFixed(2)
+  const totalamount = carts.reduce(function (currentTotal:any, obj:any) {
+    let str = obj.price.replace(",", "");
+    var price = parseFloat(str);
+    if (!isNaN(price)) return currentTotal + price * obj.Quantity;  
+    return currentTotal;
+  }, 0).toFixed(2)
+
+  // let totalamount = carts.reduce((total: number, product: any) => total + parseFloat(product.price) * product.Quantity, 0).toFixed(2)
 
   useEffect(() => {
     setTimeout(() => {
@@ -31,6 +38,7 @@ const Home: NextPage = () => {
     }, 2000);
   }, [])
   console.log(carts)
+
   return (
     <>
       <div>
@@ -57,10 +65,14 @@ const Home: NextPage = () => {
 
                   </div>
                   <div className="photo-maker-2">
-                    <h4>
-                      ${totalamount} 
-                      {/* <span>$49.99 (76% off)</span> */}
-                    </h4>
+                    <div className="d-flex justify-content-between">
+                      <h4>Total</h4>
+                      <h4>
+                        ${totalamount}
+                        {/* <span>$49.99 (76% off)</span> */}
+                      </h4>
+
+                    </div>
                     <Link href="/en/checkout">
                       <button className="btn-2s w-100 my-4">Checkout</button>
                     </Link>

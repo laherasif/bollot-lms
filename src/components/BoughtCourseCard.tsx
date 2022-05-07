@@ -24,9 +24,7 @@ export default () => {
               </div>
               <p>10,558</p>
             </div>
-            <div>
-              <Icons name="lk5" />
-            </div>
+            
             <div className="lmcadsiod0je2e">
               <h2>$13.99</h2>
               <h3>$84.99</h3>

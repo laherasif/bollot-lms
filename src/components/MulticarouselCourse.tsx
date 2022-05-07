@@ -28,18 +28,14 @@ const responsive = {
   }
 };
 import React from 'react';
-import CourseCard from "./card/CourseCard";
-export default ()=>{
-    return   <div>
-       <Carousel responsive={responsive}>
-      <CourseCard />
-              <CourseCard />
-              <CourseCard />
-              <CourseCard />
-              <CourseCard />
-              <CourseCard />
-              <CourseCard />
-              <CourseCard />
-  </Carousel>
-    </div>
+import RelatedCourse from "./card/RelatedCourse";
+export default ({ OtherCourse }: any) => {
+  return <div>
+    <Carousel responsive={responsive}>
+      {OtherCourse?.map((course:any , i : number) => (
+        <RelatedCourse f={course} key={i} />
+      ))}
+
+    </Carousel>
+  </div>
 }

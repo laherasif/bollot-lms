@@ -1,21 +1,20 @@
 import type { NextPage } from "next";
 import { useIntl } from "react-intl";
 import Sidebar from "../../../../src/components/instructor/sidebar2";
-// import { FiSearch } from "react-icons/fi";
-// import { BiBell } from "react-icons/bi";
+import { FiSearch } from "react-icons/fi";
+import { BiBell } from "react-icons/bi";
 import { Dropdown } from "react-bootstrap";
-// import { IoMailOutline } from "react-icons/io5";
+import { IoMailOutline } from "react-icons/io5";
 import Icons from "../../../../src/icons";
-// import TopNavbar from "../../../src/components/TopNavbar";
+import TopNavbar from "../../../../src/components/instructor/TopNavbar";
 import NavigationBar1 from "../../../../src/components/instructor/NavigationBar3";
-// import Chart from "../../../src/components/chart";
-// import Chart1 from "../../../src/components/chart1";
+import Chart from "../../../../src/components/instructor/chart";
+import Chart1 from "../../../../src/components/instructor/chart1";
 import BarChart from "../../../../src/components/instructor/barchart3";
-// import BarChart1 from "../../../src/components/barchart1";
-// import Link from "next/link";
-// import CourseCard from "../../../src/components/CourseCard1";
+import BarChart1 from "../../../../src/components/instructor/barchart1";
+import Link from "next/link";
+import CourseCard from "../../../../src/components/instructor/CourseCard1";
 import  PieChart  from '../../../../src/components/instructor/pieChart';
-import withAuth from "../../../../src/components/Hoc/authRoute";
 const options = ["one", "two", "three"];
 
 const UserChatCard = () => {
@@ -35,15 +34,17 @@ const UserChatCard = () => {
   );
 };
 const Home: NextPage = () => {
-  // const intl = useIntl();
+  const intl = useIntl();
 
   return (
     <div className="inst">
       <NavigationBar1 />
       <section className="dash-board jadsifd-asdasid">
+      <div className="ksadsa-w4a3k4">
       <div className="jcoiasd03-eakw3e1">
         <Sidebar />
         </div>
+      </div>
         <div className="dash-board-1">
           <div className="dash-2 ">
             <div className="my-course kadjsfs3e0we-112x">
@@ -166,4 +167,4 @@ Motion Gra...</p>
   );
 };
 
-export default withAuth(Home);
+export default Home;

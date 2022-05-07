@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Container,
   Form,
@@ -10,39 +9,17 @@ import {
   Spinner,
 } from "react-bootstrap";
 import Icons from "../../insIcons";
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from "react";
 import { ListObjectsCommand, S3Client } from "@aws-sdk/client-s3";
-import AWS from 'aws-sdk'
+import AWS from "aws-sdk";
 import Secdule from "./secdule";
 import { RootStateOrAny, useSelector } from "react-redux";
 import axios from "axios";
 import Router, { useRouter } from "next/router";
-import { SweetAlert } from "../../function/hooks";
+import { S3_BUCKET, myBucket } from "../../confiq/aws/aws";
+import { generateVideoThumbnail, SweetAlert } from "../../function/hooks";
 
-
-const S3_BUCKET = 'bolloot';
-const REGION = 'us-east-1';
-
-
-AWS.config.update({
-  accessKeyId: "AKIA5CYBVB45T33ZHF6Y",
-  secretAccessKey: "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",
-});
-
-const CREDENTIAL = {
-  accessKeyId: "AKIA5CYBVB45T33ZHF6Y",
-  secretAccessKey: "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",
-};
-
-const myBucket = new AWS.S3({
-  params: { Bucket: S3_BUCKET },
-  region: REGION,
-})
-
-
-
-export default ({ course_id }: any) => {
-
+export default ({ courseId, onStepChange, onPrevStep, step }: any) => {
   const [progress, setProgress] = useState(0);
   const [selectedFile, setSelectedFile] = useState(null);
   const [thumb, setTumb] = useState();
@@ -50,96 +27,68 @@ export default ({ course_id }: any) => {
   const [aswVideoSrc, setAwsVideoSrc] = useState([]);
   const [type, setType] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState([]);
+  const [err, setErr] = useState();
+  const [section, setSection] = useState([{
+    title: "",
+    lectures: [
+      {
+        title: "",
+        file_type: "",
+        object_key: "",
+        thumbnail: "",
+        progressbar: "",
+      },
+    ],
+  },]);
 
-  const [section, setSection] = useState([
-    {
-      title: '',
-      lectures: [
-        { title: "", file_type: '', file_url: 'http://www.bollot.com', },
+  const token = useSelector(
+    (state: RootStateOrAny) => state?.userReducer?.token
+  );
 
-      ]
-
-    }
-  ])
-  const [section2, setSection2] = useState([
-    {
-      title: '',
-      lectures: [
-        { title: '', file: '', thumbnail: '', progressbar: 0 }
-      ]
-
-    }
-  ])
-
-
-  const inputFile = useRef(null)
+  const AxInstance = axios.create({
+    // .. where we make our configurations
+    baseURL: "https://dev.thetechub.us/bolloot/",
+    headers: {
+      token: token,
+    },
+  });
 
   const AddmoreSection = () => {
     setSection([
       ...section,
       {
-        title: '',
+        title: "",
         lectures: [
-          { title: "", file_type: '', file_url: 'http://www.bollot.com', },
+          {
+            title: "",
+            file_type: "",
+            object_key: "",
+            thumbnail: "",
+            progressbar: "",
+          },
+        ],
+      },
+    ]);
+  };
 
-        ]
-      }
-    ])
-
-    setSection2([
-      ...section2,
-      {
-        title: '',
-        lectures: [
-          { title: "", file: '', thumbnail: '', progressbar: 0 },
-
-        ]
-      }
-    ])
-  }
-
-
-  const handleChangeSection = (index: number, evnt: React.ChangeEvent<HTMLInputElement>) => {
-    debugger
+  const handleChangeSection = (
+    index: number,
+    evnt: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const { name, value } = evnt.target;
-    const list: any = [...section2];
-    list[index][name] = value;
-    setSection2(list);
-
-
     const lists: any = [...section];
     lists[index][name] = value;
     setSection(lists);
-
-
-
-  }
-
-  const onButtonClick = () => {
-    // `current` points to the mounted file input element
-    inputFile.current.click();
   };
 
-
-
-  const router = useRouter()
-
-
-
-
-  const handleChangeLecture = (index: number, i: number, evnt: React.ChangeEvent<HTMLInputElement>) => {
-    debugger
+  const handleChangeLecture = (
+    index: number,
+    i: number,
+    evnt: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    debugger;
     const { name, value } = evnt.target;
-    const list: any = [...section2];
-    for (let j = 0; j < list.length; j++) {
-      if (j === index) {
-        const element = list[j];
-        element.lectures[i][name] = value;
-      }
-
-    }
-    setSection2(list)
 
     const lists: any = [...section];
     for (let j = 0; j < lists.length; j++) {
@@ -147,291 +96,188 @@ export default ({ course_id }: any) => {
         const element = lists[j];
         element.lectures[i][name] = value;
       }
-
     }
-    setSection(lists)
-
-  }
-
-
-  const generateVideoThumbnail = (file: File) => {
-    return new Promise((resolve) => {
-      const canvas = document.createElement("canvas");
-      const video = document.createElement("video");
-
-      // this is important
-      video.autoplay = true;
-      video.muted = true;
-      video.src = URL.createObjectURL(file);
-
-      video.onloadeddata = () => {
-        let ctx: any = canvas.getContext("2d");
-
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-
-        ctx.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
-        video.pause();
-        return resolve(canvas.toDataURL("image/png"));
-      };
-    });
+    setSection(lists);
   };
 
+  const handleChangeLectureFile = async (
+    index: number,
+    i: number,
+    evnt: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file: any = evnt.target.files[0];
+    if (!file.name.match(/.(mp4|pdf)$/i)) {
+      SweetAlert({
+        icon: "error",
+        text: "please select only video or pdf files ",
+      });
+    } else if (file.type === "video/mp4") {
+      const thumbnail: any = await generateVideoThumbnail(file);
 
-
-  const handleChangeLectureFile = async (index: number, i: number, evnt: React.ChangeEvent<HTMLInputElement>) => {
-    debugger
-    const { name } = evnt.target;
-    const file = evnt.target.files[0]
-    const thumbnail: any = await generateVideoThumbnail(file);
-    // setTumb(thumbnail)
-
-    const params = {
-      ACL: 'private',
-      Body: file,
-      Bucket: S3_BUCKET,
-      Key: file.name
-    };
-
-
-
-
-
-    myBucket.putObject(params)
-      .on('httpUploadProgress', (evt) => {
-        setProgress(Math.round((evt.loaded / evt.total) * 100))
-      })
-      .send((err, data) => {
-        if (err) console.log(err);
-      })
-
-
-
-    const list: any = [...section2];
-    for (let j = 0; j < list.length; j++) {
-      if (j === index) {
-        const element = list[j];
-        element.lectures[i].thumbnail = thumbnail;
-        element.lectures[i][name] = file;
-        element.lectures[i].progressbar = progress;
-
-      }
-
+      const params = {
+        ACL: "private",
+        Body: file,
+        Bucket: S3_BUCKET,
+        Key: file.name,
+      };
+      myBucket
+        .putObject(params)
+        .on("httpUploadProgress", (evt) => {
+          if (evt.loaded && evt.total) {
+            let prog = Math.round((evt.loaded / evt.total) * 100);
+            const list: any = [...section];
+            for (let j = 0; j < list.length; j++) {
+              if (j === index) {
+                const element = list[j];
+                element.lectures[i].thumbnail = thumbnail;
+                element.lectures[i].progressbar = prog;
+                element.lectures[i].file_type = "Video";
+                element.lectures[i].object_key = file.name;
+              }
+            }
+            setSection(list);
+          } else {
+            SweetAlert({
+              icon: "error",
+              text: "please check your internet connection",
+            });
+          }
+        })
+        .send((err) => {
+          if (err) {
+            SweetAlert({ icon: "error", text: err });
+          }
+        });
+    } else {
+      const params = {
+        ACL: "private",
+        Body: file,
+        Bucket: S3_BUCKET,
+        Key: file.name,
+      };
+      myBucket
+        .putObject(params)
+        .on("httpUploadProgress", (evt) => {
+          if (evt.loaded && evt.total) {
+            let prog = Math.round((evt.loaded / evt.total) * 100);
+            const list: any = [...section];
+            for (let j = 0; j < list.length; j++) {
+              if (j === index) {
+                const element = list[j];
+                element.lectures[i].thumbnail =
+                  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMsAAAD5CAMAAAC+lzGnAAAAyVBMVEX19fX/IRb///8sLCz/AAD1+vr1/Pz6qaf/DwD/HRD7i4j/TUf4vLv0///6q6n6+volJSWysrLt7e0YGBg+Pj4FBQUODg7Y2Ng5OTljY2PKysr17e28vLz/GQsnJycaGhr8c2/329r30tH9U079aGP6n538enf24N//KiD25+f7lpT+NS34xcT9YFt7e3v6nZr/Qjv/xML5s7H9W1akpKRISEiWlpb/hYL+Myv/z83+PTb7jov8bmr+SEJpaWmKiopXV1eCgoLR0dF0jYa2AAAN10lEQVR4nO2daV/iPBeHQ01LigRQb3DGWtlXQR3UccVx5vt/qCdplqZQlUrTNs+P/yuVpbk8OScnS0+BtanusjJYTUo56PJ2dP1rGtOkrQTW/9B7QBAi380DpeT6iFx9UummwVJ9higfDJUIwefqrixPlzB3ECYXPv7aiaVTFBIqFy68b7OMSyjv9keFYELTSJZ5kYzC5MLKt1iqMPI1QTzJXAitBR44+AbLXEVBEC0qw1r2uq4MHgmRCrNIzNJVUCCq9BzsOHb2chwHe/ORSpMEhrGU3NAm18CxQY6yMZgpNOg2GUtHfhTeek6eIEyOtwg7CuonYXmSH4QvOG8OJlwLwyo6TMByKT4GhwVBIabpJYchLEtYNKtQOV0FZrUty7MrvKxAKCQGqDA327H0pFm8vJsfld0NR070vBXLAw9i8LoAESwie6zAXNa3YBHvh3k3fVMExpcwj1/CADHko0rRzEJkT/0EMEBEMdjLdbT/QPa0JGH8yRcTGlDh7oIKaBaQDAYM2Fv9YgXkULY3CWFKn8KAG7e47hIoAuN/tuAE+DoYKlxElrK9R5n7+ugTGCAGynIRXZ/JBpcSxv0ExgQWAvMcwsCx0SxEN1vAmMISgflgidYYFrD6EsYcFvtQgemZzQLs/hcwBrEA+1aBeTKbBTifwxjFAhxlrWkTxiwW4AwUmPVtAMNYAP4ExjQWgF8VmKrZLAB3FJil2SwAjz6AMZAlClMzmwXgBwWmbDYLwJU4GDNZojBDs1kAftmEMZUF4NnGOGMsC8DXCsxYPwvdj8a6FqvwUML4j7pZbO/lGcLnylgTjQITnNDQyOI8Bee3XAR1rYnicggz1slC9+hcGByjgH1NzhhaBi10suBL30VVMKXBEw00rbxjeTQBdvWx2HNIvp90LkzP2sClJsvYj2Ln+EEfi1NBiO2x4wEquSVNLmOLrWMX6WPBhz6cssvRrTdY1eUyA7F33NXHgvxn5iQ23RJFHV2GESdgYE2fv0A04s2fkqu5rrb9Hbl5rI3Fg3J7yqNX4x0ufWG+s+cPtLFMIazxr2Qsc00O43CHcfs6WUQcngYsuqKyww+OuDca+5i0S3AcAg01OYzDd/Xdlb5xH4rW28HBVDTTzXKob6yE6IWzLI1nkUOKM0OGs+AV6rOx0nkNWHQdIMjCLgPEh0ccnOfUNgnPgqWCxEHBYGDWlpBlwGLXIDvGxTNZ+GQwyxMfLG02kYXjdL9fKgMWMtqzs0/OKLiWtiOQWbBg3w8CGXN991HX+bQsWEggC2wRZJZkxq8r58+EZYio87MMRt9QmQkLiV8UwHlBWkNyJiwkI6OzZDLv1xrGMmJ5RXBsM3dxfW1T5ExY7CpJ+/FSs+tnw0KSF/+QLyyiobYtkWxYMOlkHrtLW+Op9GxYaCfj671Q34nhjPqYjfgBdo3ukhULT8X07iBmZRe5PtpN/8uFMmIBziTwfBdpvPEhKxa8Cli0LYxTZdXH+E1P2tYsqbLyfX4ZfckYyDAmM3eZ6LxPKLOxko0uHfNZ8ILfUKRt74UqG5ap3BbVtSVOlc38Zcgv8uhq20gCGbFgtvXu95+g+2h2PiZ23mEZLxCcaetlmazD8MQSTsk82YVdo9cumFnI1BI4VdLLDGaxazD8YjJTRg+aelkWe0k3vjK22CSWVfX4v34W4fn8Pmfyq6tpxNTPIj2fp8h4Bv2VFsNk0MfEKRXxOz23pMVltLM4/CSkcvu5h/S4jHYWPuarE/3goN84/cism4VvVJT8vtKrqMs8pngRLt0sItuPTo7xAKFF6i6jm2XMzOKi6Jfaz376dY40s4ivFydipLxS+v6v2y5iuXJ9zcIekyEz6v+8HhwV+ekb19LLIgJyTG0TZw7dSfATJcCOPe3Oq7Xh9Ww2ux4uqz2PICW9ml6WCQ/IMXuUJJihW4zt8dNy1jmcyPqJVPTH0mDYxYmaopVFLL/E7OsRY+COj1aPkiBaE9Kn1W3hZTlJZ9PKwndb17fBCQbolUe0Cocb3LQALxejWW3eG3tU03GvOusHRQdd6Fe3j3Y6WeSp9DAvpuYYLx9ugn89sUXJ7c97U3qjj+rv9F3TSlBAzU2QuulkEYfSfT4sEh/vlgdBUWafFkfulMksE43seB/HU+Zs249DOlnGwix0HcnGoDryiWu41DMWs7lHYpfTJdZx5/GNtfmq2tY7nBpZxHFhf4VJlynfEntQjslo2bUxrwJqTy9J0tyJL6WJWdu2LlalkcWT9czG18RBaL9CneUUR4qZ2mAASwiV4zqa2EzbtnygPhZ26JVqRR0EwptZz4kpyorL0HdhqQw243YvWSfTaBdZLtAlIP3ymkGUJoxvSDyDaDZdGxrF8LTtuq02FpG+lChIbb2Z0TY7QzKaEF96nUfyFtzn84UtD2jqYnEAT1/QYflTEPZur0PHRgQns7E0n7ydNV9/cbwKLxVKplxbfR3uvlIaYhziVja9SdYTdQbknUBfXlUDCyXhfu+irUuY4vEDCXYBDly9dlbiK9DWs+n0WRQSOjVOkLg7YBkMQkGRc194W3/r/0baLI73QDMt/l1JJ/U29padUpA5k+GI5s793HJLRgIPl2I6mbxILk0r5+VKZ7AYjGZVL8kMJk0WTrKay2Ba+96MPpwrJ7t+aiwOqHASXAs3XLJUWizBeOfDmznpFDIR07A2+ZlSYsHzCfThMyUBeMEX9rUdqv5AqbA40wUhmVQDR3V4vV//Oev6pWmwEP9ANG1nn5vKU2/Z9rA0WGzvlhhlJKZTMobpuovyY+3Mgp/IkHbZExFLFGtB/ewrF+/KgofQhRU5EIjpU4I8LD3tyILJ6Ih6oQk8PgHTeezlQ+3GgkcQrbzw/c6KO4u+gyKfaCcWXIFQPTstSptp2CfaRruwkJEEvqpbd7xGi479u63aswOLByPRyhEr4Wiag7OAnVicEVKjlSNXj/Oq778DiwdhOXQW+TAQOM+r9vr3Wew5VKZa8iEtug7ubKEdWGowrI4iH54DE8xp09YOLEtpF1s81MjNr4OBnfxlDNmpNht3+3xcQb08n1OwAwseIPhiY6fXgXy0P/RyimBMO40vdJtuhfhqGMr92Ve7sNhjH7m87A+EldyfrbZTPmaDF76VvVhubp9krh1zfsfpzqvzrp3sUIEmpTBH/tbZFR3K6n6xLLRnKab2LMXUnqWY2rMUU3uWYmrPUkztWYqpPUsxtWcppvYsxdSeZUPqQ7HrRJEXP3lp48PhW/NiqZ+//xR6u/pzd3astOX4/cOX2Ifffm7q/V9ymJRYjlqNUO32SfP+SLbluKm+1mre34FIO60fjU01z/JjOTmI6qJ1f1wXLGsvtVt3akOt/y4ONtQqEMvBQePiOJ6F6ESCFpelSdRqnTQYzH1dZWm3yCvtCwkq28pZ6Ouhcu9jP46JTk/P31rsv8+6EmNpH52dnZ3/fm8y0IsD+WHG0v59FtFx4kakynLxwwp+qVt3DKYNQpbWKQ3IdeuUgzberCjLURCxpZKj6GChzbsK/vsn53WVhb3VumN9TvYiwfKd5mfAwtvfuNpkIW3/HXTIi/8sM1is9wvZ3HUW/qIMVUVnqf9tSIfZYKn/41azzGD53Q58IpYFWPfMMIbY5U/A0opnqd+1lU5WdBYeyBpxvk/efhrE5fZvM1h+BL5/H+v7RC3FYQrOwv/xjb/xduHNZ6hxY2WBWOp17twxYyVj+Rl0wQuljzV+75bApM8SpCn1s3vW1AMlH4uyMHdqKSwHDSWxPP+WZdLNk38T/X27aLFsuHn0EUudsTRVFkUnRWBpEzUavEVtnj0ayhJp0HtkXhnHcqKyXCgT5EKxXLSbf0R74vzlrRHGChHUwiWM929MxFJnoX2sfXLSav74c7qWM0dZgjh38R6NyTstKKXN8uPo7u7u6Oj8X2TdKK6PsazgqtDjftxYF8PCp813hWaJezEmHzsPzGhIbqkqJufnQyX/zWiWY5atvZkxF1O1OUdmE7XWuRlzMVXrLHVmFp6tGc1SBzyJPjKexTrmSfT9+lqfSSwW3TM6/SOS6HC9zDiWxtvV1dXPg2abJWxK+mgeywFNgGVy3zwK32ogi6L2yZnyToNZGu3m1bHa7sKxNE9Iqn/wAcuJVKt58vPuOPo266BFXmkWhQWcngeKb8651Nm/4/rG5KTOXjtNftU1pXVW4bN1ra+2iHZZE1O1P3dRTO1Ziqk9SzG1Zymm/k9ZJowFZV8IKSXJYrq34IZXpKwYyyLqNQ/AgN2F7+dTqCYFseeVE2s8AG4hF5lqF1FbDw1BLbciaOlIlPUtwTnoCqz15zUYIvwaVtW0xEPzfDPtIrqY+2wBK3xWromG4dXJ6dMACIt4Vq6Lvv5k8SRqHpbgmLBYvHxzCb2aF5bFMxpKft+iLDWJlnd5lMTCD7LtTwGLVRLlzuHSLBhZz7vkH1qM5Zf4C/F/k2DwS9jwLmexFmFF6k4BKr5sJ8e7DVEeLMFSl0X1S8hfJn4yTh5y7GFYE9x/tCSL1ZOEJRdOhmMcPMykqHIc3J35apOnCou1DF+hJdkvR8NltahaXncmMOxJLIYpLFZZgaE40Yf/FEtIBSEov6woC7FM5A3GyBVWUVhILoO+/mThhEpja5PFIjHONNO48FU5s6WwWFbVN4rGhY9P1kcsJAS4xvQ0BCfLaOPXWEhCM9gIFIVTEGY7T+tN32ChUWDYOcy7uZ+qPyr3Ytr9P0pjeggMtcVUAAAAAElFTkSuQmCC";
+                element.lectures[i].progressbar = prog;
+                element.lectures[i].file_type = "PDF";
+                element.lectures[i].object_key = file.name;
+              }
+            }
+            setSection(list);
+          } else {
+            SweetAlert({
+              icon: "error",
+              text: "please check your internet connection",
+            });
+          }
+        })
+        .send((err, data) => {
+          if (err) {
+            SweetAlert({ icon: "error", text: err });
+          }
+        });
     }
-    setSection2(list)
-
-    const lists: any = [...section];
-    for (let j = 0; j < lists.length; j++) {
-      if (j === index) {
-        const element = lists[j];
-        element.lectures[i][name] = file.type === "video/mp4" ? "Video" : "PDF";
-
-
-      }
-
-    }
-    setSection(lists)
-
-
-  }
-
-
-
-
-
-
-
+  };
 
   const AddmoreLecture = (index: number) => {
-    const list: any = [...section2];
-    for (let i = 0; i < list.length; i++) {
-      if (i === index) {
-        const element = list[i];
-        element?.lectures.push({ title: "", file: '' })
-      }
-
-    }
-    setSection2(list)
-
     const lists: any = [...section];
     for (let i = 0; i < lists.length; i++) {
       if (i === index) {
         const element = lists[i];
-        element?.lectures.push({ title: "", file_type: '', file_url: 'https://www.bollot.com' })
+        element?.lectures.push({ title: "", file_type: "", file_url: "" });
       }
-
     }
-    setSection(lists)
-
-  }
-
-
-
-  const token = useSelector((state: RootStateOrAny) => state?.userReducer?.token)
-
-  const AxInstance = axios.create({
-    // .. where we make our configurations
-    baseURL: 'https://dev.thetechub.us/bolloot/',
-    headers: {
-      token: token
-    }
-  });
-
-
+    setSection(lists);
+  };
   const SaveCriculum = async () => {
-    debugger
-    try {
-
-
-      let saveCri = {
-        course_id: course_id,
-        sections: section
+    let arr = [];
+    for (let index = 0; index < section.length; index++) {
+      const element = section[index];
+      for (let j = 0; j < element.lectures.length; j++) {
+        const elements = element.lectures[j];
+        let regex = /data:.*base64,/;
+        let checks = elements.thumbnail.replace(regex, "");
+        let regexBase64 =
+          /^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/;
+        let check = regexBase64.test(checks);
+        elements.thumbnail = check ? elements.thumbnail : "";
       }
-
-      console.log("saveCri", saveCri)
-      setLoading(true)
-      let res = await AxInstance.post('api//instructor/courses/curriculum/store', saveCri)
-      if (res.data.success === true) {
-        setLoading(false)
-        router.push(`/en/instructor/quiz/${res.data.response.course.id}`)
-
-      }
-      else {
-        setLoading(false)
-        setErrors(res.data.error)
-        SweetAlert({ icon: 'error', text: 'please fill fields ' })
-
-      }
+      arr.push(element);
     }
-    catch (err) { }
-  }
 
+    let saveCri = {
+      course_id: courseId,
+      sections: arr,
+    };
+
+    try {
+      setLoading(true);
+      let res = await AxInstance.post(
+        "api//instructor/courses/curriculum/store",
+        saveCri
+      );
+      if (res.data.success === true) {
+        setLoading(false);
+        onStepChange()
+        // SweetAlert({
+        //   icon: "success",
+        //   text: "Criculum are Successfully saved",
+        // });
+      } else {
+        setLoading(false);
+        // setErrors(res.data.error)
+      }
+    } catch (err) {
+      setLoading(false);
+    }
+  };
 
   const removeInputFields = (index: number, i: number) => {
-    debugger
-
-    const list: any = [...section2];
-    for (let j = 0; j < list.length; j++) {
-      if (j === index) {
-        const element = list[j];
-        let find = element.lectures
-        find.splice(i, 1)
-      }
-
-    }
-    setSection2(list)
+    debugger;
 
     const lists: any = [...section];
     for (let j = 0; j < lists.length; j++) {
       if (j === index) {
-        const element = list[j];
-        let find = element.lectures
-        find.splice(i, 1)
+        const element = lists[j];
+        let find = element.lectures;
+        find.splice(i, 1);
       }
-
     }
-    setSection(lists)
-  }
+    setSection(lists);
+  };
 
-  const removeInputField = (index: number,) => {
-
-    const rows = [...section2];
-    rows.splice(index, 1);
-    setSection2(rows);
-
+  const removeInputField = (index: number) => {
     const row = [...section];
     row.splice(index, 1);
     setSection(row);
+  };
 
-
-  }
-
-
-  // useEffect(() => {
-  //     let fun = async () => {
-  //         const params = {
-  //             ACL: 'private',
-  //             Bucket: S3_BUCKET,
-  //         };
-  //         let client = new S3Client({ region: REGION, credentials: CREDENTIAL })
-  //         const command = new ListObjectsCommand(params);
-  //         const response: any = await client.send(command);
-  //         setAwsVideoSrc(response.Contents)
-  //     }
-  //     fun()
-  // }, [progress])
-
-  // console.log("aws", aswVideoSrc)
-
-
-
-
-  // const handleFileInput = async (e: any) => {
-  //     const file = e.target.files[0];
-  //     const thumbnail: any = await generateVideoThumbnail(e.target.files[0]);
-
-
-  //     setTumb(thumbnail)
-  //     setSelectedFile(file);
-
-  // }
-
-
-
-
-  // const uploadFile = (file: any) => {
-
-  //     const params = {
-  //         ACL: 'private',
-  //         Body: file,
-  //         Bucket: S3_BUCKET,
-  //         Key: file.name
-  //     };
-
-  //     myBucket.putObject(params)
-  //         .on('httpUploadProgress', (evt) => {
-  //             setProgress(Math.round((evt.loaded / evt.total) * 100))
-  //         })
-  //         .send((err) => {
-  //             if (err) console.log(err)
-  //         })
-  // }
-
-  // const getFiles = (key: any) => {
-  //     const paramss = {
-  //         Bucket: S3_BUCKET,
-  //         Key: key
-  //     };
-
-
-
-
-  //     myBucket.getObject(paramss, function (error, data) {
-  //         if (error) {
-  //             console.error(error);
-  //         }
-
-  //         console.log("datad", data)
-  //     });
-  // }
-
-
-  console.log("section", section2)
-
+  let red = section?.some((ac) =>
+    ac.lectures.some((sa) => sa.progressbar < 100)
+  );
 
   return (
     <>
-
-      <div className="p-field">
-
+      <div className="p-fields">
         <div className="row">
-          <div className="col-12 col-md-6 mt-10 col-md-offset-1 " >
+          <h4 className="mb-2">Plane Your Course </h4>
+          <div className="col-12 col-md-6 mt-13 col-md-offset-1 ">
             <div
               data-cy="button-box"
               id="up-button-box"
-              className={`up-button-box ${type === 0 ? 'up-button-box  up-button-box-radio active' : ''} `}
-              style={{ height: '100%' }}
-              onClick={() => setType((0))}
+              className={`up-button-box ${
+                type === 0 ? "up-button-box  up-button-box-radio active" : ""
+              } `}
+              style={{ height: "100%" }}
+              onClick={() => setType(0)}
             >
               <div className="up-radio">
                 <label className="up-checkbox-label" htmlFor="up-button-box">
@@ -497,10 +343,12 @@ export default ({ course_id }: any) => {
             </div>
           </div>
           <div className="col-12 col-md-6 mt-10">
-            <div data-cy="button-box"
-              className={`up-button-box ${type === 1 ? 'up-button-box  up-button-box-radio active' : ''} `}
-              onClick={() => setType((1))}
-
+            <div
+              data-cy="button-box"
+              className={`up-button-box ${
+                type === 1 ? "up-button-box  up-button-box-radio active" : ""
+              } `}
+              onClick={() => setType(1)}
             >
               <div className="up-radio">
                 <label className="up-checkbox-label">
@@ -559,36 +407,46 @@ export default ({ course_id }: any) => {
           </div>
         </div>
 
-
-
-        {type === 0 ?
+        {type === 0 ? (
           <>
-            <div className="drop-box mb-3">
-              {section2.map((sec: any, index: number) => (
+            <div className="drop-box main-box mb-3">
+              {section.map((sec: any, index: number) => (
                 <>
                   <div className="kvjadsd-j43rm">
                     <div className="jodsa-wnedas">
                       <h6>Section title</h6>
                     </div>
-                    { sec?.length !== -1 && <div onClick={()=> removeInputField( index  )} style={{cursor:'pointer'}}><i className="fa fa-trash"></i></div> }
-
+                    {sec?.length !== -1 && (
+                      <div
+                        onClick={() => removeInputField(index)}
+                        style={{ cursor: "pointer" }}
+                      >
+                        <i className="fa fa-trash"></i>
+                      </div>
+                    )}
                   </div>
                   <input
                     type="text"
                     name="title"
                     value={sec.title}
                     onChange={(e) => handleChangeSection(index, e)}
-                    placeholder="Write here..." />
+                    placeholder="Write here..."
+                  />
                   {/* { errors && <div className='invalid'>{errors.sections.0.title[0]}</div>} */}
                   {sec.lectures.map((lec: any, i: number) => (
-
-                    <div className="drop-box " style={{ marginTop: '10px' }}>
+                    <div className="drop-box" style={{ marginTop: "10px" }}>
                       <div className="kvjadsd-j43rm">
                         <div className="jodsa-wnedas">
                           <h6>Lectures</h6>
                         </div>
-                        { lec?.length !== -1 && <div onClick={()=> removeInputFields( index  , i )} style={{cursor:'pointer'}}><i className="fa fa-trash"></i></div> }
-
+                        {lec?.length !== -1 && (
+                          <div
+                            onClick={() => removeInputFields(index, i)}
+                            style={{ cursor: "pointer" }}
+                          >
+                            <i className="fa fa-trash"></i>
+                          </div>
+                        )}
                       </div>
 
                       <div className="p-field  ">
@@ -601,80 +459,96 @@ export default ({ course_id }: any) => {
                           name="title"
                           value={lec.title}
                           onChange={(e) => handleChangeLecture(index, i, e)}
-                          placeholder="Write here..." />
-
+                          placeholder="Write here..."
+                        />
                       </div>
-
-                      {/* <img src={thumb} width="50px" /> */}
-
-                      {/* <video width="100%" height="100%" controls >
-                                    <source src={'s3://bolloot/www_screencapture_com_2022-3-23_23_09.mp4'} type="video/mp4" />
-                                </video> */}
 
                       <div>
                         <label>Video / PDF file for this Lecture</label>
-                        {/* {progress}% */}
-                        <div className="drop-box" style={{ margin: '0px' }}>
-
-                          <div className="kvjadsd-j43rm iasdufhvs-ernd" onClick={onButtonClick}>
+                        <div className="drop-box img_container">
+                          <div className="kvjadsd-j43rm iasdufhvs-ernd">
                             <Icons name="i29" />
-                            {lec.thumbnail ? <img src={lec.thumbnail} alt="course_img" style={{ width: '100%', objectFit: 'cover' }} /> : ""}
-                            {!lec.thumbnail && <p>Drag file here / Choose file</p>}
+                            {lec.thumbnail ? (
+                              <img
+                                src={lec.thumbnail}
+                                alt="course_img"
+                                className="thum_img"
+                              />
+                            ) : (
+                              ""
+                            )}
+                            {lec.thumbnail || lec.file_type === "Video" ? (
+                              ""
+                            ) : lec.object_key ? (
+                              lec?.object_key
+                            ) : (
+                              <p>Drag file here / Choose file</p>
+                            )}
                           </div>
-
-                          <input type="file" ref={inputFile} accept="audio/*,video/*" name="file_type" onChange={(e) => handleChangeLectureFile(index, i, e)} id="img" style={{ display: 'none' }} />
+                          {lec.thumbnail || lec.file_type === "PDF" ? (
+                            ""
+                          ) : (
+                            <input
+                              type="file"
+                              accept="pdf/*"
+                              onChange={(e) =>
+                                handleChangeLectureFile(index, i, e)
+                              }
+                              className="custom-file-input"
+                            />
+                          )}
                         </div>
                         <div className="mt-2">
-                          {lec.progressbar === 100 ? " "
-                            :
-                            lec.progressbar && <ProgressBar animated now={lec.progressbar} />}
+                          {lec.progressbar === 100
+                            ? " "
+                            : lec.progressbar && (
+                                <ProgressBar animated now={lec.progressbar} />
+                              )}
                         </div>
-                        {/* <button onClick={() => uploadFile(selectedFile)}> Upload to S3</button> */}
                       </div>
-
-
-
-
-
-                      {/* <div>
-                            {aswVideoSrc.map((aws: any) => (
-                              <p onClick={() => getFiles(aws.Key)}>{aws.Key}</p>
-                              ))}
-                            </div> */}
-
-
                     </div>
                   ))}
-                  <h3 style={{ cursor: 'pointer' }} onClick={() => AddmoreLecture(index)} >+ Add more lectures </h3>
-
-
+                  <h3
+                    className="add-more"
+                    onClick={() => AddmoreLecture(index)}
+                  >
+                    + Add more lectures{" "}
+                  </h3>
                 </>
               ))}
             </div>
-            <h3 style={{ cursor: 'pointer' }} onClick={() => AddmoreSection()}  >+ Add more lectures and more sections</h3>
-            <div className="d-flex">
+            
+            <h3 id="more-section" onClick={() => AddmoreSection()}>
+              + Add more lectures and more sections
+            </h3>
+            <div className="d-flex justify-content-center mt-2">
               <div className="idfadsf-sads kajfds-sdfe hfdajss-3ersad">
-                {/* <button className="upload-1 sdisad-dsdactive ">
+                <button
+                  className="upload-1 sdisad-dsdactive "
+                  onClick={() => onPrevStep(1 - 1)}
+                >
                   Preview
-                </button> */}
+                </button>
               </div>
-              <div className="idfadsf-sads kajfds-sdfe">
-                <button className="upload-1 sdisad-dsdactive" onClick={() => SaveCriculum()}>
-                  {loading ?
-                    <Spinner animation="border" />
-                    :
-                    "Save & Next"
-                  }
+              <div className="idfadsf-sads kajfds-sdfe ">
+                <button
+                  className="upload-1 sdisad-dsdactive"
+                  onClick={() => SaveCriculum()}
+                >
+                  {loading ? <Spinner animation="border" /> : "Save & Next"}
                 </button>
               </div>
             </div>
           </>
-          :
-          <Secdule course_id={course_id} />
-        }
-
+        ) : (
+          <Secdule
+            course_id={courseId}
+            onStepChange={onStepChange}
+            onPrevStep={onPrevStep}
+            step={step}
+          />
+        )}
       </div>
-
     </>
   );
 };

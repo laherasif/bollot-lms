@@ -4,8 +4,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useSelector, RootStateOrAny } from 'react-redux';
 import axios from 'axios'
 import moment from 'moment'
-import {useRouter } from 'next/router';
-const Secdule = ({ course_id }: any) => {
+import { useRouter } from 'next/router';
+const Secdule = ({ course_id, onStepChange, onPrevStep, step }: any) => {
     // const [date, setdate] = useState(new Date());
     // const [from_time, setfrom_time] = useState(new Date());
 
@@ -35,7 +35,7 @@ const Secdule = ({ course_id }: any) => {
         formValues[i][name] = date;
         setDateTime(formValues)
 
-      
+
     }
 
 
@@ -68,8 +68,7 @@ const Secdule = ({ course_id }: any) => {
             let res = await AxInstance.post('api//instructor/courses/schedule/store', values)
             if (res.data.success === true) {
                 setLoading(false)
-                console.log("res" , res.data )
-                router.push(`/en/instructor/quiz?id=${res.data.response.course.id}`)
+                onStepChange()
             }
         } catch (error) {
 
@@ -90,8 +89,8 @@ const Secdule = ({ course_id }: any) => {
         <div>
             <div className="mt-3 pb-3">
                 <div className="kvjadsd-j43rm">
-                    <div className="jodsa-wnedas">
-                        <h6>Schedule your classes</h6>
+                    <div className="jodsa-wnedas mb-2">
+                        <h6 style={{ fontSize: 'bold' }}>Schedule your classes</h6>
 
                     </div>
                     {/* <Icons name="i26" /> */}
@@ -100,7 +99,6 @@ const Secdule = ({ course_id }: any) => {
                     return (
                         <div style={{ border: '1pt solid lightgray', marginBottom: '10px', padding: '10px', borderRadius: '10px' }} key={i}>
                             <div className="p-field mt-2 ">
-                                <p>Sedule no </p>
                                 <div className="d-flex" style={{ justifyContent: 'space-between' }}>
                                     <div>
                                         {/* <Icons name="i24" /> */}
@@ -165,25 +163,32 @@ const Secdule = ({ course_id }: any) => {
 
                     )
                 })}
-              <h3 style={{ cursor: 'pointer' }}  onClick={() => addFormFields()} >+ Add more </h3>
+                <h3 style={{ cursor: 'pointer' }} onClick={() => addFormFields()} >+ Add more </h3>
 
             </div>
-            <div className="d-flex">
+            <div className="d-flex justify-content-center">
                 <div className="idfadsf-sads kajfds-sdfe hfdajss-3ersad">
-                    <button className="upload-1 sdisad-dsdactive ">
-                        Preview
+                    <button className="upload-1 sdisad-dsdactive " onClick={() => onPrevStep(step - 1)}>
+                        Previous
+
                     </button>
                 </div>
                 <div >
 
-                      <button onClick={()=> SaveLiveClasses()} className="btn-2s">
-                    {loading ?
-                        <div className="spinner-border text-light" role="status">
-                        </div>
-                        :
-                        "Save & Next"
-                    }
-                    </button>
+
+
+                    <div className="idfadsf-sads kajfds-sdfe ">
+                        <button onClick={() => SaveLiveClasses()} className="upload-1 sdisad-dsdactive" >
+                            {loading ?
+                                <div className="spinner-border text-light" role="status">
+                                </div>
+                                :
+                                "Save & Next"
+                            }
+                        </button>
+                    </div>
+
+
                 </div>
             </div>
         </div>

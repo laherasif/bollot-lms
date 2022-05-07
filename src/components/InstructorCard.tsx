@@ -1,28 +1,32 @@
 import Link from "next/link";
 import React from "react";
 import Icons from "../icons";
-export default () => {
+export default ({
+  allCourses,
+  instructor,
+  enrolled,
+  reviews }: any) => {
   return (
     <div className="hasiw0eskdwd">
       <div className="f-reviews-sie">
         <Link href="/en/iprofile">
-          <a><h3>Bogdan Stashchuk | Software Engineer, MBA, PhD, CCIE</h3></a>
+          <h3>{instructor?.fullname}</h3>
         </Link>
         <h3>
           <span>Just keep learning - stashchuk.com</span>
         </h3>
         <div className="mdsafis-ejamd">
           <div>
-            <img src="/usr1.png" />
+            <img src={instructor?.image} />
           </div>
           <div>
             <h6>4.6 Instructor Rating</h6>
-            <h6>11,312 Reviews</h6>
-            <h6>199,432 Students</h6>
-            <h6>17 Courses</h6>
+            <h6>{reviews} Reviews</h6>
+            <h6>{enrolled} Students</h6>
+            <h6>{allCourses} Courses</h6>
           </div>
         </div>
- 
+
         <div className="kdjsafkosderddc">
           <p>
             Do you really want to understand and practice instead of sitting and
@@ -40,8 +44,7 @@ export default () => {
           </p>
         </div>
         <div className="kajfnds-ejrise aksdfjds-asdase">
-          <p>See Less</p>
-          <Icons name="ipc2"/>
+
         </div>
       </div>
     </div>

@@ -4,10 +4,10 @@ import { Dropdown } from "react-bootstrap";
 import Icons from "../../icons";
 import blackIcon from '../../assets/images/apple.svg'
 export default ({ course, key }: any) => {
-  console.log("course" , course)
+  console.log("course", course)
   return (
     <div className="cm-web" key={key}>
-      <Link href={`/en/student/details/${course?.slug}`}>
+      {/* <Link href={`/en/student/details/${course?.slug}`}> */}
         <div style={{ cursor: 'pointer', height: '250px' }}>
           <div className="dhafusd9we0sd-p">
             <div>
@@ -22,7 +22,7 @@ export default ({ course, key }: any) => {
             <div className="dhafusd9we0sd">
               <div className="dhafusd9we0sd1" style={{ border: '1pt solid ' }}>
                 <Icons name="c42" />
-                <p style={{color:'green'}} >{course?.status}</p>
+                <p style={{ color: 'green' }} >{course?.status}</p>
               </div>
             </div>
           </div>
@@ -31,22 +31,18 @@ export default ({ course, key }: any) => {
             <p className="mt-2">By {course?.instructor?.fullname}</p>
           </div>
         </div>
-      </Link>
+      {/* </Link> */}
       <div className="assahdwe0-ass">
         <Dropdown>
           <Dropdown.Toggle variant="success" id="dropdown-basic">
-            <img src='../../assets/images/black..svg' alt="" style={{ width: '20px' }} />
+            <i className="fa fa-ellipsis-h" style={{ fontSize: '20px', color: 'black' }}></i>
+
+            {/* <img src='../../assets/images/black..svg' alt="" style={{ width: '20px' }} /> */}
           </Dropdown.Toggle>
 
           <Dropdown.Menu>
-            {course?.schedule ?
-              <>
-                <Dropdown.Item as={Link} href={`/en/student/liveClasses/${course?.id}`}>Classes </Dropdown.Item>
-                <Dropdown.Item as={Link} href={`/en/student/quiz/${course?.id}`}>Quiz</Dropdown.Item>
-              </>
-              :
-              <Dropdown.Item as={Link} href={`/en/student/liveClasses/${course?.id}`}>preview </Dropdown.Item>
-            }
+            <Dropdown.Item as={Link} href={`/en/student/details/${course?.slug}`}>Criculum</Dropdown.Item>
+            <Dropdown.Item as={Link} href={`/en/student/quiz/${course?.id}`}>Quiz</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
       </div>

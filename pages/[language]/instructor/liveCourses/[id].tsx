@@ -8,29 +8,23 @@ import { IoMailOutline } from "react-icons/io5";
 import Icons from "../../../../src/icons";
 import TopNavbar from "../../../../src/components/instructor/TopNavbar";
 import NavigationBar1 from "../../../../src/components/instructor/NavigationBar3";
-// import Chart from "../../../../src/components/chart";
-// import Chart1 from "../../../../src/components/chart1";
-// import BarChart from "../../../../src/components/barchart";
+import Chart from "../../../../src/components/instructor/chart";
+import Chart1 from "../../../../src/components/instructor/chart1";
+import BarChart from "../../../../src/components/instructor/barchart";
 import Link from "next/link";
-// import instance from "../../../../src/confiq/axios/instance";
-import axios from 'axios'
-import LiveCourse from "../../../../src/components/instructor/liveCourseCard";
+import LiveCourses from "../../../../src/components/instructor/liveCourseCard";
 import NewCourse from "../../../../src/components/instructor/newCourse";
-import withAuth from "../../../../src/components/Hoc/authRoute";
-import { useSelector, RootStateOrAny } from "react-redux";
 import { useEffect, useState } from "react";
-import { Main , Small } from "../../../../src/components/instructor/loader";
+import { RootStateOrAny, useSelector } from "react-redux";
+import axios from "axios";
+import { Small } from "../../../../src/components/instructor/loader";
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
-
-  const [courses, setCourses] = useState([])
+  const [course, setCourse] = useState([])
   const [loading, setLoading] = useState(false)
-  const [reload, setReLoading] = useState(false)
+  const token = useSelector((state: RootStateOrAny) => state?.userReducer?.token)
 
-  const { token, User } = useSelector((state: RootStateOrAny) => state?.userReducer)
-
-  console.log("token", token)
   const AxInstance = axios.create({
     // .. where we make our configurations
     baseURL: 'https://dev.thetechub.us/bolloot/',
@@ -38,8 +32,6 @@ const Home: NextPage = () => {
       token: token
     }
   });
-
-
   useEffect(() => {
     let fetchCourse = async () => {
       try {
@@ -47,12 +39,10 @@ const Home: NextPage = () => {
         let res = await AxInstance.get('api//instructor/courses/live-courses')
         if (res.data.success === true) {
           setLoading(false)
+          setCourse(res.data.response.courses)
         }
-        else{
-          setLoading(false)
-        }
-        setCourses(res.data.response.courses)
-      } catch (error) {
+      }
+      catch (err) {
 
       }
     }
@@ -63,12 +53,13 @@ const Home: NextPage = () => {
     <div className="inst">
       <NavigationBar1 />
       <section className="dash-board jadsifd-asdasid">
-        <div className="jcoiasd03-eakw3e1">
-          <Sidebar />
+        <div className="ksadsa-w4a3k4">
+          <div className="jcoiasd03-eakw3e1">
+            <Sidebar />
+          </div>
         </div>
         {loading ? Small()
           :
-
           <div className="dash-board-1">
             <div className="dash-2 ">
               <div className="my-course">
@@ -87,34 +78,20 @@ const Home: NextPage = () => {
                 <div className="complete-web-1 ">
                   <div className="umpire w-100">
                     <div className="umpire-1 umpire-1-cst ">
-                      <div className="maxima ">
-                        <div className="idfadsf-sads">
-                          <button className="upload-1 sdisad-dsdactive" >
-                           {/* { reload ? Small() : */}
-                            <i className="fa fa-refresh" ></i>
-                          </button>
-                        </div>
-                        {/* <div>
-                        <Link href="/en/payments">
-                          <button className="upload-1">Published</button>
-                        </Link>
-                      </div>
-                      <div>
-                        <Link href="/en/payments">
-                          <button className="upload-1">In Review</button>
-                        </Link>
-                      </div> */}
-                      </div>
+
                     </div>
                   </div>
                 </div>
                 <div className="complete-web-1">
-                  {courses ? courses.map((cours: any, i: number) => (
-                    <LiveCourse course={cours} key={i} />
+                  {course && course.length > 0 ? course.map((course: any) => {
+                    if (course?.schedule)
+                      return (
+                        <LiveCourses course={course} key={course.id} />
+                      )
+                  })
+                    : <div>Record not found </div>
+                  }
 
-                  )) 
-                  : <div>Live Course Not Avaliable</div>
-                }
 
                 </div>
               </div>
@@ -126,6 +103,4 @@ const Home: NextPage = () => {
   );
 };
 
-
-
-export default withAuth(Home);
+export default Home;

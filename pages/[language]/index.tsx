@@ -104,9 +104,7 @@ const Home: NextPage = () => {
                 }
 
               </div>
-              <div className="text-center">
-                <button className="btn-2s mb-12">Explore here</button>
-              </div>
+             
             </div>
           </section>
           <section className="gr1">
@@ -171,7 +169,6 @@ const Home: NextPage = () => {
                     'Not used to self learning? Enroll in live courses to take{" "}
                     <br /> scheduled live classes from expert teachers'.
                   </p>
-                  <button className="btn-2s">Enroll Now</button>
                 </div>
                 <div className="learn">
                   <Icons name="c13" />

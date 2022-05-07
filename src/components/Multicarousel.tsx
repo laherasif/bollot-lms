@@ -34,7 +34,7 @@ import React from 'react';
 import CourseCard from "./card/CourseCard";
 export default ({ cata }: any) => {
   const { Feature, Latest } = useSelector((state: RootStateOrAny) => state.course)
-
+  
   return (<div>
     <Carousel responsive={responsive}>
       {cata === "feature" ? (

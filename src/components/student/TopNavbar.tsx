@@ -49,11 +49,10 @@ export default () => {
 
 
           <Dropdown.Menu >
-            <Dropdown.Item as={Link} href="/" >Go to website</Dropdown.Item>
-            <Dropdown.Item >Edit profile</Dropdown.Item>
-            <Dropdown.Item as={Link} href="/en/instructor/courses" >My Courses</Dropdown.Item>
-            {/* <Dropdown.Item >Logout</Dropdown.Item> */}
-            <Dropdown.Item ><span onClick={() => Logout()}>Logout</span></Dropdown.Item>
+          <Dropdown.Item as={Link} href='/' >Go to Website</Dropdown.Item>
+                    <Dropdown.Item as={Link} href={User?.role === "student" ? "/en/student/courses" : "/en/instructor/courses"} >My Courses</Dropdown.Item>
+                    <Dropdown.Item as={Link} href={User?.role === "student" ? "/en/student/profile" : "/en/instructor/profile"} >Profile</Dropdown.Item>
+                    <Dropdown.Item ><span onClick={() => Logout()}>Logout</span></Dropdown.Item>
 
           </Dropdown.Menu>
         </Dropdown>

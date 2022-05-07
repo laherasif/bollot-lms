@@ -86,9 +86,8 @@ export default () => {
 
                     <Dropdown.Menu >
                       <Dropdown.Item as={Link} href="/" >Go to website</Dropdown.Item>
-                      {/* <Dropdown.Item >Edit profile</Dropdown.Item> */}
                       <Dropdown.Item as={Link} href="/en/instructor/courses" >My Courses</Dropdown.Item>
-                      {/* <Dropdown.Item ><span>Logout</span></Dropdown.Item> */}
+                      <Dropdown.Item as={Link} href="/en/instructor/profile" >My Profile </Dropdown.Item>
                       <Dropdown.Item ><span onClick={() => Logout()}>Logout</span></Dropdown.Item>
 
                     </Dropdown.Menu>

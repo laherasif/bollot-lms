@@ -19,7 +19,9 @@ export default () => {
           <div className="assahdwe0-ass">
             <Dropdown>
               <Dropdown.Toggle variant="success" id="dropdown-basic">
-              <img src="/assets/images/black..svg" alt="" />
+              {/* <img src="/assets/images/black..svg" alt="" /> */}
+            <i className="fa fa-ellipsis-h" style={{fontSize:'20px' , color:'black'}}></i>
+
               </Dropdown.Toggle>
 
               <Dropdown.Menu>

@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { memo, useRef, useLayoutEffect } from 'react';
-import { usePrevious } from '../../../../src/function/hooks';
+import { usePrevious } from '../../function/hooks';
 
 export interface SingleOTPInputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {

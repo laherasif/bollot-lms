@@ -274,8 +274,8 @@ const Home: NextPage = () => {
                     ))}
 
                     <div className="kjsado-sadnw2">
-                      <button className="asldjsa-sadns">Paid</button>
-                      <button className="asldjsa-sadns">Free</button>
+                      <button className="asldjsa-sadns">Live </button>
+                      <button className="asldjsa-sadns" style={{width:'max-content' }}>Criculum</button>
                     </div>
                     <h3>Price</h3>
                     {typeof window !== "undefined" ? (

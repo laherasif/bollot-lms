@@ -54,7 +54,7 @@ export default (catagory: any) => {
   const [state, setState] = useState<Course>('')
   const [Courses, setCourses] = useState([])
   const [url, setUrl] = useState()
-  const [showCirculm, setShowCirculm] = useState(false)
+  const [showCirculm, setShowCirculm] = useState(true )
   const [errors, setErrors] = useState()
   const [loading, setLoading] = useState(false)
   const [courseId, setcourseId] = useState('')
@@ -270,11 +270,19 @@ export default (catagory: any) => {
                   <label>Short Description</label>
                   <br />
                   <span>Complete details about your course</span>
-                  <input type="text"
+                  <textarea
+                    rows={4}
                     name="short_desc"
                     value={state.short_desc}
                     onChange={(e) => hendleFields(e)}
-                    placeholder="Write here..." />
+                    className="asndkmc03e-dm3e"
+                    placeholder="Write here..."
+                  ></textarea>
+                  {/* <input type="text"
+                    name="short_desc"
+                    value={state.short_desc}
+                    onChange={(e) => hendleFields(e)}
+                    placeholder="Write here..." /> */}
                   {errors?.short_desc && <div className="invalid mt-1">{errors?.short_desc[0]}</div>}
 
                 </div>

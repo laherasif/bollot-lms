@@ -8,7 +8,7 @@ import Icons from "../../../src/icons";
 import instance from "../../../src/confiq/axios/instance";
 import { loginUser, SocialRegMedia } from '../../../src/redux/actions/auth/user'
 import { useRouter } from "next/router";
-import Otp from '../student/otp'
+import Otp from '../../../src/components/otpverfication'
 import Role from '../../../src/components/otp'
 import { Firebaseapp } from "../../../src/confiq/firebase/firebase";
 import { getAuth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider } from "firebase/auth";
@@ -24,7 +24,7 @@ const Home: NextPage = () => {
 
   const dispatch = useDispatch()
 
-  const { fieldErrors, User, varified } = useSelector((state: RootStateOrAny) => state.userReducer)
+  const { User, } = useSelector((state: RootStateOrAny) => state.userReducer)
 
 
 
@@ -41,13 +41,29 @@ const Home: NextPage = () => {
   const [permistion, setPermition] = useState()
   const [plateform, setPlateform] = useState('')
 
+  
+  const firebaseAuth = getAuth(Firebaseapp);
+  const provider = new GoogleAuthProvider();
+  const Fbprovider = new FacebookAuthProvider();
+  const router = useRouter();
+
+  console.log("routyer", router)
+
+let checkRouter = router.query.checkout 
 
 
   useEffect(() => {
     if (User && User.is_email_verified === "1" && User.role === "student") {
-      router.replace('/en/student/dashboard')
+      
+        router.replace('/en/student/dashboard')
+    
     }
+    else if ( checkRouter === "true") {
+      router.push('/en/login')
+    }
+    
     else if (User && User.is_email_verified === "1" && User.role === "instructor") {
+      
       router.replace('/en/instructor')
     }
     else if (User && User.is_email_verified === "0") {
@@ -56,7 +72,7 @@ const Home: NextPage = () => {
     // else {
     //   setMessage(false)
     // }
-  }, [User])
+  }, [User , checkRouter])
 
 
   // HendleInputs 
@@ -70,19 +86,13 @@ const Home: NextPage = () => {
 
 
 
-  const firebaseAuth = getAuth(Firebaseapp);
-  const provider = new GoogleAuthProvider();
-  const Fbprovider = new FacebookAuthProvider();
-  const router = useRouter();
-
-
 
   const signInGog = async () => {
     const { user } = await signInWithPopup(firebaseAuth, provider);
     const { refreshToken, providerData } = user;
     console.log(refreshToken, providerData);
     dispatch(SocialRegMedia(providerData, permistion === 0 ? "student" : "instructor"))
-    
+
   };
 
 
@@ -115,7 +125,13 @@ const Home: NextPage = () => {
       if (res.data.success === true && res.data.response.student.is_email_verified === "1" && res.data.response.student.role === "student") {
         setLoader(false)
         dispatch(loginUser(res.data))
-        router.push("/en/student");
+        if (router.query.checkout === "true") {
+          router.push("/en/checkout");
+
+        }
+        else {
+          router.push("/en/student/dashboard");
+        }
 
       }
       else if (res.data.success === true && res.data.response.student.is_email_verified === "1" && res.data.response.student.role === "instructor") {
@@ -145,7 +161,6 @@ const Home: NextPage = () => {
 
 
   let { email, password } = authValue
-  console.log("mess", message)
 
   return (
     <>
@@ -165,12 +180,12 @@ const Home: NextPage = () => {
               <p>Log In to Your Bolloot Account!</p>
               <br />
               <div className="hasdfkj">
-                <input className={ `full-2 ${errors.email && 'full-2 input_filed_error'}` } name="email" value={email} onChange={handleChange} type="email" placeholder="Email" />
+                <input className={`full-2 ${errors.email && 'full-2 input_filed_error'}`} name="email" value={email} onChange={handleChange} type="email" placeholder="Email" />
                 {errors?.email && <div className="invalid mb-1">{errors?.email[0]}</div>}
 
               </div>
               <div className="hasdfkj">
-                <input className={ `full-3 ${errors.password && 'full-3 input_filed_error'}` } name="password" value={password} onChange={handleChange} type="password" placeholder="Password" />
+                <input className={`full-3 ${errors.password && 'full-3 input_filed_error'}`} name="password" value={password} onChange={handleChange} type="password" placeholder="Password" />
                 {errors?.password && <div className="invalid mb-1">{errors?.password[0]}</div>}
 
                 <br />
@@ -192,7 +207,7 @@ const Home: NextPage = () => {
             <h6>Forgot Password?</h6>
             <h6>Don't have an account?    <Link href={"/en/signup"}>Sign Up</Link></h6>
             <h4>OR</h4>
-           
+
             <button
               onClick={() => { setPlateform('facebook.com'), setToggal(true) }}
               className="face-book-1 w-100">

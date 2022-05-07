@@ -5,8 +5,6 @@ import React, { memo, useState, useCallback, CSSProperties } from 'react';
 import SingleInput from './single';
 import { useSelector, RootStateOrAny } from 'react-redux'
 import Router, { useRouter } from "next/router";
-import { EmailHide } from '../../../../src/function/hooks'
-import instance from '../../../../src/confiq/axios/instance';
 import axios from 'axios';
 import { Spinner } from 'react-bootstrap';
 // import { OtpVarif } from '../../../../src/redux/actions/auth/user'
@@ -210,11 +208,12 @@ export function OTPInputComponent(props: OTPInputProps) {
 
   const handelSubmit = async () => {
     try {
+      debugger
       setLoading(true)
-      let res = await AxInstance.post('api//authenticate-otp', { code: otp })
+      let res = await AxInstance.post('api//company/authenticate-otp', { code: otp })
       if (res.data?.success === true) {
-        if (User.role === "student" || res.data?.response.student.role === "student") {
-          router.push("/en/student/dashboard");
+        if (User?.role === "student" || res?.data?.response?.student?.role === "student") {
+            router.push("/en/student/dashboard"); 
         }
         else {
           router.push("/en/instructor");
@@ -257,7 +256,7 @@ export function OTPInputComponent(props: OTPInputProps) {
             <p className="text-center mb-21">Enter the verification code we sent to</p>
             {/* <p className="text-center mb-67">{EmailHide(providerEmail)}</p> */}
           </div>
-         {errors && <div className="alert alert-danger" style={{color:'black'}}>{errors}</div> }
+          {errors && <div className="alert alert-danger" style={{ color: 'black' }}>{errors}</div>}
 
           <div className="container">
             <div className="all-circle">

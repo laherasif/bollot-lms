@@ -9,7 +9,7 @@ import instance from '../../../src/confiq/axios/instance'
 import { SocialRegMedia } from "../../../src/redux/actions/auth/user";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector, RootStateOrAny } from "react-redux";
-import Otp from '../student/otp'
+import Otp from '../../../src/components/otpverfication'
 import { SignUp, CleanState } from '../../../src/redux/actions/auth/user'
 import { Firebaseapp } from "../../../src/confiq/firebase/firebase";
 import insImg from '../../../src/assets/images/instructor.png'
@@ -173,7 +173,7 @@ const Home: NextPage = () => {
                       </label>
                     </div>{" "}
                     <div className="up-illustration">
-                    <Image src={stuImg} width={40} height={40}/>
+                    <Image src={insImg} width={40} height={40}/>
                       
                     </div>{" "}
                     <div id="button-box-1" className="up-button-box-labels">
@@ -205,7 +205,7 @@ const Home: NextPage = () => {
                       </label>
                     </div>{" "}
                     <div className="up-illustration">
-                      <Image src={insImg} width={40} height={40}/>
+                      <Image src={stuImg} width={40} height={40}/>
                     </div>{" "}
                     <div id="button-box-2" className="up-button-box-labels">
                       <div className="up-button-box-label">

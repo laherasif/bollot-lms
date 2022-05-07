@@ -11,7 +11,6 @@ import CourseCard from "../../../../src/components/instructor/CourseCard1";
 import BookmarkCard from "../../../../src/components/instructor/BookmarkCard";
 import NavigationBar1 from "../../../../src/components/instructor/NavigationBar1";
 import Link from "next/link";
-import withAuth from "../../../../src/components/Hoc/authRoute";
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   const intl = useIntl();
@@ -160,5 +159,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default withAuth(Home);
- 
+export default Home;

@@ -8,15 +8,15 @@ const CourseSideBar = ({courseId}:any) => {
     return (
         <>
             <div className="aksldnsd-sdnaskdse">
-                <div className="aksldnsd-sdnaskdse-1">
+                {/* <div className="aksldnsd-sdnaskdse-1">
                     <img src={User?.image} alt="user_image" />
                     <p>{User?.fullname}</p>
-                </div>
+                </div> */}
                 <div className="hsaid9iawdeka">
                     <div >
-                        <h2 className="ksdfhd-active">Overview</h2>
+                        <h2 className="ksdfhd-active">Content</h2>
                         <div>
-                            <Header2Item title="Week 01" isChecked={true} />
+                            <Header2Item title="Week 01" isChecked={false} />
                             <Header2Item title="Week 02" isChecked={true} />
                             <Header2Item title="Week 03" isChecked={false} />
                             <Header2Item title="Week 04" isChecked={false} />

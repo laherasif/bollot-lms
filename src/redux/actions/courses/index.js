@@ -36,7 +36,7 @@ export const GetCourse = () => async (dispatch) => {
             rows_per_page: 10,
             sorting: {
                 sort_by: "id",
-                sort_direction: "asc"
+                sort_direction: "desc"
             }
 
         }
@@ -66,19 +66,21 @@ export const GetCourse = () => async (dispatch) => {
             payload: res.data.response.categories
         })
         let featurs = await instance.post('api//courses', feature)
+
         dispatch({
             type: GET_FETAURE,
             payload: featurs.data.response.courses
         })
         let latests = await instance.post('api//courses', latest)
+
         dispatch({
             type: GET_LATEST,
             payload: latests.data.response.courses
         })
         let live = await instance.post('api//courses', liveCourse)
         dispatch({
-            type:LIVE_COURSE,
-            payload : live.data.response.courses
+            type: LIVE_COURSE,
+            payload: live.data.response.courses
         })
 
 
@@ -104,7 +106,7 @@ export const GetAllCatagory = () => async dispatch => {
             payload: res.data.response.courses
         })
     } catch (error) {
-        
+
     }
 }
 
@@ -172,7 +174,7 @@ export const priceFilter = (data) => async dispatch => {
 }
 
 export const GetSorted = (name) => async dispatch => {
-     debugger
+    debugger
     try {
 
         let filterPrice = {

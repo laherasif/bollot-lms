@@ -10,84 +10,22 @@ import TopNavbar from "../../../../src/components/student/TopNavbar";
 // import CourseCard from "../../../../src/components/student/CourseCard";
 import NavigationBar2 from "../../../../src/components/student/NavigationBar2";
 import { useSelector, RootStateOrAny } from "react-redux";
-import { useEffect , useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from 'next/router'
 import CourseSideBar from "../../../../src/components/student/courseSidebar";
+import CriculumCard from '../../../../src/components/student/criculumCard'
+import Link from "next/link";
 const options = ["one", "two", "three"];
-export const VideTitle = ({
-  isChecked,
-  title,
-}: {
-  isChecked: Boolean;
-  title: string;
-}) => {
-  return <li>
-    {isChecked == true ? (
-      <svg
-        width={18}
-        height={18}
-        viewBox="0 0 18 18"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <circle cx={9} cy={9} r={9} fill="#D0565C" />
-        <path d="M4 9L6.5 12L13.5 5" stroke="white" />
-      </svg>
-    ) : (
-      <svg
-        width={18}
-        height={18}
-        viewBox="0 0 18 18"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <circle cx={9} cy={9} r="8.5" stroke="#D0565C" />
-      </svg>
-    )}
-    <span>Video:</span>
-    {title}
-  </li>
-}
-export const Header2Item = ({
-  isChecked,
-  title,
-}: {
-  isChecked: Boolean;
-  title: string;
-}) => {
-  return (
-    <div className="ksajdfds-sads">
-      {isChecked == true ? (
-        <svg
-          width={18}
-          height={18}
-          viewBox="0 0 18 18"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <circle cx={9} cy={9} r={9} fill="#D0565C" />
-          <path d="M4 9L6.5 12L13.5 5" stroke="white" />
-        </svg>
-      ) : (
-        <svg
-          width={18}
-          height={18}
-          viewBox="0 0 18 18"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <circle cx={9} cy={9} r="8.5" stroke="#D0565C" />
-        </svg>
-      )}
-      <h3>{title}</h3>
-    </div>
-  );
-};
 const Home: NextPage = () => {
   // const intl = useIntl();
-  const [courseId , setCourseId] = useState('')
+  const [courseId, setCourseId] = useState('')
+  const [section, setSections] = useState({})
+  const [lectures, setLectures] = useState({})
+
   const router = useRouter()
+
+  let courseTitle = router.query.id
   const { User, token } = useSelector((state: RootStateOrAny) => state.userReducer)
 
   const AxInstance = axios.create({
@@ -99,29 +37,103 @@ const Home: NextPage = () => {
   });
 
 
+
+
   useEffect(() => {
     let fetchCourse = async () => {
       try {
-        let res = await AxInstance.get(`api//student/my-courses/${router.query.id}`)
-        console.log("res", res)
-        if(res.data.success === true ){
-          setCourseId(res.data.response.course.id)
-        }
-        
+        let res = await AxInstance.get(`api//student/my-courses/${courseTitle}`)
+        console.log("Re", res)
+        setSections(res.data.response.course)
+        setCourseId(res.data.response.course.id)
+
       } catch (error) {
-        
+
       }
-    
+
     }
     fetchCourse()
-  }, [])
+  }, [courseTitle])
+
+
+
+
   return (
     <>
       <NavigationBar2 />
 
       <section className="dash-board">
         <div className="dash-board-1">
-          <CourseSideBar courseId={courseId}/>
+          {/* <CourseSideBar courseId={courseId} /> */}
+          <div className="aksldnsd-sdnaskdse">
+            {/* <div className="aksldnsd-sdnaskdse-1">
+                    <img src={User?.image} alt="user_image" />
+                    <p>{User?.fullname}</p>
+                </div> */}
+            <div className="hsaid9iawdeka">
+              <div >
+                <h2 className="ksdfhd-active">Content</h2>
+                <div className="content-section">
+                  {section && section?.sections?.map((sec: any, i: number) => (
+
+                    <div className="ksajdfds-sads" onClick={() => { setLectures(sec?.lectures), setCourseId(sec?.id) }} key={i}>
+                      {sec.id === courseId ? (
+                        <svg
+                          width={18}
+                          height={18}
+                          viewBox="0 0 18 18"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <circle cx={9} cy={9} r={9} fill="#D0565C" />
+                          <path d="M4 9L6.5 12L13.5 5" stroke="white" />
+                        </svg>
+                      ) : (
+                        <svg
+                          width={18}
+                          height={18}
+                          viewBox="0 0 18 18"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <circle cx={9} cy={9} r="8.5" stroke="#D0565C" />
+                        </svg>
+                      )}
+                      <h3 style={{ paddingTop: '10px' }}>{sec?.title}</h3>
+                    </div>
+
+                  ))
+                  }
+
+                </div>
+              </div>
+              <div>
+                <h2>Notes</h2>
+              </div>
+              <div>
+                <h2>Announcements</h2>
+              </div>
+              <div>
+                <h2>Resources</h2>
+              </div>
+              <div>
+
+                <h2>Live Classes</h2>
+              </div>
+              <div>
+                <Link href={`/en/student/quiz/${courseId}`}>
+                  <h2>Quiz</h2>
+                </Link>
+              </div>
+              <div>
+                <h2>Review</h2>
+              </div>
+            </div>
+          </div>
+
+
+
+
           <div className="w-100">
             <div className="sad-ds-asajd">
               <div className="dash-2 m-0">
@@ -131,58 +143,57 @@ const Home: NextPage = () => {
               </div>
             </div>
             <div className="my-course jdsad-snd">
-              <h3>
-                <svg
-                  width={24}
-                  height={24}
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M9.57 5.93L3.5 12L9.57 18.07"
-                    stroke="#131313"
-                    strokeWidth={2}
-                    strokeMiterlimit={10}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M20.4999 12H3.66992"
-                    stroke="#131313"
-                    strokeWidth={2}
-                    strokeMiterlimit={10}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
+              <Link href="/en/student/courses">
+                <h3 style={{ cursor: 'pointer' }}>
+                  <svg
+                    width={24}
+                    height={24}
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M9.57 5.93L3.5 12L9.57 18.07"
+                      stroke="#131313"
+                      strokeWidth={2}
+                      strokeMiterlimit={10}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M20.4999 12H3.66992"
+                      stroke="#131313"
+                      strokeWidth={2}
+                      strokeMiterlimit={10}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
 
-                <span style={{ marginLeft: 10 }}>Back</span>
-              </h3>
-              <p>
-                Motion Design with Figma: Animations, Motion Graphics & UX
-                Design{" "}
-              </p>
+                  <span style={{ marginLeft: 10 }}>Back</span>
+                </h3>
+              </Link>
+
+
+
               <div className="seting-method-payment">
-                <div className="first-payment-1">
-                  
+                <div className="d-flex justify-content-between " style={{padding :'0px 20px'}}>
+                  <h3>Title : {section?.title}</h3>
+                  <h5 style={{paddingTop:'15px'}}>By : {section?.instructor?.fullname}</h5>
+                  {/* <h6 style={{paddingTop:'15px'}}>lectures : {lectures?.length}</h6> */}
 
-                  <div className="start-list-item">
-                    <img src="/assets/images/Group 276.png" alt="course_img"/>
-                  </div>
                 </div>
                 <div className="first-payment-1">
-                  <div className="com-flex-1 ">
-                    <h3>Course Details</h3>
-                  </div>
 
-                  <div className="start-list-item">
-                    <ul className="sjasd-dsajd">
-                     
-                      <img className="shadsa-sdnds" src="/assets/images/Group 276.png" />
-                    </ul>
-                  </div>
+                  {lectures.length ?
+                    <CriculumCard lectures={lectures} />
+                    :
+                    <div className="start-list-item">
+                      <img src={section?.cover_image || "/assets/images/Group 276.png"} alt="course_img" />
+                    </div>
+                  }
                 </div>
+
               </div>
             </div>
           </div>

@@ -28,9 +28,7 @@ export default () => {
         <p>1</p>
       </div>
       <p className="mt-3">{User.fullname || "instructor "}</p>
-      <Link href={"/en/profile"}>
-        <img src={User.image || "/assets/images/umpire-1.svg"} />
-      </Link>
+      <img src={User.image || "/assets/images/umpire-1.svg"} />
 
     </div>
   </div>

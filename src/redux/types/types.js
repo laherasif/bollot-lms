@@ -1,6 +1,7 @@
 
 export const REGISTER_USER = 'REGISTER_USER';
 export const LOGIN_USER = 'LOGIN_USER';
+export const UPDATE_USER = 'UPDATE_USER'
 export const ERROR = 'ERROR';
 export const SET_TOKEN = 'SET_TOKEN';
 export const REGISTER_SOCIAL_MEDIA = 'REGISTER_SOCIAL_MEDIA'

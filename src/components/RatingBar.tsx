@@ -1,22 +1,24 @@
 import React from "react";
  import Icons from "../icons";
+import Rating from "./ratingStar";
 
-export default ({rates,stars}:{rates:String,stars:Number}) => {
+export default ({rates,stars}:{rates:number,stars:Number}) => {
+
   
   return (
     <div className="djasfids-san3eries">
     <div className="dsjfksaefids-fdaf">
-    { Array.from({length:5},(x,i)=>{
+       <Rating value={stars}/>
+    {/* { Array.from({length:5},(x,i)=>{
       if(i<stars)
       {
-        return <Icons name="ipc4"/>
       }
       else
       {
-        return <Icons name="ipc3"/>
+        return <Rating value={3}/>
       }
     })
-    }
+    } */}
     </div>
     <div className="w-100">
     <div className="jiadsf0w-eaew">

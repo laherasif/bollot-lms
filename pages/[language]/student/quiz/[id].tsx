@@ -9,6 +9,8 @@ import axios from 'axios'
 import { Small } from "../../../../src/components/student/loader";
 import Link from "next/link";
 import { SweetAlert } from "../../../../src/function/hooks";
+import Card from "../../../../src/components/student/quizCard";
+import { Spinner } from "react-bootstrap";
 const Home: NextPage = () => {
   // const intl = useIntl();
 
@@ -17,19 +19,15 @@ const Home: NextPage = () => {
   const [quiz, setQuiz] = useState([])
   const [quizValue, setQuizValue] = useState<any>([])
   const { User, token } = useSelector((state: RootStateOrAny) => state.userReducer)
-  const [currentStep, setCurrentStep] = useState(0)
+  let [currentStep, setCurrentStep] = useState(0)
   const [loading, setLoading] = useState(false)
-
-  let [selectedAns, setSelectedAns] = useState("")
-
-
-
-  const HendleChange = (e: any) => {
-    setSelectedAns(e.target.value);
+  const [showResult, setShowResult] = useState(false)
+  const [answers, setAnswer] = useState([])
+  const [info, setInfo] = useState("")
 
 
 
-  }
+
 
 
   const AxInstance = axios.create({
@@ -45,74 +43,114 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     let fetchQuiz = async () => {
-      setLoading(true)
-      let res = await AxInstance.get(`api//student/my-courses/quiz/${courseId}`)
-      if (res.data.success === true) {
-        setLoading(false)
-        setQuiz(res.data.response.course_with_quiz)
+      try {
+        setLoading(true)
+        let res = await AxInstance.get(`api//student/my-courses/quiz/${69}`)
+        console.log("res", res)
+        if (res.data.success === true) {
+          setLoading(false)
+          setQuiz(res.data.response.course_with_quiz)
+        }
+      }
+      catch (err) {
+        SweetAlert({ icon: "error", text: ' Network Error ' })
       }
     }
     fetchQuiz()
-  }, [router.query.id])
+  }, [courseId])
 
 
 
-  const handleSubmit = (type: any) => {
-    // e.preventDefault();
-    let findIndx = Object.keys(quiz).length ? quiz.quiz[currentStep] : null
+  // const handleSubmit = (type: any) => {
+  //   // e.preventDefault();
+  //   let findIndx = Object.keys(quiz).length ? quiz.quiz[currentStep] : null
 
-    if (type === "next") {
-      if (currentStep !== quiz?.quiz?.length) {
-        let answser = findIndx?.options?.find((i: any) => quizValue?.some((f: any) => f?.option_id == i?.id))
-        if (answser) {
-          setCurrentStep(currentStep + 1);
-          setSelectedAns(answser?.option)
+  //   if (type === "next") {
+  //     if (currentStep !== quiz?.quiz?.length) {
+  //       let answser = findIndx?.options?.find((i: any) => quizValue?.some((f: any) => f?.option_id == i?.id))
+  //       if (answser) {
+  //         setCurrentStep(currentStep + 1);
+  //         setSelectedAns(answser?.option)
 
-        }
-        else {
-          setCurrentStep(currentStep + 1);
-          setSelectedAns('')
-          let question = findIndx?.id
-          let ans = findIndx?.options?.find((i: any) => i.option === selectedAns)
-          let value: any = {
-            question_id: question,
-            option_id: ans?.id
-          }
-          setQuizValue([...quizValue, value])
-        }
+  //       }
+  //       else {
+  //         setCurrentStep(currentStep + 1);
+  //         setSelectedAns('')
+  //         let question = findIndx?.id
+  //         let ans = findIndx?.options?.find((i: any) => i.option === selectedAns)
+  //         let value: any = {
+  //           question_id: question,
+  //           option_id: ans?.id
+  //         }
+  //         setQuizValue([...quizValue, value])
+  //       }
 
 
-      }
+  //     }
+  //   }
+  //   else {
+  //     debugger
+  //     setCurrentStep(--currentStep);
+  //     let ans = findIndx?.options.find((i: any) => quizValue?.some((f: any) => i?.id == f?.option_id))
+  //     setSelectedAns(ans?.option)
+
+  //   }
+
+
+  // }
+  console.log("anser", answers)
+
+
+  const handleSubmit = (e: React.FormEvent<EventTarget>, questionId: number, answer: string) => {
+    let arr = []
+    e.preventDefault();
+    setAnswer([
+      ...answers,
+      { question_id: questionId, option_id: parseInt(answer) }
+    ])
+    let len = quiz?.quiz.length - 1
+    if (currentStep !== len) {
+      setCurrentStep(++currentStep);
     }
     else {
-      debugger
-      setCurrentStep(--currentStep);
-      let ans = findIndx?.options.find((i: any) => quizValue?.some((f: any) => i?.id == f?.option_id))
-      setSelectedAns(ans?.option)
+      setShowResult(true);
 
+    }
+
+  }
+
+
+
+
+
+  const handleBack = (e: React.FormEvent<EventTarget>) => {
+    e.preventDefault();
+    if (currentStep !== quiz.length - 1) {
+      setCurrentStep(--currentStep);
+    }
+    else {
+      setShowResult(true);
     }
 
 
   }
 
+
   const QuizSubmit = async () => {
     let value = {
       course_id: courseId,
-      submission: quizValue
+      submission: answers
     }
-    console.log("value", value)
     try {
-
       let res = await AxInstance.post('api//student/my-courses/quiz/submit', value)
-      console.log("REa", res)
-      if(res.data.success === true ){
-        SweetAlert({ icon : "success" , text : res.data.message })
-        router.push('/en/student/courses')
+      if (res.data.success === true) {
+        // SweetAlert({ icon: "success", text: res.data.message })
+        // router.push('/en/student/courses')
+        setInfo(res.data.message)
       }
-      else{
-        SweetAlert({ icon : "error" , text : "Please Atttempted all Question / Answer" })
+      else {
+        SweetAlert({ icon: "error", text: "Please Atttempted all Question / Answer" })
         router.push('/en/student/courses')
-
 
       }
 
@@ -121,8 +159,15 @@ const Home: NextPage = () => {
     }
   }
 
+  if (answers.length === quiz?.quiz?.length) {
+    QuizSubmit()
+  }
 
-  let geneteRandom = quiz ? Object.keys(quiz).length && quiz.quiz[currentStep] : null
+
+  console.log("quiz", quiz)
+
+
+
 
   return (
     <>
@@ -138,78 +183,44 @@ const Home: NextPage = () => {
                 :
                 <div className="hdsf0s-sadmsa">
                   <Link href="/en/student/courses">
-                    <h3 style={{cursor:'pointer'}}>
+                    <h3 style={{ cursor: 'pointer' }}>
                       <i className="fa fa-arrow-left"></i>
                       Back
                     </h3>
                   </Link>
-                  <h3>My Quiz</h3>
-                  <div className="complete-web-1">
+                  {/* <h3>My Quiz</h3> */}
 
-
-                    <div className="seting-method-payment">
-                      <div className="first-payment-1">
-
-                        <div className="containers my-1">
-                          <div className="question ">
-                            <div className="py-2 h5">
-                            {currentStep  === quiz?.quiz?.length ? " " :  <b>Q.{ currentStep + 1} {geneteRandom?.question}</b>}
-                            </div>
-                            {/* <form onSubmit={handleSubmit}> */}
-                            {quiz?.quiz?.length ?
-                            <div className="ml-md-3 ml-sm-3 pl-md-5 pt-sm-0 pt-3" id="options">
-
-                              {geneteRandom?.options?.map((op: any, index: number) => (
-                                <label className="options" key={index}>{op.option}
-                                  <input type="radio"
-                                    value={op.option}
-                                    required
-                                    checked={selectedAns === op.option}
-                                    onChange={HendleChange}
-                                    name="item" />
-                                  <span className="checkmark" />
-                                </label>
-                              ))
-                              }
-
-
-
-                            </div>
-                            : <div>Quiz not found </div>
-}
-
-                            {/* </form> */}
-                          </div>
-                          <div className="d-flex align-items-center pt-3 justify-content-between">
-                            {/* {currentStep > 0 ?
-                              <div id="prev">
-
-                                <button onClick={() => handleSubmit("prev")} className="btn btn-primary">Previous</button>{" "}
-                              </div>
-                              : ""
-                            } */}
-                            <div className="ml-auto mr-sm-5">
-                              {" "}
-                              <button onClick={() =>
-                               {currentStep > quiz?.quiz?.length -1  ? QuizSubmit() :
-                                handleSubmit("next")
-                               }
-                              } className="btn btn-success">
-                                {currentStep > quiz?.quiz?.length -1    ?
-                                  "Submit"
-                                  :
-                                  "Next"
-                                }
-                              </button>{" "}
-                            </div>
-                          </div>
-
-                        </div>
-
-
-                      </div>
-
+                  <div className='quiz-info'>
+                    <div className="d-flex justify-content-between">
+                      <h3>Title : {quiz?.title} </h3>
+                      <h3>Total Questions : {quiz?.quiz?.length}  </h3>
+                      <h3>Attempt Questions : {currentStep + 1} </h3>
                     </div>
+
+                  </div>
+                  <div className="complete-web-1">
+                    {quiz && quiz?.quiz?.length && !showResult ?
+                      <Card
+                        options={quiz?.quiz[currentStep]?.options}
+                        question={quiz?.quiz[currentStep]?.question}
+                        callback={handleSubmit}
+                        callprev={handleBack}
+                        totalQuestion={quiz?.quiz.length}
+                        questionId={quiz?.quiz[currentStep]?.id}
+                        curruntQuestion={currentStep}
+                      />
+                      :
+                      <div className='info-container'>
+                        {info ?
+                          info
+                          :
+                          <div className="info-spinner">
+                            <Spinner animation="border" />
+                          </div>
+                        }
+                      </div>
+                    }
+
                   </div>
                 </div>
               }

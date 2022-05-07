@@ -1,5 +1,5 @@
 
-import { LOGIN_USER, ERROR, LOGOUT_INST , REGISTER_SOCIAL_MEDIA , SIGNUP_USER , OPT_VERIFY, CLEAN_STATE} from '../../types/types'
+import { LOGIN_USER, ERROR, LOGOUT_INST , UPDATE_USER,  REGISTER_SOCIAL_MEDIA , SIGNUP_USER , OPT_VERIFY, CLEAN_STATE} from '../../types/types'
 import { Dispatch } from 'redux';
 import instance from '../../../confiq/axios/instance'
 
@@ -51,8 +51,43 @@ export const CleanState = () => async (dispatch: any) => {
     }
 }
 
+export const SocialRegComp = (providerData: [], role: string ) => async (dispatch: any) => {
+    try {
+        let object = Object.assign({}, ...providerData)
+
+        let fb = {
+            fullname : object.displayName,
+            email: object.email,
+            fb_user_id: object.uid,
+            image: object.photoURL,
+            role: role
+        }
+        let google = {
+            fullname : object.displayName,
+            email: object.email,
+            google_user_id: object.uid,
+            image: object.photoURL,
+            role: role
+        }
+
+
+        let res = await instance.post('api//company/social-signin', object.providerId === "facebook.com" ? fb : google)
+        dispatch({
+            type: REGISTER_SOCIAL_MEDIA,
+            payload: res.data
+        })
+    }
+    catch (err) {
+       dispatch({
+           type : ERROR,
+           payload :err
+       })
+    } 
+}
+
+
 // Register User 
-export const SocialRegMedia = (providerData: [], role: string) => async (dispatch: any) => {
+export const SocialRegMedia = (providerData: [], role: string ) => async (dispatch: any) => {
     try {
         let object = Object.assign({}, ...providerData)
 
@@ -90,7 +125,7 @@ export const SocialRegMedia = (providerData: [], role: string) => async (dispatc
 // Login User 
 
 interface actionSuccess {
-    type: "LOGIN_USER" | "ERROR";
+    type: "LOGIN_USER" | "ERROR" | "UPDATE_USER";
     payload: [];
 }
 
@@ -111,6 +146,24 @@ export const loginUser = (data: []) => {
     }
 }
 
+
+
+export const updateUser = (data: any) => {
+    return async (dispatch: Dispatch<actionSuccess>) => {
+        debugger
+        try {
+
+                dispatch({
+                    type: UPDATE_USER,
+                    payload: data
+                })
+
+        }
+        catch (err) {
+            console.log("error in token ")
+        }
+    }
+}
 
 export const LogoutIns = () => (dispatch: any ) => {
      dispatch({

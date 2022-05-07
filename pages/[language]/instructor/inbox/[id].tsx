@@ -1,28 +1,36 @@
 import type { NextPage } from "next";
-// import { useIntl } from "react-intl";
+import { useIntl } from "react-intl";
 import Sidebar from "../../../../src/components/instructor/sidebar2";
 import { FiSearch } from "react-icons/fi";
-// import { BiBell } from "react-icons/bi";
+import { BiBell } from "react-icons/bi";
 import { Dropdown } from "react-bootstrap";
-// import { IoMailOutline } from "react-icons/io5";
+import { IoMailOutline } from "react-icons/io5";
 import Icons from "../../../../src/icons";
-// import TopNavbar from "../../../src/components/TopNavbar";
+import TopNavbar from "../../../../src/components/instructor/TopNavbar";
 import NavigationBar1 from "../../../../src/components/instructor/NavigationBar3";
-// import Chart from "../../../src/components/chart";
-// import Chart1 from "../../../src/components/chart1";
-// import BarChart from "../../../src/components/barchart";
+import Chart from "../../../../src/components/instructor/chart";
+import Chart1 from "../../../../src/components/instructor/chart1";
+import BarChart from "../../../../src/components/instructor/barchart";
 import Link from "next/link";
-import withAuth from "../../../../src/components/Hoc/authRoute";
-// import CourseCard from "../../../src/components/CourseCard1";
+import CourseCard from "../../../../src/components/instructor/CourseCard1";
+import { db } from "../../../../src/confiq/firebase/firebase";
+import { useEffect, useState } from "react";
+import { useCollection , useDocumentData  , useCollectionData } from 'react-firebase-hooks/firestore';
+import { collection, addDoc , doc, orderBy, query , serverTimestamp } from "@firebase/firestore";
 const options = ["one", "two", "three"];
 
 const UserChatCard = () => {
+
+
+
+
+
   return (
     <div className="user-card-inbox">
       <div className="user-card-inbox-inner">
         <img src="/assets/images/umpire-1.svg" />
         <div>
-          <h3>John Doe</h3>
+          <h3>gurulaher@gmail.com</h3>
           <p>Me: What is difficulty...</p>
         </div>
       </div>
@@ -35,12 +43,50 @@ const UserChatCard = () => {
 const Home: NextPage = () => {
   // const intl = useIntl();
 
+  const [messages, setMessages] = useState([])
+  const [snapshot, loading, error] = useCollection(collection(db, "Users"));
+  const chats = snapshot?.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+  console.log("chats" , chats)
+
+  // const chatExists = email => chats?.find(chat => (chat.includes(email)))
+
+  const newChat = async () => {
+    const input = prompt("Enter email of chat recipient");
+    // if (!chatExists(input) && (input != user.email)) {
+    await addDoc(collection(db, "Users"), { students: ["asifali@gmail.com"] })
+    // }
+  }
+
+  // const getMessages = () =>
+  //   messages?.map(msg => {
+  //     const sender = msg.sender === user.email;
+  //     return (
+  //       <Flex key={Math.random()} alignSelf={sender ? "flex-start" : "flex-end"} bg={sender ? "blue.100" : "green.100"} w="fit-content" minWidth="100px" borderRadius="lg" p={3} m={1}>
+  //         <Text>{msg.text}</Text>
+  //       </Flex>
+  //     )
+  //   })
+
+  // const sendMessage = async (e) => {
+  //   e.preventDefault();
+  //   await addDoc(collection(db, `chats/${id}/messages`), {
+  //     text: input,
+  //     sender: user.email,
+  //     timestamp: serverTimestamp()
+  //   })
+  //   setInput("");
+  // }
+
+
   return (
     <div className="inst">
       <NavigationBar1 />
       <section className="dash-board jadsifd-asdasid">
-      <div className="jcoiasd03-eakw3e1">
-        <Sidebar />
+        <div className="ksadsa-w4a3k4">
+          <div className="jcoiasd03-eakw3e1">
+            <Sidebar />
+          </div>
         </div>
         <div className="dash-board-1">
           <div className="dash-2 ">
@@ -50,9 +96,7 @@ const Home: NextPage = () => {
                   <h3>Inbox</h3>
                 </div>
 
-                <div className="idfadsf-sads">
-                  <button className="upload-1 sdisad-dsdactive">Compose</button>
-                </div>
+
               </div>
 
               <div className="complete-web-1 ">
@@ -64,6 +108,10 @@ const Home: NextPage = () => {
                           Messages
                         </button>
                       </div>
+                      <div>
+                        <button className="upload-1" onClick={() => newChat()}>Add</button>
+                      </div>
+
                       <div>
                         <Link href="/en/payments">
                           <button className="upload-1">Assignments</button>
@@ -85,9 +133,22 @@ const Home: NextPage = () => {
                     <FiSearch color="#8A8A8A" size={17} />
                     <input type="text" placeholder="Search" />
                   </div>
-                  <UserChatCard />
-                  <UserChatCard />
-                  <UserChatCard />
+                  {/* {
+                    chats?.filter(chat => chat.students.includes("gurulaher@gmail.com"))
+                      .map((chat) => (
+                        <UserChatCard />
+
+                      ))
+                  } */}
+                  {/* {
+                     chats?.filter(chat => chat.users.includes(user.email))
+                     .map(
+                       chat => 
+                     )
+  )
+                  } */}
+                        <UserChatCard />
+
                 </div>
                 <div className="card-daskfj-e kjadsfl-sajdfiwew">
                   <div className="user-card-inbox kjhadfd-sdfas ">
@@ -121,18 +182,18 @@ const Home: NextPage = () => {
                         </Dropdown>
                       </div>
                     </div>
-                 
+
                   </div>
                   <div className="kdsjfosd-jdamw3e">
-                    <UserChatCard/>
-                    <UserChatCard/>
-                    <UserChatCard/>
+                    <UserChatCard />
+                    <UserChatCard />
+                    <UserChatCard />
                   </div>
                   <div className="kasdjfsdsa-ewds">
-                   <Icons name="i14"/>
-                   <input placeholder="Write a message" type="text"/>
-                   <Icons name="i15"/>
-                   <Icons name="i16"/>
+                    <Icons name="i14" />
+                    <input placeholder="Write a message" type="text" />
+                    <Icons name="i15" />
+                    <Icons name="i16" />
                   </div>
                 </div>
               </div>
@@ -144,4 +205,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default withAuth(Home);
+export default Home;

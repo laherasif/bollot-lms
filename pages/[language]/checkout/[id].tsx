@@ -43,17 +43,27 @@ const Home: NextPage = () => {
   const [cardDetail, setCardDetail] = useState([]);
   const [payments, setPayments] = useState(false);
   const [complPay, setComplPay] = useState(false);
+  const [buynow, setBuyNow] = useState([])
+  const [cards, setCards] = useState([
+    '/assets/images/card-amex.svg',
+    '/assets/images/card-discover.svg',
+    '/assets/images/card-visa.svg',
+    '/assets/images/mastercard.svg',
+  ])
 
   // const checkSubstring = (length: number, match: any) => {
   //   return acoountDetail.cardNumber.substring(0, length) === match;
   // };
 
 
+  console.log("cards", cards)
+
 
 
   const dispatch = useDispatch()
 
   const router = useRouter()
+  let buyNowId = router.query.id
 
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -71,11 +81,12 @@ const Home: NextPage = () => {
   };
 
 
-  const { AddCart, payment_method } = useSelector(
+  const { AddCart } = useSelector(
     (state: RootStateOrAny) => state.cartReducer
   );
 
-  const token = useSelector((state: RootStateOrAny) => state?.userReducer?.token)
+
+  const { token, User } = useSelector((state: RootStateOrAny) => state?.userReducer)
 
   const AxInstance = axios.create({
     // .. where we make our configurations
@@ -84,6 +95,32 @@ const Home: NextPage = () => {
       token: token
     }
   });
+
+  console.log("buyID", buyNowId)
+
+  useEffect(() => {
+    if (buyNowId) {
+      let fetchBuyNow = async () => {
+        try {
+          // let res = await AxInstance.get('api//stripe/card/all')
+          let res = await AxInstance.get(`api//courses/${buyNowId}`)
+          if (res.data.success === true) {
+            setBuyNow(res.data.response.course)
+          }
+        }
+        catch (err) {
+          console.log("ee", err)
+        }
+      }
+      fetchBuyNow()
+    }
+  }, [buyNowId])
+
+  useEffect(() => {
+    if (!User) {
+      router.push('/en/login?checkout=true')
+    }
+  }, [])
 
 
   useEffect(() => {
@@ -159,24 +196,30 @@ const Home: NextPage = () => {
   };
 
 
-  console.log("exp", exYear)
 
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     // debugger
     e.preventDefault();
     let courses = []
-    for (let index = 0; index < AddCart.length; index++) {
-      const id = AddCart[index].id;
-      const price = AddCart[index].id;
-      courses.push({ id: id, price: price })
+    if (!buyNowId) {
+      for (let index = 0; index < AddCart.length; index++) {
+        const id = AddCart[index].id;
+        const price = AddCart[index].id;
+        courses.push({ id: id, price: price })
+      }
     }
+    else {
+      courses.push({ id: buynow?.id, price: parseInt(buynow?.price) })
+
+    }
+
     setComplPay(true)
     let res = await AxInstance.post('api//checkout', { courses: courses, payment_method: cardType })
     if (res.data.success === true) {
       setComplPay(false)
       dispatch(ResetCart())
-      router.push('/en/courses')
+      router.push('/en/student/courses')
     }
     else {
       setLoader(false)
@@ -185,15 +228,24 @@ const Home: NextPage = () => {
   };
 
 
-  let totalamount = AddCart ?
-    .reduce(
-    (total: number, product: string) =>
-      total + product.price * product.Quantity,
-    0
-  )
-      .toFixed(2);
+  // let totalamount = AddCart ?
+  //   .reduce(
+  //   (total: number, product: string) =>
+  //     total + product.price * product.Quantity,
+  //   0
+  // )
+  //     .toFixed(2);
   // let discount = 120;
+
+  const totalamount = AddCart.reduce(function (currentTotal: any, obj: any) {
+    let str = obj.price.replace(",", "");
+    var price = parseFloat(str);
+    if (!isNaN(price)) return currentTotal + price * obj.Quantity;
+    return currentTotal;
+  }, 0).toFixed(2)
+
   let discountAmount = totalamount;
+
 
   const {
     number,
@@ -213,120 +265,121 @@ const Home: NextPage = () => {
           <Spinner animation="border" />
         </div>
           :
-          
-            <div className="container-3">
-              <div className="shipping-2">
-                <h3>Checkout</h3>
-                <p className="msakdo-sda">Billing Address:</p>
-              </div>
-              <div className="d-flex justify-content-between hdsafjf-dsa ">
-                <div className="jasdf-dsandase">
-                  {cardDetail ? cardDetail.map((card) => (
-                    <div key={card?.id}>
-                      <button className="btn" onClick={() => setCardType(card?.id)}>
-                        <div>
-                          <span>
-                            <input
-                              type="radio"
-                              name="cardType"
-                              checked={cardType === card?.id}
-                              onChange={(e) => setCardType(card?.id)}
-                            />
-                          </span>
-                          {card?.brand}
-                        </div>
-                        <div>
-                          <img src="/pay.png" />
-                        </div>
-                      </button>
-                    </div>
-                  ))
-                    : <div>No payment method Found </div>
-                  }
 
-                  <div>
-                    <span
-                      style={{ cursor: 'pointer', color: 'blue' }}
-                      onClick={() => setPayments(!payments)}
-                    >
-                      + Add another payment method
-                    </span>
-                  </div>
-
-                  {payments ?
-                    <>
-                      <div className="d-flex justify-content-between flex-wrap mt-3">
-
-                        <div className={card ? "check-input  input_filed_error" : "check-input"} style={{ display: 'flex', flexDirection: 'column' }}>
+          <div className="container-3">
+            <div className="shipping-2">
+              <h3>Checkout</h3>
+              <p className="msakdo-sda">Billing Address:</p>
+            </div>
+            <div className="d-flex justify-content-between hdsafjf-dsa ">
+              <div className="jasdf-dsandase">
+                {cardDetail ? cardDetail.map((card) => (
+                  <div key={card?.id}>
+                    <button className="btn" onClick={() => setCardType(card?.id)}>
+                      <div>
+                        <span>
                           <input
-                            pattern="[\d| ]{16,22}"
-                            type="tel"
-                            className="input_filed_error"
-                            name="number" value={number} onChange={(e) => handleChange(e)} placeholder="Card Number " />
-                          {card && <div className="invalid mt-2">{card}</div>}
-
-                        </div >
-                        <div className={exMoth ? "check-input  input_filed_error" : "check-input"} style={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
-                          <input
-                            pattern="\d\d/\d\d"
-                            type="tel"
-                            name="experyDate" value={experyDate} onChange={(e) => handleChange(e)} placeholder="mm/yy" />
-
-                          {exMoth && exYear && <div className="invalid mt-2">{`${exMoth} & ${exYear}`}</div>}
-                        </div>
-                        <div className={cvc ? "check-input mt-3 input_filed_error " : "check-input mt-3 "} style={{ display: 'flex', flexDirection: 'column' }} >
-                          <input
-                            pattern="\d{3,4}"
-                            type="tel"
-                            maxLength={3} name="SecourtyCode" value={SecourtyCode} onChange={(e) => handleChange(e)} placeholder="Security Code " type="number" />
-                          {cvc && <div className="invalid mt-2">{cvc}</div>}
-
-                        </div>
-
-
-                      </div>
-
-                      <div style={{ margin: '25px 0px', cursor: 'pointer ' }}>
-                        <span
-                          className="btn-1s w-100"
-                          style={{ padding: '15px 50px' }}
-                          onClick={(e) => handleClick(e)}
-                        >
-                          {loader ?
-                            <div className="spinner-border text-light" style={{ marginBottom: '-5px', fontSize: '20px', width: '25px', height: '25px' }} role="status">
-                            </div>
-                            :
-                            "Add "
-                          }
+                            type="radio"
+                            name="cardType"
+                            checked={cardType === card?.id}
+                            onChange={(e) => setCardType(card?.id)}
+                          />
                         </span>
+                        {card?.brand} ( {card?.last4} )
+                      </div>
+                      <div style={{ display: 'flex' }}>
+                        <img src={`/assets/images/${card?.brand}.svg`} alt="cards" style={{ border: '1pt solid ', marginLeft: '5px', width: '40px', padding: '2px', height: '30px' }} />
+
+                      </div>
+                    </button>
+                  </div>
+                ))
+                  : <div>No payment method Found </div>
+                }
+
+                <div>
+                  <span
+                    style={{ cursor: 'pointer', color: 'blue' }}
+                    onClick={() => setPayments(!payments)}
+                  >
+                    + Add another payment method
+                  </span>
+                </div>
+
+                {payments ?
+                  <>
+                    <div className="d-flex justify-content-between flex-wrap mt-3">
+
+                      <div className={card ? "check-input  input_filed_error" : "check-input"} style={{ display: 'flex', flexDirection: 'column' }}>
+                        <input
+                          pattern="[\d| ]{16,22}"
+                          type="tel"
+                          className="input_filed_error"
+                          name="number" value={number} onChange={(e) => handleChange(e)} placeholder="Card Number " />
+                        {card && <div className="invalid mt-2">{card}</div>}
+
+                      </div >
+                      <div className={exMoth ? "check-input  input_filed_error" : "check-input"} style={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
+                        <input
+                          pattern="\d\d/\d\d"
+                          type="tel"
+                          name="experyDate" value={experyDate} onChange={(e) => handleChange(e)} placeholder="mm/yy" />
+
+                        {exMoth && exYear && <div className="invalid mt-2">{`${exMoth} & ${exYear}`}</div>}
+                      </div>
+                      <div className={cvc ? "check-input mt-3 input_filed_error " : "check-input mt-3 "} style={{ display: 'flex', flexDirection: 'column' }} >
+                        <input
+                          pattern="\d{3,4}"
+                          type="tel"
+                          maxLength={3} name="SecourtyCode" value={SecourtyCode} onChange={(e) => handleChange(e)} placeholder="Security Code " type="number" />
+                        {cvc && <div className="invalid mt-2">{cvc}</div>}
+
                       </div>
 
-                    </>
-                    : null}
+
+                    </div>
+
+                    <div style={{ margin: '25px 0px', cursor: 'pointer ' }}>
+                      <span
+                        className="btn-1s w-100"
+                        style={{ padding: '15px 50px' }}
+                        onClick={(e) => handleClick(e)}
+                      >
+                        {loader ?
+                          <div className="spinner-border text-light" style={{ marginBottom: '-5px', fontSize: '20px', width: '25px', height: '25px' }} role="status">
+                          </div>
+                          :
+                          "Add "
+                        }
+                      </span>
+                    </div>
+
+                  </>
+                  : null}
 
 
-                </div>
-                <div className="photo-maker-2">
-                  {
-                    cardType ?
-                      "" : <div style={{ color: 'red' }}>Please Add payment then able to checkout </div>
-                  }
-                  <h4>Summary</h4>
-                  <div className="hdsafj-dsae1">
-                    <div className="d-flex justify-content-between w-100">
-                      <h6>Total:</h6>
-                      <h6>${totalamount}</h6>
-                    </div>
-                    <div className="d-flex justify-content-between w-100">
-                      <h6>Coupon discount:</h6>
-                      <h6>-$ {0}</h6>
-                    </div>
-                  </div>
-                  <div className="d-flex justify-content-between hdsafj-dsae">
+              </div>
+              <div className="photo-maker-2">
+                {
+                  cardType ?
+                    "" : <div style={{ color: 'red' }}>Please Add payment then able to checkout </div>
+                }
+                <h4>Summary</h4>
+                <div className="hdsafj-dsae1">
+                  <div className="d-flex justify-content-between w-100">
                     <h6>Total:</h6>
-                    <h6>${discountAmount}</h6>
+                    <h6>${totalamount !== "0.00" ? totalamount : buynow?.price}</h6>
                   </div>
-                  {/* <h6 className="mb-0">
+                  <div className="d-flex justify-content-between w-100">
+                    <h6>Coupon discount:</h6>
+                    <h6>-$ {0}</h6>
+                  </div>
+                </div>
+                <div className="d-flex justify-content-between hdsafj-dsae">
+                  <h6>Total:</h6>
+                  <h6>${discountAmount !== "0.00" ? discountAmount : buynow?.price}</h6>
+                </div>
+                {/* <h6 className="mb-0">
                     <Icons name="c34" />
                     MARCH-T22122 is applied
                   </h6>
@@ -334,22 +387,22 @@ const Home: NextPage = () => {
                     <Icons name="c34" />
                     ST11MT22122 is applied
                   </h6> */}
-                  <button
-                    className="btn-2s w-100 mt-3"
-                    onClick={(e) => handleSubmit(e)}
-                    disabled={cardType ? false : true}
-                  >
-                    {complPay ?
-                      <div className="spinner-border text-light" style={{ marginBottom: '-5px', fontSize: '20px', width: '25px', height: '25px' }} role="status">
-                      </div>
-                      :
-                      " Complete Payment "
-                    }
+                <button
+                  className="btn-2s w-100 mt-3"
+                  onClick={(e) => handleSubmit(e)}
+                  disabled={cardType ? false : true}
+                >
+                  {complPay ?
+                    <div className="spinner-border text-light" style={{ marginBottom: '-5px', fontSize: '20px', width: '25px', height: '25px' }} role="status">
+                    </div>
+                    :
+                    " Complete Payment "
+                  }
 
-                  </button>
-                </div>
+                </button>
               </div>
             </div>
+          </div>
         }
         <Footer />
         {/* {payments ? (
@@ -360,4 +413,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default withAuth(Home);
+export default (Home);

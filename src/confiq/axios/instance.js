@@ -2,7 +2,9 @@ import axios from 'axios';
 import { useSelector } from 'react-redux'
 import { store } from "../../../src/redux/store";
 // let token = useSelector(state => state.userReducer.token)
-let token = "$2y$10$ekdz.jeHgiqPD4t2SfA8xepsqgYfAzi2zQ/2l/85R4vYRVgZB04YG"
+// let token = "$2y$10$ekdz.jeHgiqPD4t2SfA8xepsqgYfAzi2zQ/2l/85R4vYRVgZB04YG"
+// console.log("tokemn" , token )
+
 const instance = axios.create({
   // .. where we make our configurations
   baseURL: 'https://dev.thetechub.us/bolloot/',

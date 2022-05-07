@@ -16,6 +16,7 @@ import withAuth from "../../../../src/components/Hoc/authRoute";
 import { useSelector, RootStateOrAny } from "react-redux";
 import axios from 'axios'
 import { Small } from "../../../../src/components/student/loader";
+import Link from "next/link";
 
 const Home: NextPage = () => {
   // const intl = useIntl();
@@ -55,11 +56,22 @@ const Home: NextPage = () => {
               {loading ? Small()
                 :
                 <div className="hdsf0s-sadmsa">
-                  <h3>My Courses</h3>
+                  <div className="d-flex mb-3">
+                    <button className="upload-1 sdisad-dsdactive">
+                      My Courses </button>
+                    <Link href="/en/student/liveCourses">
+
+                      <button className="upload-1" >My Live Courses</button>
+                    </Link>
+                  </div>
+
                   <div className="complete-web-1">
-                    {course && course.length > 0 ? course.map((course: any) => (
-                      <CourseCard course={course} key={course.id} />
-                    ))
+                    {course && course.length > 0 ? course.map((course: any) => {
+                      if(!course?.schedule.length)
+                      return (
+                        <CourseCard course={course} key={course.id} />
+                      )
+                    })
                       : <div>Record not found </div>
                     }
 

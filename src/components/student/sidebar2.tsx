@@ -4,6 +4,7 @@ import { MdOutlineReviews } from "react-icons/md";
 import { BsWallet2 } from "react-icons/bs";
 import Icons from "../../icons";
 import { Container, Nav, Navbar, Offcanvas } from "react-bootstrap";
+import { useRouter } from "next/router";
 export default () => {
   const openPan = () => {
     const element = document.querySelector("#sidebar-cst");
@@ -21,12 +22,17 @@ export default () => {
   };
 
   const SideBarChild = () => {
+
+
+   const router = useRouter()
+
+
     return (
       <div className="inst-side">
         <div className="dash-1" id="sidebar-cst">
           <Link href="/en/instructor">
-            <div className="dash-ch-2 sdisad-dsdactive">
-              <Icons name="i1" />
+            <div className={`dash-ch-2 sdisad-dsd ${router.asPath === '/en/instructor' && 'sdisad-dsdactive' }`}>
+              {/* <Icons name="i1" /> */}
               <h3>Dashboard</h3>
             </div>
           </Link>

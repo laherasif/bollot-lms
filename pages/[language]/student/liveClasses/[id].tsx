@@ -45,7 +45,7 @@ const Home: NextPage = () => {
 
     }
     fetchQuiz()
-  }, [])
+  }, [CourseId])
 
   console.log("res", quiz)
 
@@ -97,7 +97,7 @@ const Home: NextPage = () => {
                                         </tr>
                                       </thead>
                                       <tbody>
-                                        {quiz && quiz.length ? quiz?.schedule?.map((s: any, i: numeber) => (
+                                        {quiz && quiz?.schedule?.length ? quiz?.schedule?.map((s: any, i: numeber) => (
                                           <tr key={i}>
                                             <td>
 

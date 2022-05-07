@@ -30,12 +30,15 @@ export default ({ course, key }: any) => {
       <div className="assahdwe0-ass">
         <Dropdown>
           <Dropdown.Toggle variant="success" id="dropdown-basic">
-            <img src="../../assets/images/black..svg" alt="" style={{ width: '20px' }} />
+          <i className="fa fa-ellipsis-h" style={{fontSize:'20px' , color:'black'}}></i>
+
+            {/* <img src="../../assets/images/black..svg" alt="" style={{ width: '20px' }} /> */}
           </Dropdown.Toggle>
 
           <Dropdown.Menu>
-            <Dropdown.Item as={Link} href={`/en/instructor/liveClassSedule/${course?.id}`}>Manage upcoming classes </Dropdown.Item>
-            <Dropdown.Item as={Link} href={`/en/instructor/enrolledStudent/${course?.id}`}>Manage Enrolled Student</Dropdown.Item>
+            <Dropdown.Item as={Link} href={`/en/instructor/managePreview/${course?.id}`}>Manage preview </Dropdown.Item>
+            <Dropdown.Item as={Link} href={`/en/instructor/manageLiveClasses/${course?.id}`}>Manage  Live Classes </Dropdown.Item>
+            <Dropdown.Item as={Link} href={`/en/instructor/manageEnrolledStudent/${course?.id}`}>Manage Enrolled Student</Dropdown.Item>
             <Dropdown.Item as={Link} href={ course?.quiz?.length === 0  ? `/en/instructor/quiz` : `/en/instructor/manageQuiz/${course?.id}`}>Manage Quiz</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>

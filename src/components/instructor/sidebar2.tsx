@@ -23,7 +23,6 @@ export default () => {
 
   const SideBarChild = () => {
     const router = useRouter()
-    console.log("router" , router )
     return (
       <div className="inst-side">
         <div className="dash-1" id="sidebar-cst">
@@ -39,12 +38,12 @@ export default () => {
               <h3>My courses</h3>
             </div>
           </Link>
-          {/* <Link href="/en/instructor/liveCourses">
+          <Link href="/en/instructor/invitation">
             <div className={`dash-ch-2 sdisad-dsd ${router.asPath === "/en/instructor" ? "dash-ch-2 sdisad-dsdactive" :""}`}>
               <Icons name="i2" />
-              <h3>Live courses</h3>
+              <h3>Invitation</h3>
             </div>
-          </Link> */}
+          </Link>
           <Link href="/en/instructor/earning">
             <div className={`dash-ch-2 sdisad-dsd ${router.asPath === "/en/instructor/earning" ? "dash-ch-2 sdisad-dsdactive" :""}`}>
               <Icons name="i3" />
@@ -58,7 +57,7 @@ export default () => {
             </div>
           </Link>
           <Link href="/en/instructor/profile">
-            <div className={`dash-ch-2 sdisad-dsd ${router.asPath === "/en/instructor" ? "dash-ch-2 sdisad-dsdactive" :""}`}>
+            <div className={`dash-ch-2 sdisad-dsd ${router.asPath === "/en/instructor/profile" ? "dash-ch-2 sdisad-dsdactive" :""}`}>
               <Icons name="i5" />
               <h3>Profile</h3>
             </div>
