@@ -35,7 +35,7 @@
 
 #msform input, #msform textarea {
   border: 1px solid #ccc;
-  width: 100%;
+  /* width: 100%; */
   box-sizing: border-box;
   /* font-family: montserrat; */
   color: #2C3E50;

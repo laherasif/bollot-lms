@@ -353,11 +353,11 @@ const Home: NextPage = ({ Course }: any) => {
           </section>
           <section className="kasjdsaidw-asjew">
             <div className="card-bar-sec-1">
-              <div className="image_container" onClick={() => Course?.previews.length ? setPreview(true) : null}>
+              <div className="image_containers" onClick={() => Course?.previews.length ? setPreview(true) : null}>
                 <img src={Course?.cover_image} />
                 {Course?.previews.length ?
                   <div className="play_icon">
-                    <i className="fa fa-play-circle" id="icon" ></i>
+                    <i className="fa fa-play-circle"  ></i>
                   </div>
                   : null 
                 }

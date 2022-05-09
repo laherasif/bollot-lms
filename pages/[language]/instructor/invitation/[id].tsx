@@ -117,7 +117,7 @@ const Home: NextPage = () => {
           </div>
         }
 
-        { email && <Invitation permition={email}  Toggle={(value:any) => setemail(value)} /> }
+       
       </section >
     </div >
   );

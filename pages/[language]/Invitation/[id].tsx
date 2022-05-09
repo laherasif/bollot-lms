@@ -84,13 +84,12 @@ const Home: NextPage = ({ Course, invite }: any) => {
     try {
       setLoading(true)
       let res = await instance.post('api//company/accept-invite',{ invite_code :  invite?.invite_code } ) 
-      if (res.data.response === true) {
+      if (res.data.success === true) {
         setLoading(false)
-        dispatch(loginUser(res))
-        
+        dispatch(loginUser(res.data))
         router.push('/en/instructor/profile')
       }
-      else{
+      else if(res.data.error){
         SweetAlert({icon : "error" , text :res.data.error})
         setLoading(false)
 
@@ -404,7 +403,6 @@ const Home: NextPage = ({ Course, invite }: any) => {
                   Get your team access to 6,000+ top Udemy courses anytime,
                   anywhere.
                 </h4>
-                <button className="try-it">Try Bolloot Business</button>
               </div>
 
             </div>

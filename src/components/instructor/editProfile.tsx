@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { Modal, Button } from 'react-bootstrap'
+import { Modal, Button, Spinner} from 'react-bootstrap'
 import { IoTrophySharp } from "react-icons/io5";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import { SweetAlert } from "../../function/hooks";
@@ -9,9 +9,17 @@ const EditProfile = ({ Toggle, permition }: any) => {
 
     const { token, User } = useSelector((state: RootStateOrAny) => state?.userReducer)
 
+
     const [show, setShow] = useState(permition);
     const [loading, setLoading] = useState(false);
-    const [state, setState] = useState({ image: User?.image, fullname: User?.fullname, email: User?.email, about: User?.about || '', password: '', old_password: '', tagline: User?.tagline || '' });
+    const [state, setState] = useState({
+        image: User?.image,
+        fullname: User?.fullname,
+        email: User?.email,
+        about: User?.about || '',
+        password: '', old_password: '',
+        tagline: User?.tagline || ''
+    });
     const [url, setUrl] = useState('');
     const [errors, setErrros] = useState('');
 
@@ -66,10 +74,31 @@ const EditProfile = ({ Toggle, permition }: any) => {
 
     const SaveProfile = async () => {
 
+        let regex = /data:.*base64,/
+        let checks = state?.image.replace(regex, "")
+        let regexBase64 = /^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/;
+        let check = regexBase64.test(checks);
+
+        let value = {
+            fullname: state.fullname,
+            image: check ? state.image : '',
+            email: state.email,
+            about: state.about,
+            password: state.password,
+            tagline: state.tagline,
+            // old_password : state.old_password
+
+        }
+
+        let ins = await AxInstance.post('api//edit-profile', value)
+        let comp = await AxInstance.post('api//edit-profile', value)
+
+
+
+
         try {
             setLoading(true)
-            let res = await AxInstance.post('api//edit-profile', state)
-            console.log("Res", res)
+            let res = User.role === "instructor" ? ins : comp
             if (!res.data.error) {
                 setLoading(false)
                 SweetAlert({ icon: 'success', text: "Profile are updated " })
@@ -130,7 +159,7 @@ const EditProfile = ({ Toggle, permition }: any) => {
                                                             value={state.fullname}
                                                             id={`${errors.fullname && 'input_filed_error'}`}
                                                             onChange={(e) => handleChange(e)} placeholder="Write here..." />
-                                                         {errors?.fullname && <div className="invalid mt-1">{errors?.fullname[0]}</div>}
+                                                        {errors?.fullname && <div className="invalid mt-1">{errors?.fullname[0]}</div>}
 
                                                     </div>
                                                     <div className="inpt_field mt-2">
@@ -167,7 +196,7 @@ const EditProfile = ({ Toggle, permition }: any) => {
                                                         </div>
                                                     </div>
 
-                                                    <div className="row mt-2">
+                                                    {/* <div className="row mt-2">
                                                         <div className="col-sm-12 col-md-12 col-lg-12 inpt_field">
                                                             <p className="m-b-10 f-w-600">old Password</p>
                                                             <input type="password" name="old_password" id={`${errors.old_password && 'input_filed_error'}`} value={state.old_password} onChange={(e) => handleChange(e)} placeholder="Write here..." />
@@ -175,7 +204,7 @@ const EditProfile = ({ Toggle, permition }: any) => {
 
                                                         </div>
 
-                                                    </div>
+                                                    </div> */}
 
                                                     <div className="row mt-2">
                                                         <div className="col-sm-12 col-md-12 col-lg-12 inpt_field">
@@ -204,9 +233,9 @@ const EditProfile = ({ Toggle, permition }: any) => {
                     <div className="idfadsf-sads kajfds-sdfe">
                         <button onClick={() => SaveProfile()} className="upload-1 sdisad-dsdactive">
                             {loading ?
-                                // <Spinner animation="border" varient="loght" />
-                                <div className="spinner-border text-light" role="status">
-                                </div>
+                                <Spinner animation="border" varient="light" />
+                                // <div className="spinner-border text-light" role="status">
+                                // </div>
                                 :
                                 "Update"
                             }

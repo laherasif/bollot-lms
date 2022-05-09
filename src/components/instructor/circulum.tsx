@@ -198,24 +198,10 @@ export default ({ courseId, onStepChange, onPrevStep, step }: any) => {
     setSection(lists);
   };
   const SaveCriculum = async () => {
-    let arr = [];
-    for (let index = 0; index < section.length; index++) {
-      const element = section[index];
-      for (let j = 0; j < element.lectures.length; j++) {
-        const elements = element.lectures[j];
-        let regex = /data:.*base64,/;
-        let checks = elements.thumbnail.replace(regex, "");
-        let regexBase64 =
-          /^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/;
-        let check = regexBase64.test(checks);
-        elements.thumbnail = check ? elements.thumbnail : "";
-      }
-      arr.push(element);
-    }
-
+    
     let saveCri = {
       course_id: courseId,
-      sections: arr,
+      sections: section,
     };
 
     try {
@@ -233,7 +219,7 @@ export default ({ courseId, onStepChange, onPrevStep, step }: any) => {
         // });
       } else {
         setLoading(false);
-        // setErrors(res.data.error)
+        setErrors(res.data.error)
       }
     } catch (err) {
       setLoading(false);
@@ -264,6 +250,23 @@ export default ({ courseId, onStepChange, onPrevStep, step }: any) => {
     ac.lectures.some((sa) => sa.progressbar < 100)
   );
 
+
+  const delThumnail = (index: number, i: number) => {
+    debugger
+    const lists: any = [...section];
+    for (let j = 0; j < lists.length; j++) {
+      if (j === index) {
+        const element = lists[j];
+        element.lectures[i].thumbnail = ""
+        if (network === true) {
+          element.lectures[i].progressbar = 0
+        }
+      }
+
+    }
+    setSection(lists)
+  }
+
   return (
     <>
       <div className="p-fields">
@@ -273,9 +276,8 @@ export default ({ courseId, onStepChange, onPrevStep, step }: any) => {
             <div
               data-cy="button-box"
               id="up-button-box"
-              className={`up-button-box ${
-                type === 0 ? "up-button-box  up-button-box-radio active" : ""
-              } `}
+              className={`up-button-box ${type === 0 ? "up-button-box  up-button-box-radio active" : ""
+                } `}
               style={{ height: "100%" }}
               onClick={() => setType(0)}
             >
@@ -345,9 +347,8 @@ export default ({ courseId, onStepChange, onPrevStep, step }: any) => {
           <div className="col-12 col-md-6 mt-10">
             <div
               data-cy="button-box"
-              className={`up-button-box ${
-                type === 1 ? "up-button-box  up-button-box-radio active" : ""
-              } `}
+              className={`up-button-box ${type === 1 ? "up-button-box  up-button-box-radio active" : ""
+                } `}
               onClick={() => setType(1)}
             >
               <div className="up-radio">
@@ -410,118 +411,124 @@ export default ({ courseId, onStepChange, onPrevStep, step }: any) => {
         {type === 0 ? (
           <>
             <div className="drop-box main-box mb-3">
-              {section.map((sec: any, index: number) => (
-                <>
-                  <div className="kvjadsd-j43rm">
-                    <div className="jodsa-wnedas">
-                      <h6>Section title</h6>
-                    </div>
-                    {sec?.length !== -1 && (
-                      <div
-                        onClick={() => removeInputField(index)}
-                        style={{ cursor: "pointer" }}
-                      >
-                        <i className="fa fa-trash"></i>
-                      </div>
-                    )}
-                  </div>
-                  <input
-                    type="text"
-                    name="title"
-                    value={sec.title}
-                    onChange={(e) => handleChangeSection(index, e)}
-                    placeholder="Write here..."
-                  />
-                  {/* { errors && <div className='invalid'>{errors.sections.0.title[0]}</div>} */}
-                  {sec.lectures.map((lec: any, i: number) => (
-                    <div className="drop-box" style={{ marginTop: "10px" }}>
-                      <div className="kvjadsd-j43rm">
-                        <div className="jodsa-wnedas">
-                          <h6>Lectures</h6>
-                        </div>
-                        {lec?.length !== -1 && (
-                          <div
-                            onClick={() => removeInputFields(index, i)}
-                            style={{ cursor: "pointer" }}
-                          >
-                            <i className="fa fa-trash"></i>
+            {section ? section?.map((sec: any, index: number) => (
+                      <div className="drop-box" style={{ marginLeft: '10px', maxWidth: '90%' }}>
+                        <div className="kvjadsd-j43rm">
+                          <div className="jodsa-wnedas">
+                            <h6>Section title</h6>
                           </div>
-                        )}
-                      </div>
-
-                      <div className="p-field  ">
-                        <div className="d-flex">
-                          <Icons name="i24" />
-                          <label>Title</label>
+                          {sec?.length !== -1 && <div onClick={() => removeInputField(index)} style={{ cursor: 'pointer' }}><i className="fa fa-trash"></i></div>}
                         </div>
-                        <input
-                          type="text"
-                          name="title"
-                          value={lec.title}
-                          onChange={(e) => handleChangeLecture(index, i, e)}
-                          placeholder="Write here..."
-                        />
-                      </div>
+                        <div className="p-field  ">
 
-                      <div>
-                        <label>Video / PDF file for this Lecture</label>
-                        <div className="drop-box img_container">
-                          <div className="kvjadsd-j43rm iasdufhvs-ernd">
-                            <Icons name="i29" />
-                            {lec.thumbnail ? (
-                              <img
-                                src={lec.thumbnail}
-                                alt="course_img"
-                                className="thum_img"
-                              />
-                            ) : (
-                              ""
-                            )}
-                            {lec.thumbnail || lec.file_type === "Video" ? (
-                              ""
-                            ) : lec.object_key ? (
-                              lec?.object_key
-                            ) : (
-                              <p>Drag file here / Choose file</p>
-                            )}
-                          </div>
-                          {lec.thumbnail || lec.file_type === "PDF" ? (
-                            ""
-                          ) : (
-                            <input
-                              type="file"
-                              accept="pdf/*"
-                              onChange={(e) =>
-                                handleChangeLectureFile(index, i, e)
+                          <input
+                            type="text"
+                            name="title"
+                            value={sec.title}
+                            onChange={(e) => handleChangeSection(index, e)}
+                            placeholder="Write here..." />
+                          {errors && errors?.sections ? <div className="invalid mt-1">{errors?.sections[index]?.title}</div> : null}
+
+                        </div>
+                        {sec.lectures.map((lec: any, i: number) => (
+                          <div className="drop-box " style={{ marginTop: '10px' }}>
+                            <div className="kvjadsd-j43rm">
+                              <div className="jodsa-wnedas">
+                                <h6>Lectures</h6>
+                              </div>
+                              {lec?.length !== -1 && <div onClick={() => removeInputFields(index, i)} style={{ cursor: 'pointer' }}><i className="fa fa-trash"></i></div>}
+
+                            </div>
+
+                            <div className="p-field  ">
+                              <div className="d-flex">
+                                <Icons name="i24" />
+                                <label>Title</label>
+
+
+                              </div>
+                              <input
+                                type="text"
+                                name="title"
+                                value={lec.title}
+                                onChange={(e) => handleChangeLecture(index, i, e)}
+                                placeholder="Write here..." />
+                              {errors && errors?.sections ? <div className="invalid mt-1">{errors?.sections[index]?.lectures[i]?.title}</div> : null}
+
+                            </div>
+
+                            <div className={lec.thumbnail && lec.id || lec.progressbar === 100 ? "image-container" : ""}>
+                              <label>Video / PDF file for this Lecture</label>
+                              <div className="drop-box img-box">
+                                <div className="kvjadsd-j43rm iasdufhvs-ernd" >
+                                  <Icons name="i29" />
+                                  {/* {load ? <Spinner animation="border" size="sm"/> : */}
+                                  <>
+                                    {lec.thumbnail ? <img src={lec.thumbnail} alt="course_img" className="thum_img" /> : ""}
+                                    {lec.thumbnail || lec.file_type === "Video" ? "" : lec.object_key ? lec?.object_key : <p>Drag file here / Choose file</p>}
+                                  </>
+                                  {/* }/ */}
+                                </div>
+                                {lec?.thumbnail || lec.file_type === "PDF" ? "" :
+                                  <input type="file" accept="pdf/*" onChange={(e) => handleChangeLectureFile(index, i, e)} className="custom-file-input" />
+                                }
+                              {errors && errors?.sections ? <div className="invalid mt-1">{errors?.sections[index]?.lectures[i]?.object_key}</div> : null}
+
+
+                              </div>
+                              <div className="mt-2">
+                                {lec.progressbar === 100 ? " "
+                                  :
+                                  lec.progressbar && <ProgressBar animated now={lec.progressbar} />}
+                              </div>
+                              {lec?.thumbnail ?
+                                <>
+                                  <div className="overlay"></div>
+                                  <div id="icon" onClick={() => delThumnail(index, i)}>
+                                    <i className="fa fa-close" ></i>
+                                  </div>
+                                </>
+                                : null
                               }
-                              className="custom-file-input"
-                            />
-                          )}
-                        </div>
-                        <div className="mt-2">
-                          {lec.progressbar === 100
-                            ? " "
-                            : lec.progressbar && (
-                                <ProgressBar animated now={lec.progressbar} />
-                              )}
-                        </div>
+                            </div>
+
+                          </div>
+                        ))}
+                        <span className="add-mores" onClick={() => AddmoreLecture(index)} >+ Add more lectures </span>
+
+
                       </div>
-                    </div>
-                  ))}
-                  <h3
-                    className="add-more"
-                    onClick={() => AddmoreLecture(index)}
-                  >
-                    + Add more lectures{" "}
-                  </h3>
-                </>
-              ))}
+                    ))
+                      : <div>Record not found </div>
+                    }
+
             </div>
-            
-            <h3 id="more-section" onClick={() => AddmoreSection()}>
+            <span style={{ fontSize: '12px', color: 'red', fontWeight: '500' }}>Note : During uploading leacture progressbar Section and Save will not created till leature upload </span>
+            <h3 id="more-section" style={red ? { cursor: 'not-allowed' } : { cursor: 'pointer' }} onClick={() => AddmoreSection()} style={{ cursor: 'pointer' }}>
               + Add more lectures and more sections
             </h3>
-            <div className="d-flex justify-content-center mt-2">
+
+            <div className="umpire w-100 " >
+              <div className="umpire-1 umpire-1-cst d-flex justify-content-center mt-3 ">
+                <div className="d-flex mb-3 idfadsf-sads">
+                 <button
+                      className="upload-1 sdisad-dsdactive "
+                      onClick={() => onPrevStep(1 - 1)}
+                    >
+                      Previous
+                  </button>
+                  <button
+                    className="upload-1 sdisad-dsdactive"
+                    onClick={() => SaveCriculum()}
+                  >
+                    <i className="fa fa-save" style={{ marginRight: '10px' }}></i>
+                    {loading ? <Spinner animation="border" /> : "Save & Next"}
+                  </button>
+                </div>
+
+              </div>
+            </div>
+            {/* <div className="d-flex justify-content-center mt-2">
               <div className="idfadsf-sads kajfds-sdfe hfdajss-3ersad">
                 <button
                   className="upload-1 sdisad-dsdactive "
@@ -538,7 +545,7 @@ export default ({ courseId, onStepChange, onPrevStep, step }: any) => {
                   {loading ? <Spinner animation="border" /> : "Save & Next"}
                 </button>
               </div>
-            </div>
+            </div> */}
           </>
         ) : (
           <Secdule

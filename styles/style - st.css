@@ -12,7 +12,7 @@
 /*************************/
 .container {
   width: 100%;
-  max-width: 1340px;
+  /* max-width: 1340px; */
   margin: 0 auto;
 }
 
@@ -2150,12 +2150,19 @@
   font-size: 18px;
   line-height: 148.5%;
   color: #131313;
-  margin: 25px 0px;
+  margin: 10px 0px;
+  padding-top: 9px;
+  height: 45px;
+}
+
+.hsaid9iawdeka h2:hover {
+  background-color: rgb(237, 230, 230);
 }
 
 .hsaid9iawdeka {
   padding-top: 40px;
   height: 100%;
+  cursor: pointer;
   background-color: white;
 }
 
@@ -3186,8 +3193,15 @@
 
 .user-card-inbox {
   display: flex;
+  padding: 10px;
+  border-radius: 10px;
   justify-content: space-between;
-  margin: 20px 0px;
+  cursor: pointer;
+  margin: 10px 0px;
+}
+
+.user-card-inbox:hover {
+  background-color: rgb(251, 249, 249);
 }
 
 .user-card-inbox p {
@@ -3243,10 +3257,12 @@
 }
 
 .kdsjfosd-jdamw3e {
-  height: 84%;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
+  height: 82%;
+  /* display: flex; */
+  position: relative;
+  /* flex-direction: column; */
+  /* justify-content: flex-end; */
+  overflow-y: scroll;
 }
 
 .kasdjfsdsa-ewds input {
@@ -3259,6 +3275,7 @@
 .kasdjfsdsa-ewds svg {
   width: 20px;
   margin: 0px 5px;
+  cursor: pointer;
 }
 
 .kasdjfsdsa-ewds {
@@ -3732,7 +3749,6 @@
   font-weight: 400;
   font-size: 14px;
   line-height: 24px;
-
   color: #131313;
 }
 
@@ -4073,6 +4089,12 @@ input[type=number] {
   background-color: lightgray;
   color: #ffffff;
   width: 100%;
+}
+
+.navbar-expand-lg .navbar-nav .dropdown-menu {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
 }
 
 /* instructor ciriculum */
@@ -4431,11 +4453,13 @@ textarea::placeholder {
 
 /* course detail page */
 
+::-webkit-scrollbar {
+  -webkit-appearance: none;
+}
 
 
 
-
-.image_container {
+.image_containers {
   position: relative;
   text-align: center;
   cursor: pointer;
@@ -4687,7 +4711,7 @@ textarea::placeholder {
 .video-icon {
   position: absolute;
   top: 25%;
-  left: 23%;
+  left: 30%;
 }
 
 .table-video {
@@ -4781,6 +4805,52 @@ textarea::placeholder {
   z-index: 1;
 }
 
-.image-container:hover #icon  {
+.image-container:hover #icon {
   opacity: 1;
+}
+
+.input_fields {
+  width: 100%;
+
+}
+
+.input_fields input[type="text"] {
+  border: none;
+  width: 100%;
+  border: 0.5px solid #c4c4c4 !important;
+  box-sizing: border-box;
+  box-shadow: 0px 12px 20px rgb(152 152 152 / 12%);
+  border-radius: 100px;
+  background-color: #ffffff !important;
+  padding: 5px 10px;
+  outline: none !important;
+  box-shadow: none !important;
+
+}
+
+.data-time {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 14px;
+  color: #a2a2a2;
+  padding-top: 5px;
+  padding-left: 10px;
+}
+
+.select-mesage{
+  text-align: center;
+  padding-top: 10rem;
+  font-size: 30px;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: lightgray;
+  font-weight: 500;
+}
+
+.spinner-chatbox {
+  position: absolute;
+  text-align: center;
+  top: 10rem;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
 }

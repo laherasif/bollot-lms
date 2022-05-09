@@ -13,6 +13,7 @@ import { RootStateOrAny, useSelector } from "react-redux";
 import axios from "axios";
 import { Small } from "../../../../src/components/instructor/loader";
 import { SweetAlert } from "../../../../src/function/hooks";
+import { Spinner } from "react-bootstrap";
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
 
@@ -39,9 +40,7 @@ const Home: NextPage = () => {
 
   const [loading, setLoading] = useState(false)
   const [saveQuiz, setSaveQuiz] = useState(false)
-
-  // const [course, setCourse] = useState([])
-
+  const [errors, setErrors] = useState([])
   const [allQuiz, setAllQuiz] = useState([
     {
       question: '',
@@ -51,7 +50,7 @@ const Home: NextPage = () => {
       ]
     },
   ])
-  
+
   const Questions = () => {
     setAllQuiz([
       {
@@ -69,19 +68,27 @@ const Home: NextPage = () => {
 
 
 
-  useEffect(()=>{
+  useEffect(() => {
     let fetchQuiz = async () => {
       try {
+        setLoading(true)
         let res = await AxInstance.get(`api//instructor/courses/quiz/${courseId}`)
-        console.log("Res" , res )
-        setAllQuiz(res.data.response.course_with_quiz.quiz)
-        
+        if (res.data.success === true) {
+          setAllQuiz(res.data.response.course_with_quiz.quiz)
+          setLoading(false)
+
+        }
+        else {
+          SweetAlert({ icon: "error", text: "something is wronge" })
+        }
+
       } catch (error) {
-        
+        setLoading(false)
+
       }
     }
     fetchQuiz()
-  },[courseId])
+  }, [courseId])
 
 
 
@@ -187,10 +194,16 @@ const Home: NextPage = () => {
       console.log("res", res)
       if (res.data.success === true) {
         setSaveQuiz(false)
-        SweetAlert({icon : "success" , text : "Quiz are successfully updated"})
+        SweetAlert({ icon: "success", text: "Quiz are successfully updated" })
+      }
+      else {
+        setErrors(res.data.error.questions)
+        setSaveQuiz(false)
+
       }
 
     } catch (error) {
+      setSaveQuiz(false)
 
     }
 
@@ -226,7 +239,7 @@ const Home: NextPage = () => {
                     <h3>My Courses</h3>
                   </div>
                   <div className=" jidfjsd-asjreid">
-                    
+
                   </div>
                 </div>
 
@@ -234,10 +247,15 @@ const Home: NextPage = () => {
                   <div className="umpire w-100">
                     <div className="umpire-1 umpire-1-cst ">
                       <div className="d-flex mb-3 idfadsf-sads">
-                        <button className="upload-1 sdisad-dsdactive" onClick={()=> Questions()}>
+                        <button className="upload-1 sdisad-dsdactive" onClick={() => Questions()}>
                           + Add more quiz </button>
-                        <button className="upload-1 sdisad-dsdactive" onClick={()=> UpdateQuiz()}> 
-                        <i className="fa fa-save" style={{ marginRight: '10px' }}></i> Save</button>
+                        <button className="upload-1 sdisad-dsdactive" onClick={() => UpdateQuiz()}>
+
+                          <i className="fa fa-save" style={{ marginRight: '10px' }}></i>
+                          {saveQuiz ? <Spinner animation="border" /> :
+                            "Save"
+                          }
+                        </button>
                       </div>
 
                     </div>
@@ -248,7 +266,7 @@ const Home: NextPage = () => {
                   <div className="complete-web-1 mb-3" style={{ marginBottom: '60px' }} >
 
                     {allQuiz && allQuiz.length ? allQuiz?.map((q, index) => (
-                      <div className="p-3 quiz" key={index} style={{ maxWidth: '100%' , marginLeft:'20px' }}>
+                      <div className="p-3 quiz" key={index} style={{ maxWidth: '100%', marginLeft: '20px' }}>
                         <div className="p-field  ">
                           <div className="d-flex " style={{ justifyContent: 'space-between' }}>
                             <label>Question : {index + 1}</label>
@@ -261,24 +279,28 @@ const Home: NextPage = () => {
                             value={q.question}
                             onChange={(e) => handleChange(index, e)}
                             placeholder="Write here..." />
+                          {errors && errors[index]?.question ? <div className="invalid mt-1">{errors[index]?.question}</div> : null}
 
                         </div>
-                        {q.options.map((op, i) => (
+                        {q.options.length ? q.options.map((op, i) => (
                           <>
-                            <div className="p-field" style={{ display: 'flex', marginTop: '10px' }} key={i}>
-                              <div style={{ width: '20%' }}>
+                            <div 
+                            className="" 
+                            style={{ display: 'flex', marginTop: '10px' }} key={i}>
+                              <div style={{ width: '10%' }}>
                                 <input style={{ marginTop: '10px' }}
                                   onChange={(e) => handleChangeRadio(index, i, e)}
                                   checked={op.correct === "1"} name="correct" type="checkbox" />
                               </div>
-                              <div style={{ width: '100%' }}>
+                              <div className="input_fields">
                                 <input
                                   type="text"
                                   name="option"
-                                  className="w-100"
                                   value={op.option}
                                   onChange={(e) => handleChangeOptions(index, i, e)}
                                   placeholder="Write here...." />
+
+                                {errors && errors[index]?.options  ? <div className="invalid mt-1 w-100">{errors && errors[index]?.options[i]?.option}</div> : null}
                               </div>
                               <div style={{ paddingTop: '5px', paddingLeft: '10px' }} onClick={() => removeInputFields(index, i)}>
                                 <i className="fa fa-trash"></i>
@@ -288,7 +310,13 @@ const Home: NextPage = () => {
 
 
                           </>
-                        ))}
+                        ))
+                          :
+                          <div className="ml-3">
+                            {errors ? <div className="invalid mt-1">{errors[index]?.options[0]}</div> : null}
+                          </div>
+
+                        }
                         {q.options.length < 6 ?
                           <p className="add-more"
                             onClick={() => Addmore(index)}

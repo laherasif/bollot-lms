@@ -18,11 +18,13 @@ import { useEffect, useState } from "react";
 import { RootStateOrAny, useSelector } from "react-redux";
 import axios from "axios";
 import { Small } from "../../../../src/components/instructor/loader";
+import Invitation from "../../../../src/components/instructor/invitationForm";
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
   const [course, setCourse] = useState([])
   const [loading, setLoading] = useState(false)
+  const [email , setemail] = useState(false)
   const token = useSelector((state: RootStateOrAny) => state?.userReducer?.token)
 
   const AxInstance = axios.create({
@@ -92,10 +94,14 @@ const Home: NextPage = () => {
                     <div className="umpire-1 umpire-1-cst ">
                       <div className="d-flex mb-3 idfadsf-sads">
                         <button className="upload-1 sdisad-dsdactive">
-                          My Courses </button>
+                          My Courses
+                        </button>
                         <Link href="/en/instructor/liveCourses">
                           <button className="upload-1" >My Live Courses</button>
                         </Link>
+                        <button className="upload-1 sdisad-dsd" onClick={()=> setemail(true)}>
+                          Send Invitation
+                        </button>
                       </div>
                       {/* <div className="maxima ">
                       <div className="idfadsf-sads">
@@ -133,6 +139,8 @@ const Home: NextPage = () => {
             </div>
           </div>
         }
+
+        {email && <Invitation permition={email} Toggle={(value: any) => setemail(value)} />}
       </section >
     </div >
   );

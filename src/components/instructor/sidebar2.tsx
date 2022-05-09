@@ -38,12 +38,12 @@ export default () => {
               <h3>My courses</h3>
             </div>
           </Link>
-          <Link href="/en/instructor/invitation">
+          {/* <Link href="/en/instructor/invitation">
             <div className={`dash-ch-2 sdisad-dsd ${router.asPath === "/en/instructor" ? "dash-ch-2 sdisad-dsdactive" :""}`}>
               <Icons name="i2" />
               <h3>Invitation</h3>
             </div>
-          </Link>
+          </Link> */}
           <Link href="/en/instructor/earning">
             <div className={`dash-ch-2 sdisad-dsd ${router.asPath === "/en/instructor/earning" ? "dash-ch-2 sdisad-dsdactive" :""}`}>
               <Icons name="i3" />

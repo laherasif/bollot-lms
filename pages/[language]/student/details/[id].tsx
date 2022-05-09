@@ -16,12 +16,14 @@ import { useRouter } from 'next/router'
 import CourseSideBar from "../../../../src/components/student/courseSidebar";
 import CriculumCard from '../../../../src/components/student/criculumCard'
 import Link from "next/link";
+import Conversation from "../../../../src/components/student/messageForm";
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
   const [courseId, setCourseId] = useState('')
   const [section, setSections] = useState({})
   const [lectures, setLectures] = useState({})
+  const [conversation, setConversation] = useState(false)
 
   const router = useRouter()
 
@@ -117,8 +119,10 @@ const Home: NextPage = () => {
                 <h2>Resources</h2>
               </div>
               <div>
-
                 <h2>Live Classes</h2>
+              </div>
+              <div onClick={() =>  setConversation(true)}>
+                <h2>Message to Instructor</h2>
               </div>
               <div>
                 <Link href={`/en/student/quiz/${courseId}`}>
@@ -198,6 +202,8 @@ const Home: NextPage = () => {
             </div>
           </div>
         </div>
+      { conversation &&  <Conversation permition={conversation} Toggle={(value : any ) => setConversation(value)} user_id ={ section?.instructor?.id}/> }
+
       </section>
     </>
   );

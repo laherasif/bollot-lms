@@ -25,9 +25,9 @@ const Home: NextPage = () => {
     email?: string,
     password?: number | string,
     role?: number,
-    companyName: string,
-    companySize: number,
-    companyAddres: string
+    company_name: string,
+    company_size: number,
+    legal_address: string
   }
 
 
@@ -38,9 +38,9 @@ const Home: NextPage = () => {
     fullname: "",
     email: "",
     password: "",
-    companyName: '',
-    companySize: '',
-    companyAddres: ''
+    company_name: '',
+    company_size: '',
+    legal_address: ''
   })
   const [role, setRole] = useState(0)
   const [message, setMessage] = useState<boolean>(false)
@@ -107,9 +107,10 @@ const Home: NextPage = () => {
       let value = {
         fullname: fullname,
         email: email,
-        companyName: companyName,
-        companySize: companySize,
-        companyAddres: companyAddres,
+        password : password ,
+        company_name: company_name,
+        company_size: company_size,
+        legal_address: legal_address,
         role: "company"
       }
 
@@ -134,9 +135,9 @@ const Home: NextPage = () => {
 
 
 
-  let { fullname, email, password, companyName ,
-    companySize,
-    companyAddres } = authValue
+  let { fullname, email, password, company_name,
+    company_size,
+    legal_address } = authValue
 
   return (
     <div>
@@ -170,21 +171,21 @@ const Home: NextPage = () => {
 
                   type="password"
                   value={password}
-                  name="password" onChange={handleChange} placeholder="company Name" />
+                  name="password" onChange={handleChange} placeholder="password" />
                 {errors.password && <div className="invalid mb-1">{errors?.password[0]}</div>}
 
               </div>
               <div className="hasdfkj">
-                <input className={`full-3 ${errors.companyName && 'full-3 input_filed_error'}`}
+                <input className={`full-3 ${errors.company_name && 'full-3 input_filed_error'}`}
 
                   type="text"
-                  value={companyName}
-                  name="companyName" onChange={handleChange} placeholder="company Name" />
-                {errors.companyName && <div className="invalid mb-1">{errors?.companyName[0]}</div>}
+                  value={company_name}
+                  name="company_name" onChange={handleChange} placeholder="company Name" />
+                {errors.company_name && <div className="invalid mb-1">{errors?.company_name[0]}</div>}
 
               </div>
               <div className="hasdfkj">
-                <Form.Select name="companySize" className={`full-2 ${errors.companySize && 'full-2 input_filed_error'}`}  value={companySize} onChange={handleChange}>
+                <Form.Select name="company_size" className={`full-2 ${errors.company_size && 'full-2 input_filed_error'}`} value={company_size} onChange={handleChange}>
                   <option defaultChecked>Company Size</option>
                   <option >I am a contractor / freelance</option>
                   <option >1 - 199</option>
@@ -193,20 +194,20 @@ const Home: NextPage = () => {
                   <option >50,001 +</option>
 
                 </Form.Select>
-                {errors.companySize && <div className="invalid mb-1">{errors?.companySize[0]}</div>}
+                {errors.company_size && <div className="invalid mb-1">{errors?.company_size[0]}</div>}
 
               </div>
 
               <div className="hasdfkj">
-               <textarea name="companyAddres" placeholder="Legal Address" style={{width:'100%'}}  className={`full-3 ${errors.companyAddres && 'full-3 input_filed_error'}`} value={companyAddres}  onChange={handleChange}>
+                <textarea name="legal_address" placeholder="Legal Address" style={{ width: '100%' }} className={`full-3 ${errors.legal_address && 'full-3 input_filed_error'}`} value={legal_address} onChange={handleChange}>
 
-               </textarea>
-                {errors.companyAddres && <div className="invalid mb-1">{errors?.companyAddres[0]}</div>}
+                </textarea>
+                {errors.legal_address && <div className="invalid mb-1">{errors?.legal_address[0]}</div>}
 
               </div>
 
               <div className="d-flex">
-                <input className="full-3" type="checkbox"  />
+                <input className="full-3" type="checkbox" />
                 <h6 className="tleft">
                   Yes! I want to get the most out of Bolloot by receiving emails
                   with exclusive deals, personal recommendations and learning
@@ -235,13 +236,8 @@ const Home: NextPage = () => {
             <h4>OR</h4>
 
 
-            {/* <button className="apples-1 w-100">
-              <Icons name="c20" />
-              <h4>Sign in with Apple</h4>
-            </button> */}
             <button
               onClick={signInFb}
-
               className="face-book-1 w-100">
               <Icons name="c21" />
               <h4>Sign in with Facebook</h4>

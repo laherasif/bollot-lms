@@ -35,9 +35,15 @@ const Home: NextPage = () => {
     { label: "Payment Details", isValid: undefined },
   ]);
   const [stepn, setStepn] = useState([
-    { value: false },
-    { value: false },
-    { value: false },
+    { one: true },
+   
+  ]);
+
+  const [points, setPoints] = useState([
+    'Add Course',   
+    'Plane Your Course',   
+    'Add Quiz',   
+    'Add preview',   
   ]);
   const [courseId, setCourseId] = useState('');
 
@@ -54,7 +60,7 @@ const Home: NextPage = () => {
     }, 2000);
   }, [])
 
-  const stepPages = [<AddCourse handleCourseId={(value: any) => setCourseId(value)} ref={myRef} />, <Criculum courseId={courseId} ref={myCri} />, <AddQuiz courseId={courseId} ref={myQuiz} />, <Previews courseId={courseId} ref={myPrev} />];
+  // const stepPages = [<AddCourse handleCourseId={(value: any) => setCourseId(value)} ref={myRef} />, <Criculum courseId={courseId} ref={myCri} />, <AddQuiz courseId={courseId} ref={myQuiz} />, <Previews courseId={courseId} ref={myPrev} />];
 
   // const lastStepIndex = steps.length - 1;
   // const isLastStep = lastStepIndex === step;
@@ -137,14 +143,26 @@ const Home: NextPage = () => {
 
 
   const stepChangeHandler = () => {
-    // const newErrors = validate(values);
-    // setErrors(newErrors);
-    // if(Object.keys(newErrors).length === 0) {
+
+    
+    
+    if(step + 1  === 1 ){
+      setStepn([...stepn , {tw :true }])
+    }
+    else if(step + 1  === 2 ){
+      setStepn([...stepn , {th : true }])
+    }
+    else if( step + 1 === 3 ) {
+      setStepn([...stepn , {fr : true }])
+    }
+
     setStep(step + 1);
+    
   }
 
 
 
+  console.log("step" , stepn)
   console.log("step" , step)
 
 
@@ -191,22 +209,22 @@ return (
                             <li className="active" id="account">
                               <strong>Add Course</strong>
                             </li>
-                            <li className={step === 1 ? "active" : ''} id="personal">
+                            <li className={stepn[1]?.tw  ? "active" : ''} id="personal">
                               <strong>Plane Your Course </strong>
                             </li>
-                            <li className={step === 2 ? "active" : ''} id="payment">
+                            <li className={stepn[2]?.th ? "active" : ''} id="payment">
                               <strong>Add Quiz</strong>
                             </li>
-                            <li className={step === 3 ? "active" : ''} id="confirm">
+                            <li className={stepn[3]?.fr ? "active" : ''} id="confirm">
                               <strong>Add Preview</strong>
                             </li>
                           </ul>
 
                           <br /> {/* fieldsets */}
                           <fieldset>
-                            <div style={{ textAlign: 'left' }}>
+                            <div style={{ textAlign: 'left' , padding:'0px 30px' }}>
                               {/* {stepPages[step]} */}
-                              {step === 0 && <AddCourse
+                              {step === 1 && <AddCourse
                                 handleCourseId={(value: any) => setCourseId(value)}
                                 onStepChange={stepChangeHandler}
                               // errors={errors}
@@ -225,7 +243,7 @@ return (
                                 step={2}
                               // errors={errors}
                               />}
-                              {step === 3 && <Previews
+                              {step === 0 && <Previews
                                 courseId={courseId}
                                 onStepChange={stepChangeHandler}
                                 onPrevStep={(step) => setStep(step)}

@@ -6,12 +6,12 @@ import { Spinner } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { SweetAlert } from "../../function/hooks";
 const options = ["one", "two", "three"];
-export default ({ onStepChange, courseId , onPrevStep , step }: any) => {
+export default ({ onStepChange, courseId, onPrevStep, step }: any) => {
   // const intl = useIntl();
 
   const [loading, setLoading] = useState(true)
   const [saveQuiz, setSaveQuiz] = useState(false)
-  const [message, setMessage] = useState(false)
+  const [errors, setErrors] = useState([])
   const [allQuiz, setAllQuiz] = useState([
     {
       question: '',
@@ -36,7 +36,7 @@ export default ({ onStepChange, courseId , onPrevStep , step }: any) => {
     }
   });
 
-  
+
   const Questions = () => {
     setAllQuiz([
       {
@@ -154,7 +154,11 @@ export default ({ onStepChange, courseId , onPrevStep , step }: any) => {
       if (res.data.success === true) {
         setSaveQuiz(false)
         onStepChange()
-        setMessage(true)
+      }
+      else {
+        setSaveQuiz(false)
+        setErrors(res.data.error.questions)
+
       }
 
     } catch (error) {
@@ -209,24 +213,28 @@ export default ({ onStepChange, courseId , onPrevStep , step }: any) => {
                         value={q.question}
                         onChange={(e) => handleChange(index, e)}
                         placeholder="Write here..." />
+                      {errors && errors[index]?.question ? <div className="invalid mt-1">{errors[index]?.question}</div> : null}
 
                     </div>
-                    {q.options.map((op, i) => (
+                    {q.options.length ? q.options.map((op, i) => (
                       <>
-                        <div className="p-field" style={{ display: 'flex', marginTop: '10px' }} key={i}>
-                          <div style={{ width: '20%' }}>
+                        <div
+                          className=""
+                          style={{ display: 'flex', marginTop: '10px' }} key={i}>
+                          <div style={{ width: '10%' }}>
                             <input style={{ marginTop: '10px' }}
                               onChange={(e) => handleChangeRadio(index, i, e)}
                               checked={op.correct === "1"} name="correct" type="checkbox" />
                           </div>
-                          <div style={{ width: '100%' }}>
+                          <div className="input_fields">
                             <input
                               type="text"
                               name="option"
-                              className="w-100"
                               value={op.option}
                               onChange={(e) => handleChangeOptions(index, i, e)}
                               placeholder="Write here...." />
+
+                            {errors && errors[index]?.options ? <div className="invalid mt-1 w-100">{errors && errors[index]?.options[i]?.option}</div> : null}
                           </div>
                           <div style={{ paddingTop: '5px', paddingLeft: '10px' }} onClick={() => removeInputFields(index, i)}>
                             <i className="fa fa-trash"></i>
@@ -236,7 +244,13 @@ export default ({ onStepChange, courseId , onPrevStep , step }: any) => {
 
 
                       </>
-                    ))}
+                    ))
+                      :
+                      <div className="ml-3">
+                        {errors ? <div className="invalid mt-1">{errors[index]?.options[0]}</div> : null}
+                      </div>
+
+                    }
                     {q.options.length < 6 ?
                       <h3 style={{ cursor: 'pointer', textAlign: 'right', fontSize: '14px', marginTop: '10px' }}
                         onClick={() => Addmore(index)}
@@ -250,7 +264,27 @@ export default ({ onStepChange, courseId , onPrevStep , step }: any) => {
 
 
               </div>
-              <div className="d-flex mt-2 justify-content-center">
+              <div className="umpire w-100 " >
+                <div className="umpire-1 umpire-1-cst d-flex justify-content-center mt-3 ">
+                  <div className="d-flex mb-3 idfadsf-sads">
+                    <button
+                      className="upload-1 sdisad-dsdactive "
+                      onClick={() => onPrevStep(step - 1)}
+                    >
+                      Previous
+                    </button>
+                    <button
+                      className="upload-1 sdisad-dsdactive"
+                      onClick={() => UpdateQuiz()}
+                    >
+                      <i className="fa fa-save" style={{ marginRight: '10px' }}></i>
+                      {saveQuiz ? <Spinner animation="border" /> : "Save & Next"}
+                    </button>
+                  </div>
+
+                </div>
+              </div>
+              {/* <div className="d-flex mt-2 justify-content-center">
                 <div className="idfadsf-sads kajfds-sdfe hfdajss-3ersad">
                   <button className="upload-1 sdisad-dsdactive " onClick={() => onPrevStep(step -1 )}>
                     Preview
@@ -265,7 +299,7 @@ export default ({ onStepChange, courseId , onPrevStep , step }: any) => {
                     }
                   </button>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

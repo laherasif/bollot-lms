@@ -1,9 +1,10 @@
 import axios from 'axios'
-import { useSelector, RootStateOrAny } from "react-redux";
+import { useSelector, RootStateOrAny, useDispatch } from "react-redux";
 import type { NextPage } from "next";
-import { Form } from "react-bootstrap";
+import { Form, Spinner } from "react-bootstrap";
 import { SweetAlert } from "../../function/hooks";
 import React, { useState, useEffect, } from 'react';
+import { addMoreField, getCourseAddMore, getCourseInput } from '../../redux/actions/courses';
 interface Course {
   title: string,
   category_id: string,
@@ -40,7 +41,16 @@ export default ({ handleCourseId, onStepChange }: any) => {
   const [courseId, setcourseId] = useState('')
 
 
+  const dispatch = useDispatch()
+
+
+
   const token = useSelector((state: RootStateOrAny) => state?.userReducer?.token)
+  // const { 
+  //   addCourse,
+  //   course_for,
+  //   requirements,
+  //   outcomes } = useSelector((state: RootStateOrAny) => state?.course)
 
   const AxInstance = axios.create({
     // .. where we make our configurations
@@ -78,6 +88,7 @@ export default ({ handleCourseId, onStepChange }: any) => {
   }, [])
 
   const addItem = (field: string) => {
+    // dispatch(addMoreField(field))
     if (field === "outcoms") {
       setItem([...item, ''])
     }
@@ -109,7 +120,8 @@ export default ({ handleCourseId, onStepChange }: any) => {
   }
   const handleChange = (index: number, evnt: React.ChangeEvent<HTMLInputElement>, field: string) => {
 
-    const { name, value } = evnt.target;
+    // dispatch(getCourseAddMore({ fiel d, index, value }))ue }
+    const { name, value } = evnt.target
     if (field === "outcoms") {
       const list = [...item];
       list[index] = value;
@@ -133,6 +145,8 @@ export default ({ handleCourseId, onStepChange }: any) => {
       ...state,
       [event.target.name]: event.target.value
     });
+    // const { name, value } = event.target
+    // dispatch(getCourseInput({ name, value }))
   };
 
 
@@ -153,7 +167,7 @@ export default ({ handleCourseId, onStepChange }: any) => {
           cover_image: e.target?.result
         });
         setUrl(URL.createObjectURL(event.target.files[0]))
-        
+
       }
     }
   }
@@ -181,8 +195,8 @@ export default ({ handleCourseId, onStepChange }: any) => {
       let res = await AxInstance.post('api//instructor/courses/store', data)
       if (res.data.success === true) {
         setLoading(false)
-        onStepChange()
         handleCourseId(res.data.response.course.id)
+        onStepChange()
 
       }
       else {
@@ -195,10 +209,13 @@ export default ({ handleCourseId, onStepChange }: any) => {
   }
 
 
+  // console.log("state " , addCourse)
+
+
 
   return (
     <div className="inst" style={{ padding: '0px 35px' }}>
-        <h3>Add Course </h3>
+      <h3>Add Course </h3>
       <div className="p-field">
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <label>Category</label>
@@ -243,7 +260,7 @@ export default ({ handleCourseId, onStepChange }: any) => {
             className="asndkmc03e-dm3e"
             placeholder="Write here..."
           ></textarea>
-         
+
           {errors?.short_desc && <div className="invalid mt-1">{errors?.short_desc[0]}</div>}
 
         </div>
@@ -268,7 +285,7 @@ export default ({ handleCourseId, onStepChange }: any) => {
           <span>A cover photo show on website and landing page</span>
           <label className="drop-box" htmlFor="img" style={{ cursor: 'pointer' }}>
             <div className="kvjadsd-j43rm iasdufhvs-ernd">
-              {url ? <img src={url} alt="course_img" style={{ width: '20%', height :' 20%' , objectFit: 'cover' }} /> : ""}
+              {url ? <img src={url} alt="course_img" style={{ width: '20%', height: ' 20%', objectFit: 'cover' }} /> : ""}
               {!url && <p>Drag your photos here</p>}
             </div>
             <input type="file" accept="image/png, image/gif, image/jpeg" name="cover_image" onChange={(e) => handleInputChange(e)} id="img" style={{ display: 'none' }} />
@@ -366,7 +383,23 @@ export default ({ handleCourseId, onStepChange }: any) => {
 
           </div>
 
-          <div className="idfadsf-sads kajfds-sdfe" >
+          <div className="umpire w-100 " >
+            <div className="umpire-1 umpire-1-cst d-flex justify-content-center mt-3 ">
+              <div className="d-flex mb-3 idfadsf-sads">
+
+                <button
+                  className="upload-1 sdisad-dsdactive"
+                  onClick={() => SaveCourse()}
+                >
+                  <i className="fa fa-save" style={{ marginRight: '10px' }}></i>
+                  {loading ? <Spinner animation="border" /> : "Save & Next"}
+                </button>
+              </div>
+
+            </div>
+          </div>
+
+          {/* <div className="idfadsf-sads kajfds-sdfe" >
             <button onClick={() => SaveCourse()} className="upload-1 sdisad-dsdactive">
               {loading ?
                 <div className="spinner-border text-light" role="status">
@@ -375,7 +408,7 @@ export default ({ handleCourseId, onStepChange }: any) => {
                 "Save & Next "
               }
             </button>
-          </div>
+          </div> */}
 
         </div>
       </div>

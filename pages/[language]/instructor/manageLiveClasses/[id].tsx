@@ -51,9 +51,15 @@ const Home: NextPage = () => {
       try {
         setLoading(true)
         let res = await AxInstance.get(`api//instructor/courses/schedule/get/${courseId}`)
-        setDateTime(res.data.response.course_with_schedule.schedule)
-        console.log("Res", res)
-        setLoading(false)
+        if (res.data.response) {
+          setDateTime(res.data.response.course_with_schedule.schedule)
+          console.log("Res", res)
+          setLoading(false)
+        }
+        else {
+          setLoading(false)
+
+        }
       }
       catch (err) {
         setLoading(false)

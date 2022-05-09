@@ -39,10 +39,10 @@ const Home: NextPage = () => {
   const [live, setLive] = useState([])
 
   useEffect(() => {
-  
-    
-      dispatch(GetCourse())
-     
+
+
+    dispatch(GetCourse())
+
   }, [])
 
   // const getCatagory = (id: number) => {
@@ -63,7 +63,7 @@ const Home: NextPage = () => {
 
           <section className="container-3 all-head">
             <div className="courses-bar">
-              {Catagory.map((cat: any, i: number) => (
+              {Catagory?.map((cat: any, i: number) => (
                 <Link href={`/en/courses/${cat.slug}`}>
                   <span key={i} style={{ cursor: 'pointer' }}>
                     <h3 id="bol" >{cat.name}</h3>
@@ -104,13 +104,13 @@ const Home: NextPage = () => {
                 }
 
               </div>
-             
+
             </div>
           </section>
           <section className="gr1">
             <div className="all-contant balBus">
               <div className="container mx-auto my-5 ">
-                <div className="contant">
+                <div className="contant ">
                   <h3>Bolloot for Buisness</h3>
                   <h4>
                     With the right skills,
@@ -125,7 +125,9 @@ const Home: NextPage = () => {
                     Bolloot Buisness is trusted by 10,500+buisness <br />
                     around the world
                   </p>
-                  <button className="btn-1s">Get started</button>
+                  <Link href="/en/bollotBusiness">
+                    <button className="btn-1s" >Get started</button>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -288,7 +290,7 @@ const Home: NextPage = () => {
           </div>
           <Footer />
         </div>
-       } 
+      }
     </>
   );
 };

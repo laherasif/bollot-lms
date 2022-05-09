@@ -131,9 +131,10 @@ interface actionSuccess {
 
 
 export const loginUser = (data: []) => {
+
     return async (dispatch: Dispatch<actionSuccess>) => {
         try {
-
+debugger
                 dispatch({
                     type: LOGIN_USER,
                     payload: data

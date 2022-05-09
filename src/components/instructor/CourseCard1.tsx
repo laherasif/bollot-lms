@@ -37,7 +37,7 @@ export default ({ course, key }: any) => {
           </Dropdown.Toggle>
 
           <Dropdown.Menu >
-            <Dropdown.Item href={`/en/instructor/managePreview/${course?.id}`}>Manage Previews </Dropdown.Item>
+            <Dropdown.Item as={Link} href={`/en/instructor/managePreview/${course?.id}`}>Manage Previews </Dropdown.Item>
             <Dropdown.Item as={Link} href={ `/en/instructor/manageCriculum/${course?.id}`}>Check Criculum</Dropdown.Item>
             <Dropdown.Item as={Link} href={ `/en/instructor/manageQuiz/${course?.id}`}>Manage Quiz</Dropdown.Item>
 

@@ -1,4 +1,5 @@
 import type { NextPage } from "next";
+import Link from "next/link";
 import { Dropdown } from "react-bootstrap";
 
 import { useIntl } from "react-intl";
@@ -8,7 +9,7 @@ import CommentCard1 from "../../../src/components/card/CommentCard1";
 import CommentCard2 from "../../../src/components/card/CommentCard2";
 import CourseCard from "../../../src/components/card/CourseCard";
 import Footer from "../../../src/components/footer";
-import Navbar from "../../../src/components/header/compnayNavbar";
+import Navbar from "../../../src/components/header/Navbar";
 
 const Home: NextPage = () => {
   // const intl = useIntl();
@@ -85,7 +86,10 @@ const Home: NextPage = () => {
                       <span className="plan-price">5</span>
                     </h5>
                     <p className="early-adopter-price">Early adopter price</p>
-                    <button  className="btn-2s">Get started now</button>
+                    <Link href="/en/businessSignup">
+                      <button className="btn-2s" >Get started now</button>
+
+                    </Link>
                     <ul>
                       <li>
                         <strong>1</strong> site
@@ -110,7 +114,9 @@ const Home: NextPage = () => {
                       <span className="plan-price">20</span>
                     </h5>
                     <p className="early-adopter-price">Early adopter price</p>
-                    <button  className="btn-2s">Get started now</button>
+                    <Link href="/en/businessSignup">
+                      <button className="btn-2s" >Get started now</button>
+                    </Link>
                     <ul>
                       <li>
                         Up to <strong>10</strong> sites
@@ -135,7 +141,10 @@ const Home: NextPage = () => {
                       <span className="plan-price">100</span>
                     </h5>
                     <p className="early-adopter-price">Early adopter price</p>
-                    <button  className="btn-1s">Get started now</button>
+                    <Link href="/en/businessSignup">
+                      <button className="btn-1s" >Get started now</button>
+
+                    </Link>
                     <ul>
                       <li>
                         <strong>Unlimited</strong> sites

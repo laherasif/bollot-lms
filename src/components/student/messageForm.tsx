@@ -1,23 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { ReactMultiEmail, isEmail } from "react-multi-email";
-import "react-multi-email/style.css";
-import { Modal, Button, Form , Spinner } from "react-bootstrap";
+import { Modal, Button, Form, Spinner } from "react-bootstrap";
 import { useSelector, RootStateOrAny } from "react-redux";
 import { SweetAlert } from '../../function/hooks'
 import axios from "axios";
-const Invitation = ({ Toggle, permition }: any) => {
+const Conversation = ({ Toggle, permition , user_id}: any) => {
   const [show, setShow] = useState(permition);
   const [loading, setLoading] = useState(false);
   const [loader, setLoader] = useState(false);
   const [emails, setEmails] = useState([]);
-  const [course , setCourse] =  useState([])
-  const [state , setState] =  useState('')
+  const [course, setCourse] = useState([])
+  const [state, setState] = useState('')
   const handleClose = () => {
     Toggle(false);
   };
 
-  const token = useSelector(
-    (state: RootStateOrAny) => state?.userReducer?.token
+
+  const {token , User } = useSelector(
+    (state: RootStateOrAny) => state?.userReducer
   );
 
   const AxInstance = axios.create({
@@ -30,40 +29,25 @@ const Invitation = ({ Toggle, permition }: any) => {
 
 
 
-  useEffect(() => {
-    let fetchCourse = async () => {
-      try {
-        setLoader(true)
-        let res = await AxInstance.get('api//instructor/courses')
-        if (res.data.success === true) {
-          setLoader(false)
-          setCourse(res.data.response.courses)
-        }
-      }
-      catch (err) {
 
-      }
-    }
-    fetchCourse()
-  }, [])
 
 
   const handleSubmit = async () => {
     try {
       let values = {
-        course_id : state ,
-        emails : emails
+        to_user_id: user_id,
+        message: state
       }
       setLoading(true)
-      let res = await AxInstance.post('api//company/send-invite',values )
-      if(res.data.success === true){
+      let res = await AxInstance.post('api//send-message', values)
+      if (res.data.success === true) {
         setLoading(false)
         Toggle(false);
-        SweetAlert({ icon : "success" , text :"Invitation are sended"})
+        SweetAlert({ icon: "success", text: "Invitation are sended" })
       }
-      else{
+      else {
         setLoading(false)
-        SweetAlert({ icon : "error" , text :"Something is wronge"})
+        SweetAlert({ icon: "error", text: "Something is wronge" })
       }
     } catch (error) {
       setLoading(false);
@@ -84,52 +68,36 @@ const Invitation = ({ Toggle, permition }: any) => {
               style={{ display: "flex", flexDirection: "column" }}
             >
               <div className="kns-sanweso02e mb-2">
-                <label>Select Course </label>
+                <label>Select Instructor </label>
                 <br />
                 <Form.Select
                   name="category_id"
-                  value={state}
-                  onChange={(e) => setState(e.target.value)}
+                // value={state}
+                // onChange={(e) => setState(e.target.value)}
                 >
-                  <option defaultChecked> {loader ? "loading ..." : "Select Course"}</option>
-                  {course &&
+                  <option defaultChecked>  Select Instructor</option>
+                  {/* {course &&
                     course.map((cata) => (
                       <option key={cata.id} value={cata.id}>
                         {cata.title}
                       </option>
-                    ))}
+                    ))} */}
                 </Form.Select>
-                {/* {errors?.category_id && (
-                  <div className="invalid mt-1">{errors?.category_id[0]}</div>
-                )} */}
+
               </div>
 
-              <label>Invite Emails</label>
-              <ReactMultiEmail
-                placeholder="White Here...."
-                style={{ cursor: "pointer" }}
-                emails={emails}
-                onChange={(_emails: string[]) => {
-                  setEmails(_emails);
-                }}
-                validateEmail={(email) => {
-                  return isEmail(email); // return boolean
-                }}
-                getLabel={(
-                  email: string,
-                  index: number,
-                  removeEmail: (index: number) => void
-                ) => {
-                  return (
-                    <div data-tag key={index}>
-                      {email}
-                      <span data-tag-handle onClick={() => removeEmail(index)}>
-                        ×
-                      </span>
-                    </div>
-                  );
-                }}
-              />
+              <label>Send message </label>
+              <div className="">
+                <textarea
+                  rows={4}
+                  name="short_desc"
+                  value={state}
+                  onChange={(e) => setState(e.target.value )}
+                  className="asndkmc03e-dm3e"
+                  placeholder="Write Here ...">
+
+                </textarea>
+              </div>
             </div>
           </div>
         </Modal.Body>
@@ -149,7 +117,7 @@ const Invitation = ({ Toggle, permition }: any) => {
                 className="upload-1 sdisad-dsdactive"
               >
                 {loading ? (
-                  <Spinner animation="border"/>
+                  <Spinner animation="border" />
                 ) : (
                   "Send"
                 )}
@@ -161,4 +129,4 @@ const Invitation = ({ Toggle, permition }: any) => {
     </div>
   );
 };
-export default Invitation;
+export default Conversation;

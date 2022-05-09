@@ -1,6 +1,7 @@
 
 
 import {
+    LOADING,
     GET_CATAGORY, GET_LATEST,
     GET_FILTER_PRICE,
     GET_SORTED_COURSE,
@@ -11,10 +12,57 @@ import {
     GET_SEARCH_COURSE,
     DELETE_CART,
     GET_BY_CATAGORY_COURSE,
-    LIVE_COURSE
+    LIVE_COURSE,
+    GET_COURSE_INPUTS,
+    GET_COURSE_INPUTS_MORE,
+    ADD_COURSE_INPUTS_MORE,
+    GET_COURSE_CRICULUM,
+
 } from '../../types/types'
 import instance from '../../../confiq/axios/instance'
 import axios from 'axios'
+
+
+
+
+export const Loading = (data) => dispatch  => {
+    debugger
+    dispatch({
+        type:LOADING ,
+        payload : data
+    })
+}
+
+
+ 
+
+
+export const getCourseInput = ({name , value} ) => async (dispatch) => {
+    debugger
+    dispatch({
+        type : GET_COURSE_INPUTS,
+        payload : { name , value }
+    })
+}
+
+export const getCourseAddMore = ({field , index , value } ) => async (dispatch) => {
+    debugger
+    dispatch({
+        type : GET_COURSE_INPUTS_MORE,
+        payload : { field , index , value }
+    })
+}
+
+export const addMoreField = (field  ) => async (dispatch) => {
+    debugger
+    dispatch({
+        type : ADD_COURSE_INPUTS_MORE,
+        payload :  field 
+    })
+}
+
+
+
 
 
 

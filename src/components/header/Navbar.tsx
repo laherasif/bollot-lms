@@ -35,7 +35,13 @@ const App = () => {
   const Logout = () => {
     dispatch(LogoutIns())
     setTimeout(() => {
+      if(User.role === "company"){
+        router.push('/en/businesslogin')
+
+      }
+      else{
       router.push('/en/login')
+      }
     }, 2000);
   }
 

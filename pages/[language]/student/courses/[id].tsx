@@ -17,6 +17,7 @@ import { useSelector, RootStateOrAny } from "react-redux";
 import axios from 'axios'
 import { Small } from "../../../../src/components/student/loader";
 import Link from "next/link";
+import Conversation from "../../../../src/components/student/messageForm";
 
 const Home: NextPage = () => {
   // const intl = useIntl();
@@ -43,7 +44,6 @@ const Home: NextPage = () => {
     }
     fetchCourse()
   }, [])
-
   return (
     <>
       <NavigationBar1 />
@@ -63,14 +63,15 @@ const Home: NextPage = () => {
 
                       <button className="upload-1" >My Live Courses</button>
                     </Link>
+                   
                   </div>
 
                   <div className="complete-web-1">
                     {course && course.length > 0 ? course.map((course: any) => {
-                      if(!course?.schedule.length)
-                      return (
-                        <CourseCard course={course} key={course.id} />
-                      )
+                      if (!course?.schedule.length)
+                        return (
+                          <CourseCard course={course} key={course.id} />
+                        )
                     })
                       : <div>Record not found </div>
                     }
@@ -82,6 +83,7 @@ const Home: NextPage = () => {
             </div>
           </div>
         </div>
+
       </section>
     </>
   );

@@ -5,12 +5,14 @@ import { useSelector, RootStateOrAny } from 'react-redux';
 import axios from 'axios'
 import moment from 'moment'
 import { useRouter } from 'next/router';
+import { Spinner } from 'react-bootstrap';
 const Secdule = ({ course_id, onStepChange, onPrevStep, step }: any) => {
     // const [date, setdate] = useState(new Date());
     // const [from_time, setfrom_time] = useState(new Date());
 
     let router = useRouter()
     const [loading, setLoading] = useState(false);
+    const [errors, setErrors] = useState([]);
     let currentDate = new Date()
     const [dateTime, setDateTime] = useState([{ date: '', from_time: '', to_time: '' }])
 
@@ -70,6 +72,10 @@ const Secdule = ({ course_id, onStepChange, onPrevStep, step }: any) => {
                 setLoading(false)
                 onStepChange()
             }
+            else{
+                setLoading(false)
+                setErrors(res.data.error)
+            }
         } catch (error) {
 
         }
@@ -95,9 +101,9 @@ const Secdule = ({ course_id, onStepChange, onPrevStep, step }: any) => {
                     </div>
                     {/* <Icons name="i26" /> */}
                 </div>
-                {dateTime.map((dat, i) => {
+                {dateTime.map((dat, index) => {
                     return (
-                        <div style={{ border: '1pt solid lightgray', marginBottom: '10px', padding: '10px', borderRadius: '10px' }} key={i}>
+                        <div style={{ border: '1pt solid lightgray', marginBottom: '10px', padding: '10px', borderRadius: '10px' }} key={index}>
                             <div className="p-field mt-2 ">
                                 <div className="d-flex" style={{ justifyContent: 'space-between' }}>
                                     <div>
@@ -116,9 +122,11 @@ const Secdule = ({ course_id, onStepChange, onPrevStep, step }: any) => {
                                         e.preventDefault();
                                     }}
                                     selected={dat.date}
-                                    onChange={(date) => handleDateChange("date", i, date)}
+                                    onChange={(date) => handleDateChange("date", index, date)}
                                     dateFormat="yyyy-MM-dd"
                                 />
+                              {errors && errors?.schedule ? <div className="invalid mt-1">{errors?.schedule[index]?.date}</div> : null}
+
 
                             </div>
                             <div className="p-field mt-2 ">
@@ -131,13 +139,15 @@ const Secdule = ({ course_id, onStepChange, onPrevStep, step }: any) => {
                                         e.preventDefault();
                                     }}
                                     selected={dat.from_time}
-                                    onChange={(date) => handleDateChange("from_time", i, date)}
+                                    onChange={(date) => handleDateChange("from_time", index, date)}
                                     showTimeSelect
                                     showTimeSelectOnly
                                     timeIntervals={24}
                                     timeCaption="Time"
                                     dateFormat="h:mm "
                                 />
+                              {errors && errors?.schedule ? <div className="invalid mt-1">{errors?.schedule[index]?.from_time}</div> : null}
+
                             </div>
                             <div className="p-field mt-2 ">
                                 <div className="d-flex">
@@ -150,13 +160,15 @@ const Secdule = ({ course_id, onStepChange, onPrevStep, step }: any) => {
                                     }}
                                     name="to_time"
                                     selected={dat.to_time}
-                                    onChange={(date) => handleDateChange("to_time", i, date)}
+                                    onChange={(date) => handleDateChange("to_time", index, date)}
                                     showTimeSelect
                                     showTimeSelectOnly
                                     timeIntervals={24}
                                     timeCaption="Time"
                                     dateFormat="h:mm"
                                 />
+                              {errors && errors?.schedule ? <div className="invalid mt-1">{errors?.schedule[index]?.to_time}</div> : null}
+
 
                             </div>
                         </div>
@@ -166,7 +178,28 @@ const Secdule = ({ course_id, onStepChange, onPrevStep, step }: any) => {
                 <h3 style={{ cursor: 'pointer' }} onClick={() => addFormFields()} >+ Add more </h3>
 
             </div>
-            <div className="d-flex justify-content-center">
+
+            <div className="umpire w-100 " >
+                <div className="umpire-1 umpire-1-cst d-flex justify-content-center mt-3 ">
+                    <div className="d-flex mb-3 idfadsf-sads">
+                        <button
+                            className="upload-1 sdisad-dsdactive "
+                            onClick={() => onPrevStep(step - 1)}
+                        >
+                            Previous
+                        </button>
+                        <button
+                            className="upload-1 sdisad-dsdactive"
+                            onClick={() => SaveLiveClasses()}
+                        >
+                            <i className="fa fa-save" style={{ marginRight: '10px' }}></i>
+                            {loading ? <Spinner animation="border" /> : "Save & Next"}
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+            {/* <div className="d-flex justify-content-center">
                 <div className="idfadsf-sads kajfds-sdfe hfdajss-3ersad">
                     <button className="upload-1 sdisad-dsdactive " onClick={() => onPrevStep(step - 1)}>
                         Previous
@@ -190,7 +223,7 @@ const Secdule = ({ course_id, onStepChange, onPrevStep, step }: any) => {
 
 
                 </div>
-            </div>
+            </div> */}
         </div>
     )
 }
