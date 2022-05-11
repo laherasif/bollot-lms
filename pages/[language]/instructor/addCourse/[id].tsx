@@ -28,12 +28,7 @@ const Home: NextPage = () => {
   const [step, setStep] = useState(0);
   const [loading, setLoading] = useState(false);
   const [formState, setFormState] = useState({});
-  const [steps, setSteps] = useState([
-    { label: "Account Details", isValid: undefined },
-    { label: "Personal Details", isValid: undefined },
-    { label: "Payment Details", isValid: undefined },
-    { label: "Payment Details", isValid: undefined },
-  ]);
+
   const [stepn, setStepn] = useState([
     { one: true },
    
@@ -47,10 +42,7 @@ const Home: NextPage = () => {
   ]);
   const [courseId, setCourseId] = useState('');
 
-  const myRef = useRef()
-  const myCri = useRef()
-  const myQuiz = useRef()
-  const myPrev = useRef()
+
 
 
   useEffect(() => {
@@ -162,10 +154,6 @@ const Home: NextPage = () => {
 
 
 
-  console.log("step" , stepn)
-  console.log("step" , step)
-
-
 
 return (
   <div className="inst">
@@ -224,7 +212,7 @@ return (
                           <fieldset>
                             <div style={{ textAlign: 'left' , padding:'0px 30px' }}>
                               {/* {stepPages[step]} */}
-                              {step === 1 && <AddCourse
+                              {step === 0 && <AddCourse
                                 handleCourseId={(value: any) => setCourseId(value)}
                                 onStepChange={stepChangeHandler}
                               // errors={errors}
@@ -243,7 +231,7 @@ return (
                                 step={2}
                               // errors={errors}
                               />}
-                              {step === 0 && <Previews
+                              {step === 3 && <Previews
                                 courseId={courseId}
                                 onStepChange={stepChangeHandler}
                                 onPrevStep={(step) => setStep(step)}
