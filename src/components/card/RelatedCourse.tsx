@@ -24,7 +24,7 @@ export default ({ f, key }: any) => {
           <span>{f?.category_tree[0]}</span>
           <div className="digit-price" style={{paddingTop:'10px'}}>
             <h3 style={{paddingTop:'10px'}}>${f?.price}</h3>
-            <h5  className="text-decoration-line">$84.99</h5>
+            <h5  className="text-decoration-line">${f.discounted_price}</h5>
           </div>
         </div>
       

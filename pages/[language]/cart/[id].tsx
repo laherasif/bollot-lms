@@ -57,9 +57,9 @@ const Home: NextPage = () => {
                 <p>{carts && carts.length} Course in cart</p>
               </div>
 
-              <div className="d-flex hdsafjf-dsa">
+              <div className="d-flex hdsafjf-dsa" style={{justifyContent:'space-between'}}>
                 {carts.length > 0 ? <>
-                  <div>
+                  <div className="w-100">
                     {
                       carts.map((item: object, index: number) => <CartCard item={item} key={index} />)}
 
@@ -90,7 +90,7 @@ const Home: NextPage = () => {
                     </div>
                   </div>
                 </> :
-                  <div className="nofdaisf-sdnew">
+                  <div className="nofdaisf-sdnew" style={{width:'100%'}}>
                     <Icons name="c43" />
                     <p>Your cart is empty. Keep shopping to find a course!</p>
                     <Link href="/en/courses">

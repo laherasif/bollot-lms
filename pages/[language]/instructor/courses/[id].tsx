@@ -19,13 +19,14 @@ import { RootStateOrAny, useSelector } from "react-redux";
 import axios from "axios";
 import { Small } from "../../../../src/components/instructor/loader";
 import Invitation from "../../../../src/components/instructor/invitationForm";
+import Search from "../../../../src/components/instructor/search";
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
   const [course, setCourse] = useState([])
   const [loading, setLoading] = useState(false)
-  const [email , setemail] = useState(false)
-  const token = useSelector((state: RootStateOrAny) => state?.userReducer?.token)
+  const [email, setemail] = useState(false)
+  const { User , token } = useSelector((state: RootStateOrAny) => state?.userReducer)
 
   const AxInstance = axios.create({
     // .. where we make our configurations
@@ -76,10 +77,7 @@ const Home: NextPage = () => {
                     <h3>My Courses</h3>
                   </div>
                   <div className=" jidfjsd-asjreid">
-                    <div className="dsnodi-sdjsad">
-                      <FiSearch color="#8A8A8A" size={17} />
-                      <input type="text" placeholder="Search" />
-                    </div>
+                   <Search/>
                     <div className="d-flex idfadsf-sads">
                       <Link href='/en/instructor/addCourse'>
                         <button className="upload-1 sdisad-dsdactive">
@@ -99,9 +97,11 @@ const Home: NextPage = () => {
                         <Link href="/en/instructor/liveCourses">
                           <button className="upload-1" >My Live Courses</button>
                         </Link>
-                        <button className="upload-1 sdisad-dsd" onClick={()=> setemail(true)}>
-                          Send Invitation
-                        </button>
+                        {User?.role === "company" &&
+                          <button className="upload-1 sdisad-dsd" onClick={() => setemail(true)}>
+                            Send Invitation
+                          </button>
+                        }
                       </div>
                       {/* <div className="maxima ">
                       <div className="idfadsf-sads">

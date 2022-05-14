@@ -6,6 +6,12 @@ import userReducer from "../reducers/auth";
 import cartReducer from "../reducers/cartcheckout/cart";
 import courseReducer from "../reducers/courses/courses";
 import AdminReducer from "../reducers/admin/";
+import CriculumReducer from "../reducers/instructor/criculum";
+import ClassesReducer from "../reducers/instructor/liveclasses";
+import QuizReducer from "../reducers/instructor/quiz";
+import PreviewReducer from "../reducers/instructor/preview";
+import AddCourseReducer from "../reducers/instructor/addcourse";
+import CourseReducer from '../reducers/student/courses';
 
 
 const rootPersistConfig = {
@@ -23,6 +29,12 @@ const rootReducer = combineReducers({
   cartReducer: cartReducer,
   course: courseReducer,
   admin : AdminReducer,
+  addCourse : AddCourseReducer,
+  criculum : CriculumReducer,
+  live : ClassesReducer,
+  quiz : QuizReducer,
+  preview : PreviewReducer,
+studentCourse : CourseReducer,
 })
 
 export default persistReducer(rootPersistConfig, rootReducer)

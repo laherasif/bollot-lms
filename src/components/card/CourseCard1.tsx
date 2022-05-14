@@ -6,8 +6,8 @@ import { add3Dots } from '../../function/hooks';
 // const CardImage = require('../../images/unsplash-2.jpeg');
 export default ({ live, i }: any) => {
   return (
-    <Link href={`/en/course/${live?.slug}`} passHref>
-      <div className="card-course-1" key={i}>
+    <Link href={`/en/course/${live?.slug}`} passHref >
+      <div className="card-course-1" key={i} style={{cursor:'pointer'}}>
         <img className="images-2" src={live?.cover_image} alt="" />
 
      
@@ -17,7 +17,7 @@ export default ({ live, i }: any) => {
           <span style={{ paddingLeft: '10px' }}>{live?.category_tree[0]}</span>
           <div className="digit-price">
             <h3 style={{ paddingLeft: '5px' }} >${live?.price}</h3>
-            <h5 className="text-decoration-line">$84.99</h5>
+            <h5 className="text-decoration-line">${live?.discounted_price}</h5>
           </div>
         </div>
 

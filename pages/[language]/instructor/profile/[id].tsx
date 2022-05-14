@@ -44,18 +44,12 @@ const Home: NextPage = () => {
   const [edit, setEdit] = useState(false)
 
 
-  console.log("user", User)
-
-
-
-
-
   return (
     <div className="inst idnasd0w3-edsad">
       <NavigationBar1 />
 
 
-      <section className="dash-board kjasf-asdasd2 jadsifd-asdasi container">
+      <section className="dash-board kjasf-asdasd2 jadsifd-asdasi ">
         <div className="dash-board-1">
           <div className="dash-2 ">
             <Link href="/en/instructor">

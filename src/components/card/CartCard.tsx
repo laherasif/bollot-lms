@@ -29,8 +29,8 @@ export default ({ item, key }: any) => {
   }
 
   return (
-
-    <div className="photo-maker" key={key}>
+   
+    <div className="photo-maker w-100" key={key}>
       <div className="photo-maker-1">
         <img src={cover_image} alt="cover_image" />
         <div className="w-100">

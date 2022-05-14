@@ -321,6 +321,8 @@ const Home: NextPage = () => {
 
 
   let red = section?.some((ac) => ac.lectures.some((sa) => sa.progressbar > 0 && sa.progressbar < 100))
+  // let red = section.some((ac) => ac.progressbar < 100 && ac.progressbar > 0)
+
 
 
   return (
@@ -332,7 +334,7 @@ const Home: NextPage = () => {
             <Sidebar />
           </div>
         </div>
-        {loading ? ""
+        {loading ? Small()
           :
           <div className="dash-board-1">
             <div className="dash-2 ">
@@ -347,14 +349,12 @@ const Home: NextPage = () => {
                     </Link>
                     <h3>Manage Criculum
                       <br />
-                      <span style={{ fontSize: '12px', color: 'red' }}>Note : During uploading leacture progressbar Section and Save will not created till leature upload </span>
+                      <span style={{ fontSize: '12px', color: 'red' }}> Note : During uploading leacture progressbar Section and Save will not created till leature upload </span>
                     </h3>
                   </div>
                   <div className=" jidfjsd-asjreid">
-
                   </div>
                 </div>
-
                 <div className="complete-web-1 ">
                   <div className="umpire w-100">
                     <div className="umpire-1 umpire-1-cst ">
@@ -366,6 +366,8 @@ const Home: NextPage = () => {
                         >
                           + Add more criculum </button>
                         <button className="upload-1 sdisad-dsdactive"
+                          disabled={red ? true : false}
+
                           onClick={() => SaveCriculum()}
                         >
                           <i className="fa fa-save" style={{ marginRight: '10px' }}></i>
@@ -415,8 +417,6 @@ const Home: NextPage = () => {
                               <div className="d-flex">
                                 <Icons name="i24" />
                                 <label>Title</label>
-
-
                               </div>
                               <input
                                 type="text"
@@ -430,7 +430,7 @@ const Home: NextPage = () => {
 
                             <div className={lec.thumbnail && lec.id || lec.progressbar === 100 || network ? "image-container" : ""}>
                               <label>Video / PDF file for this Lecture</label>
-                              <div className="drop-box img-box">
+                              <div className="drop-box img-box w-100">
                                 <div className="kvjadsd-j43rm iasdufhvs-ernd" >
                                   <Icons name="i29" />
                                   {/* {load ? <Spinner animation="border" size="sm"/> : */}
@@ -443,7 +443,7 @@ const Home: NextPage = () => {
                                 {lec?.thumbnail || lec.file_type === "PDF" ? "" :
                                   <input type="file" accept="pdf/*" onChange={(e) => handleChangeLectureFile(index, i, e)} className="custom-file-input" />
                                 }
-
+                              {errors ? <div className="invalid mt-1">{errors?.sections[index]?.lectures[i]?.object_key}</div> : null}
 
                               </div>
                               <div className="mt-2">
@@ -451,7 +451,7 @@ const Home: NextPage = () => {
                                   :
                                   lec.progressbar && <ProgressBar animated now={lec.progressbar} />}
                               </div>
-                              {lec?.thumbnail ?
+                              {lec?.thumbnail && lec.progressbar === 100 ?
                                 <>
                                   <div className="overlay"></div>
                                   <div id="icon" onClick={() => delThumnail(index, i)}>

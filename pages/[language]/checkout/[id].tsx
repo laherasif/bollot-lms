@@ -143,7 +143,7 @@ const Home: NextPage = () => {
 
 
     fetchCart()
-  }, [])
+  }, [payments])
 
 
 
@@ -169,7 +169,7 @@ const Home: NextPage = () => {
         setLoader(false)
         setPayments(false)
         setErrors('')
-        SweetAlert({ icon: "success", text: "Payment Method Successfuly Added" })
+        SweetAlert({ icon: "success", text: res.data.message })
 
       }
       else {
@@ -213,16 +213,25 @@ const Home: NextPage = () => {
       courses.push({ id: buynow?.id, price: parseInt(buynow?.price) })
 
     }
+    try {
 
-    setComplPay(true)
-    let res = await AxInstance.post('api//checkout', { courses: courses, payment_method: cardType })
-    if (res.data.success === true) {
-      setComplPay(false)
-      dispatch(ResetCart())
-      router.push('/en/student/courses')
+      setComplPay(true)
+      let res = await AxInstance.post('api//checkout', { courses: courses, payment_method: cardType })
+      if (res.data.success === true) {
+        setComplPay(false)
+        dispatch(ResetCart())
+        SweetAlert({ icon: "success", text: res.data.message })
+        router.push('/en/student/courses')
+      }
+      else {
+        setLoader(false)
+        SweetAlert({ icon: "error", text: res.data.error })
+
+      }
     }
-    else {
+    catch(err){
       setLoader(false)
+      SweetAlert({ icon: "error", text: err })
 
     }
   };

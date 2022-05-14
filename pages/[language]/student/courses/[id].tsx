@@ -13,19 +13,25 @@ const options = ["one", "two", "three"];
 import React, { useState, useEffect } from 'react'
 import instance from "../../../../src/confiq/axios/instance";
 import withAuth from "../../../../src/components/Hoc/authRoute";
-import { useSelector, RootStateOrAny } from "react-redux";
+import { useSelector, RootStateOrAny, useDispatch } from "react-redux";
 import axios from 'axios'
 import { Small } from "../../../../src/components/student/loader";
 import Link from "next/link";
 import Conversation from "../../../../src/components/student/messageForm";
-
+import ReviewForm from "../../../../src/components/student/reviewForm";
+import { getCourses} from '../../../../src/redux/actions/student/courses'
 const Home: NextPage = () => {
   // const intl = useIntl();
   const [course, setCourse] = useState([])
   const [loading, setLoading] = useState(false)
+  const [reviews, setReviews] = useState(true)
   const token = useSelector((state: RootStateOrAny) => state?.userReducer?.token)
+  const {Courses} = useSelector((state: RootStateOrAny) => state?.studentCourse)
 
-  console.log("token", token)
+  // console.log("Courses" , Courses)
+
+  const dispatch = useDispatch()
+
   const AxInstance = axios.create({
     // .. where we make our configurations
     baseURL: 'https://dev.thetechub.us/bolloot/',
@@ -39,11 +45,16 @@ const Home: NextPage = () => {
       let res = await AxInstance.get('api//student/my-courses')
       if (res.data.success === true) {
         setLoading(false)
-        setCourse(res.data.response.courses)
+        dispatch(getCourses(res.data.response.courses))
+        // setCourse(res.data.response.courses)
       }
     }
     fetchCourse()
   }, [])
+
+
+  let check =  reviews !== true 
+
   return (
     <>
       <NavigationBar1 />
@@ -67,10 +78,10 @@ const Home: NextPage = () => {
                   </div>
 
                   <div className="complete-web-1">
-                    {course && course.length > 0 ? course.map((course: any) => {
+                    {Courses && Courses.length > 0 ? Courses.map((course: any) => {
                       if (!course?.schedule.length)
                         return (
-                          <CourseCard course={course} key={course.id} />
+                          <CourseCard course={course} key={course.id} courseId={(value:any) =>  setReviews(value)} />
                         )
                     })
                       : <div>Record not found </div>
@@ -83,6 +94,9 @@ const Home: NextPage = () => {
             </div>
           </div>
         </div>
+
+
+        { reviews &&  check  && <ReviewForm reviewss={reviews} Toggle={(value:any )=> setReviews(value ) }  />}
 
       </section>
     </>

@@ -4,7 +4,14 @@ import type { NextPage } from "next";
 import { Form, Spinner } from "react-bootstrap";
 import { SweetAlert } from "../../function/hooks";
 import React, { useState, useEffect, } from 'react';
-import { addMoreField, getCourseAddMore, getCourseInput } from '../../redux/actions/courses';
+// import { addMoreField, getCourseAddMore, getCourseInput } from '../../redux/actions/courses';
+import {   
+  coursesId,
+  addCourseInput, 
+  addCourseContentMore,
+   addCourseContentInput, 
+
+  delCourseContent } from '../../redux/actions/instructor/addcourse'
 interface Course {
   title: string,
   category_id: string,
@@ -38,7 +45,7 @@ export default ({ handleCourseId, onStepChange }: any) => {
   const [url, setUrl] = useState()
   const [errors, setErrors] = useState()
   const [loading, setLoading] = useState(false)
-  const [courseId, setcourseId] = useState('')
+  // const [courseId, setcourseId] = useState('')
 
 
   const dispatch = useDispatch()
@@ -46,12 +53,15 @@ export default ({ handleCourseId, onStepChange }: any) => {
 
 
   const token = useSelector((state: RootStateOrAny) => state?.userReducer?.token)
-  // const { 
-  //   addCourse,
-  //   course_for,
-  //   requirements,
-  //   outcomes } = useSelector((state: RootStateOrAny) => state?.course)
+  const {
+    AddCourse,
+    course_for,
+    requirements,
+    courseId,
+    outcomes } = useSelector((state: RootStateOrAny) => state.addCourse)
 
+console.log("Da" , requirements )
+console.log("course_for" , course_for )
   const AxInstance = axios.create({
     // .. where we make our configurations
     baseURL: 'https://dev.thetechub.us/bolloot/',
@@ -59,19 +69,8 @@ export default ({ handleCourseId, onStepChange }: any) => {
       token: token
     }
   });
-
-  //   useImperativeHandle(
-  //     ref,
-  //     () => ({
-  //       SaveCourse() {
-  //           SaveCourse()
-  //           return errors
-
-  //         }
-  //     }),
-  // )
-
-
+  // const { courseId } = /useSelector((state: RootStateOrAny) => state?.course)
+  console.log("Da" , courseId )
 
 
   useEffect(() => {
@@ -88,65 +87,25 @@ export default ({ handleCourseId, onStepChange }: any) => {
   }, [])
 
   const addItem = (field: string) => {
-    // dispatch(addMoreField(field))
-    if (field === "outcoms") {
-      setItem([...item, ''])
-    }
-    else if (field === "request") {
-      setRequest([...request, ''])
-    }
-    else {
-      setCourse([...course, ''])
+    dispatch(addCourseContentMore(field))
 
-    }
   }
 
   const removeInputFields = (index: number, field: string) => {
-    if (field === "outcoms") {
-      const rows = [...item];
-      rows.splice(index, 1);
-      setItem(rows);
-    }
-    else if (field === "request") {
-      const rows = [...request];
-      rows.splice(index, 1);
-      setRequest(rows);
-    }
-    else {
-      const rows = [...course];
-      rows.splice(index, 1);
-      setCourse(rows);
-    }
+    dispatch(delCourseContent({ field, index }))
+
   }
   const handleChange = (index: number, evnt: React.ChangeEvent<HTMLInputElement>, field: string) => {
-
-    // dispatch(getCourseAddMore({ fiel d, index, value }))ue }
     const { name, value } = evnt.target
-    if (field === "outcoms") {
-      const list = [...item];
-      list[index] = value;
-      setItem(list);
-    }
-    else if (field === "request") {
-      const list = [...request];
-      list[index] = value;
-      setRequest(list);
-    }
-    else {
-      const list = [...course];
-      list[index] = value;
-      setCourse(list);
-    }
+    dispatch(addCourseContentInput({ field, index, value }))
+
   }
 
 
   const hendleFields = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setState({
-      ...state,
-      [event.target.name]: event.target.value
-    });
-    // const { name, value } = event.target
-    // dispatch(getCourseInput({ name, value }))
+
+    const { name, value } = event.target
+    dispatch(addCourseInput({ name, value }))
   };
 
 
@@ -161,30 +120,34 @@ export default ({ handleCourseId, onStepChange }: any) => {
       let reader = new FileReader();
       reader.readAsDataURL(files[0]);
       reader.onload = (e) => {
-        // setState({ cover_image: e.target?.result })
-        setState({
-          ...state,
-          cover_image: e.target?.result
-        });
-        setUrl(URL.createObjectURL(event.target.files[0]))
-
+        let name = "cover_image"
+        let value = e.target?.result
+        // let imageUrl = URL.createObjectURL(event.target.files[0])
+        let names  = "url"
+        dispatch(addCourseInput({ name, value }))
+        
       }
+      setUrl(URL.createObjectURL(event.target.files[0]))
+      let name = "url"
+      let value = URL.createObjectURL(event.target.files[0])
+      dispatch(addCourseInput({ name , value }))
     }
   }
 
   const SaveCourse = async () => {
 
     let data = {
-      title: state.title,
-      category_id: state.category_id,
-      short_desc: state.short_desc,
-      long_desc: state.long_desc,
-      price: state.price,
-      discounted_price: state.dprice,
-      cover_image: state.cover_image,
-      outcomes: item,
-      requirements: request,
-      course_for: course
+      course_id : courseId ? courseId : "",
+      title: AddCourse.title,
+      category_id: AddCourse.category_id,
+      short_desc: AddCourse.short_desc,
+      long_desc: AddCourse.long_desc,
+      price: AddCourse.price,
+      discounted_price: AddCourse.dprice,
+      cover_image: AddCourse.cover_image,
+      outcomes: outcomes,
+      requirements: requirements,
+      course_for: course_for
 
     }
 
@@ -195,21 +158,26 @@ export default ({ handleCourseId, onStepChange }: any) => {
       let res = await AxInstance.post('api//instructor/courses/store', data)
       if (res.data.success === true) {
         setLoading(false)
-        handleCourseId(res.data.response.course.id)
+        SweetAlert({ icon: 'success', text: res.data.message })
+        // handleCourseId(res.data.response.course.id)
+        dispatch(coursesId(res.data.response.course.id ))
         onStepChange()
 
       }
       else {
         setErrors(res.data.error)
+
         setLoading(false)
       }
     } catch (error) {
+      setLoading(false)
+
+      SweetAlert({ icon: 'success', text: error })
+
     }
     // return null
   }
 
-
-  // console.log("state " , addCourse)
 
 
 
@@ -224,7 +192,7 @@ export default ({ handleCourseId, onStepChange }: any) => {
         </div>
         <div className="kns-sanweso02e">
           <Form.Select name="category_id"
-            value={state.category_id} onChange={(e) => hendleFields(e)}>
+            value={AddCourse?.category_id} onChange={(e) => hendleFields(e)}>
             <option defaultChecked>Select Catagory</option>
             {Courses && Courses.map((cata) => (
               <option key={cata.id} value={cata.id}>{cata.name}</option>
@@ -241,7 +209,7 @@ export default ({ handleCourseId, onStepChange }: any) => {
           <span>The first information to user describing your course</span>
           <input type="text"
             name="title"
-            value={state.title}
+            value={AddCourse?.title}
             onChange={(e) => hendleFields(e)}
             placeholder="Write here..." />
           {errors?.title && <div className="invalid mt-1">{errors?.title[0]}</div>}
@@ -255,7 +223,7 @@ export default ({ handleCourseId, onStepChange }: any) => {
           <textarea
             rows={4}
             name="short_desc"
-            value={state.short_desc}
+            value={AddCourse?.short_desc}
             onChange={(e) => hendleFields(e)}
             className="asndkmc03e-dm3e"
             placeholder="Write here..."
@@ -271,7 +239,7 @@ export default ({ handleCourseId, onStepChange }: any) => {
           <textarea
             rows={4}
             name="long_desc"
-            value={state.long_desc}
+            value={AddCourse?.long_desc}
             onChange={(e) => hendleFields(e)}
             className="asndkmc03e-dm3e"
             placeholder="Write here..."
@@ -285,8 +253,8 @@ export default ({ handleCourseId, onStepChange }: any) => {
           <span>A cover photo show on website and landing page</span>
           <label className="drop-box" htmlFor="img" style={{ cursor: 'pointer' }}>
             <div className="kvjadsd-j43rm iasdufhvs-ernd">
-              {url ? <img src={url} alt="course_img" style={{ width: '20%', height: ' 20%', objectFit: 'cover' }} /> : ""}
-              {!url && <p>Drag your photos here</p>}
+              {AddCourse?.url ? <img src={AddCourse?.url} alt="course_img" style={{ width: '20%', height: ' 20%', objectFit: 'cover' }} /> : ""}
+              {!AddCourse?.url && <p>Drag your photos here</p>}
             </div>
             <input type="file" accept="image/png, image/gif, image/jpeg" name="cover_image" onChange={(e) => handleInputChange(e)} id="img" style={{ display: 'none' }} />
           </label>
@@ -302,7 +270,7 @@ export default ({ handleCourseId, onStepChange }: any) => {
             <input
               type="number"
               name="price"
-              value={state.price}
+              value={AddCourse?.price}
               onChange={(e) => hendleFields(e)}
               placeholder="Write here..." />
             {errors?.price && <div className="invalid mt-1">{errors?.price[0]}</div>}
@@ -318,7 +286,7 @@ export default ({ handleCourseId, onStepChange }: any) => {
             <input
               type="number"
               name="dprice"
-              value={state.dprice}
+              value={AddCourse?.dprice}
               onChange={(e) => hendleFields(e)}
               placeholder="Write here..." />
             {errors?.discounted_price && <div className="invalid mt-1">{errors?.discounted_price[0]}</div>}
@@ -330,11 +298,11 @@ export default ({ handleCourseId, onStepChange }: any) => {
               <label>Outcomes</label><br />
               <span>List down the consequences of this course</span>
             </div>
-            {item.map((data: any, index: number) => {
+            {outcomes?.map((data: any, index: number) => {
               return (
                 < div style={{ display: 'flex' }}>
                   <input type="text" placeholder="Write here..." className="mt-1" onChange={(evnt) => handleChange(index, evnt, "outcoms")} value={data} name="desc" />
-                  {(item.length !== 1) ? <div style={{ marginLeft: '4px' }} onClick={(evnt) => removeInputFields(index, "outcoms")}> <i className="fa fa-trash mt-3 " ></i> </div> : null}
+                  {(outcomes.length !== 1) ? <div style={{ marginLeft: '4px' }} onClick={(evnt) => removeInputFields(index, "outcoms")}> <i className="fa fa-trash mt-3 " ></i> </div> : null}
                 </div>
 
               )
@@ -350,11 +318,11 @@ export default ({ handleCourseId, onStepChange }: any) => {
               <span>Education required for enrolling in this course</span>
             </div>
             {/* <input type="text" placeholder="Write here..." /> */}
-            {request.map((data: any, index: number) => {
+            {requirements?.map((data: any, index: number) => {
               return (
                 < div style={{ display: 'flex' }}>
-                  <input type="text" placeholder="Write here..." className="mt-1" onChange={(evnt) => handleChange(index, evnt, "request")} value={data.desc} name="desc" />
-                  {(request.length !== 1) ? <div style={{ marginLeft: '4px' }} onClick={(evnt) => removeInputFields(index, "request")}> <i className="fa fa-trash mt-3 " ></i> </div> : null}
+                  <input type="text" placeholder="Write here..." className="mt-1" onChange={(evnt) => handleChange(index, evnt, "request")} value={data} name="desc" />
+                  {(requirements.length !== 1) ? <div style={{ marginLeft: '4px' }} onClick={(evnt) => removeInputFields(index, "request")}> <i className="fa fa-trash mt-3 " ></i> </div> : null}
                 </div>
 
               )
@@ -369,11 +337,11 @@ export default ({ handleCourseId, onStepChange }: any) => {
               <span>List down who should take this course</span>
             </div>
             {/* <input type="text" placeholder="Write here..." /> */}
-            {course.map((data: any, index: number) => {
+            {course_for?.map((data: any, index: number) => {
               return (
                 < div style={{ display: 'flex' }}>
-                  <input type="text" className="mt-1" placeholder="Write here..." onChange={(evnt) => handleChange(index, evnt, "course")} value={data.desc} name="desc" />
-                  {(course.length !== 1) ? <div style={{ marginLeft: '4px' }} onClick={(evnt) => removeInputFields(index, "course")}> <i className="fa fa-trash mt-3 "> </i></div> : null}
+                  <input type="text" className="mt-1" placeholder="Write here..." onChange={(evnt) => handleChange(index, evnt, "course")} value={data} name="desc" />
+                  {(course_for.length !== 1) ? <div style={{ marginLeft: '4px' }} onClick={(evnt) => removeInputFields(index, "course")}> <i className="fa fa-trash mt-3 "> </i></div> : null}
                 </div>
 
               )

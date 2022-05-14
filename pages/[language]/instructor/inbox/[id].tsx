@@ -18,7 +18,7 @@ import axios from "axios";
 import { RootStateOrAny, useSelector } from "react-redux";
 import moment from "moment";
 import InfiniteScroll from "react-infinite-scroll-component";
-
+import { pusher } from '../../../../src/confiq/pusher/pusher'
 const options = ["one", "two", "three"];
 
 
@@ -26,11 +26,15 @@ const Home: NextPage = () => {
   // const intl = useIntl();
 
   const [messages, setMessages] = useState([])
+  const [messagess, setMessagess] = useState([])
   const [conversation, setConversation] = useState([])
   const [user, setUser] = useState('')
+  const [convId, setConvId] = useState('')
   const [loading, setLoading] = useState(false)
   const [loader, setLoader] = useState(false)
+  const [loaders, setLoaders] = useState(false)
   const [state, setState] = useState('')
+  const [page, setPages] = useState(1)
   const ScrollRef = useRef<HTMLDivElement>(null);
   const { token, User } = useSelector(
     (state: RootStateOrAny) => state?.userReducer
@@ -45,38 +49,41 @@ const Home: NextPage = () => {
   });
 
 
-  const handleScroll = (e) => {
-    console.log(e.target.documentElement.scrollTop);
-    console.log(window.innerHeight);
-    console.log(e.target.documentElement.scrollHeight);
-    // console.log(
-    //   Math.ceil(e.target.documentElement.scrollTop + window.innerHeight)
-    // );
-    // const scrollHeight = e.target.documentElement.scrollHeight;
-    // const currentHeight = Math.ceil(
-    //   e.target.documentElement.scrollTop + window.innerHeight
-    // );
-    // if (currentHeight + 1 >= scrollHeight) {
-    //   loadTenPokemon();
-    // }
-  };
+  useEffect(() => {
+    const channel = pusher.subscribe("messages-channel");
+    channel.bind('new-message', function (data: any) {
+      debugger
+
+      const { message } = data
+      setMessages((prevState: any) => [
+        message,
+        ...prevState,
+      ]);
+      // setMessages([message, ...messages]) 
+      // setMessages([...messages, message])
+
+    });
+
+    return () => {
+      pusher.unsubscribe("messages-channel");
+    };
+
+
+
+
+  }, []);
+
+
+  console.log("messages", messages)
+
 
   // useEffect(() => {
-  //   // loadTenPokemon();
-  //   window.addEventListener("scroll", handleScroll);
-  // }, []);
-
-
-
-
-  useEffect(() => {
-    if (ScrollRef.current) {
-      ScrollRef.current.scrollIntoView({
-        behavior: 'smooth',
-      });
-    }
-  }, [messages, loading])
-
+  //   if (ScrollRef.current) {
+  //     ScrollRef.current.scrollIntoView({
+  //       behavior: 'smooth',
+  //     });
+  //   }
+  // }, [messages, loading])
 
 
 
@@ -85,11 +92,11 @@ const Home: NextPage = () => {
   useEffect(() => {
     let fetchMesg = async () => {
       try {
-        setLoader(true)
+        setLoaders(true)
         let res = await AxInstance.post('api//get-conversations')
         console.log("res", res)
         if (res.data.success === true) {
-          setLoader(false)
+          setLoaders(false)
           setConversation(res.data.response.conversations)
 
         }
@@ -102,31 +109,13 @@ const Home: NextPage = () => {
   }, [])
 
 
-  let instructors: any = []
-  conversation.filter(function (k: any) {
-    if (k.user_details.email === User.email) {
-      instructors.push(k.user_two_details)
-    }
-    else {
-      return k.user_details
-    }
-    return k
-  });
-
-
-  let find = conversation.filter(function (k: any) {
-    if (k.user_id == User.id) {
-      return k
-    }
-  });
-
-
-
 
 
 
   const getMessages = async (data: any, id: number) => {
     setUser(data)
+    setConvId(id)
+    setPages(1)
     let value = {
       conversation_id: id,
       page_no: 1,
@@ -134,10 +123,11 @@ const Home: NextPage = () => {
     }
 
     try {
-      setLoading(true)
+      page > 1 ? setLoading(true) : setLoader(true)
       let res = await AxInstance.post('api//get-messages', value)
       setMessages(res.data.response.messages)
-      setLoading(false)
+      page > 1 ? setLoading(false) : setLoader(false)
+
 
     }
     catch (err) {
@@ -157,7 +147,7 @@ const Home: NextPage = () => {
     try {
       // setLoading(true)
       let res = await AxInstance.post('api//send-message', value)
-      setMessages([...messages, res.data.response.message])
+      // setMessages([res.data.response.message, ...messages])
       setState('')
       // setLoading(false)
     }
@@ -167,21 +157,42 @@ const Home: NextPage = () => {
   }
 
 
-  // const fetchMoreData = () => {
-  //   if (messages.length >= 500) {
-  //     // this.setState({ hasMore: false });
-  //     return;
-  //   }
-  //   // a fake async api call like which sends
-  //   // 20 more records in .5 secs
-  //   setTimeout(() => {
-  //     alert("heellow")
-  //   }, 500);
-  // };
+  const fetchMoreData = async () => {
+
+    setPages(page + 1)
+
+
+    let value = {
+
+      conversation_id: convId,
+      page_no: page + 1,
+      rows_per_page: 10
+    }
+
+    try {
+
+      setLoading(true)
+      let res = await AxInstance.post('api//get-messages', value)
+      console.log(res)
+      if (res.data.success === true) {
+        setMessages([...messages, ...res.data.response.messages])
+        setLoading(false)
+      }
+      else {
+        setLoading(false)
+
+      }
+
+
+    }
+    catch (err) {
+
+    }
+  };
 
 
 
-  console.log("mesage", messages)
+  console.log("messages", messages)
 
   return (
     <div className="inst">
@@ -197,6 +208,11 @@ const Home: NextPage = () => {
             <div className="my-course">
               <div className="hdsf0s-sadmsa">
                 <div>
+                  <Link href="/en/instructor/courses">
+                    <h3 style={{cursor:'pointer'}}>
+                      <i className="fa fa-arrow-left"></i>
+                      Back</h3>
+                  </Link>
                   <h3>Inbox</h3>
                 </div>
 
@@ -262,7 +278,7 @@ const Home: NextPage = () => {
 
                 </div>
                 <div className="card-daskfj-e kjadsfl-sajdfiwew">
-                  {messages && messages.length  ?
+                  {messages && messages.length || loader === true ?
                     <>
                       <div className="d-flex justify-content-between kjhadfd-sdfas ">
                         <div className="user-card-inbox-inner kjhadfd-sdfas">
@@ -297,55 +313,67 @@ const Home: NextPage = () => {
                         </div>
 
                       </div>
+                      {loader ?
+                        <div className="spinner-message" style={{ textAlign: 'center', marginTop: '4rem' }}>
+                          <Spinner animation="border" />
+                        </div>
+                        :
+                        <>
 
-                      {/* <div id="scrollableDiv" style={{
-                        height: 300,
-                        overflow: "auto",
-                        display: "flex",
-                        flexDirection: "column"
-                      }}>
-                        <InfiniteScroll
-                          dataLength={messages.length}
-                          next={fetchMoreData}
-                          style={{ display: 'flex', flexDirection: 'column-reverse' }} //To put endMessage and loader to the top.
-                          inverse={false} //
-                          hasMore={true}
-                          loader={<h4>Loading...</h4>}
-                          scrollableTarget="scrollableDiv"
-                          // below props only if you need pull down functionality
-                          refreshFunction={fetchMoreData}
-                          pullDownToRefresh
-                          pullDownToRefreshThreshold={50}
-                          pullDownToRefreshContent={
-                            <h3 style={{ textAlign: 'center' }}>&#8595;</h3>
-                          }
-                          releaseToRefreshContent={
-                            <h3 style={{ textAlign: 'center' }}>&#8593;</h3>
-                          }
-                        >
+                          <div id="scrollableDiv" style={{
+                            height: '82%',
+                            overflowY: "scroll",
+                            display: "flex",
+                            flexDirection: "column-reverse"
+                          }}>
+                            <InfiniteScroll
+                              dataLength={messages.length}
+                              next={fetchMoreData}
+                              style={{ display: 'flex', flexDirection: 'column-reverse', overflowY: 'hidden' }}
+                              inverse={true}
+                              hasMore={true}
+                              loader={loading ? <div style={{ textAlign: 'center', zIndex: 2, marginTop: '20px' }}><Spinner animation="border" /> </div> : ''}
+                              scrollableTarget="scrollableDiv"
 
-                           { messages?.map((ms: any, index: number) => (
-                          <div className="user-card-inbox mt-0" key={index} ref={ScrollRef}>
-                            <div className="user-card-inbox-inner" >
-                              <img src={ms.from_user_id === User.id ? User.image : user.image} />
-                              <div>
-                                <h3 style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
-                                  {user?.fullname}
-                                  <span className="data-time">{moment(ms.createdAt).format('ll')}</span>
 
-                                </h3>
-                                {ms.message}
-                              </div>
+                            >
+
+                              {messages?.map((ms: any, index: number) => {
+                                return (
+                                  <div className="user-card-inbox mt-0" key={index}   >
+                                    <div className="user-card-inbox-inner" >
+                                      <img src={ms?.sender.image} />
+                                      <div>
+                                        <h3 style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
+                                          {ms?.sender?.fullname}
+                                          <span className="data-time">{moment(ms.createdAt).format('ll')}</span>
+                                        </h3>
+                                        {ms?.message}
+                                      </div>
+                                    </div>
+                                  </div>
+                                )
+                              })}
+
+
+
+                            </InfiniteScroll>
+
+
+                          </div>
+                          <div className="kasdjfsdsa-ewds">
+                            <input placeholder="Write a message" name="state " value={state} onChange={(e) => setState(e.target.value)} type="text" />
+                            <div onClick={() => SendMessage()}>
+                              <i className="fa fa-paper-plane" ></i>
+
                             </div>
                           </div>
-                          ))} 
-
-                        </InfiniteScroll>
-                      </div> */}
+                        </>
+                      }
 
 
 
-                      <div className="kdsjfosd-jdamw3e" >
+                      {/* <div className="kdsjfosd-jdamw3e" >
                         {loading ?
                           <div className="spinner-chatbox">
                             <Spinner animation="border" />
@@ -374,7 +402,7 @@ const Home: NextPage = () => {
                           <i className="fa fa-paper-plane" ></i>
 
                         </div>
-                      </div>
+                      </div> */}
 
                     </>
                     :

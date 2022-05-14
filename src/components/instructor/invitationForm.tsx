@@ -29,7 +29,6 @@ const Invitation = ({ Toggle, permition }: any) => {
   });
 
 
-
   useEffect(() => {
     let fetchCourse = async () => {
       try {
@@ -59,11 +58,11 @@ const Invitation = ({ Toggle, permition }: any) => {
       if(res.data.success === true){
         setLoading(false)
         Toggle(false);
-        SweetAlert({ icon : "success" , text :"Invitation are sended"})
+        SweetAlert({ icon : "success" , text : res.data.message})
       }
       else{
         setLoading(false)
-        SweetAlert({ icon : "error" , text :"Something is wronge"})
+        SweetAlert({ icon : "error" , text : res.data.error})
       }
     } catch (error) {
       setLoading(false);

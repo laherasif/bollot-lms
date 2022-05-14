@@ -24,8 +24,8 @@ export default () => {
   const SideBarChild = () => {
     const router = useRouter()
     return (
-      <div className="inst-side">
-        <div className="dash-1" id="sidebar-cst">
+      <div className="inst-side" style={{height:'100%'}}>
+        <div className="dash-1" id="sidebar-cst" style={{height:'100%'}}>
           <Link href="/en/instructor">
             <div className={`dash-ch-2 sdisad-dsd ${router.asPath === "/en/instructor" ? " dash-ch-2 sdisad-dsdactive" :""}`}>
               <Icons name="i1" />

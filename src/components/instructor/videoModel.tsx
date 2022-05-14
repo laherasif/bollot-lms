@@ -30,16 +30,16 @@ const Role = ({ Toggle, permition, link }: any) => {
     const [value, setValue] = useState('');
     const handleClose = () => {
         setShow(false)
+        Toggle('')
     }
 
+    console.log("link " , link )
 
     const handleShow = () => setShow(true);
 
-
-
+  
 
     useEffect(() => {
-
         handleShow()
 
         const paramss = {
@@ -49,7 +49,7 @@ const Role = ({ Toggle, permition, link }: any) => {
         try {
             const url = myBucket.getSignedUrl('getObject', paramss);
             setValue(url)
-            console.log("url" , url )
+            console.log("url", url)
         }
         catch (err) { }
     }, [link])

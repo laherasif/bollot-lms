@@ -22,13 +22,20 @@ import AddQuiz from "../../../../src/components/instructor/addQuiz";
 import Criculum from "../../../../src/components/instructor/circulum";
 import Previews from "../../../../src/components/instructor/preview";
 import { Small } from "../../../../src/components/instructor/loader";
+import { useDispatch } from "react-redux";
+import { pageNo} from '../../../../src/redux/actions/instructor/addcourse'
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
   const [step, setStep] = useState(0);
   const [loading, setLoading] = useState(false);
   const [formState, setFormState] = useState({});
-
+  const [steps, setSteps] = useState([
+    { label: "Account Details", isValid: undefined },
+    { label: "Personal Details", isValid: undefined },
+    { label: "Payment Details", isValid: undefined },
+    { label: "Payment Details", isValid: undefined },
+  ]);
   const [stepn, setStepn] = useState([
     { one: true },
    
@@ -42,7 +49,12 @@ const Home: NextPage = () => {
   ]);
   const [courseId, setCourseId] = useState('');
 
+  const myRef = useRef()
+  const myCri = useRef()
+  const myQuiz = useRef()
+  const myPrev = useRef()
 
+  const dispatch = useDispatch()
 
 
   useEffect(() => {
@@ -149,9 +161,14 @@ const Home: NextPage = () => {
     }
 
     setStep(step + 1);
+    // dispatch(pageNo(step + 1))
     
   }
 
+
+
+  console.log("step" , stepn)
+  console.log("step" , step)
 
 
 
@@ -217,7 +234,7 @@ return (
                                 onStepChange={stepChangeHandler}
                               // errors={errors}
                               />}
-                              {step === 1 && <Criculum
+                              {step === 1  && <Criculum
                                 courseId={courseId}
                                 onStepChange={stepChangeHandler}
                                 onPrevStep={(step) => setStep(step)}

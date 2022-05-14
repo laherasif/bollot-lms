@@ -17,23 +17,24 @@ const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
 
-  const {User} = useSelector((state: RootStateOrAny) => state?.userReducer)
-  
+  const { User } = useSelector((state: RootStateOrAny) => state?.userReducer)
+
 
   return (
     <div className="inst">
-      
+
       <NavigationBar1 />
       <div className="kjfads0-asdi3">
-      <Sidebar />
-      <DashboardRightBar/>
+        <Sidebar />
+        <DashboardRightBar />
 
       </div>
       <section className="dash-board jadsifd-asdasid">
-        <div className="jcoiasd03-eakw3e1">
-        <Sidebar />
+        <div className="ksadsa-w4a3k4">
+          <div className="jcoiasd03-eakw3e1">
+            <Sidebar />
+          </div>
         </div>
-
         <div className="dash-board-1">
 
           <div className="dash-2 ">
@@ -41,7 +42,7 @@ const Home: NextPage = () => {
               <div className="hdsf0s-sadmsa">
                 <div>
                   <h3 className="lsjadf-sadnsd">
-                    <span>Hi {User?.fullname },</span>
+                    <span>Hi {User?.fullname},</span>
                   </h3>
                   <h3>Welcome back👋</h3>
                 </div>
@@ -49,37 +50,37 @@ const Home: NextPage = () => {
                   <FiSearch color="#8A8A8A" size={17} />
                   <input type="text" placeholder="Search" />
                 </div>
-              </div> 
-                <div className="sanlsad-ajw3e">
+              </div>
+              <div className="sanlsad-ajw3e">
                 <div className="row">
-                <div className="col-md-8">
-                  <div className="aljskdfids-asdawe adofjiads-dfjiads">
-                  <div className="aisdad-j3n2eidaw dsjfasdo-sadasd">
-                    <h4>List Your Course</h4>
-                      <p>Lorem Ipsum is simply dummy text of the printing and typesetting</p>
-                      <Link href="/en/instructor/addCourse">
-                      <button className="withdraw">Add new course</button>
-                      </Link>
-                    </div>
-                    <div className="">
-                      
-                      <img className="w-100" src="/assets/images/Rectangle 4110.png"/>
+                  <div className="col-md-8">
+                    <div className="aljskdfids-asdawe adofjiads-dfjiads">
+                      <div className="aisdad-j3n2eidaw dsjfasdo-sadasd">
+                        <h4>List Your Course</h4>
+                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting</p>
+                        <Link href="/en/instructor/addCourse">
+                          <button className="withdraw">Add new course</button>
+                        </Link>
+                      </div>
+                      <div className="">
+
+                        <img className="w-100" src="/assets/images/Rectangle 4110.png" />
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="col-md-4">
-                  <div className="cst-c-card pioner-ch">
-                    <div>
-                      <h3>Your earning this monthe</h3>
-                    </div>
-                    <div className="aisdad-j3n2eidaw">
-                      <h2>$454.55</h2>
-                      <button className="withdraw lkadsjfkadsf-sad">Withdraw</button>
+                  <div className="col-md-4">
+                    <div className="cst-c-card pioner-ch">
+                      <div>
+                        <h3>Your earning this monthe</h3>
+                      </div>
+                      <div className="aisdad-j3n2eidaw">
+                        <h2>$454.55</h2>
+                        <button className="withdraw lkadsjfkadsf-sad">Withdraw</button>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-                </div>
               <div className="d-flex flex-wrap my-5">
                 <div className="njadfskdfns-dsfsad">
                   <Chart1
@@ -110,9 +111,9 @@ const Home: NextPage = () => {
           </div>
         </div>
         <div className="jcoiasd03-eakw3e jkdasfis-adaerin ">
-        <DashboardRightBar/>
+          <DashboardRightBar />
 
-      </div>
+        </div>
       </section>
     </div>
   );

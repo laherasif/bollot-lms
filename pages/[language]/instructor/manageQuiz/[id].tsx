@@ -22,6 +22,7 @@ const Home: NextPage = () => {
 
   const router = useRouter()
 
+
   const courseId = router.query.id
 
 
@@ -38,18 +39,16 @@ const Home: NextPage = () => {
 
 
 
+
   const [loading, setLoading] = useState(false)
   const [saveQuiz, setSaveQuiz] = useState(false)
   const [errors, setErrors] = useState([])
   const [allQuiz, setAllQuiz] = useState([
-    {
-      question: '',
-      options: [
-        { option: "", correct: false, },
-
-      ]
-    },
+   
   ])
+
+  console.log("allquiz" , allQuiz)
+
 
   const Questions = () => {
     setAllQuiz([
@@ -73,7 +72,8 @@ const Home: NextPage = () => {
       try {
         setLoading(true)
         let res = await AxInstance.get(`api//instructor/courses/quiz/${courseId}`)
-        if (res.data.success === true) {
+        console.log("red" , res )
+        if (res.data.response) {
           setAllQuiz(res.data.response.course_with_quiz.quiz)
           setLoading(false)
 
@@ -88,7 +88,7 @@ const Home: NextPage = () => {
       }
     }
     fetchQuiz()
-  }, [courseId])
+  }, [])
 
 
 
@@ -231,7 +231,7 @@ const Home: NextPage = () => {
                 <div className="hdsf0s-sadmsa">
 
                   <div className="back-btn">
-                    <Link href="/en/instructor/courses" >
+                    <Link href={"/en/instructor/courses"} >
                       <h3>
                         <i className="fa fa-arrow-left"></i>
                         Back</h3>
@@ -265,7 +265,7 @@ const Home: NextPage = () => {
 
                   <div className="complete-web-1 mb-3" style={{ marginBottom: '60px' }} >
 
-                    {allQuiz && allQuiz.length ? allQuiz?.map((q, index) => (
+                    {allQuiz.length ? allQuiz?.map((q, index) => (
                       <div className="p-3 quiz" key={index} style={{ maxWidth: '100%', marginLeft: '20px' }}>
                         <div className="p-field  ">
                           <div className="d-flex " style={{ justifyContent: 'space-between' }}>
@@ -284,9 +284,9 @@ const Home: NextPage = () => {
                         </div>
                         {q.options.length ? q.options.map((op, i) => (
                           <>
-                            <div 
-                            className="" 
-                            style={{ display: 'flex', marginTop: '10px' }} key={i}>
+                            <div
+                              className=""
+                              style={{ display: 'flex', marginTop: '10px' }} key={i}>
                               <div style={{ width: '10%' }}>
                                 <input style={{ marginTop: '10px' }}
                                   onChange={(e) => handleChangeRadio(index, i, e)}
@@ -300,7 +300,7 @@ const Home: NextPage = () => {
                                   onChange={(e) => handleChangeOptions(index, i, e)}
                                   placeholder="Write here...." />
 
-                                {errors && errors[index]?.options  ? <div className="invalid mt-1 w-100">{errors && errors[index]?.options[i]?.option}</div> : null}
+                                {errors && errors[index]?.options ? <div className="invalid mt-1 w-100">{errors && errors[index]?.options[i]?.option}</div> : null}
                               </div>
                               <div style={{ paddingTop: '5px', paddingLeft: '10px' }} onClick={() => removeInputFields(index, i)}>
                                 <i className="fa fa-trash"></i>
@@ -313,7 +313,7 @@ const Home: NextPage = () => {
                         ))
                           :
                           <div className="ml-3">
-                            {errors ? <div className="invalid mt-1">{errors[index]?.options[0]}</div> : null}
+                            {errors ? <div className="invalid mt-1">{errors[index]?.options}</div> : null}
                           </div>
 
                         }
@@ -323,6 +323,10 @@ const Home: NextPage = () => {
                           >+ Add more </p>
                           : ""
                         }
+                        <div>
+                          {errors && errors[0]?.options ? <div className="invalid mt-1">{errors[0]?.options}</div> : null}
+                        </div>
+
                       </div>
                     ))
                       : <div>Quiz not avaliable </div>

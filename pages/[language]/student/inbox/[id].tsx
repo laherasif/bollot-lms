@@ -10,7 +10,7 @@ import BarChart from "../../../../src/components/student/barchart";
 import Link from "next/link";
 import CourseCard from "../../../../src/components/student/CourseCard1";
 import { db } from "../../../../src/confiq/firebase/firebase";
-import { useEffect, useState , useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { collection, addDoc } from "@firebase/firestore";
 import Sidebar from "../../../../src/components/student/sidebar";
@@ -19,20 +19,24 @@ import NavigationBar1 from "../../../../src/components/student/NavigationBar1";
 import axios from "axios";
 import { RootStateOrAny, useSelector } from "react-redux";
 import moment from "moment";
-
+import { pusher } from '../../../../src/confiq/pusher/pusher'
+import InfiniteScroll from "react-infinite-scroll-component";
 const options = ["one", "two", "three"];
 
 const Home: NextPage = () => {
   // const intl = useIntl();
-
   const [messages, setMessages] = useState([])
+  const [messagess, setMessagess] = useState([])
   const [conversation, setConversation] = useState([])
   const [user, setUser] = useState('')
+  const [convId, setConvId] = useState('')
   const [loading, setLoading] = useState(false)
   const [loader, setLoader] = useState(false)
+  const [loaders, setLoaders] = useState(false)
   const [state, setState] = useState('')
+  const [page, setPages] = useState(1)
   const ScrollRef = useRef<HTMLDivElement>(null);
-    const { token, User } = useSelector(
+  const { token, User } = useSelector(
     (state: RootStateOrAny) => state?.userReducer
   );
 
@@ -43,24 +47,53 @@ const Home: NextPage = () => {
       token: token,
     },
   });
-  
 
 
   useEffect(() => {
-    if (ScrollRef.current) {
-      ScrollRef.current.scrollIntoView({ behavior: "smooth", });
-    }
-  }, [messages , loading])
+
+    const channel = pusher.subscribe("messages-channel");
+    channel.bind('new-message', function (data: any) {
+      debugger
+      const { message } = data
+      setMessages((prevState: any) => [
+        message,
+        ...prevState,
+      ]);
+      // setMessages([message, ...messages])
+      // setMessages([...messages ,message])
+    });
+    return () => {
+      pusher.unsubscribe("messages-channel");
+    };
+
+
+  }, []);
+
+
+  console.log("messages", messages)
+
+
+
+  // useEffect(() => {
+  //   if (ScrollRef.current) {
+  //     ScrollRef.current.scrollIntoView({
+  //       behavior: 'smooth',
+  //     });
+  //   }
+  // }, [messages, loading])
+
+
 
 
 
   useEffect(() => {
     let fetchMesg = async () => {
       try {
-        setLoader(true)
+        setLoaders(true)
         let res = await AxInstance.post('api//get-conversations')
+        console.log("res", res)
         if (res.data.success === true) {
-          setLoader(false)
+          setLoaders(false)
           setConversation(res.data.response.conversations)
 
         }
@@ -73,32 +106,13 @@ const Home: NextPage = () => {
   }, [])
 
 
-  let instructors: any = []
-  conversation.filter(function (k: any) {
-    if (k.user_details.email === User.email) {
-      instructors.push(k.user_two_details)
-    }
-    else {
-      return k.user_details
-    }
-    return k
-  });
-
-
-  let find = conversation.filter(function (k: any) {
-    if (k.user_id == User.id) {
-      return k
-    }
-  });
-
-  console.log("find", find)
-
-
 
 
 
   const getMessages = async (data: any, id: number) => {
     setUser(data)
+    setConvId(id)
+    setPages(1)
     let value = {
       conversation_id: id,
       page_no: 1,
@@ -106,11 +120,12 @@ const Home: NextPage = () => {
     }
 
     try {
-      setLoading(true)
+      page > 1 ? setLoading(true) : setLoader(true)
       let res = await AxInstance.post('api//get-messages', value)
       setMessages(res.data.response.messages)
-      setLoading(false)
-      
+      page > 1 ? setLoading(false) : setLoader(false)
+
+
     }
     catch (err) {
 
@@ -124,10 +139,12 @@ const Home: NextPage = () => {
       message: state,
     }
 
+    console.log("value", value)
+
     try {
       // setLoading(true)
       let res = await AxInstance.post('api//send-message', value)
-      setMessages([...messages, res.data.response.message])
+      // setMessages([res.data.response.message, ...messages])
       setState('')
       // setLoading(false)
     }
@@ -137,10 +154,38 @@ const Home: NextPage = () => {
   }
 
 
-  console.log("mesage", messages)
+  const fetchMoreData = async () => {
+
+    setPages(page + 1)
 
 
+    let value = {
 
+      conversation_id: convId,
+      page_no: page + 1,
+      rows_per_page: 10
+    }
+
+    try {
+
+      setLoading(true)
+      let res = await AxInstance.post('api//get-messages', value)
+      console.log(res)
+      if (res.data.success === true) {
+        setMessages([...messages, ...res.data.response.messages])
+        setLoading(false)
+      }
+      else {
+        setLoading(false)
+
+      }
+
+
+    }
+    catch (err) {
+
+    }
+  };
 
 
   return (
@@ -200,9 +245,10 @@ const Home: NextPage = () => {
                       return (
                         <div className="user-card-inbox" onClick={() => getMessages(ins.user_two_details, ins.id)} key={index}>
                           <div className="user-card-inbox-inner">
-                            <img src={ ins?.user_two_details?.image || "/assets/images/umpire-1.svg"} />
+                            <img src={ins?.user_two_details?.image || "/assets/images/umpire-1.svg"} />
                             <div>
                               <h3>{ins?.user_two_details?.fullname}</h3>
+
                               <p>{ins?.user_two_details?.tagline}</p>
                             </div>
                           </div>
@@ -223,7 +269,7 @@ const Home: NextPage = () => {
 
                 </div>
                 <div className="card-daskfj-e kjadsfl-sajdfiwew">
-                  {messages && messages.length || loading === true ?
+                  {messages && messages.length || loader === true ?
                     <>
                       <div className="d-flex justify-content-between kjhadfd-sdfas ">
                         <div className="user-card-inbox-inner kjhadfd-sdfas">
@@ -258,8 +304,68 @@ const Home: NextPage = () => {
                         </div>
 
                       </div>
+                      {loader ?
+                        <div className="spinner-message" style={{ textAlign: 'center', marginTop: '4rem' }}>
+                          <Spinner animation="border" />
+                        </div>
+                        :
+                        <>
 
-                      <div className="kdsjfosd-jdamw3e" >
+                          <div id="scrollableDiv" style={{
+                            height: '82%',
+                            overflowY: "scroll",
+                            display: "flex",
+                            flexDirection: "column-reverse"
+                          }}>
+                            <InfiniteScroll
+                              dataLength={messages.length}
+                              next={fetchMoreData}
+                              style={{ display: 'flex', flexDirection: 'column-reverse', overflowY: 'hidden' }}
+                              inverse={true}
+                              hasMore={true}
+                              loader={loading ? <div style={{ textAlign: 'center', zIndex: 2, marginTop: '20px' }}><Spinner animation="border" /> </div> : ''}
+                              scrollableTarget="scrollableDiv"
+
+
+                            >
+
+                              {messages && messages?.map((ms: any, index: number) => {
+
+                                return (
+                                  <div className="user-card-inbox mt-0" key={index}   >
+                                    <div className="user-card-inbox-inner" >
+                                      <img src={ms?.sender?.image} />
+                                      <div>
+                                        <h3 style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
+                                          {ms?.sender?.fullname}
+                                          <span className="data-time">{moment(ms.createdAt).format('ll')}</span>
+                                        </h3>
+                                        {ms?.message}
+                                      </div>
+                                    </div>
+                                  </div>
+                                )
+                              })}
+
+
+
+                            </InfiniteScroll>
+
+
+                          </div>
+                          <div className="kasdjfsdsa-ewds">
+                            <input placeholder="Write a message" name="state " value={state} onChange={(e) => setState(e.target.value)} type="text" />
+                            <div onClick={() => SendMessage()}>
+                              <i className="fa fa-paper-plane" ></i>
+
+                            </div>
+                          </div>
+                        </>
+                      }
+
+
+
+                      {/* <div className="kdsjfosd-jdamw3e" >
                         {loading ?
                           <div className="spinner-chatbox">
                             <Spinner animation="border" />
@@ -268,7 +374,7 @@ const Home: NextPage = () => {
                           messages?.map((ms: any, index: number) => (
                             <div className="user-card-inbox mt-0" key={index} ref={ScrollRef}>
                               <div className="user-card-inbox-inner" >
-                                <img src={User.id ? User.image : user.image} />
+                                <img src={ms.from_user_id === User.id ? User.image : user.image} />
                                 <div>
                                   <h3 style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
                                     {user?.fullname}
@@ -280,7 +386,7 @@ const Home: NextPage = () => {
                               </div>
                             </div>
                           ))}
-                          <div />
+                        <div />
                       </div>
                       <div className="kasdjfsdsa-ewds">
                         <input placeholder="Write a message" name="state " value={state} onChange={(e) => setState(e.target.value)} type="text" />
@@ -288,7 +394,7 @@ const Home: NextPage = () => {
                           <i className="fa fa-paper-plane" ></i>
 
                         </div>
-                      </div>
+                      </div> */}
 
                     </>
                     :

@@ -33,6 +33,7 @@ const Home: NextPage = () => {
   const [loading, setLoading] = useState(false)
   const [loader, setLoader] = useState(false)
   const [dateTime, setDateTime] = useState([])
+  const [errors, setErrors] = useState([])
 
   const { token } = useSelector((state: RootStateOrAny) => state?.userReducer)
 
@@ -53,7 +54,6 @@ const Home: NextPage = () => {
         let res = await AxInstance.get(`api//instructor/courses/schedule/get/${courseId}`)
         if (res.data.response) {
           setDateTime(res.data.response.course_with_schedule.schedule)
-          console.log("Res", res)
           setLoading(false)
         }
         else {
@@ -70,7 +70,6 @@ const Home: NextPage = () => {
   }, [courseId])
 
   const handleDateChange = (name: string, i: number, date: any) => {
-    debugger
     let formValues: any = [...dateTime];
     if (name === "date") {
       formValues[i][name] = moment(date).format('YYYY-MM-DD');
@@ -98,17 +97,9 @@ const Home: NextPage = () => {
         to_time: '',
 
       }, ...dateTime,])
-    // setDateTime([
-    //   ...dateTime,
-    //   {
-    //     date: moment(new Date()).format('YYYY-MM-DD'),
-    //     from_time: moment(new Date()).format('HH:mm:ss'),
-    //     to_time: moment(new Date()).format('HH:mm:ss'),
 
-    //   },])
   }
 
-  console.log("move", dateTime)
 
   const SaveLiveClasses = async () => {
 
@@ -130,8 +121,12 @@ const Home: NextPage = () => {
       let res = await AxInstance.post('api//instructor/courses/schedule/update', values)
       if (res.data.success === true) {
         setLoader(false)
-        SweetAlert({ icon: "success", text: "Classes are updated" })
-        console.log("res", res.data)
+        SweetAlert({ icon: "success", text: res.data.message })
+      }
+      else {
+        setLoader(false)
+        setErrors(res.data.error)
+
       }
     } catch (error) {
       setLoader(false)
@@ -141,7 +136,6 @@ const Home: NextPage = () => {
 
 
   const DelSedule = (i: number) => {
-    debugger
     const rows = [...dateTime];
     rows.splice(i, 1);
     setDateTime(rows);
@@ -164,7 +158,7 @@ const Home: NextPage = () => {
                 <div className="hdsf0s-sadmsa">
 
                   <div className="back-btn">
-                    <Link href={`/en/instructor/manageCriculum/${courseId}`} >
+                    <Link href={`/en/instructor/liveCourses`} >
                       <h3>
                         <i className="fa fa-arrow-left"></i>
                         Back</h3>
@@ -206,9 +200,9 @@ const Home: NextPage = () => {
                 <div className="complete-web-1 mb-3">
                   <div className="datepicker-container-main" >
 
-                    {dateTime ? dateTime.map((dat, i) => {
+                    {dateTime ? dateTime.map((dat, index) => {
                       return (
-                        <div className="datepicker_container" key={i}>
+                        <div className="datepicker_container" key={index}>
                           <div className="p-field mt-2 ">
                             <p>Sedule no </p>
                             <div className="d-flex" style={{ justifyContent: 'space-between' }}>
@@ -233,6 +227,9 @@ const Home: NextPage = () => {
                               dateFormat="yyyy-MM-dd"
                             />
 
+                            {errors && errors?.schedule ? <div className="invalid mt-1">{errors?.schedule[index]?.date}</div> : null}
+
+
                           </div>
                           <div className="p-field mt-2 ">
                             <div className="d-flex">
@@ -252,6 +249,8 @@ const Home: NextPage = () => {
                               timeCaption="Time"
                               dateFormat="h:mm "
                             />
+                            {errors && errors?.schedule ? <div className="invalid mt-1">{errors?.schedule[index]?.from_time}</div> : null}
+
                           </div>
                           <div className="p-field mt-2 ">
                             <div className="d-flex">
@@ -272,6 +271,9 @@ const Home: NextPage = () => {
                               timeCaption="Time"
                               dateFormat="h:mm"
                             />
+
+                            {errors && errors?.schedule ? <div className="invalid mt-1">{errors?.schedule[index]?.to_time}</div> : null}
+
 
                           </div>
                         </div>

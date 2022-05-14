@@ -1,4 +1,5 @@
 const Rating = ({ value , color } :any) => {
+  console.log("vaue" , value )
     return (
       <div className='rating'>
         <span>

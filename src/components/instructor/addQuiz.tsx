@@ -1,12 +1,13 @@
-import type { NextPage } from "next";
-import { useSelector, RootStateOrAny } from "react-redux";
+  import type { NextPage } from "next";
+import { useSelector, RootStateOrAny, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import axios from 'axios'
 import { Spinner } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { SweetAlert } from "../../function/hooks";
+import { addMoreQuiz, addMoreOption, delQuiz, delQuizOption, addOptionInput, addQuestionInput, addOptionRadio } from '../../redux/actions/instructor/quiz'
 const options = ["one", "two", "three"];
-export default ({ onStepChange, courseId, onPrevStep, step }: any) => {
+export default ({ onStepChange, onPrevStep, step }: any) => {
   // const intl = useIntl();
 
   const [loading, setLoading] = useState(true)
@@ -24,9 +25,14 @@ export default ({ onStepChange, courseId, onPrevStep, step }: any) => {
 
   const router = useRouter()
 
+  const dispatch = useDispatch()
+
 
 
   const token = useSelector((state: RootStateOrAny) => state?.userReducer?.token)
+  const { Quiz } = useSelector((state: RootStateOrAny) => state?.quiz)
+  const { courseId } = useSelector((state: RootStateOrAny) => state?.addCourse)
+  
 
   const AxInstance = axios.create({
     // .. where we make our configurations
@@ -38,56 +44,62 @@ export default ({ onStepChange, courseId, onPrevStep, step }: any) => {
 
 
   const Questions = () => {
-    setAllQuiz([
-      {
-        question: '',
-        options: [
-          { option: "", correct: false, },
-
-        ]
-      },
-      ...allQuiz,
 
 
-    ])
+    dispatch(addMoreQuiz())
+
+    // setAllQuiz([
+    //   {
+    //     question: '',
+    //     options: [
+    //       { option: "", correct: false, },
+
+    //     ]
+    //   },
+    //   ...allQuiz,
+
+
+    // ])
   }
 
   const Addmore = (index: number) => {
-    const list: any = [...allQuiz];
-    for (let i = 0; i < list.length; i++) {
-      if (i === index) {
-        const element = list[i];
-        element?.options.push({ name: "", correct: false, })
-      }
+    // const list: any = [...allQuiz];
+    // for (let i = 0; i < list.length; i++) {
+    //   if (i === index) {
+    //     const element = list[i];
+    //     element?.options.push({ name: "", correct: false, })
+    //   }
 
-    }
-    setAllQuiz(list)
+    // }
+    // setAllQuiz(list)
+    dispatch(addMoreOption(index))
   }
 
 
   const removeInputFields = (index: number, i: number) => {
 
+    dispatch(delQuizOption({ index, i }))
 
-    const list: any = [...allQuiz];
-    for (let j = 0; j < list.length; j++) {
-      if (j === index) {
-        const element = list[j];
-        let find = element.options
-        find.splice(i, 1)
-      }
+    // const list: any = [...allQuiz];
+    // for (let j = 0; j < list.length; j++) {
+    //   if (j === index) {
+    //     const element = list[j];
+    //     let find = element.options
+    //     find.splice(i, 1)
+    //   }
 
-    }
-    setAllQuiz(list)
+    // }
+    // setAllQuiz(list)
   }
 
   const removeInputField = (index: number,) => {
 
-    const rows = [...allQuiz];
-    rows.splice(index, 1);
-    setAllQuiz(rows);
+    // const rows = [...allQuiz];
+    // rows.splice(index, 1);
+    // setAllQuiz(rows);
+    dispatch(delQuiz(index))
 
 
-    setAllQuiz(rows)
   }
 
 
@@ -95,46 +107,52 @@ export default ({ onStepChange, courseId, onPrevStep, step }: any) => {
   const handleChangeOptions = (index: number, i: number, evnt: React.ChangeEvent<HTMLInputElement>) => {
     debugger
     const { name, value } = evnt.target;
-    const list: any = [...allQuiz];
-    for (let j = 0; j < list.length; j++) {
-      if (j === index) {
-        const element = list[j];
-        element.options[i][name] = value;
-      }
+    dispatch(addOptionInput({ name, value, index, i }))
 
-    }
-    setAllQuiz(list)
+    // const list: any = [...allQuiz];
+    // for (let j = 0; j < list.length; j++) {
+    //   if (j === index) {
+    //     const element = list[j];
+    //     element.options[i][name] = value;
+    //   }
+
+    // }
+    // setAllQuiz(list)
 
   }
 
   const handleChangeRadio = (index: number, i: number, evnt: React.ChangeEvent<HTMLInputElement>) => {
     debugger
     const { name, value } = evnt.target;
-    const list: any = [...allQuiz];
-    for (let j = 0; j < list.length; j++) {
-      if (j === index) {
-        const element = list[j];
-        for (let b = 0; b < element.options.length; b++) {
-          let elements = element.options[b];
-          if (elements.correct === "1") {
-            elements.correct = "0"
-          }
-          element.options[i][name] = "1";
-        }
 
-      }
+    dispatch(addOptionRadio({ name, index, i }))
 
-    }
-    setAllQuiz(list)
+    // const list: any = [...allQuiz];
+    // for (let j = 0; j < list.length; j++) {
+    //   if (j === index) {
+    //     const element = list[j];
+    //     for (let b = 0; b < element.options.length; b++) {
+    //       let elements = element.options[b];
+    //       if (elements.correct === "1") {
+    //         elements.correct = "0"
+    //       }
+    //       element.options[i][name] = "1";
+    //     }
+
+    //   }
+
+    // }
+    // setAllQuiz(list)
 
   }
 
   const handleChange = (index: number, evnt: React.ChangeEvent<HTMLInputElement>) => {
     debugger
     const { name, value } = evnt.target;
-    const list: any = [...allQuiz];
-    list[index][name] = value;
-    setAllQuiz(list);
+    dispatch(addQuestionInput({ name, value, index }))
+    // const list: any = [...allQuiz];
+    // list[index][name] = value;
+    // setAllQuiz(list);
 
 
 
@@ -145,14 +163,16 @@ export default ({ onStepChange, courseId, onPrevStep, step }: any) => {
   const UpdateQuiz = async () => {
     let value = {
       course_id: courseId,
-      questions: allQuiz
+      questions: Quiz
     }
 
     try {
       setSaveQuiz(true)
-      let res = await AxInstance.post('api//instructor/courses/quiz/edit/question', value)
+      let res = await AxInstance.post('api//instructor/courses/quiz/store', value)
       if (res.data.success === true) {
         setSaveQuiz(false)
+        SweetAlert({ icon: "success", text: res.data.message })
+
         onStepChange()
       }
       else {
@@ -162,13 +182,15 @@ export default ({ onStepChange, courseId, onPrevStep, step }: any) => {
       }
 
     } catch (error) {
+      setSaveQuiz(false)
+      SweetAlert({ icon: "error", text: error })
 
     }
 
 
   }
 
-
+  console.log("err", errors)
 
 
   return (
@@ -197,14 +219,14 @@ export default ({ onStepChange, courseId, onPrevStep, step }: any) => {
                   </div>
                 </div>
               </div>
-              <div className="complete-web-1 mb-3" style={{ marginBottom: '60px' }} >
+              <div className="complete-web-1 mb-3" style={{ marginBottom: '60px' }}>
 
-                {allQuiz && allQuiz.length ? allQuiz?.map((q, index) => (
-                  <div className="p-3 quiz" key={index} style={{ width: '100%' }}>
+                {Quiz && Quiz.length ? Quiz?.map((q, index) => (
+                  <div className="p-3 quiz" key={index} style={errors && errors[0]?.options ? {width: '100%'  , border:'1pt solid red'} : { width: '100%' }}>
                     <div className="p-field  ">
                       <div className="d-flex " style={{ justifyContent: 'space-between' }}>
                         <label>Question : {index + 1}</label>
-                        {(allQuiz.length !== 1) ? <div onClick={(e) => removeInputField(index)}> <i className="fa fa-trash mt-2"></i></div> : ""}
+                        {(Quiz.length !== 1) ? <div onClick={(e) => removeInputField(index)}> <i className="fa fa-trash mt-2"></i></div> : ""}
                       </div>
                       <input
                         type="text"
@@ -222,7 +244,7 @@ export default ({ onStepChange, courseId, onPrevStep, step }: any) => {
                           className=""
                           style={{ display: 'flex', marginTop: '10px' }} key={i}>
                           <div style={{ width: '10%' }}>
-                            <input style={{ marginTop: '10px' }}
+                            <input style={{ marginTop: '10px' } }
                               onChange={(e) => handleChangeRadio(index, i, e)}
                               checked={op.correct === "1"} name="correct" type="checkbox" />
                           </div>
@@ -257,7 +279,14 @@ export default ({ onStepChange, courseId, onPrevStep, step }: any) => {
                       >+ Add more </h3>
                       : ""
                     }
+
+                    <div>
+                      {errors && errors[0]?.options ? <div className="invalid mt-1">{errors[0]?.options}</div> : null}
+                    </div>
+
                   </div>
+
+
                 ))
                   : <div>Quiz not avaliable </div>
                 }

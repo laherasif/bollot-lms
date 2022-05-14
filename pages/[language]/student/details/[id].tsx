@@ -190,7 +190,7 @@ const Home: NextPage = () => {
                 <div className="first-payment-1">
 
                   {lectures.length ?
-                    <CriculumCard lectures={lectures} />
+                    <CriculumCard lectures={lectures} CourseId ={section?.id} />
                     :
                     <div className="start-list-item">
                       <img src={section?.cover_image || "/assets/images/Group 276.png"} alt="course_img" />

@@ -67,24 +67,7 @@ const Conversation = ({ Toggle, permition , user_id}: any) => {
               className="p-field"
               style={{ display: "flex", flexDirection: "column" }}
             >
-              <div className="kns-sanweso02e mb-2">
-                <label>Select Instructor </label>
-                <br />
-                <Form.Select
-                  name="category_id"
-                // value={state}
-                // onChange={(e) => setState(e.target.value)}
-                >
-                  <option defaultChecked>  Select Instructor</option>
-                  {/* {course &&
-                    course.map((cata) => (
-                      <option key={cata.id} value={cata.id}>
-                        {cata.title}
-                      </option>
-                    ))} */}
-                </Form.Select>
-
-              </div>
+              
 
               <label>Send message </label>
               <div className="">

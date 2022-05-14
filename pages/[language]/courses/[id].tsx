@@ -10,7 +10,7 @@ import Icons from "../../../src/icons";
 import CourseCardBig from "../../../src/components/card/CourseCardBig";
 import { RootStateOrAny, useSelector, useDispatch } from 'react-redux'
 import { Catagories } from '../../../src/components/skeleton'
-import { GetCatagory, priceFilter, GetSorted, GetSearchCourse , GetAllCatagory} from '../../../src/redux/actions/courses'
+import { GetCatagory, priceFilter, GetSorted, GetSearchCourse, GetAllCatagory } from '../../../src/redux/actions/courses'
 import dynamic from "next/dynamic";
 import ReactPaginate from "react-paginate";
 import { useRouter } from "next/router";
@@ -50,10 +50,14 @@ const Home: NextPage = () => {
 
   const dispatch = useDispatch()
   const router = useRouter()
+  let param = router.query.id;
+  let pagesParam = router.query.p
+  let searchC = router.query.search
+
   // console.log();
   // console.log("router" , router.query.id )
 
- 
+
 
   const getCatagory = (id: number) => {
     setMainLoading(true)
@@ -113,15 +117,23 @@ const Home: NextPage = () => {
 
   const { AllCourse, Catagory, loader } = useSelector((state: RootStateOrAny) => state.course)
 
-  let param = router.query.id;
+
+  console.log("pagesParam", pagesParam)
+
   useEffect(() => {
     setTimeout(() => {
       setLoading(false)
     }, 2000);
+    if (searchC) {
+      dispatch(GetSearchCourse(searchC))
+    }
+    else {
+      let findCatagory = Catagory.find((i: any) => i.slug === param)
+      getCourseCata(findCatagory?.id)
+    }
 
-    let findCatagory = Catagory.find((i: any) => i.slug === param)
-    getCourseCata(findCatagory?.id)
-  }, [param])
+
+  }, [searchC ? searchC : ''])
 
 
 
@@ -130,6 +142,9 @@ const Home: NextPage = () => {
     const endOffset = itemOffset + page;
     setCurrentItems(AllCourse?.slice(itemOffset, endOffset));
     setPageCount(Math.ceil(AllCourse?.length / page));
+
+
+
   }, [itemOffset, page, AllCourse, Catagory]);
 
   // Invoke when user click to request another page.
@@ -207,7 +222,7 @@ const Home: NextPage = () => {
         ) : (
           <></>
         )}
-        {loader || loading  ?
+        {loader || loading ?
           <div style={{ margin: '20px 40px' }}>
             <Catagories />
           </div>
@@ -218,11 +233,11 @@ const Home: NextPage = () => {
                 <div className="name">
                   {view == false ? (
                     <>
-                  <h3 id="all" onClick={() =>  getAllCatagory()}>All</h3> 
+                      <h3 id="all" onClick={() => getAllCatagory()}>All</h3>
                       {Catagory && Catagory.map((cata: any) => (
                         <>
-                        <h3 id="web" key={cata.id} onClick={() => getCourseCata(cata.id)}>{cata.name}</h3>
-                       </>
+                          <h3 id="web" key={cata.id} onClick={() => getCourseCata(cata.id)}>{cata.name}</h3>
+                        </>
                       ))}
 
                     </>
@@ -230,43 +245,43 @@ const Home: NextPage = () => {
                     <></>
                   )}
                 </div>
-                {currentItems && currentItems.length > 0 ?
-                  <div className="iconss">
-                    <div
-                      className={`mx-2 ${view == true ? "sadsa" : ""}`}
-                      onClick={() => {
-                        setView(true);
-                      }}
-                    >
-                      <Icons name="c28" />
-                    </div>
-                    <div
-                      onClick={() => {
-                        setView(false);
-                      }}
-                      className={`mx-2 ${view == false ? "sadsa" : ""}`}
-                    >
-                      <Icons name="c29" />
-                    </div>
-
-                    <div className="mx-2 sortdrp">
-                      <Form.Select name="sorting" value={sorting} onChange={(e) => getSorted(e)}>
-                        <option defaultChecked>Sort By </option>
-                        <option value="low">Sort by Price - Low to High</option>
-                        <option value="high">Sort by Price - High to Low</option>
-                        <option value="rating">Sort by Top Rated</option>
-                        <option value="recent">Sort by most recent</option>
-                      </Form.Select>
-                    </div>
+                {/* {currentItems && currentItems.length > 0 ? */}
+                <div className="iconss">
+                  <div
+                    className={`mx-2 ${view == true ? "sadsa" : ""}`}
+                    onClick={() => {
+                      setView(true);
+                    }}
+                  >
+                    <Icons name="c28" />
                   </div>
-                  : null}
+                  <div
+                    onClick={() => {
+                      setView(false);
+                    }}
+                    className={`mx-2 ${view == false ? "sadsa" : ""}`}
+                  >
+                    <Icons name="c29" />
+                  </div>
+
+                  <div className="mx-2 sortdrp">
+                    <Form.Select name="sorting" value={sorting} onChange={(e) => getSorted(e)}>
+                      <option defaultChecked>Sort By </option>
+                      <option value="low">Sort by Price - Low to High</option>
+                      <option value="high">Sort by Price - High to Low</option>
+                      <option value="rating">Sort by Top Rated</option>
+                      <option value="recent">Sort by most recent</option>
+                    </Form.Select>
+                  </div>
+                </div>
+                {/* // : null} */}
               </div>
             </section>
-            <section className=" all-of">
+            <section className="all-of" style={{ width: '100%' }} >
               <div className="container-3 d-flex justify-content-between w-100 ahsdad-we">
                 {view ? (
                   <div className="jadsf-dsddasdn " >
-                    <h3 onClick={() =>  getAllCatagory()}>All Courses</h3>
+                    <h3 onClick={() => getAllCatagory()}>All Courses</h3>
                     {Catagory && Catagory.map((cat: any) => (
                       <Link href={`/en/courses/${cat.slug}`}>
                         <h5 key={cat.id} style={{ cursor: 'pointer' }} onClick={() => getCatagory(cat.id)}>{cat.name}</h5>
@@ -275,7 +290,7 @@ const Home: NextPage = () => {
 
                     <div className="kjsado-sadnw2">
                       <button className="asldjsa-sadns">Live </button>
-                      <button className="asldjsa-sadns" style={{width:'max-content' }}>Criculum</button>
+                      <button className="asldjsa-sadns" style={{ width: 'max-content' }}>Criculum</button>
                     </div>
                     <h3>Price</h3>
                     {typeof window !== "undefined" ? (

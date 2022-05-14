@@ -74,14 +74,16 @@ const EditProfile = ({ Toggle, permition }: any) => {
 
     const SaveProfile = async () => {
 
-        let regex = /data:.*base64,/
-        let checks = state?.image.replace(regex, "")
-        let regexBase64 = /^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/;
-        let check = regexBase64.test(checks);
-
+        // let regex = /data:.*base64,/
+        // let checks = state?.image.replace(regex, "")
+        // let regexBase64 = /^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/;
+        // let check = regexBase64.test(checks);
+        try {
+            setLoading(true)
+            
         let value = {
             fullname: state.fullname,
-            image: check ? state.image : '',
+            image: state.image,
             email: state.email,
             about: state.about,
             password: state.password,
@@ -93,15 +95,10 @@ const EditProfile = ({ Toggle, permition }: any) => {
         let ins = await AxInstance.post('api//edit-profile', value)
         let comp = await AxInstance.post('api//edit-profile', value)
 
-
-
-
-        try {
-            setLoading(true)
             let res = User.role === "instructor" ? ins : comp
             if (!res.data.error) {
                 setLoading(false)
-                SweetAlert({ icon: 'success', text: "Profile are updated " })
+                SweetAlert({ icon: 'success', text: res.data.message })
                 dispatch(updateUser(res.data))
                 Toggle(false)
             }
@@ -112,12 +109,16 @@ const EditProfile = ({ Toggle, permition }: any) => {
             }
         }
         catch (err) {
-            console.log("err", err)
+            setLoading(false)
+            SweetAlert({ icon: 'error', text: err })
+
         }
 
     }
 
-    let selectImage = User?.image || state.image
+    // let selectImage = User?.image || state.image
+
+    console.log("loading" , loading)
     return (
 
         <div className="hasiw0eskdwd">
@@ -125,8 +126,6 @@ const EditProfile = ({ Toggle, permition }: any) => {
                 size="lg"
                 show={show}
                 onHide={handleClose}
-                backdrop="static"
-                keyboard={false}
             >
                 <Modal.Header closeButton>
                     <Modal.Title></Modal.Title>
@@ -233,9 +232,8 @@ const EditProfile = ({ Toggle, permition }: any) => {
                     <div className="idfadsf-sads kajfds-sdfe">
                         <button onClick={() => SaveProfile()} className="upload-1 sdisad-dsdactive">
                             {loading ?
-                                <Spinner animation="border" varient="light" />
-                                // <div className="spinner-border text-light" role="status">
-                                // </div>
+                                <Spinner animation="border"  />
+                               
                                 :
                                 "Update"
                             }

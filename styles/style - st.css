@@ -3265,6 +3265,10 @@
   overflow-y: scroll;
 }
 
+.infinite-scroll-component{
+  /* overflow-y: hidden; */
+}
+
 .kasdjfsdsa-ewds input {
   width: 100%;
   border: none;
@@ -4091,12 +4095,6 @@ input[type=number] {
   width: 100%;
 }
 
-.navbar-expand-lg .navbar-nav .dropdown-menu {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-}
-
 /* instructor ciriculum */
 
 
@@ -4453,7 +4451,7 @@ textarea::placeholder {
 
 /* course detail page */
 
-::-webkit-scrollbar {
+.table-video::-webkit-scrollbar {
   -webkit-appearance: none;
 }
 
@@ -4701,7 +4699,6 @@ textarea::placeholder {
   position: relative;
   cursor: pointer;
 }
-
 .video_section img {
   width: 90px;
   height: 50px;
@@ -4853,4 +4850,15 @@ textarea::placeholder {
   left: 0px;
   right: 0px;
   bottom: 0px;
+}
+
+
+.add-rating .rating_btn{
+  background-color: #00778f;
+  width: 100%;
+  height: 40px;
+  color: white;
+  border-radius: 20px;
+  margin-bottom: 10px;
+  border: none;
 }

@@ -18,6 +18,7 @@ import { useEffect, useState } from "react";
 import { RootStateOrAny, useSelector } from "react-redux";
 import axios from "axios";
 import { Small } from "../../../../src/components/instructor/loader";
+import Search from "../../../../src/components/instructor/search";
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
@@ -68,10 +69,7 @@ const Home: NextPage = () => {
                     <h3>My Live Courses</h3>
                   </div>
                   <div className=" jidfjsd-asjreid">
-                    <div className="dsnodi-sdjsad">
-                      <FiSearch color="#8A8A8A" size={17} />
-                      <input type="text" placeholder="Search" />
-                    </div>
+                   <Search/>
                   </div>
                 </div>
 

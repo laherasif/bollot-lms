@@ -8,7 +8,11 @@ import { Dropdown } from 'react-bootstrap'
 import Dropdowns from './dropdown';
 import { LogoutIns } from '../../redux/actions/auth/user';
 import { useRouter } from 'next/router';
+import { getSearchCourses } from '../../redux/actions/student/courses';
 export default () => {
+
+  const [state , setState] = useState('')
+
   const { User } = useSelector((state: RootStateOrAny) => state.userReducer)
   const dispatch = useDispatch()
   const router = useRouter()
@@ -19,12 +23,21 @@ export default () => {
     }, 2000);
   }
 
+
+  const SeacchCourse = () => {
+    router.push(`/en/student/search/${state}`)
+    setState('')
+  }
+
+
+
+
   return <div className="jsad-asdnsake">
     <div className="nadjfksad-asds">
       <Dropdowns />
       <div className="dsnodi-sdjsad">
-        <FiSearch color="#8A8A8A" size={17} />
-        <input type="text" placeholder="Search" />
+        <FiSearch color="#8A8A8A" size={17} onClick={()=> state.length > 0 ? SeacchCourse() : ''}/>
+        <input type="text" name="state" value={state} onChange={(e)=> setState(e.target.value)} placeholder="Search" />
       </div>
     </div>
 
@@ -49,10 +62,10 @@ export default () => {
 
 
           <Dropdown.Menu >
-          <Dropdown.Item as={Link} href='/' >Go to Website</Dropdown.Item>
-                    <Dropdown.Item as={Link} href={User?.role === "student" ? "/en/student/courses" : "/en/instructor/courses"} >My Courses</Dropdown.Item>
-                    <Dropdown.Item as={Link} href={User?.role === "student" ? "/en/student/profile" : "/en/instructor/profile"} >Profile</Dropdown.Item>
-                    <Dropdown.Item ><span onClick={() => Logout()}>Logout</span></Dropdown.Item>
+            <Dropdown.Item as={Link} href='/' >Go to Website</Dropdown.Item>
+            <Dropdown.Item as={Link} href={User?.role === "student" ? "/en/student/courses" : "/en/instructor/courses"} >My Courses</Dropdown.Item>
+            <Dropdown.Item as={Link} href={User?.role === "student" ? "/en/student/profile" : "/en/instructor/profile"} >Profile</Dropdown.Item>
+            <Dropdown.Item ><span onClick={() => Logout()}>Logout</span></Dropdown.Item>
 
           </Dropdown.Menu>
         </Dropdown>

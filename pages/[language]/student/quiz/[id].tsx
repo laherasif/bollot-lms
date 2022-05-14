@@ -45,7 +45,7 @@ const Home: NextPage = () => {
     let fetchQuiz = async () => {
       try {
         setLoading(true)
-        let res = await AxInstance.get(`api//student/my-courses/quiz/${69}`)
+        let res = await AxInstance.get(`api//student/my-courses/quiz/${courseId}`)
         console.log("res", res)
         if (res.data.success === true) {
           setLoading(false)
@@ -159,7 +159,7 @@ const Home: NextPage = () => {
     }
   }
 
-  if (answers.length === quiz?.quiz?.length) {
+  if (answers && answers.length > 0  &&  quiz?.quiz?.length > 0 && answers.length === quiz?.quiz?.length) {
     QuizSubmit()
   }
 
@@ -199,27 +199,28 @@ const Home: NextPage = () => {
 
                   </div>
                   <div className="complete-web-1">
-                    {quiz && quiz?.quiz?.length && !showResult ?
-                      <Card
-                        options={quiz?.quiz[currentStep]?.options}
-                        question={quiz?.quiz[currentStep]?.question}
-                        callback={handleSubmit}
-                        callprev={handleBack}
-                        totalQuestion={quiz?.quiz.length}
-                        questionId={quiz?.quiz[currentStep]?.id}
-                        curruntQuestion={currentStep}
-                      />
-                      :
-                      <div className='info-container'>
-                        {info ?
-                          info
-                          :
-                          <div className="info-spinner">
-                            <Spinner animation="border" />
-                          </div>
-                        }
-                      </div>
-                    }
+                  { quiz?.quiz?.length ? 
+                       quiz && quiz?.quiz?.length && !showResult ?
+                        <Card
+                          options={quiz?.quiz[currentStep]?.options}
+                          question={quiz?.quiz[currentStep]?.question}
+                          callback={handleSubmit}
+                          callprev={handleBack}
+                          totalQuestion={quiz?.quiz.length}
+                          questionId={quiz?.quiz[currentStep]?.id}
+                          curruntQuestion={currentStep}
+                        />
+                        :
+                        <div className='info-container'>
+                          {info ?
+                            info
+                            :
+                            <div className="info-spinner">
+                              <Spinner animation="border" />
+                            </div>
+                          }
+                        </div>
+                    : <div> Quiz not uploaded yet </div>}
 
                   </div>
                 </div>

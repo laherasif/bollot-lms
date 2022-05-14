@@ -78,13 +78,13 @@ export default ()=>{
             </Dropdown.Toggle>
 
             <Dropdown.Menu>
-              <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-              <Dropdown.Item href="#/action-2">
+              <Dropdown.Item href="#/action-1">Arabic</Dropdown.Item>
+              {/* <Dropdown.Item href="#/action-2">
                 Another action
-              </Dropdown.Item>
-              <Dropdown.Item href="#/action-3">
+              </Dropdown.Item> */}
+              {/* <Dropdown.Item href="#/action-3">
                 Something else
-              </Dropdown.Item>
+              </Dropdown.Item> */}
             </Dropdown.Menu>
           </Dropdown>
           <Dropdown className="cst-drp">
@@ -98,13 +98,13 @@ export default ()=>{
             </Dropdown.Toggle>
 
             <Dropdown.Menu>
-              <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-              <Dropdown.Item href="#/action-2">
-                Another action
+              <Dropdown.Item href="#/action-1">Riyal</Dropdown.Item>
+              {/* <Dropdown.Item href="#/action-2">
+               English
               </Dropdown.Item>
               <Dropdown.Item href="#/action-3">
-                Something else
-              </Dropdown.Item>
+                Urdu
+              </Dropdown.Item> */}
             </Dropdown.Menu>
           </Dropdown>
         </div>

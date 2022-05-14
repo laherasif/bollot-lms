@@ -29,6 +29,7 @@ const Home: NextPage = () => {
   const [sections, setSections] = useState([])
   const [loading, setLoading] = useState(false)
   const [loader, setLoader] = useState(false)
+  const [network, setNetwork] = useState(false)
   const [errors, setErrors] = useState()
 
   const token = useSelector((state: RootStateOrAny) => state?.userReducer?.token)
@@ -43,11 +44,9 @@ const Home: NextPage = () => {
 
 
   let router = useRouter()
-  const inputFile: any = useRef(null)
 
   let courseId = router.query.id
 
-  console.log("error", errors)
 
 
   useEffect(() => {
@@ -181,7 +180,7 @@ const Home: NextPage = () => {
       let res = await AxInstance.post('api//instructor/courses/previews/update', saveCri)
       if (res.data.success === true) {
         setLoader(false)
-        SweetAlert({ icon: "success", text: 'Preview are Successfully updated' })
+        SweetAlert({ icon: "success", text: res.data.message })
 
       }
       else {
@@ -192,6 +191,7 @@ const Home: NextPage = () => {
     }
     catch (err) {
       setLoader(false)
+      setNetwork(true)
     }
   }
 
@@ -214,7 +214,7 @@ const Home: NextPage = () => {
   console.log("errors", errors)
 
 
-  let red = section.some((ac) => ac.progressbar < 100)
+  let red = section.some((ac) => ac.progressbar < 100 && ac.progressbar > 0)
 
 
   return (
@@ -262,6 +262,7 @@ const Home: NextPage = () => {
                       >
                         + Add more preview </button>
                       <button className="upload-1 sdisad-dsdactive"
+                        disabled={red ? true : false}
                         onClick={() => SaveCriculum()}
                       >
                         <i className="fa fa-save" style={{ marginRight: '10px' }}></i>
@@ -308,7 +309,7 @@ const Home: NextPage = () => {
 
                     <div className={lec.thumbnail && lec.id || lec.progressbar === 100 || network ? "image-container" : ""}>
                       <label>Video / PDF file for this Lecture</label>
-                      <div className="drop-box img-box">
+                      <div className="drop-box img-box w-100">
                         <div className="kvjadsd-j43rm iasdufhvs-ernd" >
                           <Icons name="i29" />
                           {/* {load ? <Spinner animation="border" size="sm"/> : */}
@@ -319,8 +320,9 @@ const Home: NextPage = () => {
                           {/* }/ */}
                         </div>
                         {lec?.thumbnail || lec.file_type === "PDF" ? "" :
-                          <input type="file" accept="pdf/*" onChange={(e) => handleChangeLectureFile(index, i, e)} className="custom-file-input" />
+                          <input type="file" accept="pdf/*" onChange={(e) => handleChangeLectureFile(index, e)} className="custom-file-input" />
                         }
+                      {errors ? <div className="invalid mt-1">{errors[index]?.object_key}</div> : null}
 
 
                       </div>
@@ -329,7 +331,7 @@ const Home: NextPage = () => {
                           :
                           lec.progressbar && <ProgressBar animated now={lec.progressbar} />}
                       </div>
-                      {lec?.thumbnail ?
+                      {lec?.thumbnail && lec.progressbar === 100 ?
                         <>
                           <div className="overlay"></div>
                           <div id="icon" onClick={() => delThumnail(index, i)}>

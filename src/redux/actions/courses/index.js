@@ -248,7 +248,7 @@ export const GetSorted = (name) => async dispatch => {
 
 
 export const GetSearchCourse = (name) => async dispatch => {
-
+   debugger
     try {
 
         let filterPrice = {

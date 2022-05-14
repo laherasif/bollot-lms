@@ -11,26 +11,16 @@ import {
   GET_ALL_COURSES,
   LIVE_COURSE,
   GET_FILTER_PRICE,
-  GET_COURSE_INPUTS,
-  GET_COURSE_INPUTS_MORE,
-  ADD_COURSE_INPUTS_MORE,
+  // GET_COURSE_INPUTS,
+  // GET_COURSE_INPUTS_MORE,
+  // ADD_COURSE_INPUTS_MORE,
   GET_COURSE_CRICULUM,
 } from "../../types/types";
 
 
 const initialState = {
 
-  addCourse: {
-    category_id: '',
-    title: '',
-    short_desc: '',
-    long_desc: '',
-    price: '',
-    cover_image: '',
-  },
-  course_for: [''],
-  requirements: [''],
-  outcomes: [''],
+  
   Catagory: [],
   Latest: [],
   Feature: [],
@@ -56,36 +46,7 @@ const CourseReducer = (state = initialState, action) => {
         Criculum : action.payload
       }
 
-    case GET_COURSE_INPUTS:
-      let course = state.addCourse 
-      return {
-        ...state,
-        addCourse : {course ,[action.payload.name]: action.payload.value }
-        
-      }
-
-      case ADD_COURSE_INPUTS_MORE :{
-        if(action.payload === "outcoms"){
-          //  state.outcomes.push('')
-          let list = state.outcomes
-          return {
-            ...state , 
-            outcomes : [...list , ""]
-
-          }
-        }
-      }
-
-      case GET_COURSE_INPUTS_MORE:{
-        if(action.payload.field === "outcoms"){
-          let list = state.outcomes
-          list[action.payload.index] = action.payload.value 
-          return {
-            outcomes : list 
-          }
-          
-        }
-      }
+   
         
 
 
@@ -166,7 +127,7 @@ const CourseReducer = (state = initialState, action) => {
       };
 
     case GET_SORTED_COURSE:
-
+debugger
       return {
         ...state,
         AllCourse: action.payload,

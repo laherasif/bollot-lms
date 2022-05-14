@@ -1,12 +1,14 @@
 import React, { useState } from 'react'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { useSelector, RootStateOrAny } from 'react-redux';
+import { useSelector, RootStateOrAny, useDispatch } from 'react-redux';
 import axios from 'axios'
 import moment from 'moment'
 import { useRouter } from 'next/router';
 import { Spinner } from 'react-bootstrap';
-const Secdule = ({ course_id, onStepChange, onPrevStep, step }: any) => {
+import { addMoreLive, addLiveInput, delPreview } from '../../redux/actions/instructor/live'
+import { SweetAlert } from '../../function/hooks';
+const Secdule = ({  onStepChange, onPrevStep, step }: any) => {
     // const [date, setdate] = useState(new Date());
     // const [from_time, setfrom_time] = useState(new Date());
 
@@ -17,6 +19,13 @@ const Secdule = ({ course_id, onStepChange, onPrevStep, step }: any) => {
     const [dateTime, setDateTime] = useState([{ date: '', from_time: '', to_time: '' }])
 
     const { token } = useSelector((state: RootStateOrAny) => state?.userReducer)
+    const { Classes } = useSelector((state: RootStateOrAny) => state?.live)
+    const { courseId } = useSelector((state: RootStateOrAny) => state?.addCourse)
+
+    console.log("class", Classes)
+
+    const dispatch = useDispatch()
+
 
     const AxInstance = axios.create({
         // .. where we make our configurations
@@ -27,15 +36,12 @@ const Secdule = ({ course_id, onStepChange, onPrevStep, step }: any) => {
     });
 
 
-    // const handleDateChange = (date: any) => {
-    //     setdate(date)
-    // }
+
 
     const handleDateChange = (name: string, i: number, date: any) => {
         debugger
-        let formValues: any = [...dateTime];
-        formValues[i][name] = date;
-        setDateTime(formValues)
+        dispatch(addLiveInput({ name, i, date }))
+
 
 
     }
@@ -45,24 +51,25 @@ const Secdule = ({ course_id, onStepChange, onPrevStep, step }: any) => {
 
     const addFormFields = () => {
 
-        setDateTime([...dateTime, { date: '', from_time: '', to_time: '' }])
+
+        dispatch(addMoreLive())
     }
 
 
 
     const SaveLiveClasses = async () => {
 
-        let arr = [];
-        for (let i = 0; i < dateTime.length; i++) {
-            const element = dateTime[i];
-            let value = { date: moment(element.date).format('YYYY-MM-DD'), from_time: moment(element.from_time).format('HH:mm'), to_time: moment(element.to_time).format('HH:mm') }
-            arr.push(value)
+        // let arr = [];
+        // for (let i = 0; i < dateTime.length; i++) {
+        //     const element = dateTime[i];
+        //     let value = { date: moment(element.date).format('YYYY-MM-DD'), from_time: moment(element.from_time).format('HH:mm'), to_time: moment(element.to_time).format('HH:mm') }
+        //     arr.push(value)
 
-        }
+        // }
 
         let values = {
-            course_id: course_id,
-            schedule: arr
+            course_id: courseId,
+            schedule: Classes
         }
 
         try {
@@ -70,23 +77,24 @@ const Secdule = ({ course_id, onStepChange, onPrevStep, step }: any) => {
             let res = await AxInstance.post('api//instructor/courses/schedule/store', values)
             if (res.data.success === true) {
                 setLoading(false)
+                SweetAlert({ icon: "success", text: res.data.message })
                 onStepChange()
             }
-            else{
+            else {
                 setLoading(false)
                 setErrors(res.data.error)
+
             }
         } catch (error) {
-
+            setLoading(false)
+            SweetAlert({ icon: "error", text: error })
         }
     }
 
 
     const DelSedule = (i: number) => {
-        debugger
-        const rows = [...dateTime];
-        rows.splice(i, 1);
-        setDateTime(rows);
+        dispatch(delPreview(i))
+       
     }
 
 
@@ -99,9 +107,8 @@ const Secdule = ({ course_id, onStepChange, onPrevStep, step }: any) => {
                         <h6 style={{ fontSize: 'bold' }}>Schedule your classes</h6>
 
                     </div>
-                    {/* <Icons name="i26" /> */}
                 </div>
-                {dateTime.map((dat, index) => {
+                {Classes && Classes.map((dat, index) => {
                     return (
                         <div style={{ border: '1pt solid lightgray', marginBottom: '10px', padding: '10px', borderRadius: '10px' }} key={index}>
                             <div className="p-field mt-2 ">
@@ -110,8 +117,8 @@ const Secdule = ({ course_id, onStepChange, onPrevStep, step }: any) => {
                                         {/* <Icons name="i24" /> */}
                                         <label>Date</label>
                                     </div>
-                                    {(dateTime.length !== 1) ?
-                                        <div onClick={() => DelSedule(i)}>
+                                    {(Classes.length !== 1) ?
+                                        <div onClick={() => DelSedule(index)}>
                                             <i className='fa fa-trash'></i>
                                         </div>
                                         : null}
@@ -125,7 +132,7 @@ const Secdule = ({ course_id, onStepChange, onPrevStep, step }: any) => {
                                     onChange={(date) => handleDateChange("date", index, date)}
                                     dateFormat="yyyy-MM-dd"
                                 />
-                              {errors && errors?.schedule ? <div className="invalid mt-1">{errors?.schedule[index]?.date}</div> : null}
+                                {errors && errors?.schedule ? <div className="invalid mt-1">{errors?.schedule[index]?.date}</div> : null}
 
 
                             </div>
@@ -146,7 +153,7 @@ const Secdule = ({ course_id, onStepChange, onPrevStep, step }: any) => {
                                     timeCaption="Time"
                                     dateFormat="h:mm "
                                 />
-                              {errors && errors?.schedule ? <div className="invalid mt-1">{errors?.schedule[index]?.from_time}</div> : null}
+                                {errors && errors?.schedule ? <div className="invalid mt-1">{errors?.schedule[index]?.from_time}</div> : null}
 
                             </div>
                             <div className="p-field mt-2 ">
@@ -167,7 +174,7 @@ const Secdule = ({ course_id, onStepChange, onPrevStep, step }: any) => {
                                     timeCaption="Time"
                                     dateFormat="h:mm"
                                 />
-                              {errors && errors?.schedule ? <div className="invalid mt-1">{errors?.schedule[index]?.to_time}</div> : null}
+                                {errors && errors?.schedule ? <div className="invalid mt-1">{errors?.schedule[index]?.to_time}</div> : null}
 
 
                             </div>

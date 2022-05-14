@@ -488,6 +488,7 @@ body .kdsfdpd-dsfasdnf .control-dots .selected {
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
+  width: 100%;
 }
 
 .card-course {
