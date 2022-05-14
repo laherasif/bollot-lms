@@ -4083,6 +4083,10 @@ input[type=number] {
 
 }
 
+.dropdown-menu.show {
+  /* display: block; */
+}
+
 .dropdown-menu a {
   padding: 3px;
   color: black;
@@ -4094,6 +4098,7 @@ input[type=number] {
   color: #ffffff;
   width: 100%;
 }
+
 
 /* instructor ciriculum */
 
