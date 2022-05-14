@@ -4075,15 +4075,12 @@ input[type=number] {
 /* dropdown */
 
 .dropdown-menu.show {
-  display: block;
+  display: flex;
+  flex-direction: column;
   border-radius: 10px;
   width: max-content;
   padding: 5px;
 
-}
-
-.dropdown-menu.show {
-  /* display: block; */
 }
 
 .dropdown-menu a {
@@ -4098,6 +4095,11 @@ input[type=number] {
   width: 100%;
 }
 
+.navbar-expand-lg .navbar-nav .dropdown-menu {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+}
 
 /* instructor ciriculum */
 
