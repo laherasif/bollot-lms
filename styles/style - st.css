@@ -4075,8 +4075,7 @@ input[type=number] {
 /* dropdown */
 
 .dropdown-menu.show {
-  display: flex;
-  flex-direction: column;
+  display: block;
   border-radius: 10px;
   width: max-content;
   padding: 5px;
