@@ -4074,14 +4074,14 @@ input[type=number] {
 
 /* dropdown */
 
-.dropdown-menu.show {
+/* .dropdown-menu.show {
   display: flex;
   flex-direction: column;
   border-radius: 10px;
   width: max-content;
   padding: 5px;
 
-}
+} */
 
 .dropdown-menu a {
   padding: 3px;
@@ -4095,11 +4095,11 @@ input[type=number] {
   width: 100%;
 }
 
-.navbar-expand-lg .navbar-nav .dropdown-menu {
+/* .navbar-expand-lg .navbar-nav .dropdown-menu {
   position: absolute;
   display: flex;
   flex-direction: column;
-}
+} */
 
 /* instructor ciriculum */
 
