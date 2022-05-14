@@ -10,7 +10,7 @@ import Icons from "../../../src/icons";
 import CourseCardBig from "../../../src/components/card/CourseCardBig";
 import { RootStateOrAny, useSelector, useDispatch } from 'react-redux'
 import { Catagories } from '../../../src/components/skeleton'
-import { GetCatagory, priceFilter, GetSorted, GetSearchCourse, GetAllCatagory } from '../../../src/redux/actions/courses'
+import { GetCatagory, priceFilter, GetSorted, GetSearchCourse, GetAllCatagory, GetSortedSearch } from '../../../src/redux/actions/courses'
 import dynamic from "next/dynamic";
 import ReactPaginate from "react-paginate";
 import { useRouter } from "next/router";
@@ -33,7 +33,7 @@ const Home: NextPage = () => {
   const [maxValue, set_maxValue] = useState(0);
   const [sorting, setSorting] = useState('');
   const [searchCourse, setSearchCourse] = useState('')
-  const [page, setPage] = useState(3);
+  const [page, setPage] = useState(10);
   const [loading, setLoading] = useState(true);
   const [mainLoading, setMainLoading] = useState(false);
   const [currentItems, setCurrentItems] = useState(null);
@@ -90,7 +90,14 @@ const Home: NextPage = () => {
   const getSorted = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSorting(e.target.value);
     setMainLoading(true)
-    dispatch(GetSorted(e.target.value))
+
+    if (searchC) {
+      dispatch(GetSortedSearch(e.target.value))
+
+    }
+    else {
+      dispatch(GetSorted(e.target.value))
+    }
     setTimeout(() => {
       setMainLoading(false)
     }, 2000);
@@ -107,6 +114,7 @@ const Home: NextPage = () => {
   const getSearchCourse = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setMainLoading(true)
+
     dispatch(GetSearchCourse(searchCourse))
     setTimeout(() => {
       setMainLoading(false)
@@ -266,7 +274,7 @@ const Home: NextPage = () => {
 
                   <div className="mx-2 sortdrp">
                     <Form.Select name="sorting" value={sorting} onChange={(e) => getSorted(e)}>
-                      <option defaultChecked>Sort By </option>
+                      <option disabled>Sort By </option>
                       <option value="low">Sort by Price - Low to High</option>
                       <option value="high">Sort by Price - High to Low</option>
                       <option value="rating">Sort by Top Rated</option>

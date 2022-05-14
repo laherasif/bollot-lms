@@ -49,7 +49,7 @@ export const DELETE_STU = "DELETE_STU"
 export const UPDATE_STU = "UPDATE_STU"
 export const DELETE_INS = "DELETE_INS"
 export const UPDATE_INS = "UPDATE_INS"
-
+export const GET_SORTED_COURSE_SEARCH ="GET_SORTED_COURSE_SEARCH"
 
 
 // Instructor AddCourse 

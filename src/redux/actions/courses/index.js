@@ -17,6 +17,7 @@ import {
     GET_COURSE_INPUTS_MORE,
     ADD_COURSE_INPUTS_MORE,
     GET_COURSE_CRICULUM,
+    GET_SORTED_COURSE_SEARCH,
 
 } from '../../types/types'
 import instance from '../../../confiq/axios/instance'
@@ -221,7 +222,8 @@ export const priceFilter = (data) => async dispatch => {
 
 }
 
-export const GetSorted = (name) => async dispatch => {
+
+export const GetSortedSearch = (name) => async dispatch => {
     debugger
     try {
 
@@ -232,6 +234,34 @@ export const GetSorted = (name) => async dispatch => {
                 sort_by: name === "low" ? "price" : name === "high" ? "price" : name === "recent" ? "id" : "rating",
                 sort_direction: name === "low" ? "asc" : name === "desc" ? "asc" : name === "recent" ? "desc" : "desc"
             }
+        }
+
+        let res = await instance.post('api//courses', filterPrice)
+        dispatch({
+            type: GET_SORTED_COURSE_SEARCH,
+            payload: res.data.response.courses
+        })
+    } catch (error) {
+
+    }
+
+
+}
+
+
+export const GetSorted = (name) => async dispatch => {
+    debugger
+    try {
+
+        let filterPrice = {
+            page_no: 1,
+            rows_per_page: 10,
+            sorting: {
+                sort_by: name === "low" ? "price" : name === "high" ? "price" : name === "recent" ? "id" : "rating",
+                sort_direction: name === "low" ? "asc" : name === "desc" ? "asc" : name === "recent" ? "desc" : "desc"
+            },
+            search: name,
+
         }
 
         let res = await instance.post('api//courses', filterPrice)

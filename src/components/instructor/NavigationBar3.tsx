@@ -75,14 +75,20 @@ export default () => {
 
                 <div className="kjdshfi-serjh">
                   <Dropdown>
-                    <Dropdown.Toggle  id="dropdown-basic">
-                      Dropdown Button
+                    <Dropdown.Toggle id="dropdown-basic">
+                      <div className="kjdshfi-serjh">
+                        {User?.fullname}
+                        <img style={{ borderRadius: '50%' }} src={User?.image || "/assets/images/umpire-1.svg"} alt="profile_img" />
+                        <Icons name="i8" />
+                      </div>
                     </Dropdown.Toggle>
 
-                    <Dropdown.Menu>
-                      <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-                      <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-                      <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+                    <Dropdown.Menu >
+                      <Dropdown.Item as={Link} href="/" >Go to website</Dropdown.Item>
+                      <Dropdown.Item as={Link} href="/en/instructor/courses" >My Courses</Dropdown.Item>
+                      <Dropdown.Item as={Link} href="/en/instructor/profile" >My Profile </Dropdown.Item>
+                      <Dropdown.Item ><span onClick={() => Logout()}>Logout</span></Dropdown.Item>
+
                     </Dropdown.Menu>
                   </Dropdown>
                   {/* <Dropdown>

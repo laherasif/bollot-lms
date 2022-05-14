@@ -15,17 +15,18 @@ import {
   // GET_COURSE_INPUTS_MORE,
   // ADD_COURSE_INPUTS_MORE,
   GET_COURSE_CRICULUM,
+  GET_SORTED_COURSE_SEARCH,
 } from "../../types/types";
 
 
 const initialState = {
 
-  
+
   Catagory: [],
   Latest: [],
   Feature: [],
   AllCourse: [],
-  Criculum:[],
+  Criculum: [],
   loaders: false,
 };
 
@@ -33,21 +34,21 @@ const CourseReducer = (state = initialState, action) => {
   switch (action.type) {
 
 
-    case LOADING :
-    return {
-      ...state ,
-      loaders : action.payload
-    }
+    case LOADING:
+      return {
+        ...state,
+        loaders: action.payload
+      }
 
 
     case GET_COURSE_CRICULUM:
       return {
-        ...state , 
-        Criculum : action.payload
+        ...state,
+        Criculum: action.payload
       }
 
-   
-        
+
+
 
 
     case GET_ALL_COURSES:
@@ -109,6 +110,14 @@ const CourseReducer = (state = initialState, action) => {
 
       };
 
+    case GET_SORTED_COURSE_SEARCH:
+  debugger
+      return {
+        ...state,
+        AllCourse: action.payload,
+
+      };
+
     case GET_SEARCH_COURSE:
 
       return {
@@ -127,7 +136,7 @@ const CourseReducer = (state = initialState, action) => {
       };
 
     case GET_SORTED_COURSE:
-debugger
+      debugger
       return {
         ...state,
         AllCourse: action.payload,
