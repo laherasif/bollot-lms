@@ -5927,6 +5927,13 @@ body .multi-range-slider .bar-inner {
   display: flex;
   flex-direction: column;
 }
+
+.dropdown-menu a {
+  padding: 3px;
+  color: black;
+  float: left;
+  text-decoration: none;
+}
 .d-flex-wh button {
   width: 100%;
   height: 50px;

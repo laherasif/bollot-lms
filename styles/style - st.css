@@ -4086,6 +4086,7 @@ input[type=number] {
 .dropdown-menu a {
   padding: 3px;
   color: black;
+  float: left;
   text-decoration: none;
 }
 
