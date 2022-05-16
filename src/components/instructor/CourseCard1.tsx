@@ -6,7 +6,7 @@ export default ({ course, key }: any) => {
   console.log("course" , course)
   return (
     <div className="cm-web" key={key}>
-      <Link href={`/en/instructor/details/${course.slug}`}>
+      {/* <Link href={`/en/instructor/details/${course.slug}`}> */}
         <div style={{cursor:'pointer' , height:'250px'}}>
           <div className="dhafusd9we0sd-p">
             <div>
@@ -29,7 +29,7 @@ export default ({ course, key }: any) => {
             {/* <p className="mt-2">By {course?.instructor} </p> */}
           </div>
         </div>
-      </Link>
+      {/* </Link> */}
       <div className="assahdwe0-ass ">
         <Dropdown>
           <Dropdown.Toggle variant="success" id="dropdown-basic">
@@ -40,6 +40,8 @@ export default ({ course, key }: any) => {
             <Dropdown.Item as={Link} href={`/en/instructor/managePreview/${course?.id}`}>Manage Previews </Dropdown.Item>
             <Dropdown.Item as={Link} href={ `/en/instructor/manageCriculum/${course?.id}`}>Check Criculum</Dropdown.Item>
             <Dropdown.Item as={Link} href={ `/en/instructor/manageQuiz/${course?.id}`}>Manage Quiz</Dropdown.Item>
+            <Dropdown.Item as={Link} href={`/en/instructor/manageEnrolledStudent/${course?.id}`}> Enrolled Student</Dropdown.Item>
+            <Dropdown.Item as={Link} href={`/en/instructor/manageProgressStudent/${course?.id}`}>Student Progress</Dropdown.Item>
 
           </Dropdown.Menu>
         </Dropdown>

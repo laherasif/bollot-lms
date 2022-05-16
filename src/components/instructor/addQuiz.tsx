@@ -1,9 +1,8 @@
-  import type { NextPage } from "next";
+import type { NextPage } from "next";
 import { useSelector, RootStateOrAny, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import axios from 'axios'
 import { Spinner } from "react-bootstrap";
-import { useRouter } from "next/router";
 import { SweetAlert } from "../../function/hooks";
 import { addMoreQuiz, addMoreOption, delQuiz, delQuizOption, addOptionInput, addQuestionInput, addOptionRadio } from '../../redux/actions/instructor/quiz'
 const options = ["one", "two", "three"];
@@ -13,17 +12,6 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
   const [loading, setLoading] = useState(true)
   const [saveQuiz, setSaveQuiz] = useState(false)
   const [errors, setErrors] = useState([])
-  const [allQuiz, setAllQuiz] = useState([
-    {
-      question: '',
-      options: [
-        { option: "", correct: false, },
-
-      ]
-    },
-  ])
-
-  const router = useRouter()
 
   const dispatch = useDispatch()
 
@@ -32,7 +20,7 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
   const token = useSelector((state: RootStateOrAny) => state?.userReducer?.token)
   const { Quiz } = useSelector((state: RootStateOrAny) => state?.quiz)
   const { courseId } = useSelector((state: RootStateOrAny) => state?.addCourse)
-  
+
 
   const AxInstance = axios.create({
     // .. where we make our configurations
@@ -44,34 +32,10 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
 
 
   const Questions = () => {
-
-
     dispatch(addMoreQuiz())
-
-    // setAllQuiz([
-    //   {
-    //     question: '',
-    //     options: [
-    //       { option: "", correct: false, },
-
-    //     ]
-    //   },
-    //   ...allQuiz,
-
-
-    // ])
   }
 
   const Addmore = (index: number) => {
-    // const list: any = [...allQuiz];
-    // for (let i = 0; i < list.length; i++) {
-    //   if (i === index) {
-    //     const element = list[i];
-    //     element?.options.push({ name: "", correct: false, })
-    //   }
-
-    // }
-    // setAllQuiz(list)
     dispatch(addMoreOption(index))
   }
 
@@ -80,83 +44,29 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
 
     dispatch(delQuizOption({ index, i }))
 
-    // const list: any = [...allQuiz];
-    // for (let j = 0; j < list.length; j++) {
-    //   if (j === index) {
-    //     const element = list[j];
-    //     let find = element.options
-    //     find.splice(i, 1)
-    //   }
 
-    // }
-    // setAllQuiz(list)
   }
 
-  const removeInputField = (index: number,) => {
-
-    // const rows = [...allQuiz];
-    // rows.splice(index, 1);
-    // setAllQuiz(rows);
+  const removeInputField = (index: number) => {
     dispatch(delQuiz(index))
 
-
   }
 
-
-
   const handleChangeOptions = (index: number, i: number, evnt: React.ChangeEvent<HTMLInputElement>) => {
-    debugger
     const { name, value } = evnt.target;
     dispatch(addOptionInput({ name, value, index, i }))
-
-    // const list: any = [...allQuiz];
-    // for (let j = 0; j < list.length; j++) {
-    //   if (j === index) {
-    //     const element = list[j];
-    //     element.options[i][name] = value;
-    //   }
-
-    // }
-    // setAllQuiz(list)
 
   }
 
   const handleChangeRadio = (index: number, i: number, evnt: React.ChangeEvent<HTMLInputElement>) => {
-    debugger
     const { name, value } = evnt.target;
-
     dispatch(addOptionRadio({ name, index, i }))
-
-    // const list: any = [...allQuiz];
-    // for (let j = 0; j < list.length; j++) {
-    //   if (j === index) {
-    //     const element = list[j];
-    //     for (let b = 0; b < element.options.length; b++) {
-    //       let elements = element.options[b];
-    //       if (elements.correct === "1") {
-    //         elements.correct = "0"
-    //       }
-    //       element.options[i][name] = "1";
-    //     }
-
-    //   }
-
-    // }
-    // setAllQuiz(list)
 
   }
 
   const handleChange = (index: number, evnt: React.ChangeEvent<HTMLInputElement>) => {
-    debugger
     const { name, value } = evnt.target;
     dispatch(addQuestionInput({ name, value, index }))
-    // const list: any = [...allQuiz];
-    // list[index][name] = value;
-    // setAllQuiz(list);
-
-
-
-
   }
 
 
@@ -178,7 +88,6 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
       else {
         setSaveQuiz(false)
         setErrors(res.data.error.questions)
-
       }
 
     } catch (error) {
@@ -190,11 +99,12 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
 
   }
 
-  console.log("err", errors)
+
+
 
 
   return (
-    <div className="inst" style={{ position: 'relative' }}>
+    <div className="inst p-fields" style={{ position: 'relative' }}>
       <section className="dash-board jadsifd-asdasid">
         <div className="dash-board-1">
           <div className="dash-2 ">
@@ -208,43 +118,39 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
                           + Add More
                         </button>
                       </div>
-                      {/* {allQuiz && allQuiz.length ?
-                        <div style={{ marginLeft: '20px' }} className="idfadsf-sads">
-                          <button className="upload-1 sdisad-dsdactive" onClick={() => UpdateQuiz()}>Update Quiz</button>
-                        </div>
-                        : null
-                      } */}
+
 
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="complete-web-1 mb-3" style={{ marginBottom: '60px' }}>
+              <div className="complete-web-1 mb-3 w-100 " style={{ marginBottom: '60px' }}>
 
-                {Quiz && Quiz.length ? Quiz?.map((q, index) => (
-                  <div className="p-3 quiz" key={index} style={errors && errors[0]?.options ? {width: '100%'  , border:'1pt solid red'} : { width: '100%' }}>
-                    <div className="p-field  ">
-                      <div className="d-flex " style={{ justifyContent: 'space-between' }}>
-                        <label>Question : {index + 1}</label>
-                        {(Quiz.length !== 1) ? <div onClick={(e) => removeInputField(index)}> <i className="fa fa-trash mt-2"></i></div> : ""}
-                      </div>
-                      <input
-                        type="text"
-                        name="question"
-                        className="w-100"
-                        value={q.question}
-                        onChange={(e) => handleChange(index, e)}
-                        placeholder="Write here..." />
-                      {errors && errors[index]?.question ? <div className="invalid mt-1">{errors[index]?.question}</div> : null}
-
+                {Quiz && Quiz.length ? Quiz?.map((q: any, index: number) => (
+                  <div className="p-3 quiz" key={index}
+                  // style={errors && errors[0]?.options ? { width: '100%', border: '1pt solid red' } : { width: '100%' }}
+                  >
+                    <div className="d-flex " style={{ justifyContent: 'space-between' }}>
+                      <label>Question : {index + 1}</label>
+                      {(Quiz.length !== 1) ? <div onClick={(e) => removeInputField(index)}> <i className="fa fa-trash mt-2"></i></div> : ""}
                     </div>
+                    <input
+                      type="text"
+                      name="question"
+                      className="w-100 "
+                      style={errors && errors[index]?.question && { border: '1pt solid red' }}
+                      value={q.question}
+                      onChange={(e) => handleChange(index, e)}
+                      placeholder="Write here..."
+                    />
+                    {errors && errors[index]?.question ? <div className="invalid mt-1">{errors[index]?.question}</div> : null}
+
                     {q.options.length ? q.options.map((op, i) => (
                       <>
                         <div
-                          className=""
                           style={{ display: 'flex', marginTop: '10px' }} key={i}>
                           <div style={{ width: '10%' }}>
-                            <input style={{ marginTop: '10px' } }
+                            <input style={{ marginTop: '10px' }}
                               onChange={(e) => handleChangeRadio(index, i, e)}
                               checked={op.correct === "1"} name="correct" type="checkbox" />
                           </div>
@@ -252,9 +158,11 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
                             <input
                               type="text"
                               name="option"
+                              style={errors && errors[index]?.options[i]?.option && { border: '1pt solid red' }}
                               value={op.option}
                               onChange={(e) => handleChangeOptions(index, i, e)}
-                              placeholder="Write here...." />
+                              placeholder="Write here...."
+                            />
 
                             {errors && errors[index]?.options ? <div className="invalid mt-1 w-100">{errors && errors[index]?.options[i]?.option}</div> : null}
                           </div>
@@ -262,8 +170,6 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
                             <i className="fa fa-trash"></i>
                           </div>
                         </div>
-                        {/* <p>+Add more </p> */}
-
 
                       </>
                     ))
@@ -281,7 +187,7 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
                     }
 
                     <div>
-                      {errors && errors[0]?.options ? <div className="invalid mt-1">{errors[0]?.options}</div> : null}
+                      {errors && errors[0]?.options[0] ? <div className="invalid mt-1">{errors[0]?.options[0]}</div> : null}
                     </div>
 
                   </div>
@@ -313,22 +219,7 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
 
                 </div>
               </div>
-              {/* <div className="d-flex mt-2 justify-content-center">
-                <div className="idfadsf-sads kajfds-sdfe hfdajss-3ersad">
-                  <button className="upload-1 sdisad-dsdactive " onClick={() => onPrevStep(step -1 )}>
-                    Preview
-                  </button>
-                </div>
-                <div className="idfadsf-sads kajfds-sdfe">
-                  <button className="upload-1 sdisad-dsdactive" onClick={() => UpdateQuiz()}>
-                    {saveQuiz ?
-                      <Spinner animation="border" />
-                      :
-                      "Save & Next"
-                    }
-                  </button>
-                </div>
-              </div> */}
+
             </div>
           </div>
         </div>

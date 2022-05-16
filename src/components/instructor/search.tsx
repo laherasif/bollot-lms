@@ -18,7 +18,7 @@ const Search = () => {
         <div>
 
             <div className="dsnodi-sdjsad">
-                <div>
+                <div className="searchbar-icon">
                 <FiSearch color="#8A8A8A" size={17} onClick={() => search()} />
 
                 </div>

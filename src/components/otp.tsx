@@ -1,6 +1,4 @@
-import Link from "next/link";
 import React, { useState } from "react";
-import Icons from "../icons";
 import { Modal, Button } from 'react-bootstrap'
 const Role = ({ Toggle, permition }: any) => {
     const [show, setShow] = useState(true);
@@ -14,7 +12,6 @@ const Role = ({ Toggle, permition }: any) => {
         permition(value)
         Toggle(false)
     }
-    const handleShow = () => setShow(true);
     return (
 
         <div className="hasiw0eskdwd">
@@ -33,11 +30,11 @@ const Role = ({ Toggle, permition }: any) => {
                         <input type="radio" name="select" onChange={() => setValue(1)} id="option-2" checked={value === 1} />
                         <label htmlFor="option-1" className="option option-1">
                             <div className="dot"></div>
-                            <span>Student</span>
+                            <span>I want to learn</span>
                         </label>
                         <label htmlFor="option-2" className="option option-2">
                             <div className="dot"></div>
-                            <span>Teacher</span>
+                            <span>I am here to Teach </span>
                         </label>
                     </div>
                 </Modal.Body>

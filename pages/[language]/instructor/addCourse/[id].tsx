@@ -164,14 +164,6 @@ const Home: NextPage = () => {
     // dispatch(pageNo(step + 1))
     
   }
-
-
-
-  console.log("step" , stepn)
-  console.log("step" , step)
-
-
-
 return (
   <div className="inst">
     <NavigationBar1 />
@@ -237,21 +229,21 @@ return (
                               {step === 1  && <Criculum
                                 courseId={courseId}
                                 onStepChange={stepChangeHandler}
-                                onPrevStep={(step) => setStep(step)}
+                                onPrevStep={(step:any) => setStep(step)}
                                 step ={1}
                               // errors={errors}
                               />}
                               {step === 2 && <AddQuiz
                                 courseId={courseId}
                                 onStepChange={stepChangeHandler}
-                                onPrevStep={(step) => setStep(step)}
+                                onPrevStep={(step:any) => setStep(step)}
                                 step={2}
                               // errors={errors}
                               />}
                               {step === 3 && <Previews
                                 courseId={courseId}
                                 onStepChange={stepChangeHandler}
-                                onPrevStep={(step) => setStep(step)}
+                                onPrevStep={(step:any) => setStep(step)}
                                 step={3}
                               // errors={errors}
                               />}

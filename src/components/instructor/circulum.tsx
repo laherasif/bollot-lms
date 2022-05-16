@@ -30,7 +30,7 @@ import {
   delCriculumSection,
   networkFail
 } from '../../redux/actions/instructor/criculum'
-export default ({  onStepChange, onPrevStep, step }: any) => {
+export default ({ onStepChange, onPrevStep, step }: any) => {
   const [progress, setProgress] = useState(0);
   const [selectedFile, setSelectedFile] = useState(null);
   const [thumb, setTumb] = useState();
@@ -53,7 +53,7 @@ export default ({  onStepChange, onPrevStep, step }: any) => {
     ],
   }]);
 
-  
+
 
   const token = useSelector(
     (state: RootStateOrAny) => state?.userReducer?.token
@@ -64,8 +64,6 @@ export default ({  onStepChange, onPrevStep, step }: any) => {
   );
 
   const { courseId } = useSelector((state: RootStateOrAny) => state?.addCourse)
-  
-  console.log("satte", courseId)
 
 
   const dispatch = useDispatch()
@@ -80,21 +78,22 @@ export default ({  onStepChange, onPrevStep, step }: any) => {
 
   const AddmoreSection = () => {
 
-
     dispatch(addMoreCriculum())
 
+  };
 
+  const AddmoreLecture = (index: number) => {
+    dispatch(addMoreLect(index))
 
   };
+
 
   const handleChangeSection = (
     index: number,
     evnt: React.ChangeEvent<HTMLInputElement>
   ) => {
     const { name, value } = evnt.target;
-
     dispatch(addCriculumInput({ name, value, index }))
-
   };
 
   const handleChangeLecture = (
@@ -102,10 +101,8 @@ export default ({  onStepChange, onPrevStep, step }: any) => {
     i: number,
     evnt: React.ChangeEvent<HTMLInputElement>
   ) => {
-    debugger;
     const { name, value } = evnt.target;
     dispatch(addLectureInput({ name, value, index, i }))
-
 
   };
 
@@ -122,15 +119,12 @@ export default ({  onStepChange, onPrevStep, step }: any) => {
       });
     } else if (file.type === "video/mp4") {
       const thumbnail: any = await generateVideoThumbnail(file);
-
       const params = {
         ACL: "private",
         Body: file,
         Bucket: S3_BUCKET,
         Key: file.name,
       };
-
-
 
       myBucket
         .putObject(params)
@@ -145,11 +139,6 @@ export default ({  onStepChange, onPrevStep, step }: any) => {
             }
 
             dispatch(addLectureThumanil({ data, index, i }))
-
-
-
-
-
           } else {
             SweetAlert({
               icon: "error",
@@ -187,8 +176,6 @@ export default ({  onStepChange, onPrevStep, step }: any) => {
             }
 
             dispatch(addLectureThumanil({ data, index, i }))
-
-
           } else {
             SweetAlert({
               icon: "error",
@@ -198,7 +185,7 @@ export default ({  onStepChange, onPrevStep, step }: any) => {
 
           }
         })
-        .send((err, data) => {
+        .send((err) => {
           if (err) {
             SweetAlert({ icon: "error", text: err });
             dispatch(networkFail())
@@ -208,10 +195,22 @@ export default ({  onStepChange, onPrevStep, step }: any) => {
     }
   };
 
-  const AddmoreLecture = (index: number) => {
-    dispatch(addMoreLect(index))
+
+  const removeInputFields = (index: number, i: number) => {
+
+    dispatch(delLecture({ index, i }))
+  };
+
+  const removeInputField = (index: number) => {
+    dispatch(delCriculumSection(index))
 
   };
+  const delThumnail = (index: number, i: number) => {
+    dispatch(delLectureThumanil({ index, i }))
+  }
+
+
+
   const SaveCriculum = async () => {
 
     let saveCri = {
@@ -235,7 +234,7 @@ export default ({  onStepChange, onPrevStep, step }: any) => {
       } else {
         setLoading(false);
         setErrors(res.data.error)
-       
+
       }
     } catch (err) {
       setLoading(false);
@@ -246,30 +245,13 @@ export default ({  onStepChange, onPrevStep, step }: any) => {
     }
   };
 
-  const removeInputFields = (index: number, i: number) => {
-    debugger;
-
-    dispatch(delLecture({ index, i }))
-  };
-
-  const removeInputField = (index: number) => {
-    dispatch(delCriculumSection(index))
-
-  };
-
-  let red = section?.some((ac) =>
-    ac.lectures.some((sa) => sa.progressbar < 100)
+  let red = section?.some((ac: any) =>
+    ac.lectures.some((sa: any) => sa.progressbar < 100)
   );
-
-
-  const delThumnail = (index: number, i: number) => {
-    debugger
-    dispatch(delLectureThumanil({ index, i }))
-  }
 
   return (
     <>
-      <div className="p-fields">
+      <div className="p-fields" >
         <div className="row">
           <h4 className="mb-2">Plane Your Course </h4>
           <div className="col-12 col-md-6 mt-13 col-md-offset-1 ">
@@ -410,7 +392,7 @@ export default ({  onStepChange, onPrevStep, step }: any) => {
 
         {type === 0 ? (
           <>
-            <div className="drop-box main-box mb-3">
+            <div className="drop-box main-box mb-3" >
               {Criculums ? Criculums?.map((sec: any, index: number) => (
                 <div className="drop-box" style={{ marginLeft: '10px', maxWidth: '100%' }}>
                   <div className="kvjadsd-j43rm">
@@ -419,11 +401,12 @@ export default ({  onStepChange, onPrevStep, step }: any) => {
                     </div>
                     {sec?.length !== -1 && <div onClick={() => removeInputField(index)} style={{ cursor: 'pointer' }}><i className="fa fa-trash"></i></div>}
                   </div>
-                  <div className="p-field  ">
-
+                  <div >
                     <input
                       type="text"
                       name="title"
+                      style={errors && errors?.sections && errors?.sections[index]?.title && { border: '1pt solid red' }}
+                      // style={{border: '1pt solid red'}}
                       value={sec.title}
                       onChange={(e) => handleChangeSection(index, e)}
                       placeholder="Write here..." />
@@ -440,16 +423,15 @@ export default ({  onStepChange, onPrevStep, step }: any) => {
 
                       </div>
 
-                      <div className="p-field  ">
+                      <div >
                         <div className="d-flex">
                           <Icons name="i24" />
                           <label>Title</label>
-
-
                         </div>
                         <input
                           type="text"
                           name="title"
+                          style={errors && errors?.sections && errors?.sections[index]?.lectures[i]?.title && { border: '1pt solid red' }}
                           value={lec.title}
                           onChange={(e) => handleChangeLecture(index, i, e)}
                           placeholder="Write here..." />
@@ -459,7 +441,10 @@ export default ({  onStepChange, onPrevStep, step }: any) => {
 
                       <div className={lec.thumbnail && lec.id || lec.progressbar === 100 ? "image-container" : ""}>
                         <label>Video / PDF file for this Lecture</label>
-                        <div className="drop-box img-box">
+                        <div className="drop-box img-box" 
+                          style={errors && errors?.sections && errors?.sections[index]?.lectures[i]?.object_key && { border: '1pt solid red' }}
+                        
+                        >
                           <div className="kvjadsd-j43rm iasdufhvs-ernd" >
                             <Icons name="i29" />
                             {/* {load ? <Spinner animation="border" size="sm"/> : */}
@@ -503,7 +488,7 @@ export default ({  onStepChange, onPrevStep, step }: any) => {
               }
 
             </div>
-            <span style={{ fontSize: '12px', color: 'red', fontWeight: '500' }}>Note : During uploading leacture progressbar Section and Save will not created till leature upload </span>
+            {/* <span style={{ fontSize: '12px', color: 'red', fontWeight: '500' }}>Note : During uploading leacture progressbar Section and Save will not created till leature upload </span> */}
             <h3 id="more-section" onClick={() => AddmoreSection()} style={{ cursor: 'pointer' }}>
               + Add more lectures and more sections
             </h3>

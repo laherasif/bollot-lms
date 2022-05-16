@@ -26,6 +26,13 @@ const Home: NextPage = () => {
     role?: number
   }
 
+  interface Errors {
+    fullname?: string,
+    email?: string,
+    password?: string,
+    role?: number
+  }
+
 
   const { varified } = useSelector((state: RootStateOrAny) => state.userReducer)
 
@@ -39,7 +46,7 @@ const Home: NextPage = () => {
   const [message, setMessage] = useState<boolean>(false)
   const [providerEmail, setProviderEmail] = useState<string>('')
   const [loader, setLoader] = useState<boolean>(false)
-  const [errors, setErrors] = useState({})
+  const [errors, setErrors] = useState<Errors>({})
 
 
   useEffect(() => {
@@ -59,7 +66,7 @@ const Home: NextPage = () => {
 
   const signInGog = async () => {
     const { user } = await signInWithPopup(firebaseAuth, provider);
-    const { refreshToken, providerData } = user;
+    const { providerData }:any = user;
 
     dispatch(SocialRegMedia(providerData, role === 1 ? "student" : "instructor"))
 
@@ -67,22 +74,17 @@ const Home: NextPage = () => {
     setTimeout(() => {
       setMessage(true)
     }, 1000);
-    // setProviderEmail(object.email)
-
-
-    // router.push("/");
+  
   };
 
 
 
   const signInFb = async () => {
     const { user } = await signInWithPopup(firebaseAuth, Fbprovider);
-    const { refreshToken, providerData } = user;
+    const { providerData }:any = user;
     dispatch(SocialRegMedia(providerData, role === 1 ? "student" : "instructor"))
 
-    // localStorage.setItem("user", JSON.stringify(providerData));
-    // localStorage.setItem("accessToken", JSON.stringify(refreshToken));
-    // router.push("/");
+   
   };
 
 
@@ -299,7 +301,7 @@ const Home: NextPage = () => {
       <Footer />
 
 
-      {message && <Otp openToggle={(e) => setMessage(e)} providerEmail={"laherasif@gmail.com"} role={authValue.role} />}
+      {message && <Otp openToggle={(e:any) => setMessage(e)} providerEmail={"laherasif@gmail.com"} role={authValue.role} />}
     </div>
   );
 };

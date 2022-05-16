@@ -12,13 +12,17 @@ import BookmarkCard from "../../../../src/components/student/BookmarkCard";
 import NavigationBar1 from "../../../../src/components/student/NavigationBar1";
 import Link from "next/link";
 import withAuth from "../../../../src/components/Hoc/authRoute";
+// import { useEffect } from "react";
+// import { RootStateOrAny, useSelector } from "react-redux";
+// import axios from "axios";
+// import { useRouter } from "next/router";
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
 
   return (
     <>
-    <NavigationBar1/>
+      <NavigationBar1 />
       <section className="dash-board">
         <div className="dash-board-1">
           <Sidebar />
@@ -32,8 +36,8 @@ const Home: NextPage = () => {
                     <div className="umpire-1 umpire-1-cst ">
                       <div className="maxima">
                         <button className="upload-1 sdisad-dsdactive">Account Security</button>
-                        <Link href="/en/payments">
-                        <button className="upload-1">Payment</button></Link>
+
+                        <button className="upload-1">Payment</button>
                         <button className="upload-1">Notification</button>
                         <button className="upload-1">Manage Devices</button>
                         <button className="upload-1">Close Account</button>
@@ -134,19 +138,19 @@ const Home: NextPage = () => {
                     <h5>Linked Accounts</h5>
                     <div className="logo-2 sadjasoad-sad">
                       <button>
-                       <Icons name="c46"/>
+                        <Icons name="c46" />
                         <p>Link with Facebook</p>
                       </button>
                       <button>
-                      <Icons name="c45"/>
+                        <Icons name="c45" />
 
                         <p>Link with Google</p>
                       </button>
                     </div>
                     <div className="logo-2 sadjasoad-sad1 ">
                       <button>
-                        <Icons name="c44"/>
-                        <p style={{color:'black'}}>Link with Apple</p>
+                        <Icons name="c44" />
+                        <p style={{ color: 'black' }}>Link with Apple</p>
                       </button>
                     </div>
                   </div>
@@ -160,4 +164,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default withAuth( Home );
+export default withAuth(Home);

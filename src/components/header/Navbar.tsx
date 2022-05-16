@@ -84,7 +84,7 @@ const App = () => {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
-              <div onClick={() => searchCourse()}>
+              <div onClick={() => searchCourse()} className="searchbar-icon">
                 <Icons name="search" />
 
               </div>

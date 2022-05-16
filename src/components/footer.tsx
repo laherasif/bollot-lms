@@ -2,8 +2,8 @@ import React from 'react';
 import { Dropdown } from 'react-bootstrap';
 import Link from 'next/link'
 import Icons from '../icons';
-export default ()=>{
-    return     <div className="footer-p">
+export default () => {
+  return <div className="footer-p">
     <div className="footer">
       <div className="footer-inner">
         <div>
@@ -15,58 +15,58 @@ export default ()=>{
         </div>
         <div className="d-flex flex-column">
           <h4>QuickLinks</h4>
-          <Link href="/"> 
-          Home
+          <Link href="/">
+            Home
           </Link>
-          <Link href="/en/howitwork"> 
-          Tech on boloot
+          <Link href="/en/howitwork">
+            Tech on boloot
           </Link>
-          <Link href="/en/courses"> 
-          Courses
+          <Link href="/en/courses">
+            Courses
           </Link>
-          
-          <Link href="/en/about2"> 
-          About Us
-          
+
+          <Link href="/en/about2">
+            About Us
+
           </Link>
-          <Link href="/en/contact"> 
-          Contact Us          
+          <Link href="/en/contact">
+            Contact Us
           </Link>
-          <Link href="/en/profile"> 
-          Profile          
+          <Link href="/en/profile">
+            Profile
           </Link>
-         </div>
+        </div>
         <div className="d-flex flex-column">
           <h4>QuickLinks</h4>
-          
-          <Link href="/en/affiliate"> 
-          Affiliate System
+
+          <Link href="/en/affiliate">
+            Affiliate System
           </Link>
-          <Link href="/en/news"> 
-          News and Event
-          
+          <Link href="/en/news">
+            News and Event
+
           </Link>
-          
-           <Link href="/en/faq"> 
-          FAQ          
+
+          <Link href="/en/faq">
+            FAQ
           </Link>
-          <Link href="/en/privacy"> 
-          Privacy Policy
-          
+          <Link href="/en/privacy">
+            Privacy Policy
+
           </Link>
-          <Link href="/en/terms"> 
-          Terms & Conditions
-          
+          <Link href="/en/terms">
+            Terms & Conditions
+
           </Link>
-          <Link href="/en/terms2"> 
-          Terms & Conditions 2
-          
+          <Link href="/en/terms2">
+            Terms & Conditions 2
+
           </Link>
-          <Link href="/en/help"> 
-          Help and Support
-          
+          <Link href="/en/help">
+            Help and Support
+
           </Link>
-         </div>
+        </div>
         <div>
           <Dropdown className="cst-drp">
             <Dropdown.Toggle variant="success" id="dropdown-basic">
@@ -98,7 +98,16 @@ export default ()=>{
             </Dropdown.Toggle>
 
             <Dropdown.Menu>
-              <Dropdown.Item href="#/action-1">Riyal</Dropdown.Item>
+              <Dropdown.Item href="#/action-1">
+                <div className='d-flex align-item-center'>
+                  <Icons name="c25" />
+                  <span>USD</span>
+                  <div className="cstsihdfs">
+                    <span className="mx-2">$</span>
+                  </div>
+                </div>
+
+              </Dropdown.Item>
               {/* <Dropdown.Item href="#/action-2">
                English
               </Dropdown.Item>

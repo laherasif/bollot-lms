@@ -290,7 +290,7 @@ const Home: NextPage = () => {
 
                     </div>
 
-                    <div className="p-field  ">
+                    <div className="">
                       <div className="d-flex">
                         <Icons name="i24" />
                         <label>Title</label>
@@ -298,18 +298,25 @@ const Home: NextPage = () => {
                       <input
                         type="text"
                         name="title"
+                        className="input_criculum"
+                        style={errors && errors[index]?.title && {border:'1pt solid red'}}
                         // id={`${errors[index]?.title && 'input_filed_error'}`}
                         value={lec.title}
                         onChange={(e) => handleChangeSection(index, e)}
                         placeholder="Write here..." />
-                      {errors ? <div className="invalid mt-1">{errors[index]?.title}</div> : null}
+                      {errors && errors[index]?.title ? <div className="invalid mt-1">{errors[index]?.title}</div> : null}
 
                     </div>
 
 
-                    <div className={lec.thumbnail && lec.id || lec.progressbar === 100 || network ? "image-container" : ""}>
+                    <div className={lec.thumbnail && lec.id || lec.progressbar === 100 || network ? "image-container" : ""}
+                    
+                    >
                       <label>Video / PDF file for this Lecture</label>
-                      <div className="drop-box img-box w-100">
+                      <div className="drop-box img-box w-100" 
+                        style={errors && errors[index]?.object_key && {border:'1pt solid red'}}
+                      
+                      >
                         <div className="kvjadsd-j43rm iasdufhvs-ernd" >
                           <Icons name="i29" />
                           {/* {load ? <Spinner animation="border" size="sm"/> : */}
@@ -322,7 +329,7 @@ const Home: NextPage = () => {
                         {lec?.thumbnail || lec.file_type === "PDF" ? "" :
                           <input type="file" accept="pdf/*" onChange={(e) => handleChangeLectureFile(index, e)} className="custom-file-input" />
                         }
-                      {errors ? <div className="invalid mt-1">{errors[index]?.object_key}</div> : null}
+                      {errors && errors[index]?.object_key ? <div className="invalid mt-1">{errors[index]?.object_key}</div> : null}
 
 
                       </div>

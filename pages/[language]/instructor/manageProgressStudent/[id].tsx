@@ -21,11 +21,11 @@ import { Small } from "../../../../src/components/instructor/loader";
 import EnrolledStudent from "../../../../src/components/instructor/EnrolledStudent";
 import moment from "moment";
 import { useRouter } from "next/router";
+import ProgressStudent from "../../../../src/components/instructor/ProgressStudent";
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
-  const [course, setCourse] = useState([])
-  const [quiz, setQuiz] = useState([])
+  const [progress, setProgress] = useState([])
   const [loading, setLoading] = useState(false)
   const token = useSelector((state: RootStateOrAny) => state?.userReducer?.token)
 
@@ -45,12 +45,11 @@ const Home: NextPage = () => {
     let fetchCourse = async () => {
       try {
         setLoading(true)
-        let res = await AxInstance.post('api//instructor/courses/stundets-enrolled', { course_id: courseId })
-        let quizResult = await AxInstance.post('api//instructor/courses/quiz/results', { course_id: courseId })
-        if (res.data.response.students.length) {
+        let res = await AxInstance.post('api//instructor/courses/students-progress', { course_id: courseId })
+         console.log("Res" , res )
+        if (res.data.response.progress.length) {
           setLoading(false)
-          setCourse(res.data.response.courses)
-          setQuiz(quizResult.data.response.results)
+          setProgress(res.data.response.progress)
         }
         else {
           setLoading(false)
@@ -65,7 +64,6 @@ const Home: NextPage = () => {
     fetchCourse()
   }, [])
 
-  console.log("qiz", quiz)
 
   return (
     <div className="inst">
@@ -89,7 +87,7 @@ const Home: NextPage = () => {
                         <i className="fa fa-arrow-left"></i>
                         Back</h3>
                     </Link>
-                    <h3>Enrolled Student  </h3>
+                    <h3>Student Progress </h3>
                   </div>
                   {/* <div className=" jidfjsd-asjreid">
                     <div className="dsnodi-sdjsad">
@@ -120,43 +118,14 @@ const Home: NextPage = () => {
                   </div>
                 </div>
                 <div className="complete-web-1">
-                  <EnrolledStudent course={course} />
+                  <ProgressStudent progress={progress} />
                 </div>
 
-                <div className="back-btn">
+                
 
-                  <h3>Quiz Results </h3>
-                </div>
+             
 
-                { }
-
-                <div className="hjsaisa-sdnjassd jsdif-dsndawje w-100">
-                  {quiz && quiz ? quiz?.map((q: any, index: number) => {
-                    if (index === 0)
-                      return (
-                        <div className="first-rev-sec p-3" >
-                          <div className="rev-img pb-41 w-100" style={{ justifyContent: 'center', maxWidth: '90%' }}  >
-                            <img src={q?.user?.image || "/assets/images/first-sec.svg"} alt="" style={{ width: '25%', height: '25%' }} />
-                          </div>
-                          <h3 className="text-center">{q?.user?.fullname || "Your Name"}</h3>
-                          <div className="p-3">
-                            <div className="d-flex justify-content-between">
-                              <h3>Correct Answers</h3>  <h3>{q?.correct_answers} / {q?.out_of} </h3>
-
-                            </div>
-                            <div className="d-flex justify-content-between " style={{ alignItems: 'center' }}>
-                              <h3>Attempted Time</h3> {moment(q?.createdAt).format("ll") || 0}
-                              {/* <p>Attempted Time : {moment(q?.createdAt).format("ll") || 0}</p> */}
-                            </div>
-                          </div>
-                        </div>
-                      )
-                  })
-                    : <div>Course Quiz not found </div>
-                  }
-
-
-                </div>
+                
 
 
               </div>

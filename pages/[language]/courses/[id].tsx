@@ -51,11 +51,8 @@ const Home: NextPage = () => {
   const dispatch = useDispatch()
   const router = useRouter()
   let param = router.query.id;
-  let pagesParam = router.query.p
   let searchC = router.query.search
 
-  // console.log();
-  // console.log("router" , router.query.id )
 
 
 
@@ -92,7 +89,7 @@ const Home: NextPage = () => {
     setMainLoading(true)
 
     if (searchC) {
-      dispatch(GetSortedSearch(e.target.value))
+      dispatch(GetSortedSearch(e.target.value , searchC))
 
     }
     else {
@@ -125,8 +122,6 @@ const Home: NextPage = () => {
 
   const { AllCourse, Catagory, loader } = useSelector((state: RootStateOrAny) => state.course)
 
-
-  console.log("pagesParam", pagesParam)
 
   useEffect(() => {
     setTimeout(() => {

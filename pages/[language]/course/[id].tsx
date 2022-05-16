@@ -38,7 +38,7 @@ const Home: NextPage = ({ Course }: any) => {
   const [Info, setInfo] = useState(false)
   const [show, setShow] = useState(false)
   const [preview, setPreview] = useState(false)
-
+  const [course_show, setCourse_show] = useState(false)
 
 
   const dispatch = useDispatch()
@@ -196,8 +196,12 @@ const Home: NextPage = ({ Course }: any) => {
                   </div>
                 </div>
                 <div className="cosaidjse-wea">
-                  <CourseAccordian section={Course?.sections} />
-
+                  <div style={course_show ? { display: 'block' } : { overflow: 'hidden', height: '22.2rem' }}>
+                    <CourseAccordian section={Course?.sections} />
+                  </div>
+                  <div className="learning-jsiae no-brd ">
+                    <button className="mt-3" onClick={() => setCourse_show(!course_show)}>{course_show ? "Show less" : "Show more"}</button>
+                  </div>
                 </div>
               </div>
               : null}
@@ -359,7 +363,7 @@ const Home: NextPage = ({ Course }: any) => {
                   <div className="play_icon">
                     <i className="fa fa-play-circle"  ></i>
                   </div>
-                  : null 
+                  : null
                 }
 
               </div>

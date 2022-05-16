@@ -1,15 +1,16 @@
-import { Carousel } from "react-bootstrap";
+import { Carousel, Spinner } from "react-bootstrap";
 import React, { useState, useEffect } from 'react'
 import AWS from 'aws-sdk'
 import ReactPlayer from "react-player";
 import { S3_BUCKET, myBucket } from '../../confiq/aws/aws'
 import { RootStateOrAny, useSelector } from "react-redux";
 import axios from "axios";
-
-
-export default ({ lectures , CourseId}: any) => {
+import { Document, Page, pdfjs } from "react-pdf";
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+export default ({ lectures, CourseId }: any) => {
   const [index, setIndex] = useState(0);
   const [value, setValue] = useState('');
+  const [error, setErorr] = useState('');
   const [played, setPlayed] = useState(0)
   const handleSelect = (selectedIndex: number) => {
     setIndex(selectedIndex);
@@ -35,7 +36,12 @@ export default ({ lectures , CourseId}: any) => {
         minutes: 1
       }
 
-      await AxInstance.post('api//student/my-courses/progress/record', value)
+
+      let res = await AxInstance.post('api//student/my-courses/progress/record', value)
+      if (res.data.error) {
+        setErorr(res.data.error)
+      }
+
 
 
     } catch (error) {
@@ -44,10 +50,13 @@ export default ({ lectures , CourseId}: any) => {
   }
 
   useEffect(() => {
-    if (played === 28.68) {
+    const interval = setInterval(() => {
       countTime()
+    }, 60000);
+    return () => {
+        clearInterval(interval)
     }
-  }, [played])
+  }, [])
 
   useEffect(() => {
 
@@ -64,7 +73,7 @@ export default ({ lectures , CourseId}: any) => {
     }
   }, [lectures])
 
-  console.log("payal", played)
+  console.log("payal", lectures)
 
 
   const GetLect = (link: any) => {
@@ -81,35 +90,111 @@ export default ({ lectures , CourseId}: any) => {
     catch (err) { }
   }
 
+  const [numPages, setNumPages] = useState(null);
+  const [pageNumber, setPageNumber] = useState(1);
+  function onDocumentLoadSuccess({ numPages }) {
+    setNumPages(numPages);
+    setPageNumber(1);
+  }
+
+  function changePage(offset) {
+    setPageNumber(prevPageNumber => prevPageNumber + offset);
+  }
+
+  function previousPage() {
+    changePage(-1);
+  }
+
+  function nextPage() {
+    changePage(1);
+  }
+
+
   return (
     <>
       <div className="videos-title">
         <div>
           <h4>Title : {lectures[index].title}</h4>
         </div>
-        <div>
-          Lectures : {index + 1} / {lectures.length}
-        </div>
+        {lectures.some((s) => s.file_type === "Video") ?
+          <div>
+            Lectures : {index + 1} / {lectures.length}
+          </div>
+          : null}
       </div>
-      <Carousel activeIndex={index} interval={null} indicators={false} onSelect={handleSelect}>
-        {lectures.length && lectures?.map((lec: any, i: number) => (
-          <Carousel.Item key={i} style={{ width: '100%' }}>
+      {
+        lectures.some((s) => s.file_type === "Video") ?
+          <Carousel activeIndex={index} interval={null} indicators={false} onSelect={handleSelect}>
+            {lectures.length && lectures?.map((lec: any, i: number) => (
 
-            <ReactPlayer
-              width="100%"
-              height="100%"
-              onProgress={(progress) => {
-                setPlayed(progress.playedSeconds);
-              }}
-              playing={lectures[index].id === lec.id ? true : false}
-              controls
-              url={value} />
+              <Carousel.Item key={i} style={{ width: '100%' }}>
 
-          </Carousel.Item>
-        ))
-        }
+                <ReactPlayer
+                  width="100%"
+                  height="100%"
+                  onProgress={(progress) => {
+                    setPlayed(progress.playedSeconds);
+                  }}
+                  playing={lectures[index].id === lec.id ? true : false}
+                  controls
+                  url={value} />
 
-      </Carousel>
+              </Carousel.Item>
+            ))
+            }
+
+          </Carousel>
+          :
+          <div style={{ textAlign: '-webkit-center' }}>
+
+            <Document
+              file={value}
+              options={{ workerSrc: "/pdf.worker.js" }}
+              onLoadSuccess={onDocumentLoadSuccess}
+            >
+              <Page pageNumber={pageNumber} />
+            </Document>
+            <div style={{ textAlign: 'center' }}>
+              <p>
+                Page {pageNumber || (numPages ? 1 : "--")} of {numPages || "--"}
+              </p>
+              <div className="umpire w-100 " >
+                <div className="umpire-1 umpire-1-cst  mt-3 ">
+                  <div className="d-flex mb-3 maxima d-flex justify-content-center">
+                    <button
+                      className="upload-1 sdisad-dsdactive "
+                      disabled={pageNumber <= 1} onClick={previousPage}
+                    >
+                      Previous
+                    </button>
+                    <button
+                      className="upload-1 sdisad-dsdactive"
+                      disabled={pageNumber >= numPages}
+                      onClick={nextPage}
+                    >
+                      Next
+                      {/* {loading ? <Spinner animation="border" /> : "Save & Next"} */}
+                    </button>
+                  </div>
+
+                </div>
+              </div>
+
+              {/* <button type="button" disabled={pageNumber <= 1} onClick={previousPage}>
+                Previous
+              </button>
+              <button
+                type="button"
+                disabled={pageNumber >= numPages}
+                onClick={nextPage}
+              >
+                Next
+              </button> */}
+            </div>
+          </div>
+
+
+      }
     </>
   );
 }

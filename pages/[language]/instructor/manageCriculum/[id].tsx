@@ -236,7 +236,7 @@ const Home: NextPage = () => {
 
   }
   const SaveCriculum = async () => {
-    
+
     let arr = []
     for (let index = 0; index < section.length; index++) {
       const element = section[index];
@@ -385,22 +385,24 @@ const Home: NextPage = () => {
                 <div className="complete-web-1 mb-3">
                   <div className="criculum-container">
                     {section ? section?.map((sec: any, index: number) => (
-                      <div className="drop-box" style={{ marginLeft: '10px', maxWidth: '30%' }}>
+                      <div className="drop-box" style={{ marginLeft: '10px', maxWidth: '100%' }}>
                         <div className="kvjadsd-j43rm">
                           <div className="jodsa-wnedas">
                             <h6>Section title</h6>
                           </div>
                           {sec?.length !== -1 && <div onClick={() => removeInputField(index)} style={{ cursor: 'pointer' }}><i className="fa fa-trash"></i></div>}
                         </div>
-                        <div className="p-field  ">
-
+                        <div >
                           <input
                             type="text"
                             name="title"
+                            className="input_criculum"
+                            style={errors && errors?.sections && errors?.sections[index]?.title && { border: '1pt solid red' }}
+                            // style={{border: '1pt solid red'}}
                             value={sec.title}
                             onChange={(e) => handleChangeSection(index, e)}
                             placeholder="Write here..." />
-                          {errors ? <div className="invalid mt-1">{errors?.sections[index]?.title}</div> : null}
+                          {errors && errors?.sections ? <div className="invalid mt-1">{errors?.sections[index]?.title}</div> : null}
 
                         </div>
                         {sec.lectures.map((lec: any, i: number) => (
@@ -413,7 +415,7 @@ const Home: NextPage = () => {
 
                             </div>
 
-                            <div className="p-field  ">
+                            <div >
                               <div className="d-flex">
                                 <Icons name="i24" />
                                 <label>Title</label>
@@ -421,16 +423,22 @@ const Home: NextPage = () => {
                               <input
                                 type="text"
                                 name="title"
+                                className="input_criculum"
+
+                                style={errors && errors?.sections && errors?.sections[index]?.lectures[i]?.title && { border: '1pt solid red' }}
                                 value={lec.title}
                                 onChange={(e) => handleChangeLecture(index, i, e)}
                                 placeholder="Write here..." />
-                              {errors ? <div className="invalid mt-1">{errors?.sections[index]?.lectures[i]?.title}</div> : null}
+                              {errors && errors?.sections ? <div className="invalid mt-1">{errors?.sections[index]?.lectures[i]?.title}</div> : null}
 
                             </div>
 
-                            <div className={lec.thumbnail && lec.id || lec.progressbar === 100 || network ? "image-container" : ""}>
+                            <div className={lec.thumbnail && lec.id || lec.progressbar === 100 ? "image-container" : ""}>
                               <label>Video / PDF file for this Lecture</label>
-                              <div className="drop-box img-box w-100">
+                              <div className="drop-box img-box"
+                                style={errors && errors?.sections && errors?.sections[index]?.lectures[i]?.object_key && { border: '1pt solid red' }}
+
+                              >
                                 <div className="kvjadsd-j43rm iasdufhvs-ernd" >
                                   <Icons name="i29" />
                                   {/* {load ? <Spinner animation="border" size="sm"/> : */}
@@ -443,7 +451,8 @@ const Home: NextPage = () => {
                                 {lec?.thumbnail || lec.file_type === "PDF" ? "" :
                                   <input type="file" accept="pdf/*" onChange={(e) => handleChangeLectureFile(index, i, e)} className="custom-file-input" />
                                 }
-                              {errors ? <div className="invalid mt-1">{errors?.sections[index]?.lectures[i]?.object_key}</div> : null}
+                                {errors && errors?.sections ? <div className="invalid mt-1">{errors?.sections[index]?.lectures[i]?.object_key}</div> : null}
+
 
                               </div>
                               <div className="mt-2">

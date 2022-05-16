@@ -46,6 +46,7 @@ export default ({ course, key , courseId }: any) => {
           <Dropdown.Menu>
             <Dropdown.Item as={Link} href={`/en/student/details/${course?.slug}`}>Criculum</Dropdown.Item>
             <Dropdown.Item as={Link} href={`/en/student/quiz/${course?.id}`}>Quiz</Dropdown.Item>
+            <Dropdown.Item as={Link} href={`/en/student/purchase/${course?.id}`}>Transactions Detail</Dropdown.Item>
             {
                course?.is_reviewed_by_me ? 
                 <Dropdown.Item as={Link} href={`/en/student/reviews/${course?.id}`}>Review this course</Dropdown.Item>

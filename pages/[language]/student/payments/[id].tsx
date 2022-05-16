@@ -14,8 +14,12 @@ import Link from "next/link";
 import BarChart1 from "../../../../src/components/student/barchart1";
 import withAuth from "../../../../src/components/Hoc/authRoute";
 const options = ["one", "two", "three"];
+
 const Home: NextPage = () => {
   // const intl = useIntl();
+
+  
+
 
   return (
     <>

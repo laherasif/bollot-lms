@@ -16,18 +16,15 @@ import {
     GET_COURSE_INPUTS,
     GET_COURSE_INPUTS_MORE,
     ADD_COURSE_INPUTS_MORE,
-    GET_COURSE_CRICULUM,
     GET_SORTED_COURSE_SEARCH,
 
 } from '../../types/types'
 import instance from '../../../confiq/axios/instance'
-import axios from 'axios'
 
 
 
 
 export const Loading = (data) => dispatch  => {
-    debugger
     dispatch({
         type:LOADING ,
         payload : data
@@ -39,7 +36,6 @@ export const Loading = (data) => dispatch  => {
 
 
 export const getCourseInput = ({name , value} ) => async (dispatch) => {
-    debugger
     dispatch({
         type : GET_COURSE_INPUTS,
         payload : { name , value }
@@ -47,7 +43,7 @@ export const getCourseInput = ({name , value} ) => async (dispatch) => {
 }
 
 export const getCourseAddMore = ({field , index , value } ) => async (dispatch) => {
-    debugger
+    
     dispatch({
         type : GET_COURSE_INPUTS_MORE,
         payload : { field , index , value }
@@ -55,7 +51,6 @@ export const getCourseAddMore = ({field , index , value } ) => async (dispatch) 
 }
 
 export const addMoreField = (field  ) => async (dispatch) => {
-    debugger
     dispatch({
         type : ADD_COURSE_INPUTS_MORE,
         payload :  field 
@@ -223,8 +218,7 @@ export const priceFilter = (data) => async dispatch => {
 }
 
 
-export const GetSortedSearch = (name) => async dispatch => {
-    debugger
+export const GetSortedSearch = (name , search) => async dispatch => {
     try {
 
         let filterPrice = {
@@ -233,7 +227,9 @@ export const GetSortedSearch = (name) => async dispatch => {
             sorting: {
                 sort_by: name === "low" ? "price" : name === "high" ? "price" : name === "recent" ? "id" : "rating",
                 sort_direction: name === "low" ? "asc" : name === "desc" ? "asc" : name === "recent" ? "desc" : "desc"
-            }
+            },
+            search: search,
+
         }
 
         let res = await instance.post('api//courses', filterPrice)
@@ -250,7 +246,6 @@ export const GetSortedSearch = (name) => async dispatch => {
 
 
 export const GetSorted = (name) => async dispatch => {
-    debugger
     try {
 
         let filterPrice = {
@@ -260,7 +255,6 @@ export const GetSorted = (name) => async dispatch => {
                 sort_by: name === "low" ? "price" : name === "high" ? "price" : name === "recent" ? "id" : "rating",
                 sort_direction: name === "low" ? "asc" : name === "desc" ? "asc" : name === "recent" ? "desc" : "desc"
             },
-            search: name,
 
         }
 
@@ -278,7 +272,6 @@ export const GetSorted = (name) => async dispatch => {
 
 
 export const GetSearchCourse = (name) => async dispatch => {
-   debugger
     try {
 
         let filterPrice = {
@@ -302,11 +295,6 @@ export const GetSearchCourse = (name) => async dispatch => {
 
 
 
-
-
-
-
-// Register User 
 export const DeleteCart = (id) => async dispatch => {
     try {
         dispatch({

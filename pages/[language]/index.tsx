@@ -21,7 +21,7 @@ import Multicarousel from "../../src/components/Multicarousel";
 import Multicarousel1 from "../../src/components/Multicarousel1";
 import MulticarouselReviews from "../../src/components/MulticarouselReviews";
 import { useDispatch, useSelector, RootStateOrAny } from "react-redux";
-import { GetCourse, GetCatagory, GetCat } from '../../src/redux/actions/courses'
+import { GetCourse } from '../../src/redux/actions/courses'
 import { Catagories } from '../../src/components/skeleton'
 import instance from "../../src/confiq/axios/instance";
 import { GET_CATAGORY } from "../../src/redux/types/types";
@@ -30,24 +30,12 @@ const Home: NextPage = () => {
 
   const dispatch = useDispatch()
 
-  const { Catagory, loader, AllCourse } = useSelector((state: RootStateOrAny) => state.course)
-
-  const [cata, setCata] = useState([])
-  const [feat, setFeat] = useState([])
-  const [latest, setLatest] = useState([])
-  const [all, setAll] = useState([])
-  const [live, setLive] = useState([])
+  const { Catagory , loader  } = useSelector((state: RootStateOrAny) => state.course)
 
   useEffect(() => {
-
-
     dispatch(GetCourse())
-
   }, [])
 
-  // const getCatagory = (id: number) => {
-  //   dispatch(GetCatagory(id, "getfet"))
-  // }
 
   return (
     <>

@@ -22,6 +22,11 @@ const Home: NextPage = () => {
     password: number | string,
   }
 
+  interface Errors {
+    email: string,
+    password: string,
+  }
+
   const dispatch = useDispatch()
 
   const { User, } = useSelector((state: RootStateOrAny) => state.userReducer)
@@ -35,7 +40,10 @@ const Home: NextPage = () => {
 
   const [message, setMessage] = useState<boolean>(false)
   const [loader, setLoader] = useState<boolean>(false)
-  const [errors, setErrors] = useState({})
+  const [errors, setErrors] = useState<Errors>({
+    email: "",
+    password: "",
+  })
   const [otp, setOtp] = useState('')
   const [toggal, setToggal] = useState(false)
   const [permistion, setPermition] = useState()
@@ -89,7 +97,7 @@ let checkRouter = router.query.checkout
 
   const signInGog = async () => {
     const { user } = await signInWithPopup(firebaseAuth, provider);
-    const { refreshToken, providerData } = user;
+    const { refreshToken, providerData }:any = user;
     console.log(refreshToken, providerData);
     dispatch(SocialRegMedia(providerData, permistion === 0 ? "student" : "instructor"))
 
@@ -99,7 +107,7 @@ let checkRouter = router.query.checkout
   const signInFb = async () => {
 
     const { user } = await signInWithPopup(firebaseAuth, Fbprovider);
-    const { refreshToken, providerData } = user;
+    const { refreshToken, providerData }:any = user;
     console.log(refreshToken, providerData);
     dispatch(SocialRegMedia(providerData, permistion === 0 ? "student" : "instructor"))
   };
@@ -222,8 +230,8 @@ let checkRouter = router.query.checkout
             </button>
           </div>
         </div>
-        {message && <Otp openToggle={(e) => setMessage(e)} providerEmail={"laherasif@gmail.com"} role={message} />}
-        {toggal && <Role permition={(e) => setPermition(e)} Toggle={(e) => setToggal(e)} />}
+        {message && <Otp openToggle={(e:any) => setMessage(e)} providerEmail={"laherasif@gmail.com"} role={message} />}
+        {toggal && <Role permition={(e:any) => setPermition(e)} Toggle={(e:any) => setToggal(e)} />}
       </section>
       <Footer />
     </>

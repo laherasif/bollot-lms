@@ -28,7 +28,7 @@ const Home: NextPage = () => {
   const router = useRouter()
 
   let courseTitle = router.query.id
-  const { User, token } = useSelector((state: RootStateOrAny) => state.userReducer)
+  const { token } = useSelector((state: RootStateOrAny) => state.userReducer)
 
   const AxInstance = axios.create({
     // .. where we make our configurations
@@ -45,10 +45,8 @@ const Home: NextPage = () => {
     let fetchCourse = async () => {
       try {
         let res = await AxInstance.get(`api//student/my-courses/${courseTitle}`)
-        console.log("Re", res)
         setSections(res.data.response.course)
-        setCourseId(res.data.response.course.id)
-
+        // setCourseId(res.data.response.course.id)
       } catch (error) {
 
       }
@@ -56,7 +54,6 @@ const Home: NextPage = () => {
     }
     fetchCourse()
   }, [courseTitle])
-
 
 
 
@@ -76,35 +73,38 @@ const Home: NextPage = () => {
               <div >
                 <h2 className="ksdfhd-active">Content</h2>
                 <div className="content-section">
-                  {section && section?.sections?.map((sec: any, i: number) => (
+                  {section && section?.sections?.map((sec: any, i: number) => {
+                    console.log("sectionid" , sec.id)
+                      return (
+                        <div className="ksajdfds-sads" onClick={() => { setLectures(sec?.lectures), setCourseId(sec?.id) }} key={i}>
+                          {sec.id === courseId ? (
+                            <svg
+                              width={18}
+                              height={18}
+                              viewBox="0 0 18 18"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <circle cx={9} cy={9} r={9} fill="#D0565C" />
+                              <path d="M4 9L6.5 12L13.5 5" stroke="white" />
+                            </svg>
+                          ) : (
+                            <svg
+                              width={18}
+                              height={18}
+                              viewBox="0 0 18 18"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <circle cx={9} cy={9} r="8.5" stroke="#D0565C" />
+                            </svg>
+                          )}
+                          <h3 style={{ paddingTop: '10px' }}>{sec?.title}</h3>
+                        </div>
+                      )
 
-                    <div className="ksajdfds-sads" onClick={() => { setLectures(sec?.lectures), setCourseId(sec?.id) }} key={i}>
-                      {sec.id === courseId ? (
-                        <svg
-                          width={18}
-                          height={18}
-                          viewBox="0 0 18 18"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <circle cx={9} cy={9} r={9} fill="#D0565C" />
-                          <path d="M4 9L6.5 12L13.5 5" stroke="white" />
-                        </svg>
-                      ) : (
-                        <svg
-                          width={18}
-                          height={18}
-                          viewBox="0 0 18 18"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <circle cx={9} cy={9} r="8.5" stroke="#D0565C" />
-                        </svg>
-                      )}
-                      <h3 style={{ paddingTop: '10px' }}>{sec?.title}</h3>
-                    </div>
 
-                  ))
+                  })
                   }
 
                 </div>
@@ -115,13 +115,13 @@ const Home: NextPage = () => {
               <div>
                 <h2>Announcements</h2>
               </div>
-              <div>
+              <Link href={`/en/student/resource/${courseTitle}`}>
                 <h2>Resources</h2>
-              </div>
+              </Link>
               <div>
                 <h2>Live Classes</h2>
               </div>
-              <div onClick={() =>  setConversation(true)}>
+              <div onClick={() => setConversation(true)}>
                 <h2>Message to Instructor</h2>
               </div>
               <div>
@@ -181,16 +181,16 @@ const Home: NextPage = () => {
 
 
               <div className="seting-method-payment">
-                <div className="d-flex justify-content-between " style={{padding :'0px 20px'}}>
+                <div className="d-flex justify-content-between " style={{ padding: '0px 20px' }}>
                   <h3>Title : {section?.title}</h3>
-                  <h5 style={{paddingTop:'15px'}}>By : {section?.instructor?.fullname}</h5>
+                  <h5 style={{ paddingTop: '15px' }}>By : {section?.instructor?.fullname}</h5>
                   {/* <h6 style={{paddingTop:'15px'}}>lectures : {lectures?.length}</h6> */}
 
                 </div>
                 <div className="first-payment-1">
 
                   {lectures.length ?
-                    <CriculumCard lectures={lectures} CourseId ={section?.id} />
+                    <CriculumCard lectures={lectures} CourseId={section?.id} />
                     :
                     <div className="start-list-item">
                       <img src={section?.cover_image || "/assets/images/Group 276.png"} alt="course_img" />
@@ -202,7 +202,7 @@ const Home: NextPage = () => {
             </div>
           </div>
         </div>
-      { conversation &&  <Conversation permition={conversation} Toggle={(value : any ) => setConversation(value)} user_id ={ section?.instructor?.id}/> }
+        {conversation && <Conversation permition={conversation} Toggle={(value: any) => setConversation(value)} user_id={section?.instructor?.id} />}
 
       </section>
     </>

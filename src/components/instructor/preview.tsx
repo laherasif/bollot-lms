@@ -172,7 +172,7 @@ export default ({ changeState, onPrevStep, step }: any) => {
         course_id: courseId,
         previews: Previews
       }
-      setLoader(true)
+      setLoading(true)
       let res = await AxInstance.post('api//instructor/courses/previews/store', saveCri)
       if (res.data.success === true) {
         setLoading(false)
@@ -180,14 +180,11 @@ export default ({ changeState, onPrevStep, step }: any) => {
         router.push('/en/instructor/courses')
         dispatch(clearStates())
         dispatch(coursesId(""))
-
       }
       else {
         setLoading(false)
-        dispatch(clearStates())
+        // dispatch(clearStates())
         setErrors(res.data.error.previews)
-
-
       }
     }
     catch (err) {
@@ -303,7 +300,7 @@ export default ({ changeState, onPrevStep, step }: any) => {
 
                 </div>
 
-                <div className="p-field  ">
+                <div className="">
                   <div className="d-flex">
                     <Icons name="i24" />
                     <label>Title</label>
@@ -313,30 +310,31 @@ export default ({ changeState, onPrevStep, step }: any) => {
                     name="title"
                     value={lec.title}
                     onChange={(e) => handleChangeSection(index, e)}
-                    id={`${errors[index]?.title[0] && 'input_filed_error'}`}
+                    style={errors[index]?.title && {border:'1pt solid red '}}
                     placeholder="Write here..." />
-                  {errors ? <div className="invalid mt-1">{errors[index]?.title[0]}</div> : null}
+                  {errors && errors[index]?.title ?  <div className="invalid mt-1">{errors[index]?.title}</div> : null}
 
                 </div>
 
 
                 <div className={lec.thumbnail && lec.id || lec.progressbar === 100 ? "image-container" : ""}>
                   <label>Video file for this Lecture</label>
-                  <div className="drop-box img-box">
+                  <div className="drop-box img-box" 
+                  style={errors[index]?.object_key && {border:'1pt solid red '}}
+                  >
                     <div className="kvjadsd-j43rm iasdufhvs-ernd" >
                       <Icons name="i29" />
-                      {/* {load ? <Spinner animation="border" size="sm"/> : */}
+                   
                       <>
                         {lec.thumbnail ? <img src={lec.thumbnail} alt="course_img" className="thum_img" /> : ""}
                         {lec.thumbnail || lec.file_type === "Video" ? "" : lec.object_key ? lec?.object_key : <p>Drag file here / Choose file</p>}
                       </>
-                      {/* }/ */}
+                     
                     </div>
                     {lec?.thumbnail || lec.file_type === "PDF" ? "" :
                       <input type="file" accept="pdf/*" onChange={(e) => handleChangeLectureFile(index, e)} className="custom-file-input" />
                     }
-                    {errors && errors?.sections ? <div className="invalid mt-1">{errors?.sections[index]?.object_key}</div> : null}
-
+                    {errors && errors[index]?.object_key ? <div className="invalid mt-1">{errors[index]?.object_key}</div> : null}
 
                   </div>
                   <div className="mt-2">

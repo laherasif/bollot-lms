@@ -28,8 +28,11 @@ const myBucket = new AWS.S3({
 
 const PreviewModel = ({ Toggle, previews }: any) => {
     const [show, setShow] = useState(true);
+    const [playing, setPlaying] = useState(true);
     const [value, setValue] = useState('');
     const [prvId, setprevId] = useState({});
+
+    console.log("previews", previews)
 
     const handleClose = () => {
         setShow(false)
@@ -75,14 +78,13 @@ const PreviewModel = ({ Toggle, previews }: any) => {
 
     }
 
-    console.log("value", value)
 
     return (
 
         <div className="hasiw0eskdwd">
             <Modal
                 show={show}
-                size="large"
+                size="md"
                 onHide={handleClose}
 
             >
@@ -94,11 +96,13 @@ const PreviewModel = ({ Toggle, previews }: any) => {
                 </Modal.Header>
                 <Modal.Body>
                     <div className="">
-                        {/* <video style={{ height: "100%", width: '100%', marginBottom: '20px' }} controls autoPlay>
-                            <source src={value}
-                                type="video/mp4"></source>
-                        </video> */}
-                        <ReactPlayer width="100%" height="100%" playing={true} controls url={value} />
+                        <ReactPlayer
+                            controls 
+                            width="100%"
+                            height="100%"
+                            playing={true }
+                            volume={1}	
+                            url={value} />
                     </div>
 
 
@@ -107,13 +111,15 @@ const PreviewModel = ({ Toggle, previews }: any) => {
                         <h3>Free Sample Videos:</h3>
                         <ul >
                             {previews && previews.map((p: any, i: number) => (
+
                                 <li
+                                    key={i}
                                     onClick={() => GetVideo(p)}
                                     className={p?.id === prvId.id ? "active" : null}
                                 >
                                     <div className="preview_container">
                                         <div className="thumnail">
-                                            <img src="https://dev.thetechub.us/bolloot/images/courses/thumbnails/6267ac230d3e1-1650961443.jpg" alt="thumb" />
+                                            <img src={p?.thumbnail} alt="thumb" />
                                             <div className="title_icon">
                                                 <i className="fa fa-play-circle"></i>
                                                 <span>{p?.title} </span>

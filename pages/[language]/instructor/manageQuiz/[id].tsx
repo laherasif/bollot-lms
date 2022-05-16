@@ -44,10 +44,10 @@ const Home: NextPage = () => {
   const [saveQuiz, setSaveQuiz] = useState(false)
   const [errors, setErrors] = useState([])
   const [allQuiz, setAllQuiz] = useState([
-   
+
   ])
 
-  console.log("allquiz" , allQuiz)
+  console.log("allquiz", allQuiz)
 
 
   const Questions = () => {
@@ -72,7 +72,7 @@ const Home: NextPage = () => {
       try {
         setLoading(true)
         let res = await AxInstance.get(`api//instructor/courses/quiz/${courseId}`)
-        console.log("red" , res )
+        console.log("red", res)
         if (res.data.response) {
           setAllQuiz(res.data.response.course_with_quiz.quiz)
           setLoading(false)
@@ -266,8 +266,8 @@ const Home: NextPage = () => {
                   <div className="complete-web-1 mb-3" style={{ marginBottom: '60px' }} >
 
                     {allQuiz.length ? allQuiz?.map((q, index) => (
-                      <div className="p-3 quiz" key={index} style={{ maxWidth: '100%', marginLeft: '20px' }}>
-                        <div className="p-field  ">
+                      <div className="p-3 quiz" key={index} style={{ maxWidth: '30%', marginLeft: '20px' }}>
+                        <div className="">
                           <div className="d-flex " style={{ justifyContent: 'space-between' }}>
                             <label>Question : {index + 1}</label>
                             {(allQuiz.length !== 1) ? <div onClick={(e) => removeInputField(index)}> <i className="fa fa-trash mt-2"></i></div> : ""}
@@ -275,7 +275,8 @@ const Home: NextPage = () => {
                           <input
                             type="text"
                             name="question"
-                            className="w-100"
+                            style={errors && errors[index]?.question && { border: '1pt solid red' }}
+                            className="w-100 input_criculum"
                             value={q.question}
                             onChange={(e) => handleChange(index, e)}
                             placeholder="Write here..." />
@@ -296,6 +297,8 @@ const Home: NextPage = () => {
                                 <input
                                   type="text"
                                   name="option"
+                                  style={errors && errors[index]?.options[i]?.option && { border: '1pt solid red' }}
+                                  className="w-100 input_criculum"
                                   value={op.option}
                                   onChange={(e) => handleChangeOptions(index, i, e)}
                                   placeholder="Write here...." />
@@ -324,7 +327,9 @@ const Home: NextPage = () => {
                           : ""
                         }
                         <div>
-                          {errors && errors[0]?.options ? <div className="invalid mt-1">{errors[0]?.options}</div> : null}
+                          {/* {errors && errors[index]?.options ? <div className="invalid mt-1">{ errors && errors[index]?.options}</div> : null} */}
+
+                          {/* {errors && errors[0]?.options[0] ? <div className="invalid mt-1">{errors[0]?.options[0]}</div> : null} */}
                         </div>
 
                       </div>

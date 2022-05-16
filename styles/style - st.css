@@ -3265,7 +3265,7 @@
   overflow-y: scroll;
 }
 
-.infinite-scroll-component{
+.infinite-scroll-component {
   /* overflow-y: hidden; */
 }
 
@@ -3958,7 +3958,7 @@ input[type=number] {
   border: 1pt solid #cccc;
   border-radius: 10px;
   /* margin: auto; */
-  width: 30%;
+  width: 100%;
   margin-top: 10px;
 
 }
@@ -4327,9 +4327,6 @@ textarea::placeholder {
 
 }
 
-#input_filed_error {
-  border-color: red;
-}
 
 .inpt_field .input_filed_error {
   border-color: red;
@@ -4501,20 +4498,22 @@ textarea::placeholder {
 
 .preview ul li {
   list-style: none;
-  border-bottom: 1pt solid lightgray;
+  /* border-bottom: 1pt solid lightgray; */
+  border-bottom: 1pt solid rgb(233, 229, 229);
+
   padding: 10px;
   cursor: pointer;
 }
 
 .preview .active {
-  background-color: lightgray;
+  background-color: rgb(250, 248, 248);
 
 }
 
 .preview ul li:hover {
-  background-color: lightgray;
-  border-bottom: 1pt solid gray;
-  border-top: 1pt solid gray;
+  background-color: rgb(250, 248, 248);
+  border-bottom: 1pt solid rgb(250, 248, 248);
+  /* border-top: 1pt solid gray; */
 }
 
 .preview_container {
@@ -4649,11 +4648,11 @@ textarea::placeholder {
 }
 
 .p-fields input[type="text"] {
-  border: 0.5px solid #c4c4c4 !important;
+  border: 0.5px solid #c4c4c4;
   box-sizing: border-box;
   box-shadow: 0px 12px 20px rgba(152, 152, 152, 0.118);
   border-radius: 100px;
-  background-color: #ffffff !important;
+  background-color: #ffffff;
   padding: 5px 10px;
   outline: none !important;
   box-shadow: none !important;
@@ -4706,6 +4705,7 @@ textarea::placeholder {
   position: relative;
   cursor: pointer;
 }
+
 .video_section img {
   width: 90px;
   height: 50px;
@@ -4821,11 +4821,11 @@ textarea::placeholder {
 .input_fields input[type="text"] {
   border: none;
   width: 100%;
-  border: 0.5px solid #c4c4c4 !important;
+  border: 0.5px solid #c4c4c4;
   box-sizing: border-box;
   box-shadow: 0px 12px 20px rgb(152 152 152 / 12%);
   border-radius: 100px;
-  background-color: #ffffff !important;
+  background-color: #ffffff;
   padding: 5px 10px;
   outline: none !important;
   box-shadow: none !important;
@@ -4841,11 +4841,11 @@ textarea::placeholder {
   padding-left: 10px;
 }
 
-.select-mesage{
+.select-mesage {
   text-align: center;
   padding-top: 10rem;
   font-size: 30px;
-  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: lightgray;
   font-weight: 500;
 }
@@ -4860,7 +4860,7 @@ textarea::placeholder {
 }
 
 
-.add-rating .rating_btn{
+.add-rating .rating_btn {
   background-color: #00778f;
   width: 100%;
   height: 40px;
@@ -4869,3 +4869,31 @@ textarea::placeholder {
   margin-bottom: 10px;
   border: none;
 }
+
+
+
+
+
+#input_filed_error {
+  border: 1pt solid red;
+}
+
+.input_criculum {
+  border: 0.5px solid #c4c4c4;
+  box-sizing: border-box;
+  box-shadow: 0px 12px 20px rgba(152, 152, 152, 0.118);
+  border-radius: 100px;
+  background-color: #ffffff;
+  padding: 5px 10px;
+  outline: none !important;
+  box-shadow: none !important;
+  width: 100%;
+}
+
+
+
+/* .criculum_field input{
+  border: none;
+  width: 100%;
+  outline: none;
+} */

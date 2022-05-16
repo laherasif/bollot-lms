@@ -209,7 +209,7 @@ const Home: NextPage = () => {
               <div className="hdsf0s-sadmsa">
                 <div>
                   <Link href="/en/instructor/courses">
-                    <h3 style={{cursor:'pointer'}}>
+                    <h3 style={{ cursor: 'pointer' }}>
                       <i className="fa fa-arrow-left"></i>
                       Back</h3>
                   </Link>
@@ -268,11 +268,14 @@ const Home: NextPage = () => {
                         // <UserChatCard users={ins.user_two_details} key={index} handleClick={(value) => getMessages(value)} />
                       )
                   })
-                    :
+                    : ""
+                    // <div>No conversation </div>
+                  }
+                  {loaders ?
                     <div className="spinner-chatbox">
                       <Spinner animation="border" />
                     </div>
-                  }
+                    : null}
 
 
 
@@ -338,7 +341,7 @@ const Home: NextPage = () => {
 
                             >
 
-                              {messages?.map((ms: any, index: number) => {
+                              {messages ? messages?.map((ms: any, index: number) => {
                                 return (
                                   <div className="user-card-inbox mt-0" key={index}   >
                                     <div className="user-card-inbox-inner" >
@@ -353,7 +356,9 @@ const Home: NextPage = () => {
                                     </div>
                                   </div>
                                 )
-                              })}
+                              })
+                                : null
+                              }
 
 
 
