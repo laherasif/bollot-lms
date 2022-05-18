@@ -33,7 +33,7 @@ const Home: NextPage = () => {
       try {
         setLoading(true)
         let res = await AxInstance.get(`api//student/my-live-courses/schedule/${CourseId}`)
-        console.log("REs" , res )
+        console.log("REs", res)
         if (res.data.success === true) {
           setLoading(false)
           setQuiz(res.data.response.course_with_schedule)
@@ -64,7 +64,7 @@ const Home: NextPage = () => {
                 :
                 <div className="hdsf0s-sadmsa">
                   <Link href="/en/student/courses">
-                    <h3 style={{cursor:'pointer'}}>
+                    <h3 style={{ cursor: 'pointer' }}>
                       <i className="fa fa-arrow-left"></i>
                       Back
                     </h3>
@@ -84,8 +84,8 @@ const Home: NextPage = () => {
                             <div className="card">
                               <div className="card-body">
                                 <div className="active-member">
-                                  <div className="table-responsive">
-                                    <table className="table table-xs mb-0">
+                                  <div className="table-responsive" style={{ height: '400px' }}>
+                                    <table className="table table-xs mb-0" >
                                       <thead>
                                         <tr>
                                           <th>Sedule #</th>
@@ -93,7 +93,7 @@ const Home: NextPage = () => {
                                           <th>Start Time</th>
                                           <th>End Time</th>
                                           <th>Hours</th>
-                                          {/* <th>Activity</th> */}
+                                          <th>Meeting Link</th>
                                         </tr>
                                       </thead>
                                       <tbody>
@@ -113,15 +113,25 @@ const Home: NextPage = () => {
                                             <td>
                                               <span>{s?.hours}</span>
                                             </td>
-                                            {/* <td>
-                                            <span>Ordered</span>{" "}
-                                            <span className="m-0 pl-3">10 sec ago</span>{" "}
-                                          </td> */}
+                                            <td style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                                              <div className="d-flex ">
+                                                <button onClick={() => window.open(s?.zoom_url_for_students)} className="upload-1 sdisad-dsdactive">Connect on Zoom</button>
+                                              </div>
+                                              <div style={{ display: 'flex', flexDirection: 'column' , paddingLeft:'20px' }}>
+                                                <h5>Alternate :</h5>{" "}
+                                                <span className="m-0 pl-3">
+                                                  zoom meeting id :  {s?.zoom_meeting_id}
+                                                </span>
+                                                <span className="m-0 pl-3">
+                                                  meeting Password  :  {s?.zoom_meeting_password}
+                                                </span>
+                                              </div>
+                                            </td>
                                           </tr>
 
                                         ))
-                                        : <div>Record Not Found</div>
-                                      }
+                                          : <div>Record Not Found</div>
+                                        }
 
 
                                       </tbody>

@@ -5921,18 +5921,17 @@ body .multi-range-slider .bar-inner {
 }
 
 
-
-.navbar-expand-lg .navbar-nav .dropdown-menu {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-}
-
 .dropdown-menu a {
   padding: 3px;
   color: black;
   float: left;
+  width: 100%;
   text-decoration: none;
+}
+
+.dropdown-menu a:hover {
+  background-color: lightgray;
+  color: #ffffff;
 }
 
 .d-flex-wh button {

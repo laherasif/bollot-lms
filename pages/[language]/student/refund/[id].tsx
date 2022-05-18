@@ -46,9 +46,9 @@ const Home: NextPage = () => {
     let fetchPayment = async () => {
       try {
         setLoading(true )
-        let res = await AxInstance.get(`api//student/transactions`)
+        let res = await AxInstance.get(`api//student/refunds`)
         setTransaction(res.data.response.transactions)
-        setLoading(false )
+        setLoading(false)
 
       }
       catch (err) {
@@ -78,9 +78,11 @@ const Home: NextPage = () => {
                     <div className="umpire w-100">
                       <div className="umpire-1 umpire-1-cst">
                         <div className="maxima">
-                          <button className="upload-1 sdisad-dsdactive">Transactions</button>
-                          <Link href="/en/student/refund">
-                            <button className="upload-1" >Refund</button>
+                          <Link href="/en/student/purchase">
+                            <button className="upload-1">Transactions</button>
+                          </Link>
+                          <Link href="/en/instructor/refund">
+                            <button className="upload-1  sdisad-dsdactive">Refund</button>
                           </Link>
                           <button className="upload-1">Vouchers</button>
                         </div>
@@ -107,23 +109,7 @@ const Home: NextPage = () => {
                                 <h4>{moment(list?.createdAt).format('ll')}</h4>
                                 <h4>{moment(list?.refund_date).format('ll')}</h4>
 
-                                <div className="jaskdaosd-sadsa">
-                                  <Dropdown>
-                                    <Dropdown.Toggle
-                                      variant="success"
-                                      id="dropdown-basic"
-                                    >
-                                      <img src="/assets/images/black..svg" alt="" />
-                                    </Dropdown.Toggle>
 
-                                    <Dropdown.Menu>
-                                      <Dropdown.Item onClick={() => setRefund(list?.checkout?.id)}>
-                                        <span >Ask for refund</span>
-                                      </Dropdown.Item>
-
-                                    </Dropdown.Menu>
-                                  </Dropdown>
-                                </div>
                               </div>
                               <div className="certificate">
                                 <h4>Course:</h4>
@@ -143,7 +129,7 @@ const Home: NextPage = () => {
 
                           </div>
                         </div>
-                      )) : <div> Record not found </div>}
+                      )) : <div>Record not found</div>}
                     </div>
                   </div>
                 </div>

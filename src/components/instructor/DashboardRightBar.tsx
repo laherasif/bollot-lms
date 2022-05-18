@@ -1,75 +1,77 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Icons from '../../icons';
 import { Container, Nav, Navbar, Offcanvas } from "react-bootstrap";
+import { RootStateOrAny, useSelector } from 'react-redux';
+import axios from 'axios';
 
-export default ()=>{
-const RightBarContent=()=>{
-    return  <div className="jaodsfjsd-sdfjewi">
-    <h5>Upcoming Live Classes</h5>
-    <div className="seting-method-payment">
-      <div className="first-payment-1">
-        <div className="com-flex-1">
-          <h3>Five phases of UI Design</h3>
+export default () => {
+  const RightBarContent = () => {
+
+    const [classes, setClasses] = useState([])
+
+    const token = useSelector((state: RootStateOrAny) => state?.userReducer?.token)
+
+    const AxInstance = axios.create({
+      // .. where we make our configurations
+      baseURL: 'https://dev.thetechub.us/bolloot/',
+      headers: {
+        token: token
+      }
+    });
+
+
+    useEffect(() => {
+      let fetchLive = async () => {
+        try {
+          let res = await AxInstance.get('api//instructor/courses/schedule/upcoming-classes')
+          console.log("Res", res)
+          setClasses(res.data.response.upcoming)
+        }
+        catch (err) { }
+      }
+      fetchLive()
+    }, [])
+
+
+    return (
+      <>
+        <div className="jaodsfjsd-sdfjewi">
+          <h5>Upcoming Live Classes</h5>
+          <div className="seting-method-payment">
+            {classes && classes ? classes.map((item: any, index: number) => (
+
+              <div className="first-payment-1">
+                <div className="com-flex-1">
+                  <h3>Live class {index + 1}</h3>
+                </div>
+                <h6>
+                  <Icons name="i13" />
+                  {item?.date}
+                </h6>
+                <div className="certificate" style={{ display: 'flex', flexDirection: 'column', }}>
+                  <h4>Zoom  id : {item?.zoom_meeting_id}</h4>
+                  <h4>Zoom password : {item?.zoom_meeting_password}</h4>
+                  <div className="d-flex mb-3 idfadsf-sads">
+                    <button  onClick={() => window.open(item?.zoom_url_for_teacher)} className="upload-1 sdisad-dsdactive">Join Meeting</button>
+                  </div>
+                </div>
+
+              </div>
+            ))
+              : <div>Classes not yet </div>
+            }
+
+          </div>
         </div>
-        <h6>
-          <Icons name="i13" />
-          Today, 12pm to 5pm
-        </h6>
-        <div className="certificate">
-          <h4>Learning Objectives:</h4>
-        </div>
-        <div className="start-list-item">
-          <ul>
-            <li>Describe the phases of a design sprint</li>
-            <li>Explain the importance of design sprints</li>
-            <li>Plan a design sprint</li>
-            <li>
-              Explain the role of an entry-level UX designer during a
-              design sprint
-            </li>
-            <li>
-              Describe the importance of retrospectives after design
-              sprints
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div className="first-payment-1">
-        <div className="com-flex-1">
-          <h3>Five phases of UI Design</h3>
-        </div>
-        <h6>
-          <Icons name="i13" />
-          Today, 12pm to 5pm
-        </h6>
-        <div className="certificate">
-          <h4>Learning Objectives:</h4>
-        </div>
-        <div className="start-list-item">
-          <ul>
-            <li>Describe the phases of a design sprint</li>
-            <li>Explain the importance of design sprints</li>
-            <li>Plan a design sprint</li>
-            <li>
-              Explain the role of an entry-level UX designer during a
-              design sprint
-            </li>
-            <li>
-              Describe the importance of retrospectives after design
-              sprints
-            </li>
-          </ul>
-        </div>
-      </div>
+      </>
+    )
+  }
+  return <div className='mdsak03e-a3'>
+    <div className='kdajs-weemwewa2'>
+      <RightBarContent />
     </div>
-  </div>
-}
-    return <div className='mdsak03e-a3'>
-        <div className='kdajs-weemwewa2'>
-    <RightBarContent/>
-        </div>
-        <div className='nakdsfosda-sdme'>
-        <Navbar bg="light" className="hdhafs-dawej" expand={false}>
+    <div className='nakdsfosda-sdme'>
+      <Navbar bg="light" className="hdhafs-dawej" expand={false}>
         <Container fluid>
           <Navbar.Toggle aria-controls="offcanvasNavbar" />
           <Navbar.Offcanvas
@@ -84,6 +86,6 @@ const RightBarContent=()=>{
           </Navbar.Offcanvas>
         </Container>
       </Navbar>
-        </div>
     </div>
+  </div>
 }

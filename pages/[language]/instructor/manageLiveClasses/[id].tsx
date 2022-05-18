@@ -200,9 +200,9 @@ const Home: NextPage = () => {
                 <div className="complete-web-1 mb-3">
                   <div className="datepicker-container-main" >
 
-                    {dateTime ? dateTime.map((dat, index) => {
+                    {dateTime ? dateTime.map((dat, i) => {
                       return (
-                        <div className="datepicker_container" key={index}>
+                        <div className="datepicker_container" key={i}>
                           <div className="p-field mt-2 ">
                             <p>Sedule no </p>
                             <div className="d-flex" style={{ justifyContent: 'space-between' }}>
@@ -221,13 +221,13 @@ const Home: NextPage = () => {
                               onKeyDown={(e) => {
                                 e.preventDefault();
                               }}
-                              selected={dat?.id || dat.date !== '' ? parse(dat.date, "yyyy-MM-dd", new Date()) : dat.date}
+                              selected={dat?.id || dat.date !== '' ? parse(dat.date, "yyyy-MM-dd", new Date()) : null}
                               // selected={dat.date}
                               onChange={(date) => handleDateChange("date", i, date)}
                               dateFormat="yyyy-MM-dd"
                             />
 
-                            {errors && errors?.schedule ? <div className="invalid mt-1">{errors?.schedule[index]?.date}</div> : null}
+                            {errors && errors?.schedule ? <div className="invalid mt-1">{errors?.schedule[i]?.date}</div> : null}
 
 
                           </div>
@@ -240,7 +240,7 @@ const Home: NextPage = () => {
                               onKeyDown={(e) => {
                                 e.preventDefault();
                               }}
-                              selected={dat?.id || dat.from_time !== '' ? parse(dat.from_time, "hh:mm:ss", new Date()) : dat.from_time}
+                              selected={dat?.id || dat.from_time !== '' ? parse(dat.from_time, "HH:mm:ss", new Date()) : dat.from_time}
                               // selected={dat.from_time}
                               onChange={(date) => handleDateChange("from_time", i, date)}
                               showTimeSelect
@@ -249,7 +249,7 @@ const Home: NextPage = () => {
                               timeCaption="Time"
                               dateFormat="h:mm "
                             />
-                            {errors && errors?.schedule ? <div className="invalid mt-1">{errors?.schedule[index]?.from_time}</div> : null}
+                            {errors && errors?.schedule ? <div className="invalid mt-1">{errors?.schedule[i]?.from_time}</div> : null}
 
                           </div>
                           <div className="p-field mt-2 ">
@@ -262,7 +262,7 @@ const Home: NextPage = () => {
                                 e.preventDefault();
                               }}
                               name="to_time"
-                              selected={dat?.id || dat.to_time !== '' ? parse(dat.to_time, "hh:mm:ss", new Date()) : dat.to_time}
+                              selected={dat?.id || dat.to_time !== '' ? parse(dat.to_time, "HH:mm:ss", new Date()) : dat.to_time}
                               // selected={dat.to_time}
                               onChange={(date) => handleDateChange("to_time", i, date)}
                               showTimeSelect
@@ -272,7 +272,7 @@ const Home: NextPage = () => {
                               dateFormat="h:mm"
                             />
 
-                            {errors && errors?.schedule ? <div className="invalid mt-1">{errors?.schedule[index]?.to_time}</div> : null}
+                            {errors && errors?.schedule ? <div className="invalid mt-1">{errors?.schedule[i]?.to_time}</div> : null}
 
 
                           </div>

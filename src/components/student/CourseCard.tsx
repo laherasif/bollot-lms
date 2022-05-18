@@ -36,15 +36,14 @@ export default ({ course, key , courseId }: any) => {
       </div>
       {/* </Link> */}
       <div className="assahdwe0-ass">
-        <Dropdown>
-          <Dropdown.Toggle variant="success" id="dropdown-basic">
-            <i className="fa fa-ellipsis-h" style={{ fontSize: '20px', color: 'black' }}></i>
 
-            {/* <img src='../../assets/images/black..svg' alt="" style={{ width: '20px' }} /> */}
+      <Dropdown>
+          <Dropdown.Toggle variant="success" id="dropdown-basic">
+            <i className="fa fa-ellipsis-h" style={{fontSize:'20px' , color:'black'}}></i>
           </Dropdown.Toggle>
 
-          <Dropdown.Menu>
-            <Dropdown.Item as={Link} href={`/en/student/details/${course?.slug}`}>Criculum</Dropdown.Item>
+          <Dropdown.Menu >
+          <Dropdown.Item as={Link} href={`/en/student/details/${course?.slug}`}>Criculum</Dropdown.Item>
             <Dropdown.Item as={Link} href={`/en/student/quiz/${course?.id}`}>Quiz</Dropdown.Item>
             <Dropdown.Item as={Link} href={`/en/student/purchase/${course?.id}`}>Transactions Detail</Dropdown.Item>
             {
@@ -53,8 +52,11 @@ export default ({ course, key , courseId }: any) => {
                  : 
                <Dropdown.Item> <span onClick={() => courseId(course?.id) } >Review this course </span></Dropdown.Item> 
             } 
+
           </Dropdown.Menu>
         </Dropdown>
+
+        
       </div>
     </div>
   );

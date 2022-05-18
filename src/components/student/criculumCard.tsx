@@ -2,6 +2,8 @@ import { Carousel, Spinner } from "react-bootstrap";
 import React, { useState, useEffect } from 'react'
 import AWS from 'aws-sdk'
 import ReactPlayer from "react-player";
+import { LionPlayer } from 'lion-player';
+import 'lion-player/dist/lion-skin.min.css';
 import { S3_BUCKET, myBucket } from '../../confiq/aws/aws'
 import { RootStateOrAny, useSelector } from "react-redux";
 import axios from "axios";
@@ -10,7 +12,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 export default ({ lectures, CourseId }: any) => {
   const [index, setIndex] = useState(0);
   const [value, setValue] = useState('');
-  const [error, setErorr] = useState('');
+  const [errors, setErorrs] = useState(false);
   const [played, setPlayed] = useState(0)
   const handleSelect = (selectedIndex: number) => {
     setIndex(selectedIndex);
@@ -35,11 +37,9 @@ export default ({ lectures, CourseId }: any) => {
         course_section_lecture_id: lectures[index].id,
         minutes: 1
       }
-
-
       let res = await AxInstance.post('api//student/my-courses/progress/record', value)
       if (res.data.error) {
-        setErorr(res.data.error)
+        setErorrs(true)
       }
 
 
@@ -50,13 +50,16 @@ export default ({ lectures, CourseId }: any) => {
   }
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      countTime()
-    }, 60000);
-    return () => {
-        clearInterval(interval)
+    let interval: any
+    if (errors === false) {
+      interval = setInterval(async () => {
+        debugger
+        countTime()
+      }, 60000);
     }
-  }, [])
+    return () => clearInterval(interval)
+
+  }, [errors])
 
   useEffect(() => {
 
@@ -73,7 +76,7 @@ export default ({ lectures, CourseId }: any) => {
     }
   }, [lectures])
 
-  console.log("payal", lectures)
+  console.log("payal", errors)
 
 
   const GetLect = (link: any) => {
@@ -109,6 +112,8 @@ export default ({ lectures, CourseId }: any) => {
     changePage(1);
   }
 
+  console.log("value", value)
+
 
   return (
     <>
@@ -129,12 +134,12 @@ export default ({ lectures, CourseId }: any) => {
 
               <Carousel.Item key={i} style={{ width: '100%' }}>
 
+                {/* <LionPlayer src={value} autoplay controls={true } /> */}
+                
                 <ReactPlayer
                   width="100%"
                   height="100%"
-                  onProgress={(progress) => {
-                    setPlayed(progress.playedSeconds);
-                  }}
+                  preload="none"
                   playing={lectures[index].id === lec.id ? true : false}
                   controls
                   url={value} />
