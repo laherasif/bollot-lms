@@ -9,16 +9,7 @@ export default ({rates,stars}:{rates:number,stars:Number}) => {
     <div className="djasfids-san3eries">
     <div className="dsjfksaefids-fdaf">
        <Rating value={stars}/>
-    {/* { Array.from({length:5},(x,i)=>{
-      if(i<stars)
-      {
-      }
-      else
-      {
-        return <Rating value={3}/>
-      }
-    })
-    } */}
+    
     </div>
     <div className="w-100">
     <div className="jiadsf0w-eaew">

@@ -3,8 +3,8 @@ import React from "react";
 import { Table, Container } from "react-bootstrap";
 import { useSelector, RootStateOrAny } from "react-redux";
 import Icons from "../../icons";
-export default ({ role } : any ) => {
-  const { Students, Instructor } = useSelector((state: RootStateOrAny) => state.admin)
+export default ({ role , Students  , Instructor } : any ) => {
+  // const { Students, Instructor } = useSelector((state: RootStateOrAny) => state.admin)
 
   console.log("stude", Students, "ins", Instructor)
 

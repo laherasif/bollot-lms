@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { MdOutlineReviews } from 'react-icons/md'
 import { BsWallet2 } from 'react-icons/bs'
 import { useRouter } from 'next/router';
+import Recommended from './recommended';
 export default () => {
   const router = useRouter()
   const openPan = () => {
@@ -113,34 +114,7 @@ export default () => {
 
     <div className="client-img">
       <h3>Recommended Tutors</h3>
-      <div className="client ">
-        <img src="/assets/images/client-1.svg" alt="" />
-        <div className="client-ch">
-          <h3>John Doe</h3>
-          <p>42 Listed Courses</p>
-        </div>
-      </div>
-      <div className="client ">
-        <img src="/assets/images/cliet-2.svg" alt="" />
-        <div className="client-ch">
-          <h3>John Doe</h3>
-          <p>42 Listed Courses</p>
-        </div>
-      </div>
-      <div className="client ">
-        <img src="/assets/images/client-3.svg" alt="" />
-        <div className="client-ch">
-          <h3>John Doe</h3>
-          <p>42 Listed Courses</p>
-        </div>
-      </div>
-      <div className="client mb-27">
-        <img src="/assets/images/client-4.svg" alt="" />
-        <div className="client-ch">
-          <h3>John Doe</h3>
-          <p>42 Listed Courses</p>
-        </div>
-      </div>
+      <Recommended />
     </div>
   </div>
 }

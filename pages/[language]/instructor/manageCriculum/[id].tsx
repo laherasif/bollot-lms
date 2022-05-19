@@ -347,9 +347,8 @@ const Home: NextPage = () => {
                         <i className="fa fa-arrow-left"></i>
                         Back</h3>
                     </Link>
-                    <h3>Manage Criculum
-                      <br />
-                      <span style={{ fontSize: '12px', color: 'red' }}> Note : During uploading leacture progressbar Section and Save will not created till leature upload </span>
+                    <h3>Manage Curriculum
+
                     </h3>
                   </div>
                   <div className=" jidfjsd-asjreid">
@@ -362,12 +361,13 @@ const Home: NextPage = () => {
 
                         <button className="upload-1 sdisad-dsdactive"
                           disabled={red ? true : false}
+                          style={red ? { opacity: '0.5' } : { opacity: 1 }}
                           onClick={() => AddmoreSection()}
                         >
-                          + Add more criculum </button>
+                          + add more sections </button>
                         <button className="upload-1 sdisad-dsdactive"
                           disabled={red ? true : false}
-
+                          style={red ? { opacity: '0.5' } : { opacity: 1 }}
                           onClick={() => SaveCriculum()}
                         >
                           <i className="fa fa-save" style={{ marginRight: '10px' }}></i>
@@ -441,14 +441,15 @@ const Home: NextPage = () => {
                               >
                                 <div className="kvjadsd-j43rm iasdufhvs-ernd" >
                                   <Icons name="i29" />
+                                  <p>{lec?.object_key}</p>
                                   {/* {load ? <Spinner animation="border" size="sm"/> : */}
-                                  <>
+                                  {/* <>
                                     {lec.thumbnail ? <img src={lec.thumbnail} alt="course_img" className="thum_img" /> : ""}
                                     {lec.thumbnail || lec.file_type === "Video" ? "" : lec.object_key ? lec?.object_key : <p>Drag file here / Choose file</p>}
-                                  </>
+                                  </> */}
                                   {/* }/ */}
                                 </div>
-                                {lec?.thumbnail || lec.file_type === "PDF" ? "" :
+                                {lec?.object_key ? "" :
                                   <input type="file" accept="pdf/*" onChange={(e) => handleChangeLectureFile(index, i, e)} className="custom-file-input" />
                                 }
                                 {errors && errors?.sections ? <div className="invalid mt-1">{errors?.sections[index]?.lectures[i]?.object_key}</div> : null}
@@ -460,7 +461,7 @@ const Home: NextPage = () => {
                                   :
                                   lec.progressbar && <ProgressBar animated now={lec.progressbar} />}
                               </div>
-                              {lec?.thumbnail && lec.progressbar === 100 ?
+                              {lec?.object_key && lec.progressbar === 100 ?
                                 <>
                                   <div className="overlay"></div>
                                   <div id="icon" onClick={() => delThumnail(index, i)}>
@@ -473,7 +474,9 @@ const Home: NextPage = () => {
 
                           </div>
                         ))}
-                        <span className="add-mores" onClick={() => AddmoreLecture(index)} >+ Add more lectures </span>
+                        <span className="add-mores"
+                        style={sec.lectures.some((s:any) => s.progressbar > 0 && s.progressbar < 100 ) ? {cursor:'not-allowed' } :{ cursor:'pointer'} }
+                        onClick={ sec.lectures.some((s:any) => s.progressbar > 0 && s.progressbar < 100 ) ? null : () => AddmoreLecture(index)} >+ Add more lectures </span>
 
 
                       </div>

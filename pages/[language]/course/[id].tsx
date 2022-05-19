@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import { Dropdown } from "react-bootstrap";
+import { Dropdown, Spinner } from "react-bootstrap";
 // import ReactStars from "react-rating-stars-component";
 // import { useIntl } from "react-intl";
 // import BlogCard from "../../../src/components/card/BlogCard";
@@ -22,18 +22,21 @@ import MulticarouselCourse from "../../../src/components/MulticarouselCourse";
 import instance from "../../../src/confiq/axios/instance";
 import Rating from "../../../src/components/ratingStar";
 import { useSelector, useDispatch, RootStateOrAny } from "react-redux";
-import { SaveCart } from "../../../src/redux/actions/course/course";
+import { SaveCart, SaveBookmark } from "../../../src/redux/actions/course/course";
 import { useState, useEffect } from "react";
 import Link from 'next/link'
 import InfoCart from "../../../src/components/cartInfoPopup";
 import PreviewModel from "../../../src/components/preview";
+import { useRouter } from "next/router";
+import axios from "axios";
 
 
 const Home: NextPage = ({ Course }: any) => {
   // const intl = useIntl();
 
-  console.log("course", Course)
   const [message, setMessage] = useState(false)
+  const [bookMark, setBookMark] = useState(false)
+  const [loader, setLoader] = useState(false)
   const [popUp, setPopUp] = useState(false)
   const [Info, setInfo] = useState(false)
   const [show, setShow] = useState(false)
@@ -42,8 +45,18 @@ const Home: NextPage = ({ Course }: any) => {
 
 
   const dispatch = useDispatch()
+  const router = useRouter()
 
-  const { AddCart } = useSelector((state: RootStateOrAny) => state.cartReducer)
+  const { AddCart, BookMark } = useSelector((state: RootStateOrAny) => state.cartReducer)
+  const { User , token  } = useSelector((state: RootStateOrAny) => state.userReducer)
+
+  const AxInstance = axios.create({
+    // .. where we make our configurations
+    baseURL: 'https://dev.thetechub.us/bolloot/',
+    headers: {
+      token: token
+    }
+  });
 
   useEffect(() => {
     // let findCart = AddCart?.includes({id : 3} )
@@ -51,10 +64,17 @@ const Home: NextPage = ({ Course }: any) => {
       const element = AddCart[index].id;
       if (element === Course?.id) {
         setMessage(true)
-
       }
     }
+
   }, [])
+
+  console.log("BookMark", Course)
+
+  let find = BookMark.some((f: any) => f.id === Course?.id)
+  console.log("find", find)
+
+
 
 
   const ratings = () => {
@@ -97,6 +117,29 @@ const Home: NextPage = ({ Course }: any) => {
     }
   }
 
+  const RegisterBookMark = async () => {
+    if (User) {
+      let pair = { Quantity: 1 };
+      let newObj = { ...Course, ...pair }
+      try {
+        setLoader(true)
+        let res = await AxInstance.post('api//student/bookmarks/save' , { course_id : Course?.id })
+        console.log("Res" , res )
+        dispatch(SaveBookmark(newObj))
+        setTimeout(() => {
+          setLoader(false)
+        }, 1000);
+      } catch (error) {
+
+      }
+
+    }
+    else {
+      router.push('/en/login')
+    }
+  }
+
+
   return (
     <>
       <div>
@@ -122,48 +165,41 @@ const Home: NextPage = ({ Course }: any) => {
                 {Course?.short_desc}
               </p>
               <p>
-                <span>{Course?.avg_rating.aggr_rating}</span>
-                <Rating value={3.5} />
+                <span>Reviews : ({Course?.avg_rating.total_reviews})</span>
+                <Rating value={Course?.avg_rating.aggr_rating} />
 
-                {/* <Icons name="p1" />
-                <Icons name="p1" />
-                <Icons name="p1" />
-                <Icons name="p1" />
-                <Icons name="p2" /> */}
-                {/* (513 ratings) 13,107 students */}
+
               </p>
               <p>
                 <span>Created by</span> {Course?.instructor.fullname}
               </p>
-              {/* <div className="skdnasdsda-weiad">
-                <p>Last updated 12/2021</p>
-                <p>English</p>
-                <p>English [Auto]</p>
-              </div> */}
+
             </div>
           </div>
         </section>
         <div className="d-flex container " style={{ paddingLeft: '4rem' }}>
           <section className="inner-course-cont">
-            <div className="learning-jsiae">
-              <h5>What you'll learn</h5>
-              <div className="outcoms">
-                <ul>
-                  {Course?.outcomes.map((out: any) => (
+            {Course?.outcomes.length > 0 ?
+              <div className="learning-jsiae">
+                <h5>What you'll learn</h5>
+                <div className="outcoms">
+                  <ul>
+                    {Course?.outcomes.map((out: any) => (
 
-                    <li>
-                      <div className="course_outcoms">
-                        <div>
-                          <i className="fa fa-check"></i>
+                      <li>
+                        <div className="course_outcoms">
+                          <div>
+                            <i className="fa fa-check"></i>
+                          </div>
+                          <span>{out?.outcome}</span>
                         </div>
-                        <span>{out?.outcome}</span>
-                      </div>
-                    </li>
-                  ))}
+                      </li>
+                    ))}
 
-                </ul>
+                  </ul>
+                </div>
               </div>
-            </div>
+              : null}
             {/* <div className="learning-jsiae">
               <h5>Top companies offer this course to their employees</h5>
               <div className="jdisad0ewew-2edsad">
@@ -186,22 +222,25 @@ const Home: NextPage = ({ Course }: any) => {
                 <h5>Course content</h5>
                 <div className="jdisad0ewew-2edsad">
                   <div className="jksad-sadsnkd">
-                    <h6 className="kasjdasd-aweaidae">• {Course?.sections?.length} sections</h6>
-                    <h6 className="kasjdasd-aweaidae">• {numberofLect} lectures </h6>
-                    <h6 className="kasjdasd-aweaidae">• 8h 39m total length</h6>
+                    <h6 className="kasjdasd-aweaidae">• {Course?.sections_count} sections</h6>
+                    <h6 className="kasjdasd-aweaidae">• {Course?.lectures_count} lectures </h6>
+                    <h6 className="kasjdasd-aweaidae"></h6>
+                    {/* <h6 className="kasjdasd-aweaidae">• 8h 39m total length</h6> */}
                   </div>
 
-                  <div className="kjdkdsa-ekodd">
+                  {/* <div className="kjdkdsa-ekodd">
                     <h6>Expand all Sections</h6>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="cosaidjse-wea">
-                  <div style={course_show ? { display: 'block' } : { overflow: 'hidden', height: '22.2rem' }}>
+                  <div style={course_show ? { display: 'block' } : { display: 'block' }}>
                     <CourseAccordian section={Course?.sections} />
                   </div>
-                  <div className="learning-jsiae no-brd ">
-                    <button className="mt-3" onClick={() => setCourse_show(!course_show)}>{course_show ? "Show less" : "Show more"}</button>
-                  </div>
+                  {Course?.sections.length > 6 ?
+                    <div className="learning-jsiae no-brd ">
+                      <button className="mt-3" onClick={() => setCourse_show(!course_show)}>{course_show ? "Show less" : "Show more"}</button>
+                    </div>
+                    : null}
                 </div>
               </div>
               : null}
@@ -251,25 +290,28 @@ const Home: NextPage = ({ Course }: any) => {
 
             </div>
 
-            <div className="learning-jsiae">
+            {/* <div className="learning-jsiae">
               <FeaturedReview
                 instructor={Course?.instructor}
                 allCourses={Course?.all_courses_count}
                 reviews={Course?.reviews_count} />
-            </div>
-            <div className="learning-jsiae no-brd ">
-              <h5>See Also</h5>
-              <div style={show ? { display: 'block' } : { overflow: 'hidden', height: '36rem' }} >
-                {Array.from({ length: 10 }, (x, i) => {
-                  return (
-                    <BoughtCourseCard />
-                  )
-                })
-                }
-              </div>
+            </div> */}
+            {Course?.other_courses.length > 0 ?
+              <div className="learning-jsiae no-brd ">
+                <h5>See Also</h5>
+                <div style={show ? { display: 'block' } : { overflow: 'hidden', height: '36rem' }} >
+                  {Course?.other_courses.map((item: any, i: number) => {
+                    return (
 
-              <button className="mt-3" onClick={() => setShow(!show)}>{show ? "Show less" : "Show more"}</button>
-            </div>
+                      <BoughtCourseCard item={item} key={i} />
+                    )
+                  })
+                  }
+                </div>
+
+                <button className="mt-3" onClick={() => setShow(!show)}>{show ? "Show less" : "Show more"}</button>
+              </div>
+              : null}
             {/* <FBCBox /> */}
             <div className="learning-jsiae no-brd">
               <h5>Instructor</h5>
@@ -277,7 +319,10 @@ const Home: NextPage = ({ Course }: any) => {
                 allCourses={Course?.all_courses_count}
                 instructor={Course?.instructor}
                 enrolled={Course?.students_enrolled}
-                reviews={Course?.reviews_count} />
+                reviews={Course?.instructor?.avg_instructor_reviews}
+                tagline={Course?.instructor.tagline}
+                about={Course?.instructor.about}
+              />
             </div>
             <div className="hasjdiaw-sD no-brd">
               <h2>Student feedback</h2>
@@ -286,74 +331,76 @@ const Home: NextPage = ({ Course }: any) => {
                   <h1>{Course?.avg_rating.avg_rating || 0}</h1>
                   <div className="njadfsdz-aenwew">
                     <Rating value={Course?.avg_rating.avg_rating || 0} />
-                    {/* <Icons name="ipc4" />
-                    <Icons name="ipc4" />
-                    <Icons name="ipc4" />
-                    <Icons name="ipc4" />
-                    <Icons name="ipc3" /> */}
+
                   </div>
                   <h3>Course Rating</h3>
                 </div>
                 <div className="w-100">
                   {Course?.ratings_breakdown.map((rat: any, i: number) => (
                     <RatingBar stars={i} rates={rat} />
-                  ))}
-                  {/* <RatingBar stars={4} rates="12%" />
-                  <RatingBar stars={3} rates="23%" />
-                  <RatingBar stars={2} rates="18%" />
-                  <RatingBar stars={1} rates="7%" /> */}
+                  )).reverse()
+                  }
+
                 </div>
               </div>
             </div>
 
-            <div className="learning-jsiae">
-              <h5>Reviews</h5>
+            {Course?.reviews.length && Course?.other_courses.length > 0 ?
+              <div className="learning-jsiae">
+                <h5>Reviews</h5>
 
-              <div className="kjsakdad-a3med">
-                <div className="sijadas-awjie">
-                  <input
-                    type="text"
-                    className=""
-                    placeholder="Search  Reviews"
-                  />
-                  <button>
-                    <Icons name="ipc5" />
+
+                {/* <div className="kjsakdad-a3med">
+                  <div className="sijadas-awjie">
+                    <input
+                      type="text"
+                      className=""
+                      placeholder="Search  Reviews"
+                    />
+                    <button>
+                      <Icons name="ipc5" />
+                    </button>
+                  </div>
+                  <Dropdown>
+                    <Dropdown.Toggle variant="success" id="dropdown-basic">
+                      All Ratngs
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu>
+                      <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
+                      <Dropdown.Item href="#/action-2">
+                        Another action
+                      </Dropdown.Item>
+                      <Dropdown.Item href="#/action-3">
+                        Something else
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </div> */}
+                {Course?.reviews.map((rev: any, index: number) => (
+                  <Review item={rev} key={index} />
+
+                ))}
+
+                {/* <div>
+                  <button className="kasjdfsa-eaidas w-100">
+                    See More Reviews
                   </button>
-                </div>
-                <Dropdown>
-                  <Dropdown.Toggle variant="success" id="dropdown-basic">
-                    All Ratngs
-                  </Dropdown.Toggle>
-
-                  <Dropdown.Menu>
-                    <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-                    <Dropdown.Item href="#/action-2">
-                      Another action
-                    </Dropdown.Item>
-                    <Dropdown.Item href="#/action-3">
-                      Something else
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
+                </div> */}
+                <h4 className="jkdasfasd-neidasd">
+                  More Courses{" "}
+                  <span>
+                    by {Course?.instructor?.fullname}
+                  </span>
+                </h4>
+                {Course?.other_courses.length > 0 ?
+                  <>
+                    < MulticarouselCourse OtherCourse={Course?.other_courses} />
+                    {/* <button className="kasjdfsa-eaidas w-100">Report Abuse</button> */}
+                  </>
+                  : null}
               </div>
-              <Review />
-              <Review />
-              <Review />
-              <Review />
-              <div>
-                <button className="kasjdfsa-eaidas w-100">
-                  See More Reviews
-                </button>
-              </div>
-              <h4 className="jkdasfasd-neidasd">
-                More Courses{" "}
-                <span>
-                  by {Course?.instructor?.fullname}
-                </span>
-              </h4>
-              <MulticarouselCourse OtherCourse={Course?.other_courses} />
-              <button className="kasjdfsa-eaidas w-100">Report Abuse</button>
-            </div>
+              : null}
           </section>
           <section className="kasjdsaidw-asjew">
             <div className="card-bar-sec-1">
@@ -377,21 +424,32 @@ const Home: NextPage = ({ Course }: any) => {
                 <div className="">
                   <div className="d-flex-wh align-items-center">
 
-                    <button className="added-to-cart" onClick={() => RegisterCart()}>
-                      {popUp ?
-                        <div className="spinner-border text-light" style={{ marginLeft: '8rem' }} role="status">
-                        </div>
-                        : message ?
-                          <Link href="/en/checkout">
-                            <p> {"Proceed to Cart"}</p>
-                          </Link>
-                          : <p> {"Added to cart"}</p>
+                    <button className="added-to-cart" >
+                      <div onClick={() => RegisterCart()}>
+                        {popUp ?
+                          <Spinner animation="border" />
+                          : message ?
+                            <Link href="/en/checkout">
+                              <p> {"Proceed to cart"}</p>
+                            </Link>
+                            : <p> {"Add to cart"}</p>
 
-                      }
+                        }
+                      </div>
 
-                      {/* <span>
-                        <Icons name="ipc6" />
-                      </span> */}
+                      <span >
+                        {loader ?
+                          <>
+                            <Spinner animation="border" style={{ marginTop: '7px' }} />
+                          </>
+                          :
+                          <div onClick={() => RegisterBookMark()} className={find ? "filled" : ""} >
+
+                            <i className="fa fa-heart"></i>
+                          </div>
+                        }
+                        {/* <Icons name="ipc6" /> */}
+                      </span>
                     </button>
                   </div>
                   <Link href={`/en/checkout/?id=${Course?.slug}`}>
@@ -400,22 +458,24 @@ const Home: NextPage = ({ Course }: any) => {
                     </div>
                   </Link>
                 </div>
-                <h6 className="text-center">30-Day Money-Back Guarantee</h6>
-                <h5>This course includes:</h5>
+                <h6 className="text-center">3-Day Money-Back Guarantee</h6>
+                {/* <h5>This course includes:</h5>
                 <p>8.5 hours on-demand video</p>
                 <p>6 articles</p>
                 <p>Access on mobile and TV</p>
-                <p>Certificate of completion</p>
+                <p>Certificate of completion</p> */}
                 {/* <div className="apply-coupon">
                   <button>Apply Coupon</button>
                   <button>Gift this course</button>
                 </div> */}
-                <h2>Training 5 or more people?</h2>
+                {/* <h2>Training 5 or more people?</h2>
                 <h4>
                   Get your team access to 6,000+ top Udemy courses anytime,
                   anywhere.
-                </h4>
-                <button className="try-it">Try Bolloot Business</button>
+                </h4> */}
+                <Link href="/en/bollotBusiness">
+                  <button className="try-it">Try Bolloot Business</button>
+                </Link>
               </div>
 
             </div>

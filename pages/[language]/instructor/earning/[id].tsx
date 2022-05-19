@@ -34,7 +34,7 @@ const UserChatCard = () => {
   );
 };
 const Home: NextPage = () => {
-  const intl = useIntl();
+  // const intl = useIntl();
 
   return (
     <div className="inst">

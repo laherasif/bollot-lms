@@ -8,14 +8,16 @@ import {
   REG_CHECKOUT_DATA,
   FETCH_CHECKOUT_DATA,
   RESET_CART,
-  PAYEMENT_CARD
+  PAYEMENT_CARD,
+  REG_BOOK_MARK,
 } from "../../types/types";
 
 const initialState = {
   AddCart: [],
+  BookMark: [],
   CheckOuts: [],
   isAuth: false,
-  payment_method : ''
+  payment_method: ''
 };
 
 const CartReducer = (state = initialState, action) => {
@@ -24,14 +26,31 @@ const CartReducer = (state = initialState, action) => {
 
       return {
         ...state,
-        AddCart: [ ...state.AddCart , action.payload],
+        AddCart: [...state.AddCart, action.payload],
       };
+    case REG_BOOK_MARK:
+      const titles = new Set(state.BookMark?.map(item => item.id));
+      if (titles.has(action.payload.id)) {
+        let find = state.BookMark.filter((i) => i.id !== action.payload.id);
+        return {
+          ...state,
+          BookMark: find
+        }
+      }
+      return {
+        ...state,
+        BookMark: [...state.BookMark, action.payload]
+      }
+
+
 
     case GET_CART:
       return {
         ...state,
         AddCart: action.payload,
       };
+
+
 
     case DELETE_CART:
       let cart = state.AddCart.filter((item) => item.id !== action.payload);

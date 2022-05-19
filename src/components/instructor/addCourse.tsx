@@ -69,8 +69,6 @@ console.log("course_for" , course_for )
       token: token
     }
   });
-  // const { courseId } = /useSelector((state: RootStateOrAny) => state?.course)
-  console.log("Da" , courseId )
 
 
   useEffect(() => {
@@ -159,7 +157,6 @@ console.log("course_for" , course_for )
       if (res.data.success === true) {
         setLoading(false)
         SweetAlert({ icon: 'success', text: res.data.message })
-        // handleCourseId(res.data.response.course.id)
         dispatch(coursesId(res.data.response.course.id ))
         onStepChange()
 
@@ -280,7 +277,7 @@ console.log("course_for" , course_for )
 
           <div className="p-field my-4 mt-0">
             <div >
-              <label>Discount Pricing</label><br />
+              <label>Discounted  Price</label><br />
               <span>How much to charge a student for this course</span>
             </div>
             <input

@@ -31,7 +31,13 @@ export default () => {
     dispatch(LogoutIns())
     // setTimeout(() => {
     //   setLoading(false)
-    router.push('/en/login')
+    if (User?.role === "company") {
+      router.push('/en/businesslogin')
+         
+    }
+    else {
+      router.push('/en/login')
+    }
     // }, 2000);
   }
 

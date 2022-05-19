@@ -502,7 +502,7 @@
 .dsaofjosd-ajeir button:hover,
 .dsaofjosd-ajeir button:active,
 .dsaofjosd-ajeir button:focus {
-  background-color: transparent !important;
+  background-color: transparent ;
   border: none !important;
   box-shadow: none !important;
 }
@@ -2812,7 +2812,6 @@
   padding: 0px 10px;
 }
 
-.dsaofjosd-ajeir .navbar-expand-lg .navbar-collapse {}
 
 .dsaofjosd-ajeir .bg-light {
   box-shadow: 0px 10px 22px rgb(199 199 199 / 12%) !important;
@@ -4083,11 +4082,13 @@ input[type=number] {
 
 } */
 
+
 .dropdown-menu a {
-  padding: 3px;
+  padding: 3px 0px 3px 10px;
   color: black;
   float: left;
   width: 100%;
+  text-align: left;
   text-decoration: none;
 }
 
@@ -4897,3 +4898,7 @@ textarea::placeholder {
   width: 100%;
   outline: none;
 } */
+
+
+
+/* Notification */

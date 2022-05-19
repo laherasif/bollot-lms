@@ -76,7 +76,6 @@ export default ({ lectures, CourseId }: any) => {
     }
   }, [lectures])
 
-  console.log("payal", errors)
 
 
   const GetLect = (link: any) => {
@@ -88,7 +87,6 @@ export default ({ lectures, CourseId }: any) => {
     try {
       const url = myBucket.getSignedUrl('getObject', paramss);
       setValue(url)
-      console.log("url", url)
     }
     catch (err) { }
   }
@@ -121,85 +119,135 @@ export default ({ lectures, CourseId }: any) => {
         <div>
           <h4>Title : {lectures[index].title}</h4>
         </div>
-        {lectures.some((s) => s.file_type === "Video") ?
-          <div>
-            Lectures : {index + 1} / {lectures.length}
-          </div>
-          : null}
+        {/* {lectures.some((s) => s.file_type === "Video") ? */}
+        <div>
+          Lectures : {index + 1} / {lectures.length}
+        </div>
+        {/* : null} */}
       </div>
-      {
-        lectures.some((s) => s.file_type === "Video") ?
+
+      {lectures.some((s) => s.file_type === "Video") ?
+      
+        lectures.length && lectures?.map((lec: any, i: number) => (
+        <ReactPlayer
+          width="100%"
+          height="100%"
+          preload="none"
+          playing={lectures[index].id === lec.id ? true : false}
+          controls
+          url={value} />
+        ))
+        : lectures.some((s) => s.file_type === "Video") && lectures.length > 1 ?
           <Carousel activeIndex={index} interval={null} indicators={false} onSelect={handleSelect}>
-            {lectures.length && lectures?.map((lec: any, i: number) => (
+            {
+              lectures.length && lectures?.map((lec: any, i: number) => (
 
-              <Carousel.Item key={i} style={{ width: '100%' }}>
+                <Carousel.Item key={i} style={{ width: '100%' }}>
+                  <ReactPlayer
+                    width="100%"
+                    height="100%"
+                    preload="none"
+                    playing={lectures[index].id === lec.id ? true : false}
+                    controls
+                    url={value} />
 
-                {/* <LionPlayer src={value} autoplay controls={true } /> */}
-                
-                <ReactPlayer
-                  width="100%"
-                  height="100%"
-                  preload="none"
-                  playing={lectures[index].id === lec.id ? true : false}
-                  controls
-                  url={value} />
+                </Carousel.Item>
 
-              </Carousel.Item>
-            ))
+              ))
             }
-
           </Carousel>
-          :
-          <div style={{ textAlign: '-webkit-center' }}>
 
-            <Document
-              file={value}
-              options={{ workerSrc: "/pdf.worker.js" }}
-              onLoadSuccess={onDocumentLoadSuccess}
-            >
-              <Page pageNumber={pageNumber} />
-            </Document>
-            <div style={{ textAlign: 'center' }}>
-              <p>
-                Page {pageNumber || (numPages ? 1 : "--")} of {numPages || "--"}
-              </p>
-              <div className="umpire w-100 " >
-                <div className="umpire-1 umpire-1-cst  mt-3 ">
-                  <div className="d-flex mb-3 maxima d-flex justify-content-center">
-                    <button
-                      className="upload-1 sdisad-dsdactive "
-                      disabled={pageNumber <= 1} onClick={previousPage}
+          : lectures.some((s) => s.file_type === "PDF") && lectures.length > 1 ?
+            <Carousel activeIndex={index} interval={null} indicators={false} onSelect={handleSelect}>
+              {lectures.length && lectures?.map((lec: any, i: number) => (
+                <Carousel.Item style={{ width: '100%' }}>
+                  <div style={{ textAlign: '-webkit-center' }}>
+
+                    <Document
+                      file={value}
+                      options={{ workerSrc: "/pdf.worker.js" }}
+                      onLoadSuccess={onDocumentLoadSuccess}
                     >
-                      Previous
-                    </button>
-                    <button
-                      className="upload-1 sdisad-dsdactive"
-                      disabled={pageNumber >= numPages}
-                      onClick={nextPage}
-                    >
-                      Next
-                      {/* {loading ? <Spinner animation="border" /> : "Save & Next"} */}
-                    </button>
+                      <Page pageNumber={pageNumber} />
+                    </Document>
+                    <div style={{ textAlign: 'center' }}>
+                      <p>
+                        Page {pageNumber || (numPages ? 1 : "--")} of {numPages || "--"}
+                      </p>
+                      <div className="umpire w-100 " >
+                        <div className="umpire-1 umpire-1-cst  mt-3 ">
+                          <div className="d-flex mb-3 maxima d-flex justify-content-center">
+                            <button
+                              className="upload-1 sdisad-dsdactive "
+                              disabled={pageNumber <= 1} onClick={previousPage}
+                            >
+                              Previous
+                            </button>
+                            <button
+                              className="upload-1 sdisad-dsdactive"
+                              disabled={pageNumber >= numPages}
+                              onClick={nextPage}
+                            >
+                              Next
+                            </button>
+                          </div>
+
+                        </div>
+                      </div>
+
+
+                    </div>
                   </div>
+                </Carousel.Item>
+              ))
+              }
+            </Carousel>
+
+            :
+            lectures.length && lectures?.map((lec: any, i: number) => (
+              <div style={{ textAlign: '-webkit-center' }}>
+
+                <Document
+                  file={value}
+                  options={{ workerSrc: "/pdf.worker.js" }}
+                  onLoadSuccess={onDocumentLoadSuccess}
+                >
+                  <Page pageNumber={pageNumber} />
+                </Document>
+                <div style={{ textAlign: 'center' }}>
+                  <p>
+                    Page {pageNumber || (numPages ? 1 : "--")} of {numPages || "--"}
+                  </p>
+                  <div className="umpire w-100 " >
+                    <div className="umpire-1 umpire-1-cst  mt-3 ">
+                      <div className="d-flex mb-3 maxima d-flex justify-content-center">
+                        <button
+                          className="upload-1 sdisad-dsdactive "
+                          disabled={pageNumber <= 1} onClick={previousPage}
+                        >
+                          Previous
+                        </button>
+                        <button
+                          className="upload-1 sdisad-dsdactive"
+                          disabled={pageNumber >= numPages}
+                          onClick={nextPage}
+                        >
+                          Next
+                        </button>
+                      </div>
+
+                    </div>
+                  </div>
+
 
                 </div>
               </div>
-
-              {/* <button type="button" disabled={pageNumber <= 1} onClick={previousPage}>
-                Previous
-              </button>
-              <button
-                type="button"
-                disabled={pageNumber >= numPages}
-                onClick={nextPage}
-              >
-                Next
-              </button> */}
-            </div>
-          </div>
+            ))
 
 
       }
+
+
     </>
   );
 }

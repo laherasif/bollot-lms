@@ -54,6 +54,8 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
   }]);
 
 
+ 
+
 
   const token = useSelector(
     (state: RootStateOrAny) => state?.userReducer?.token
@@ -249,11 +251,14 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
     ac.lectures.some((sa: any) => sa.progressbar < 100)
   );
 
+
+  // const f = 
+  // console.log("f" , f )
   return (
     <>
       <div className="p-fields" >
         <div className="row">
-          <h4 className="mb-2">Plane Your Course </h4>
+          <h4 className="mb-2">Plan Your Course </h4>
           <div className="col-12 col-md-6 mt-13 col-md-offset-1 ">
             <div
               data-cy="button-box"
@@ -382,7 +387,7 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
               </div>{" "}
               <div id="button-box-2" className="up-button-box-labels">
                 <div className="up-button-box-labels">
-                  <h4>I will all the classes personally, online </h4>
+                  <h4>I will conduct all the classes personally, online </h4>
                 </div>{" "}
                 {/**/}
               </div>
@@ -447,14 +452,16 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
                         >
                           <div className="kvjadsd-j43rm iasdufhvs-ernd" >
                             <Icons name="i29" />
-                            {/* {load ? <Spinner animation="border" size="sm"/> : */}
                             <>
-                              {lec.thumbnail ? <img src={lec.thumbnail} alt="course_img" className="thum_img" /> : ""}
-                              {lec.thumbnail || lec.file_type === "Video" ? "" : lec.object_key ? lec?.object_key : <p>Drag file here / Choose file</p>}
+                            <p>{lec.object_key}</p>
+                            {lec.progressbar === 100 ? <p className="mt-2">File Uploaded</p> : " "} 
+
+
+                              {/* {lec.thumbnail ? <img src={lec.thumbnail} alt="course_img" className="thum_img" /> : ""} */}
+                              {/* {lec.file_type === "Video" ? "" : lec.object_key ? lec?.object_key : <p>Drag file here / Choose file</p>} */}
                             </>
-                            {/* }/ */}
                           </div>
-                          {lec?.thumbnail || lec.file_type === "PDF" ? "" :
+                          {lec?.object_key ? "" :
                             <input type="file" accept="pdf/*" onChange={(e) => handleChangeLectureFile(index, i, e)} className="custom-file-input" />
                           }
                           {errors && errors?.sections ? <div className="invalid mt-1">{errors?.sections[index]?.lectures[i]?.object_key}</div> : null}
@@ -466,7 +473,7 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
                             :
                             lec.progressbar && <ProgressBar animated now={lec.progressbar} />}
                         </div>
-                        {lec?.thumbnail && lec.progressbar === 100 ?
+                        {lec?.object_key && lec.progressbar === 100 ?
                           <>
                             <div className="overlay"></div>
                             <div id="icon" onClick={() => delThumnail(index, i)}>
@@ -479,7 +486,10 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
 
                     </div>
                   ))}
-                  <span className="add-mores" onClick={() => AddmoreLecture(index)} >+ Add more lectures </span>
+                  {/* {sec.lectures.some((s:any) => s.progressbar === 100 ? )} */}
+                  <span className="add-mores"
+                   style={sec.lectures.some((s:any) => s.progressbar > 0 && s.progressbar < 100 ) ? {cursor:'not-allowed' } :{ cursor:'pointer'} }
+                   onClick={ sec.lectures.some((s:any) => s.progressbar > 0 && s.progressbar < 100 ) ? null : () => AddmoreLecture(index)} >+ Add more lectures </span>
 
 
                 </div>
@@ -489,7 +499,8 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
 
             </div>
             {/* <span style={{ fontSize: '12px', color: 'red', fontWeight: '500' }}>Note : During uploading leacture progressbar Section and Save will not created till leature upload </span> */}
-            <h3 id="more-section" onClick={() => AddmoreSection()} style={{ cursor: 'pointer' }}>
+              
+           <h3 id="more-section" style={Criculums.some((s) => s.lectures.some((l)=> l.progressbar > 0 && l.progressbar < 100 )) ? {cursor:'not-allowed'} : {cursor:'pointer'}}  onClick={() => AddmoreSection()} >
               + Add more lectures and more sections
             </h3>
 
@@ -499,12 +510,15 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
                   <button
                     className="upload-1 sdisad-dsdactive "
                     onClick={() => onPrevStep(1 - 1)}
+                    disabled={Criculums.some((s) => s.lectures.some((l)=> l.progressbar > 0 && l.progressbar < 100 )) ? true : false}
                   >
                     Previous
                   </button>
                   <button
                     className="upload-1 sdisad-dsdactive"
                     onClick={() => SaveCriculum()}
+                    disabled={Criculums.some((s) => s.lectures.some((l)=> l.progressbar > 0 && l.progressbar < 100 )) ? true : false}
+
                   >
                     <i className="fa fa-save" style={{ marginRight: '10px' }}></i>
                     {loading ? <Spinner animation="border" /> : "Save & Next"}

@@ -10,17 +10,10 @@ import {
 } from '../../types/types'
 import instance from '../../../confiq/axios/instance'
 
-
-
-
-
-
-
-
 // Register User 
-export const loginAdmin = (data) => async  dispatch => {
+export const loginAdmin = (res) => async  dispatch => {
     try {
-        let res = await instance.post('api//admin/login', data)
+        // let res = await instance.post('api//admin/login', data)
         dispatch({
             type: LOGIN_ADMIN,
             payload: res.data

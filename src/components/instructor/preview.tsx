@@ -97,7 +97,7 @@ export default ({ changeState, onPrevStep, step }: any) => {
 
     else {
       const thumbnail: any = await generateVideoThumbnail(file)
-     
+
 
       const params = {
         ACL: 'private',
@@ -196,8 +196,8 @@ export default ({ changeState, onPrevStep, step }: any) => {
 
 
 
-  console.log("preview" , Previews)
-  console.log("preview" , preview)
+  console.log("preview", Previews)
+  console.log("preview", preview)
 
 
 
@@ -231,53 +231,53 @@ export default ({ changeState, onPrevStep, step }: any) => {
           <div className="row">
             <div className="col-12 table-video" >
               {preview.length ? preview?.map((pr: any, index: number) => {
-              
-                  return (
-                    <div key={index}>
-                      {pr?.lectures?.map((lec: any, i: number) => (
-                        <Table responsive="md" key={i} >
-                          <tbody >
-                            <tr style={lec?.file_type === "PDF" ? { visibility: 'hidden', cursor: 'pointer' } : { cursor: 'pointer' }} >
-                              <td>
-                                <div className="custom-checkbox">
 
-                                  <input
-                                    type="checkbox"
-                                    className="custom-control-input "
-                                    id="customCheck1"
-                                    // checked={Previews?.some((d: any) => d.course_section_lecture_id === lec.course_section_id ? true : false)}
-                                    onChange={(e) => AddPreviewLect(lec, e)}
-                                  />
+                return (
+                  <div key={index}>
+                    {pr?.lectures?.map((lec: any, i: number) => (
+                      <Table responsive="md" key={i} >
+                        <tbody >
+                          <tr style={lec?.file_type === "PDF" ? { visibility: 'hidden', cursor: 'pointer' } : { cursor: 'pointer' }} >
+                            <td>
+                              <div className="custom-checkbox">
+
+                                <input
+                                  type="checkbox"
+                                  className="custom-control-input "
+                                  id="customCheck1"
+                                  // checked={Previews?.some((d: any) => d.course_section_lecture_id === lec.course_section_id ? true : false)}
+                                  onChange={(e) => AddPreviewLect(lec, e)}
+                                />
+                              </div>
+
+                            </td>
+                            <>
+                              <td onClick={() => VideoShow(lec)}>
+                                <div className="video_section" >
+                                  <img src={lec?.thumbnail} alt="previews" />
+                                  <div className="video-icon">
+                                    <i className="fas fa-play-circle"></i>
+                                  </div>
                                 </div>
-
                               </td>
-                              <>
-                                <td onClick={() => VideoShow(lec)}>
-                                  <div className="video_section" >
-                                    <img src={lec?.thumbnail} alt="previews" />
-                                    <div className="video-icon">
-                                      <i className="fas fa-play-circle"></i>
-                                    </div>
-                                  </div>
-                                </td>
-                                <td>
-                                  <div className="video-title">
-                                    {lec?.title}
+                              <td>
+                                <div className="video-title">
+                                  {lec?.title}
 
-                                  </div>
-                                </td>
-                              </>
+                                </div>
+                              </td>
+                            </>
 
-                            </tr>
-                          </tbody>
-                        </Table>
+                          </tr>
+                        </tbody>
+                      </Table>
 
 
-                      ))}
+                    ))}
 
-                    </div>
+                  </div>
 
-                  )
+                )
               })
                 : <div>Preview video not found </div>
               }
@@ -310,28 +310,30 @@ export default ({ changeState, onPrevStep, step }: any) => {
                     name="title"
                     value={lec.title}
                     onChange={(e) => handleChangeSection(index, e)}
-                    style={errors[index]?.title && {border:'1pt solid red '}}
+                    style={errors[index]?.title && { border: '1pt solid red ' }}
                     placeholder="Write here..." />
-                  {errors && errors[index]?.title ?  <div className="invalid mt-1">{errors[index]?.title}</div> : null}
+                  {errors && errors[index]?.title ? <div className="invalid mt-1">{errors[index]?.title}</div> : null}
 
                 </div>
 
 
                 <div className={lec.thumbnail && lec.id || lec.progressbar === 100 ? "image-container" : ""}>
                   <label>Video file for this Lecture</label>
-                  <div className="drop-box img-box" 
-                  style={errors[index]?.object_key && {border:'1pt solid red '}}
+                  <div className="drop-box img-box"
+                    style={errors[index]?.object_key && { border: '1pt solid red ' }}
                   >
                     <div className="kvjadsd-j43rm iasdufhvs-ernd" >
                       <Icons name="i29" />
-                   
-                      <>
+                      <p>{lec.object_key}</p>
+                      {lec.progressbar === 100 ? <p className="mt-2">File Uploaded</p> : " "}
+
+                      {/* <>
                         {lec.thumbnail ? <img src={lec.thumbnail} alt="course_img" className="thum_img" /> : ""}
                         {lec.thumbnail || lec.file_type === "Video" ? "" : lec.object_key ? lec?.object_key : <p>Drag file here / Choose file</p>}
-                      </>
-                     
+                      </> */}
+
                     </div>
-                    {lec?.thumbnail || lec.file_type === "PDF" ? "" :
+                    {lec?.object_key ? "" :
                       <input type="file" accept="pdf/*" onChange={(e) => handleChangeLectureFile(index, e)} className="custom-file-input" />
                     }
                     {errors && errors[index]?.object_key ? <div className="invalid mt-1">{errors[index]?.object_key}</div> : null}
@@ -342,7 +344,7 @@ export default ({ changeState, onPrevStep, step }: any) => {
                       :
                       lec.progressbar && <ProgressBar animated now={lec.progressbar} />}
                   </div>
-                  {lec?.thumbnail  && lec.progressbar === 100 ?
+                  {lec?.object_key && lec.progressbar === 100 ?
                     <>
                       <div className="overlay"></div>
                       <div id="icon" onClick={() => delThumnail(index)}>

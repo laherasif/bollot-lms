@@ -1,5 +1,12 @@
 
-import { LOGIN_USER, ERROR, PAYEMENT_CARD,   RESET_CART,  REG_CART, GET_CART, DELETE_CART, UPDATE_CART_QUANTITY_CLIENT, INCREMENT, DECREMENT, REG_CHECKOUT_DATA, FETCH_CHECKOUT_DATA } from '../../types/types'
+import {
+    PAYEMENT_CARD,
+    RESET_CART,
+    REG_CART,
+    DELETE_CART,
+    REG_BOOK_MARK,
+    GET_BOOK_MARK,
+} from '../../types/types'
 import instance from '../../../confiq/axios/instance'
 
 
@@ -10,13 +17,22 @@ import instance from '../../../confiq/axios/instance'
 
 
 // Register User 
-export const SaveCart = (course) =>  dispatch => {
+export const SaveCart = (course) => dispatch => {
     dispatch({
         type: REG_CART,
         payload: course
     })
 
 }
+
+export const SaveBookmark = (course) => dispatch => {
+    dispatch({
+        type: REG_BOOK_MARK,
+        payload: course
+    })
+
+}
+
 
 
 
@@ -35,7 +51,7 @@ export const DeleteCart = (id) => async dispatch => {
 
 
 // Register User 
-export const SaveCard  = (id) => async dispatch => {
+export const SaveCard = (id) => async dispatch => {
     try {
         dispatch({
             type: PAYEMENT_CARD,
@@ -52,8 +68,8 @@ export const ResetCart = () => async dispatch => {
     try {
         dispatch({
             type: RESET_CART,
-            payload :''
-            
+            payload: ''
+
         })
     }
     catch (err) {

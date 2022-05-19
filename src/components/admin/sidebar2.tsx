@@ -2,8 +2,9 @@ import React from "react";
 import Link from "next/link";
 import { MdOutlineReviews } from "react-icons/md";
 import { BsWallet2 } from "react-icons/bs";
-import Icons from "../../icons";
+import Icons from "./icons";
 import { Container, Nav, Navbar, Offcanvas } from "react-bootstrap";
+import { useRouter } from "next/router";
 export default () => {
   const openPan = () => {
     const element = document.querySelector("#sidebar-cst");
@@ -21,35 +22,48 @@ export default () => {
   };
 
   const SideBarChild = () => {
+    const router = useRouter()
     return (
-      <div className="inst-side">
-        <div className="dash-1" id="sidebar-cst">
-          <Link href="/en/admin">
-            <div className="dash-ch-2 sdisad-dsdactive">
+      <div className="inst-side" style={{ height: '100%', width: '150px' }}>
+        <div className="admin-1" id="sidebar-cst" style={{ height: '100%' }}>
+          <Link href="/en/admin/dashboard">
+            <div className={`dash-ch-2 sdisad-dsd ${router.asPath === "/en/admin/dashboard" ? " dash-ch-2 sdisad-dsdactive" : ""}`}>
               <Icons name="i1" />
               <h3>Dashboard</h3>
             </div>
           </Link>
           <Link href="/en/admin/courses">
-            <div className="dash-ch-2">
+            <div className={`dash-ch-2 sdisad-dsd ${router.asPath === "/en/admin/courses" ? "dash-ch-2 sdisad-dsdactive" : ""}`}>
               <Icons name="i2" />
-              <h3>Manage Students</h3>
+              <h3>Manage Courses</h3>
             </div>
           </Link>
-          <Link href="/en/admin/earning">
-            <div className="dash-ch-2">
+          <Link href="/en/admin/employe">
+            <div className={`dash-ch-2 sdisad-dsd ${router.asPath === "/en/admin/employe" ? "dash-ch-2 sdisad-dsdactive" : ""}`}>
+              <Icons name="i2" />
+              <h3>Manage Employes</h3>
+            </div>
+          </Link>
+          <Link href="/en/admin/website">
+            <div className={`dash-ch-2 sdisad-dsd ${router.asPath === "/en/admin/website" ? "dash-ch-2 sdisad-dsdactive" : ""}`}>
               <Icons name="i3" />
-              <h3>Earnings</h3>
+              <h3>Manage Website</h3>
             </div>
           </Link>
-          <Link href="/en/admin/inbox">
-            <div className="dash-ch-2">
+          <Link href="/en/admin/certificate">
+            <div className={`dash-ch-2 sdisad-dsd ${router.asPath === "/en/admin/certificate" ? "dash-ch-2 sdisad-dsdactive" : ""}`}>
               <Icons name="i4" />
-              <h3>Inbox</h3>
+              <h3>Manage Certificate</h3>
+            </div>
+          </Link>
+          <Link href="/en/admin/account">
+            <div className={`dash-ch-2 sdisad-dsd ${router.asPath === "/en/admin/account" ? "dash-ch-2 sdisad-dsdactive" : ""}`}>
+              <Icons name="i4" />
+              <h3>Manage Accounts</h3>
             </div>
           </Link>
           <Link href="/en/admin/profile">
-            <div className="dash-ch-2">
+            <div className={`dash-ch-2 sdisad-dsd ${router.asPath === "/en/admin/profile" ? "dash-ch-2 sdisad-dsdactive" : ""}`}>
               <Icons name="i5" />
               <h3>Profile</h3>
             </div>
@@ -61,25 +75,25 @@ export default () => {
   return (
     <div className="jkdasfis-adaerin">
       <div className="kjadsf03we-jda3">
-      <SideBarChild />
+        <SideBarChild />
       </div>
-        <div className="kajsf0-3ja3rra">
-        <Navbar bg="light" className="hdhafs-dawej" expand={false}>
-        <Container fluid>
-          <Navbar.Toggle aria-controls="offcanvasNavbar" />
-          <Navbar.Offcanvas
-            id="kjsda03ejisaeas"
-            aria-labelledby="offcanvasNavbarLabel"
-            placement="end"
-          >
-            <Offcanvas.Header closeButton></Offcanvas.Header>
-            <Offcanvas.Body>
-              <SideBarChild />
-            </Offcanvas.Body>
-          </Navbar.Offcanvas>
-        </Container>
-      </Navbar>
-        </div>
+      <div className="kajsf0-3ja3rra">
+        <Navbar className="hdhafs-dawej" expand={false}>
+          <Container fluid>
+            <Navbar.Toggle aria-controls="offcanvasNavbar" />
+            <Navbar.Offcanvas
+              id="kjsda03ejisaeas"
+              aria-labelledby="offcanvasNavbarLabel"
+              placement="end"
+            >
+              <Offcanvas.Header closeButton></Offcanvas.Header>
+              <Offcanvas.Body>
+                <SideBarChild />
+              </Offcanvas.Body>
+            </Navbar.Offcanvas>
+          </Container>
+        </Navbar>
+      </div>
     </div>
   );
 };

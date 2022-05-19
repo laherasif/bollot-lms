@@ -36,6 +36,9 @@ export const REG_CART = 'REG_CART'
 export const GET_CART = 'GET_CART'
 export const DELETE_CART = 'DELETE_CART'
 
+export const REG_BOOK_MARK = "REG_BOOK_MARK"
+export const GET_BOOK_MARK = "GET_BOOK_MARK"
+
 export const LOGOUT_INST = "LOGOUT_INST"
 export const REG_CHECKOUT_DATA = 'REG_CHECKOUT_DATA'
 export const FETCH_CHECKOUT_DATA = 'FETCH_CHECKOUT_DATA'

@@ -16,6 +16,8 @@ import insImg from '../../../src/assets/images/instructor.png'
 import stuImg from '../../../src/assets/images/student.png'
 import { getAuth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider } from "firebase/auth";
 import Image from "next/image";
+import Platform from 'react-platform-js'
+
 import { Form } from "react-bootstrap";
 const Home: NextPage = () => {
   // const intl = useIntl();
@@ -26,12 +28,12 @@ const Home: NextPage = () => {
     password?: number | string,
     role?: number,
     company_name: string,
-    company_size: number,
+    company_size: string,
     legal_address: string
   }
 
 
-  const { varified } = useSelector((state: RootStateOrAny) => state.userReducer)
+  const { varified , User  } = useSelector((state: RootStateOrAny) => state.userReducer)
 
 
   const [authValue, setAuthValue] = useState<SignUp>({
@@ -55,6 +57,21 @@ const Home: NextPage = () => {
     }
   }, [])
 
+  useEffect(() => {
+    if (User && User.is_email_verified === "1" && User.role === "company") {
+      router.replace('/en/instructor/profile')
+    }
+  
+    else if (User && User.is_email_verified === "0") {
+      setMessage(true)
+    }
+  
+  }, [User ])
+
+
+
+
+ 
 
   const firebaseAuth = getAuth(Firebaseapp);
   const provider = new GoogleAuthProvider();
@@ -66,14 +83,20 @@ const Home: NextPage = () => {
 
   const signInGog = async () => {
     const { user } = await signInWithPopup(firebaseAuth, provider);
-    const { refreshToken, providerData } = user;
+    const { refreshToken, providerData }:any = user;
 
     dispatch(SocialRegComp(providerData, "company"))
-
-    let object = Object.assign({}, ...providerData);
-    setTimeout(() => {
+    if (User?.is_email_verified === "0") {
       setMessage(true)
-    }, 1000);
+    }
+    else if (User && User?.role === "compnay") {
+      router.push('/en/instructor/')
+
+    }
+    // let object = Object.assign({}, ...providerData);
+    // setTimeout(() => {
+    //   setMessage(true)
+    // }, 1000);
 
   };
 
@@ -81,8 +104,17 @@ const Home: NextPage = () => {
 
   const signInFb = async () => {
     const { user } = await signInWithPopup(firebaseAuth, Fbprovider);
-    const { refreshToken, providerData } = user;
+    const { refreshToken, providerData }:any = user;
     dispatch(SocialRegComp(providerData, "company"))
+    if (User?.is_email_verified === "0") {
+      setMessage(true)
+    }
+    else if (User && User?.role === "compnay") {
+      router.push('/en/instructor/')
+
+    }
+    
+  
   };
 
 
@@ -111,6 +143,9 @@ const Home: NextPage = () => {
         company_name: company_name,
         company_size: company_size,
         legal_address: legal_address,
+        device_name: Platform.Browser,
+        device_model:Platform.BrowserVersion,
+        operating_system: Platform.OS,
         role: "company"
       }
 

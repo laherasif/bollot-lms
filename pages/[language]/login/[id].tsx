@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 import Otp from '../../../src/components/otpverfication'
 import Role from '../../../src/components/otp'
 import { Firebaseapp } from "../../../src/confiq/firebase/firebase";
+import Platform from 'react-platform-js'
 import { getAuth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider } from "firebase/auth";
 import { useDispatch, useSelector, RootStateOrAny } from "react-redux";
 const Home: NextPage = () => {
@@ -55,7 +56,6 @@ const Home: NextPage = () => {
   const Fbprovider = new FacebookAuthProvider();
   const router = useRouter();
 
-  console.log("routyer", router)
 
 let checkRouter = router.query.checkout 
 
@@ -129,7 +129,16 @@ let checkRouter = router.query.checkout
     debugger
     setLoader(true)
     try {
-      let res = await instance.post("api//login", authValue)
+
+      let value ={
+        email : authValue.email,
+        password : authValue.password , 
+        device_name: Platform.Browser,
+        device_model:Platform.BrowserVersion,
+        operating_system: Platform.OS
+      }
+
+      let res = await instance.post("api//login", value)
       if (res.data.success === true && res.data.response.student.is_email_verified === "1" && res.data.response.student.role === "student") {
         setLoader(false)
         dispatch(loginUser(res.data))

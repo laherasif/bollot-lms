@@ -5922,10 +5922,11 @@ body .multi-range-slider .bar-inner {
 
 
 .dropdown-menu a {
-  padding: 3px;
+  padding: 3px 0px 3px 10px;
   color: black;
   float: left;
   width: 100%;
+  text-align: left;
   text-decoration: none;
 }
 
@@ -6035,9 +6036,18 @@ body .multi-range-slider .bar-inner {
 /* .kadsjfasd-asdfn {} */
 
 .added-to-cart span {
-  background-color: white;
-  border: 1px solid #af656d;
-  padding: 9px;
+  background-color: #cccc;
+  width: 25%;
+  height: 100%;
+  /* padding: 8px 9px 9px 9px; */
+}
+
+.added-to-cart span svg{
+  margin-top: 13px;
+}
+
+.filled svg{
+  color: black;
 }
 
 .added-to-cart p {
@@ -6049,7 +6059,8 @@ body .multi-range-slider .bar-inner {
   border: none;
   font-style: normal;
   font-weight: 600;
-  font-size: 24px;
+  font-size: 20px;
+  padding-left: 18px;
   line-height: 120.78%;
   text-transform: uppercase;
   color: #ffffff;

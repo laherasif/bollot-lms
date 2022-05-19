@@ -23,10 +23,10 @@ const Home: NextPage = () => {
 
   const carts = useSelector((state: RootStateOrAny) => state.cartReducer.AddCart)
 
-  const totalamount = carts.reduce(function (currentTotal:any, obj:any) {
+  const totalamount = carts.reduce(function (currentTotal: any, obj: any) {
     let str = obj.price.replace(",", "");
     var price = parseFloat(str);
-    if (!isNaN(price)) return currentTotal + price * obj.Quantity;  
+    if (!isNaN(price)) return currentTotal + price * obj.Quantity;
     return currentTotal;
   }, 0).toFixed(2)
 
@@ -57,11 +57,12 @@ const Home: NextPage = () => {
                 <p>{carts && carts.length} Course in cart</p>
               </div>
 
-              <div className="d-flex hdsafjf-dsa" style={{justifyContent:'space-between'}}>
+              <div className="d-flex hdsafjf-dsa" style={{ justifyContent: 'space-between' }}>
                 {carts.length > 0 ? <>
                   <div className="w-100">
                     {
-                      carts.map((item: object, index: number) => <CartCard item={item} key={index} />)}
+                      carts.map((item: object, index: number) => <CartCard item={item} key={index} />)
+                    }
 
                   </div>
                   <div className="photo-maker-2">
@@ -90,7 +91,7 @@ const Home: NextPage = () => {
                     </div>
                   </div>
                 </> :
-                  <div className="nofdaisf-sdnew" style={{width:'100%'}}>
+                  <div className="nofdaisf-sdnew" style={{ width: '100%' }}>
                     <Icons name="c43" />
                     <p>Your cart is empty. Keep shopping to find a course!</p>
                     <Link href="/en/courses">

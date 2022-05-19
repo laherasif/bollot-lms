@@ -44,10 +44,13 @@
   .wrapper > input[type="radio"]{
     display: none;
   }
-  #option-1:checked:checked ~ .option-1,
+  #option-1:checked:checked ~ .option-1{
+    border-color: #d0565c  ;
+    background: #d0565c ;
+  }
   #option-2:checked:checked ~ .option-2{
-    border-color: #0069d9;
-    background: #0069d9;
+    border-color: #00778f ;
+    background: #00778f;
   }
   #option-1:checked:checked ~ .option-1 .dot,
   #option-2:checked:checked ~ .option-2 .dot{

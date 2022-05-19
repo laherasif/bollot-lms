@@ -5,8 +5,8 @@ import React, { memo, useState, useCallback, CSSProperties } from 'react';
 import SingleInput from './single';
 import { useSelector, RootStateOrAny } from 'react-redux'
 import Router, { useRouter } from "next/router";
-import { EmailHide } from '../../../../src/function/hooks'
-import instance from '../../../../src/confiq/axios/instance';
+// import { EmailHide } from '../../../../src/function/hooks'
+// import instance from '../../../../src/confiq/axios/instance';
 import axios from 'axios';
 import { Spinner } from 'react-bootstrap';
 // import { OtpVarif } from '../../../../src/redux/actions/auth/user'
@@ -52,6 +52,8 @@ export function OTPInputComponent(props: OTPInputProps) {
 
   const router = useRouter()
 
+  
+
   const { token, User } = useSelector((state: RootStateOrAny) => state?.userReducer)
 
 
@@ -73,6 +75,7 @@ export function OTPInputComponent(props: OTPInputProps) {
     },
     [onChangeOTP],
   );
+  
 
   // Helper to return value with the right type: 'text' or 'number'
   const getRightValue = useCallback(
@@ -199,20 +202,23 @@ export function OTPInputComponent(props: OTPInputProps) {
               updatedOTPValues[index] = changedValue;
               nextFocusIndex = index;
             }
+
           }
         });
         setOTPValues(updatedOTPValues);
+        const otpValue = otpValues.join('');
+        setOtp(otpValue)
+        
         setActiveInput(Math.min(nextFocusIndex + 1, length - 1));
       }
     },
     [activeInput, getRightValue, length, otpValues],
   );
-
   const handelSubmit = async () => {
     try {
       debugger
       setLoading(true)
-      let res = await AxInstance.post('api//authenticate-otp', { code: otp })
+      let res = await AxInstance.post('api//authenticate-otp', { code: otp  })
       if (res.data?.success === true) {
         if (User?.role === "student" || res?.data?.response?.student?.role === "student") {
             router.push("/en/student/dashboard"); 
@@ -285,7 +291,7 @@ export function OTPInputComponent(props: OTPInputProps) {
             </div>
           </div>
           <div className="container mb-132 w-100 flex-box">
-            <button className="btn-2 " onClick={(e) => handelSubmit(e)}>
+            <button className="btn-2 " onClick={() => handelSubmit()}>
               {loading ?
                 <Spinner animation='border' />
                 :

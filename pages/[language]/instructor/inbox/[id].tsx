@@ -52,16 +52,18 @@ const Home: NextPage = () => {
   useEffect(() => {
     const channel = pusher.subscribe("messages-channel");
     channel.bind('new-message', function (data: any) {
-      debugger
-
       const { message } = data
+      console.log("message ins" , message )
+      console.log("message user" , user )
+      if(user?.id == message.from_user_id){
       setMessages((prevState: any) => [
         message,
         ...prevState,
       ]);
+    }
       // setMessages([message, ...messages]) 
       // setMessages([...messages, message])
-
+      
     });
 
     return () => {
@@ -71,7 +73,7 @@ const Home: NextPage = () => {
 
 
 
-  }, []);
+  }, [messages]);
 
 
   console.log("messages", messages)
@@ -136,19 +138,27 @@ const Home: NextPage = () => {
   }
 
 
-  const SendMessage = async () => {
+  const SendMessage = async (e) => {
+    e.preventDefault()
     let value = {
       to_user_id: user.id,
       message: state,
     }
 
-    console.log("value", value)
+    let userData = {
+      message: state,
+      sender: {
+        fullname: User?.fullname,
+        image: User?.image,
+      }
+    }
+
 
     try {
-      // setLoading(true)
-      let res = await AxInstance.post('api//send-message', value)
-      // setMessages([res.data.response.message, ...messages])
+     
+      setMessages([userData, ...messages])
       setState('')
+      let res = await AxInstance.post('api//send-message', value)
       // setLoading(false)
     }
     catch (err) {
@@ -258,7 +268,7 @@ const Home: NextPage = () => {
                             <img src={ins?.user_details?.image || "/assets/images/umpire-1.svg"} />
                             <div>
                               <h3>{ins?.user_details?.fullname}</h3>
-                              <p>{ins?.user_details?.tagline}</p>
+                              <p>{ins?.last_message_obj?.message}</p>
                             </div>
                           </div>
                           <div>
@@ -283,11 +293,11 @@ const Home: NextPage = () => {
                 <div className="card-daskfj-e kjadsfl-sajdfiwew">
                   {messages && messages.length || loader === true ?
                     <>
-                      <div className="d-flex justify-content-between kjhadfd-sdfas ">
-                        <div className="user-card-inbox-inner kjhadfd-sdfas">
-                          <div>
-                            <h3>{user?.fullname} </h3>
-                            <p>Last active: 10 min ago</p>
+                      <div className="d-flex justify-content-between kjhadfd-sdfas " style={user?.tagline ? { paddingBottom: '5px' } : { paddingBottom: '15px' }}>
+                        <div className="user-card-inbox-inner kjhadfd-sdfas" style={{ borderBottom: 'none' }}>
+                          <div style={{ padding: '0px' }}>
+                            <h3 >{user?.fullname} </h3>
+                            <p>{user?.tagline}</p>
                           </div>
                         </div>
                         <div className="pos-redsfnds">
@@ -366,13 +376,16 @@ const Home: NextPage = () => {
 
 
                           </div>
-                          <div className="kasdjfsdsa-ewds">
-                            <input placeholder="Write a message" name="state " value={state} onChange={(e) => setState(e.target.value)} type="text" />
-                            <div onClick={() => SendMessage()}>
-                              <i className="fa fa-paper-plane" ></i>
+                          <form onSubmit={SendMessage}>
+                            <div className="kasdjfsdsa-ewds">
+                              <input placeholder="Write a message" required name="state " value={state} onChange={(e) => setState(e.target.value)} type="text" />
+                              <div onClick={(e) => SendMessage(e)}>
+                                <i className="fa fa-paper-plane" ></i>
+
+                              </div>
 
                             </div>
-                          </div>
+                          </form>
                         </>
                       }
 

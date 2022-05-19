@@ -5,6 +5,7 @@ import {
 
 const initialState = {
   Admin: {},
+  token : "",
   Students: [],
   Instructor: [],
 
@@ -13,10 +14,12 @@ const initialState = {
 const AdminReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOGIN_ADMIN:
-    
+    debugger
       return {
         ...state,
-        Admin: action.payload,
+        Admin: action.payload.response.admin,
+        token: action.payload.response.token.token,
+        isAuth: true,
       };
 
     case GET_ALL_INSTRUCTOR:

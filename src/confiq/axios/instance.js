@@ -5,7 +5,7 @@ import { store } from "../../../src/redux/store";
 // let token = "$2y$10$ekdz.jeHgiqPD4t2SfA8xepsqgYfAzi2zQ/2l/85R4vYRVgZB04YG"
 // console.log("tokemn" , token )
 
-const instance = axios.create({
+ const instance = axios.create({
   // .. where we make our configurations
   baseURL: 'https://dev.thetechub.us/bolloot/',
 });
@@ -27,5 +27,4 @@ instance.interceptors.response.use(
   }
 );
 
-
-export default instance;
+export default instance

@@ -53,34 +53,26 @@ const Home: NextPage = () => {
 
     const channel = pusher.subscribe("messages-channel");
     channel.bind('new-message', function (data: any) {
-      debugger
       const { message } = data
+      console.log("message stu" , message )
+      console.log("message user" , user )
+
+      if(user?.id == message.from_user_id){
       setMessages((prevState: any) => [
         message,
         ...prevState,
       ]);
       // setMessages([message, ...messages])
       // setMessages([...messages ,message])
+    }
     });
     return () => {
       pusher.unsubscribe("messages-channel");
     };
 
 
-  }, []);
+  }, [messages]);
 
-
-  console.log("messages", messages)
-
-
-
-  // useEffect(() => {
-  //   if (ScrollRef.current) {
-  //     ScrollRef.current.scrollIntoView({
-  //       behavior: 'smooth',
-  //     });
-  //   }
-  // }, [messages, loading])
 
 
 
@@ -133,20 +125,28 @@ const Home: NextPage = () => {
   }
 
 
-  const SendMessage = async () => {
+  const SendMessage = async (e: React.FormEvent<HTMLInputElement>) => {
+    e.preventDefault()
     let value = {
       to_user_id: user.id,
       message: state,
     }
 
-    console.log("value", value)
+
+    let userData = {
+      message: state,
+      sender: {
+        fullname: User?.fullname,
+        image: User?.image,
+      }
+    }
+  
+
 
     try {
-      // setLoading(true)
-      let res = await AxInstance.post('api//send-message', value)
-      // setMessages([res.data.response.message, ...messages])
+      setMessages([userData, ...messages])
       setState('')
-      // setLoading(false)
+      await AxInstance.post('api//send-message', value)
     }
     catch (err) {
 
@@ -186,6 +186,8 @@ const Home: NextPage = () => {
 
     }
   };
+
+  console.log("messgaes", messages)
 
 
   return (
@@ -249,11 +251,11 @@ const Home: NextPage = () => {
                             <div>
                               <h3>{ins?.user_two_details?.fullname}</h3>
 
-                              <p>{ins?.user_two_details?.tagline}</p>
+                              <p>{ins?.last_message_obj?.message}</p>
                             </div>
                           </div>
                           <div>
-                            <p>12 Jun</p>
+                            <p>{moment(ins.createdAt).format('ll')}</p>
                           </div>
                         </div>
                         // <UserChatCard users={ins.user_two_details} key={index} handleClick={(value) => getMessages(value)} />
@@ -275,7 +277,9 @@ const Home: NextPage = () => {
                         <div className="user-card-inbox-inner kjhadfd-sdfas">
                           <div>
                             <h3>{user?.fullname} </h3>
-                            <p>Last active: 10 min ago</p>
+                            <p>{user?.tagline}</p>
+
+                            {/* <p>{user?.}</p> */}
                           </div>
                         </div>
                         <div className="pos-redsfnds">
@@ -338,7 +342,7 @@ const Home: NextPage = () => {
                                       <div>
                                         <h3 style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
                                           {ms?.sender?.fullname}
-                                          <span className="data-time">{moment(ms.createdAt).format('ll')}</span>
+                                          <span className="data-time">{moment(ms?.createdAt).format('ll')}</span>
                                         </h3>
                                         {ms?.message}
                                       </div>
@@ -353,13 +357,16 @@ const Home: NextPage = () => {
 
 
                           </div>
-                          <div className="kasdjfsdsa-ewds">
-                            <input placeholder="Write a message" name="state " value={state} onChange={(e) => setState(e.target.value)} type="text" />
-                            <div onClick={() => SendMessage()}>
-                              <i className="fa fa-paper-plane" ></i>
+                          <form onSubmit={SendMessage}>
+                            <div className="kasdjfsdsa-ewds">
+                              <input placeholder="Write a message" required name="state " value={state} onChange={(e) => setState(e.target.value)} type="text" />
+                              <div onClick={(e: any) => SendMessage(e)}>
+                                <i className="fa fa-paper-plane" ></i>
 
+                              </div>
                             </div>
-                          </div>
+                          </form>
+
                         </>
                       }
 

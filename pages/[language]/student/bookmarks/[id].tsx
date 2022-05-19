@@ -11,9 +11,38 @@ import CourseCard from "../../../../src/components/student/CourseCard";
 import BookmarkCard from "../../../../src/components/student/BookmarkCard";
 import NavigationBar1 from "../../../../src/components/student/NavigationBar1";
 import withAuth from "../../../../src/components/Hoc/authRoute";
+import { RootStateOrAny, useSelector, useStore } from "react-redux";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { Small } from "../../../../src/components/student/loader";
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
+
+  const [bookmark, setBookMark] = useState([])
+  const [loading, setLoading] = useState(false)
+
+  const token = useSelector((state: RootStateOrAny) => state?.userReducer?.token)
+
+  const AxInstance = axios.create({
+    // .. where we make our configurations
+    baseURL: 'https://dev.thetechub.us/bolloot/',
+    headers: {
+      token: token
+    }
+  });
+  useEffect(() => {
+    let fetchCourse = async () => {
+      setLoading(true)
+      let res = await AxInstance.get('api//student/my-courses')
+      if (res.data.success === true) {
+        setLoading(false)
+        setBookMark(res.data.response.courses)
+      }
+    }
+    fetchCourse()
+  }, [])
 
   return (
     <>
@@ -24,24 +53,38 @@ const Home: NextPage = () => {
           <div className="dash-2">
             <div className="my-course">
               <TopNavbar />
-              <div className="hdsf0s-sadmsa">
-                <div className="d-flex dsaidsa-ajwe9ds">
-                <h3>Bookmarks</h3>
-                <div className="jasdiosad-aswe">
-    
-      <div className="dsnodi-sdjsad">
-        <FiSearch color="#8A8A8A" size={17} />
-        <input type="text" placeholder="Search" />
-      </div>
-    </div>
+              {loading ? Small()
+                :
+                <div className="hdsf0s-sadmsa">
+                  <div className="d-flex dsaidsa-ajwe9ds">
+                    <div>
+                      {/* <Link href="/en/student/courses">
+                      <h3 style={{cursor:'pointer'}}>
+                        <i className="fa fa-arrow-left"></i>
+                        Back
+                      </h3>
+                    </Link> */}
+                      <h3>Bookmarks</h3>
+                    </div>
+                    {/* <div className="jasdiosad-aswe">
+
+                    <div className="dsnodi-sdjsad">
+                      <FiSearch color="#8A8A8A" size={17} />
+                      <input type="text" placeholder="Search" />
+                    </div>
+                  </div> */}
+                  </div>
+                  <div className="complete-web-1">
+                    {bookmark && bookmark ? bookmark.map((item: any, index: number) => (
+                      <BookmarkCard BookMark={item} key={index} />
+
+                    ))
+                      : <div>Record not found </div>
+                    }
+
+                  </div>
                 </div>
-                <div className="complete-web-1">
-                  <BookmarkCard />
-                  <BookmarkCard />
-                  <BookmarkCard />
-                  <BookmarkCard />
-                </div>
-              </div>
+              }
             </div>
           </div>
         </div>
@@ -50,4 +93,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default withAuth( Home ) ;
+export default withAuth(Home);

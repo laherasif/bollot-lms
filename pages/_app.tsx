@@ -6,7 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/js/all.js'
 import "../styles/style.css";
 import "../styles/radio.css";
-// import "../styles/style - in.css";
+import "../styles/style - in.css";
 import "../styles/style - st.css";
 import "../styles/course.css";
 function MyApp({ Component, pageProps }: any) {

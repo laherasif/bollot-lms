@@ -1,17 +1,18 @@
 import type { NextPage } from "next";
 import { Accordion, Dropdown } from "react-bootstrap";
 
-import { useIntl } from "react-intl";
-import BadgeCard from "../../../src/components/card/BadgeCard";
-import BlogCard from "../../../src/components/card/BlogCard";
-import CartCard from "../../../src/components/card/CartCard";
-import CommentCard from "../../../src/components/card/CommentCard";
-import CommentCard1 from "../../../src/components/card/CommentCard1";
-import CommentCard2 from "../../../src/components/card/CommentCard2";
-import CourseCard from "../../../src/components/card/CourseCard";
+// import { useIntl } from "react-intl";
+// import BadgeCard from "../../../src/components/card/BadgeCard";
+// import BlogCard from "../../../src/components/card/BlogCard";
+// import CartCard from "../../../src/components/card/CartCard";
+// import CommentCard from "../../../src/components/card/CommentCard";
+// import CommentCard1 from "../../../src/components/card/CommentCard1";
+// import CommentCard2 from "../../../src/components/card/CommentCard2";
+// import CourseCard from "../../../src/components/card/CourseCard";
 import Footer from "../../../src/components/footer";
 import Navbar from "../../../src/components/header/Navbar";
 import Icons from "../../../src/icons";
+
 
 const Home: NextPage = () => {
   // const intl = useIntl();

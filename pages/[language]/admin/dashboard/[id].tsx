@@ -6,10 +6,10 @@ import { FiSearch } from "react-icons/fi";
 // import { IoMailOutline } from "react-icons/io5";
 // import Icons from "../../../src/icons";
 // import TopNavbar from "../../../src/components/TopNavbar";
-import NavigationBar1 from "../../../../src/components/admin/NavigationBar1";
-// import Chart from "../../../src/components/chart";
+import NavigationBar1 from "../../../../src/components/admin/NavigationBar3";
+import Chart from "../../../../src/components/admin/chart";
 import Chart1 from "../../../../src/components/admin/chart1";
-// import BarChart from "../../../src/components/barchart";
+import BarChart from "../../../../src/components/admin/barchart";
 import DashboardRightBar from "../../../../src/components/admin/DashboardRightBar";
 import React, { useState, useEffect } from 'react'
 import { useDispatch } from "react-redux";
@@ -20,10 +20,10 @@ const Home: NextPage = () => {
 
   const dispatch = useDispatch()
 
-  useEffect(() => {
-    dispatch(getAllInstructor())
-    dispatch(getAllStudent())
-  }, [])
+  // useEffect(() => {
+  //   dispatch(getAllInstructor())
+  //   dispatch(getAllStudent())
+  // }, [])
 
   return (
     <div className="inst">
@@ -31,11 +31,10 @@ const Home: NextPage = () => {
       <NavigationBar1 />
       <div className="kjfads0-asdi3">
         <Sidebar />
-        <DashboardRightBar />
 
       </div>
       <section className="dash-board jadsifd-asdasid">
-        <div className="jcoiasd03-eakw3e1">
+        <div className="jcoiasd03-eakw3e1" >
           <Sidebar />
         </div>
 
@@ -54,35 +53,8 @@ const Home: NextPage = () => {
                   <input type="text" placeholder="Search" />
                 </div>
               </div>
-              <div className="sanlsad-ajw3e">
-                <div className="row">
-                  <div className="col-md-8">
-                    <div className="aljskdfids-asdawe adofjiads-dfjiads">
-                      <div className="aisdad-j3n2eidaw dsjfasdo-sadasd">
-                        <h4>List Your Course</h4>
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting</p>
-                        <button className="withdraw">Add new course</button>
-                      </div>
-                      <div className="">
-                        <img className="w-100" src="/assets/images/Rectangle 4110.png" />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-md-4">
-                    <div className="cst-c-card pioner-ch">
-                      <div>
-                        <h3>Your earning this monthe</h3>
-                      </div>
-                      <div className="aisdad-j3n2eidaw">
-                        <h2>$454.55</h2>
-                        <button className="withdraw lkadsjfkadsf-sad">Withdraw</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
               <div className="d-flex flex-wrap my-5">
-                <div className="njadfskdfns-dsfsad">
+                <div className="cards">
                   <Chart1
                     label="Courses"
                     value="05"
@@ -90,7 +62,15 @@ const Home: NextPage = () => {
                     strokeColor="#E1A902"
                   />
                 </div>
-                <div className="njadfskdfns-dsfsad">
+                <div className="cards">
+                  <Chart1
+                    label="Courses"
+                    value="05"
+                    color={"#FCCE40"}
+                    strokeColor="#E1A902"
+                  />
+                </div>
+                <div className="cards">
                   <Chart1
                     label="Total students"
                     value="105"
@@ -98,7 +78,7 @@ const Home: NextPage = () => {
                     strokeColor="#0BACC0"
                   />
                 </div>
-                <div className="njadfskdfns-dsfsad">
+                <div className="cards">
                   <Chart1
                     label="Revenue"
                     value="$45k"
@@ -107,13 +87,35 @@ const Home: NextPage = () => {
                   />
                 </div>
               </div>
+              <div className="d-flex w-100 kafsdfidsa-fen">
+                <div className="w-100 kdsafjdas-sadn">
+                  <h5 className="jdiofsdf-fndsf">Daily Learning Activity</h5>
+                  <div className="odsafoskdf-dsnaier">
+                    <Chart />
+                  </div>
+                </div>
+                <div className="w-100 diafdsfi-dsaf">
+                  <h5 className="jdiofsdf-fndsf">Weekly Status</h5>
+                  <div className="odsafoskdf-dsnaier">
+                    <h5 className="sanfkf-dafn">From Jan 10-18</h5>
+                    <BarChart />
+                    <div className="d-flex justify-content-between jasfidsf-afnesf3">
+                      <div>
+                        <span>Minimum</span>
+                        <h5>04 Hrs</h5>
+                      </div>
+                      <div>
+                        <span>Maximum</span>
+                        <h5>08 Hrs</h5>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        <div className="jcoiasd03-eakw3e jkdasfis-adaerin ">
-          <DashboardRightBar />
 
-        </div>
       </section>
     </div>
   );

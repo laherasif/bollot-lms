@@ -1,23 +1,29 @@
 import React from "react";
 import { Accordion } from "react-bootstrap";
 const CourseItem = ({ lecture, key }: any) => {
+  console.log("lec" , lecture)
   return <div className="lasjdsad-dsdsadwe" key={key}>
-    <p style={{alignItems:'center' }}>
-      <i className="fa fa-play-circle"  ></i>
-      <span style={{marginLeft:'10px'}}>
+    <p style={{ alignItems: 'center' }}>
+      {lecture?.file_type === "Video" ?
+        <i className="fa fa-play-circle"  ></i>
+        : 
+        <i className="fa fa-file"  ></i>
+
+}
+      <span style={{ marginLeft: '10px' }}>
         {lecture?.title}
       </span>
     </p>
     <h5>
-      <span>Preview</span>
-      01:05
+
+      {lecture?.duration}
     </h5>
   </div>
 }
-const CourseHeading = ({ title }: any) => {
+const CourseHeading = ({ title , lec}: any) => {
   return <div className="skajds-saje3id">
     <h5>{title}</h5>
-    <p>4 Lectures 20 min</p>
+    <p>{lec} lectures</p>
   </div>
 }
 export default ({ section }: any) => {
@@ -28,7 +34,7 @@ export default ({ section }: any) => {
         <Accordion.Item eventKey={sec.id} key={sec.id}>
           <Accordion.Header>
 
-            <CourseHeading title={sec.title} />
+            <CourseHeading title={sec.title} lec={sec.lectures_count} />
           </Accordion.Header>
           <Accordion.Body>
             {sec.lectures.map((lec: any) => (

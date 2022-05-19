@@ -15,7 +15,6 @@ import instance from "../../../src/confiq/axios/instance";
 import {
   formatCreditCardNumber,
   formatCVC,
-  formatExpirationDate,
   formatMonth,
 } from "../../../src/components/util";
 import StripeContainer from "../../../src/components/payment/stripContainer";
@@ -96,7 +95,6 @@ const Home: NextPage = () => {
     }
   });
 
-  console.log("buyID", buyNowId)
 
   useEffect(() => {
     if (buyNowId) {

@@ -207,7 +207,7 @@ return (
                               <strong>Add Course</strong>
                             </li>
                             <li className={stepn[1]?.tw  ? "active" : ''} id="personal">
-                              <strong>Plane Your Course </strong>
+                              <strong>Plan Your Course </strong>
                             </li>
                             <li className={stepn[2]?.th ? "active" : ''} id="payment">
                               <strong>Add Quiz</strong>

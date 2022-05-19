@@ -146,7 +146,6 @@ const Home: NextPage = () => {
 
   }
 
-  console.log("sect", section)
 
 
 
@@ -158,17 +157,7 @@ const Home: NextPage = () => {
     let arr = []
 
 
-    // for (let j = 0; j < section.length; j++) {
-    //   const elements = section[j];
-    //   let regex = /data:.*base64,/
-    //   let checks = elements.thumbnail.replace(regex, "")
-    //   let regexBase64 = /^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/;
-    //   let check = regexBase64.test(checks);
-    //   arr.push(elements)
-    //   elements.thumbnail = check ? elements.thumbnail : ""
 
-
-    // }
 
     try {
 
@@ -226,142 +215,143 @@ const Home: NextPage = () => {
             <Sidebar />
           </div>
         </div>
-        {/* {loading ? Small()
-          : */}
-        <div className="dash-board-1">
-          <div className="dash-2 ">
-            <div className="my-course">
-              <div className="hdsf0s-sadmsa">
+        {loading ? Small()
+          :
+          <div className="dash-board-1">
+            <div className="dash-2 ">
+              <div className="my-course">
+                <div className="hdsf0s-sadmsa">
 
-                <div className="back-btn">
-                  <Link href="/en/instructor/courses" >
-                    <h3>
-                      <i className="fa fa-arrow-left"></i>
-                      Back</h3>
-                  </Link>
-                  <h3>Manage Preview Video
-                    <br />
-                    <span style={{ fontSize: '12px', color: 'red', width: '100%' }}>(During uploading leacture progressbar create more and Save will not created till leature upload )</span>
+                  <div className="back-btn">
+                    <Link href="/en/instructor/courses" >
+                      <h3>
+                        <i className="fa fa-arrow-left"></i>
+                        Back</h3>
+                    </Link>
+                    <h3>Manage Preview Video
 
-                  </h3>
-                </div>
-                <div className=" jidfjsd-asjreid">
-
-
-                </div>
-              </div>
-
-              <div className="complete-web-1 ">
-                <div className="umpire w-100">
-                  <div className="umpire-1 umpire-1-cst ">
-                    <div className="d-flex mb-3 idfadsf-sads">
-
-                      <button className="upload-1 sdisad-dsdactive"
-                        disabled={red ? true : false}
-                        onClick={() => AddmoreSection()}
-                      >
-                        + Add more preview </button>
-                      <button className="upload-1 sdisad-dsdactive"
-                        disabled={red ? true : false}
-                        onClick={() => SaveCriculum()}
-                      >
-                        <i className="fa fa-save" style={{ marginRight: '10px' }}></i>
-                        {loader ?
-                          <Spinner animation="border" />
-                          : "Save"
-                        }
-
-                      </button>
-
-                    </div>
+                    </h3>
+                  </div>
+                  <div className=" jidfjsd-asjreid">
 
 
                   </div>
                 </div>
-              </div>
-              <div className="complete-web-1">
-                {section ? section?.map((lec: any, index: number) => (
-                  <div className="drop-box" style={{ marginLeft: '10px', maxWidth: '30%' }}>
-                    <div className="kvjadsd-j43rm">
-                      <div className="jodsa-wnedas">
-                        <h6>Lectures</h6>
+
+                <div className="complete-web-1 ">
+                  <div className="umpire w-100">
+                    <div className="umpire-1 umpire-1-cst ">
+                      <div className="d-flex mb-3 idfadsf-sads">
+
+                        <button className="upload-1 sdisad-dsdactive"
+                          disabled={red ? true : false}
+                          style={red ? { opacity: '0.5' } : { opacity: 1 }}
+                          onClick={() => AddmoreSection()}
+                        >
+                          + Add more preview </button>
+                        <button className="upload-1 sdisad-dsdactive"
+                          disabled={red ? true : false}
+                          style={red ? { opacity: '0.5' } : { opacity: 1 }}
+                          onClick={() => SaveCriculum()}
+                        >
+                          <i className="fa fa-save" style={{ marginRight: '10px' }}></i>
+                          {loader ?
+                            <Spinner animation="border" />
+                            : "Save"
+                          }
+
+                        </button>
+
                       </div>
-                      {lec?.length !== -1 && <div onClick={() => removeInputField(index)} style={{ cursor: 'pointer' }}><i className="fa fa-trash"></i></div>}
+
 
                     </div>
-
-                    <div className="">
-                      <div className="d-flex">
-                        <Icons name="i24" />
-                        <label>Title</label>
-                      </div>
-                      <input
-                        type="text"
-                        name="title"
-                        className="input_criculum"
-                        style={errors && errors[index]?.title && {border:'1pt solid red'}}
-                        // id={`${errors[index]?.title && 'input_filed_error'}`}
-                        value={lec.title}
-                        onChange={(e) => handleChangeSection(index, e)}
-                        placeholder="Write here..." />
-                      {errors && errors[index]?.title ? <div className="invalid mt-1">{errors[index]?.title}</div> : null}
-
-                    </div>
-
-
-                    <div className={lec.thumbnail && lec.id || lec.progressbar === 100 || network ? "image-container" : ""}
-                    
-                    >
-                      <label>Video / PDF file for this Lecture</label>
-                      <div className="drop-box img-box w-100" 
-                        style={errors && errors[index]?.object_key && {border:'1pt solid red'}}
-                      
-                      >
-                        <div className="kvjadsd-j43rm iasdufhvs-ernd" >
-                          <Icons name="i29" />
-                          {/* {load ? <Spinner animation="border" size="sm"/> : */}
-                          <>
-                            {lec.thumbnail ? <img src={lec.thumbnail} alt="course_img" className="thum_img" /> : ""}
-                            {lec.thumbnail || lec.file_type === "Video" ? "" : lec.object_key ? lec?.object_key : <p>Drag file here / Choose file</p>}
-                          </>
-                          {/* }/ */}
+                  </div>
+                </div>
+                <div className="complete-web-1">
+                  {section ? section?.map((lec: any, index: number) => (
+                    <div className="drop-box" style={{ marginLeft: '10px', maxWidth: '30%' }}>
+                      <div className="kvjadsd-j43rm">
+                        <div className="jodsa-wnedas">
+                          <h6>Lectures</h6>
                         </div>
-                        {lec?.thumbnail || lec.file_type === "PDF" ? "" :
-                          <input type="file" accept="pdf/*" onChange={(e) => handleChangeLectureFile(index, e)} className="custom-file-input" />
-                        }
-                      {errors && errors[index]?.object_key ? <div className="invalid mt-1">{errors[index]?.object_key}</div> : null}
-
+                        {lec?.length !== -1 && <div onClick={() => removeInputField(index)} style={{ cursor: 'pointer' }}><i className="fa fa-trash"></i></div>}
 
                       </div>
-                      <div className="mt-2">
-                        {lec.progressbar === 100 ? " "
-                          :
-                          lec.progressbar && <ProgressBar animated now={lec.progressbar} />}
+
+                      <div className="">
+                        <div className="d-flex">
+                          <Icons name="i24" />
+                          <label>Title</label>
+                        </div>
+                        <input
+                          type="text"
+                          name="title"
+                          className="input_criculum"
+                          style={errors && errors[index]?.title && { border: '1pt solid red' }}
+                          // id={`${errors[index]?.title && 'input_filed_error'}`}
+                          value={lec.title}
+                          onChange={(e) => handleChangeSection(index, e)}
+                          placeholder="Write here..." />
+                        {errors && errors[index]?.title ? <div className="invalid mt-1">{errors[index]?.title}</div> : null}
+
                       </div>
-                      {lec?.thumbnail && lec.progressbar === 100 ?
-                        <>
-                          <div className="overlay"></div>
-                          <div id="icon" onClick={() => delThumnail(index, i)}>
-                            <i className="fa fa-close" ></i>
+
+
+                      <div className={lec.thumbnail && lec.id || lec.progressbar === 100 || network ? "image-container" : ""}
+
+                      >
+                        <label>Video / PDF file for this Lecture</label>
+                        <div className="drop-box img-box w-100"
+                          style={errors && errors[index]?.object_key && { border: '1pt solid red' }}
+
+                        >
+                          <div className="kvjadsd-j43rm iasdufhvs-ernd" >
+                            <Icons name="i29" />
+                            <p>{lec?.object_key}</p>
+                            {/* {load ? <Spinner animation="border" size="sm"/> : */}
+                            {/* <>
+                              {lec.thumbnail ? <img src={lec.thumbnail} alt="course_img" className="thum_img" /> : ""}
+                              {lec.thumbnail || lec.file_type === "Video" ? "" : lec.object_key ? lec?.object_key : <p>Drag file here / Choose file</p>}
+                            </> */}
+                            {/* }/ */}
                           </div>
-                        </>
-                        : null
-                      }
+                          {lec?.object_key ? "" :
+                            <input type="file" accept="pdf/*" onChange={(e) => handleChangeLectureFile(index, e)} className="custom-file-input" />
+                          }
+                          {errors && errors[index]?.object_key ? <div className="invalid mt-1">{errors[index]?.object_key}</div> : null}
+
+
+                        </div>
+                        <div className="mt-2">
+                          {lec.progressbar === 100 ? " "
+                            :
+                            lec.progressbar && <ProgressBar animated now={lec.progressbar} />}
+                        </div>
+                        {lec?.object_key && lec.progressbar === 100 ?
+                          <>
+                            <div className="overlay"></div>
+                            <div id="icon" onClick={() => delThumnail(index, i)}>
+                              <i className="fa fa-close" ></i>
+                            </div>
+                          </>
+                          : null
+                        }
+                      </div>
+
+
+
                     </div>
+                  ))
+                    : <div>Record not found </div>
+                  }
 
 
-
-                  </div>
-                ))
-                  : <div>Record not found </div>
-                }
-
-
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        {/* } */}
+        }
       </section >
     </div >
   );

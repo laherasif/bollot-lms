@@ -2,6 +2,7 @@
 import { LOGIN_USER, ERROR, LOGOUT_INST , UPDATE_USER,  REGISTER_SOCIAL_MEDIA , SIGNUP_USER , OPT_VERIFY, CLEAN_STATE} from '../../types/types'
 import { Dispatch } from 'redux';
 import instance from '../../../confiq/axios/instance'
+import Platform from 'react-platform-js'
 
 // export enum ActionType {
 //     REGISTER_SOCIAL_MEDIA = 'REGISTER_SOCIAL_MEDIA',
@@ -60,6 +61,9 @@ export const SocialRegComp = (providerData: [], role: string ) => async (dispatc
             email: object.email,
             fb_user_id: object.uid,
             image: object.photoURL,
+            device_name: Platform.Browser,
+            device_model:Platform.BrowserVersion,
+            operating_system: Platform.OS,
             role: role
         }
         let google = {
@@ -67,6 +71,9 @@ export const SocialRegComp = (providerData: [], role: string ) => async (dispatc
             email: object.email,
             google_user_id: object.uid,
             image: object.photoURL,
+            device_name: Platform.Browser,
+            device_model:Platform.BrowserVersion,
+            operating_system: Platform.OS,
             role: role
         }
 
@@ -91,11 +98,29 @@ export const SocialRegMedia = (providerData: [], role: string ) => async (dispat
     try {
         let object = Object.assign({}, ...providerData)
 
+        // let fb = {
+        //     fullname : object.displayName,
+        //     email: object.email,
+        //     fb_user_id: object.uid,
+        //     image: object.photoURL,
+        //     role: role
+        // }
+        // let google = {
+        //     fullname : object.displayName,
+        //     email: object.email,
+        //     google_user_id: object.uid,
+        //     image: object.photoURL,
+        //     role: role
+        // }
+
         let fb = {
             fullname : object.displayName,
             email: object.email,
             fb_user_id: object.uid,
             image: object.photoURL,
+            device_name: Platform.Browser,
+            device_model:Platform.BrowserVersion,
+            operating_system: Platform.OS,
             role: role
         }
         let google = {
@@ -103,8 +128,13 @@ export const SocialRegMedia = (providerData: [], role: string ) => async (dispat
             email: object.email,
             google_user_id: object.uid,
             image: object.photoURL,
+            device_name: Platform.Browser,
+            device_model:Platform.BrowserVersion,
+            operating_system: Platform.OS,
             role: role
         }
+
+
 
 
         let res = await instance.post('api//social-signin', object.providerId === "facebook.com" ? fb : google)

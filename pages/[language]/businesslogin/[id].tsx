@@ -10,6 +10,8 @@ import { loginUser, SocialRegComp } from '../../../src/redux/actions/auth/user'
 import { useRouter } from "next/router";
 import Otp from '../../../src/components/businessotp'
 import Role from '../../../src/components/otp'
+import Platform from 'react-platform-js'
+
 import { Firebaseapp } from "../../../src/confiq/firebase/firebase";
 import { getAuth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider } from "firebase/auth";
 import { useDispatch, useSelector, RootStateOrAny } from "react-redux";
@@ -111,7 +113,16 @@ let checkRouter = router.query.checkout
     debugger
     setLoader(true)
     try {
-      let res = await instance.post("api//company/login", authValue)
+
+      let value ={
+        email : authValue.email,
+        password : authValue.password , 
+        device_name: Platform.Browser,
+        device_model:Platform.BrowserVersion,
+        operating_system: Platform.OS
+      }
+ 
+      let res = await instance.post("api//company/login", value)
       if (res.data.success === true && res.data.response.student.is_email_verified === "1" ) {
         setLoader(false)
         dispatch(loginUser(res.data))

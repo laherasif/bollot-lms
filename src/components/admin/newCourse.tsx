@@ -46,7 +46,6 @@ interface Courses {
 
 
 export default (catagory: any) => {
-  console.log("catagory", catagory)
 
 
 
@@ -118,12 +117,10 @@ export default (catagory: any) => {
     <Navbar expand={false} className="jds0sas0w-eawne">
       <Container fluid>
         <Navbar.Toggle aria-controls="offcanvasNavbar">
-          <div className="idfadsf-sads">
-            <button className="upload-1 sdisad-dsdactive">
+            <button className="upload-active ">
               <Icons name="i9" />
-              Add New 
+              Add New Employe
             </button>
-          </div>
         </Navbar.Toggle>
         <Navbar.Offcanvas
           id="offcanvasNavbar"
@@ -132,7 +129,7 @@ export default (catagory: any) => {
         >
           <Offcanvas.Header closeButton>
             <Offcanvas.Title id="offcanvasNavbarLabel">
-              Add New 
+              Add New Employe
             </Offcanvas.Title>
           </Offcanvas.Header>
 
@@ -142,7 +139,7 @@ export default (catagory: any) => {
               <label>Role </label>
               <div className="kns-sanweso02e">
                 <Form.Select name="category_id">
-                  <option defaultChecked>Select Catagory</option>
+                  <option defaultChecked>Select User</option>
                   <option value="Instructor" >Instructor</option>
                   <option value="student" >Student</option>
                 </Form.Select>
@@ -154,9 +151,7 @@ export default (catagory: any) => {
 
 
             <div className="p-field mt-2">
-
               <div>
-
                 <label>Fullname</label>
                 <input type="text"
                   name="fullname"
@@ -164,9 +159,7 @@ export default (catagory: any) => {
                   onChange={(e) => hendleFields(e)}
                   placeholder="Write here..." />
               </div>
-
               <div>
-
                 <label>Email Address</label>
                 <input type="email"
                   name="email"
@@ -174,21 +167,10 @@ export default (catagory: any) => {
                   onChange={(e) => hendleFields(e)}
                   placeholder="Write here..." />
               </div>
+              
 
               <div>
-                <label>Course subtitle</label>
-                <textarea
-                  rows={4}
-                  name="long_desc"
-                  value={state.long_desc}
-                  onChange={(e) => hendleFields(e)}
-                  className="asndkmc03e-dm3e"
-                  placeholder="Write here..."
-                ></textarea>
-              </div>
-
-              <div>
-                <label>Course Image</label>
+                <label>Cover Image</label>
                 <div className="drop-box">
                   <label htmlFor="img" style={{ cursor: 'pointer' }}>
                     <div className="kvjadsd-j43rm iasdufhvs-ernd">
@@ -201,59 +183,13 @@ export default (catagory: any) => {
                   <input type="file" name="cover_image" onChange={(e) => handleInputChange(e)} id="img" style={{ display: 'none' }} />
                 </div>
               </div>
-              <div>
-                <div className="p-field my-4">
-                  <div className="d-flex">
-                    <Icons name="i24" />
-                    <label>Pricing</label>
-                  </div>
-                  <input
-                    type="number"
-                    name="price"
-                    value={state.price}
-                    onChange={(e) => hendleFields(e)}
-                    placeholder="Write here..." />
-
-                </div>
-
-                <div className="p-field my-4">
-                  <div className="d-flex">
-                    <Icons name="i24" />
-                    <label>Outcomes</label>
-                  </div>
-                  <input type="text" placeholder="Write here..." />
 
 
-                </div>
-
-                <div className="p-field my-4">
-                  <div className="d-flex">
-                    <Icons name="i24" />
-                    <label>Requirements</label>
-                  </div>
-                  <input type="text" placeholder="Write here..." />
-                </div>
-                <div className="p-field my-4">
-                  <div className="d-flex">
-                    <Icons name="i24" />
-                    <label>Course for</label>
-                  </div>
-                  <input type="text" placeholder="Write here..." />
-                  
-
-                </div>
-
-              </div>
             </div>
-            <div className="d-flex">
-              <div className="idfadsf-sads kajfds-sdfe hfdajss-3ersad">
-                <button onClick={() => Video()} className="upload-1 sdisad-dsdactive ">
-                  Preview
-                </button>
-              </div>
-              <div className="idfadsf-sads kajfds-sdfe">
-                <button onClick={() => SaveCourse()} className="upload-1 sdisad-dsdactive">
-                  Submit for review
+            <div style={{ display: 'flex', justifyContent: 'center' , marginTop:'20px'}}>
+              <div className="active_color">
+                <button onClick={() => SaveCourse()} className="upload-active ">
+                  Save
                 </button>
               </div>
             </div>

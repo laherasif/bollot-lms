@@ -14,6 +14,7 @@ import { SignUp, CleanState } from '../../../src/redux/actions/auth/user'
 import { Firebaseapp } from "../../../src/confiq/firebase/firebase";
 import insImg from '../../../src/assets/images/instructor.png'
 import stuImg from '../../../src/assets/images/student.png'
+import Platform from 'react-platform-js'
 import { getAuth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider } from "firebase/auth";
 import Image from "next/image";
 const Home: NextPage = () => {
@@ -34,9 +35,9 @@ const Home: NextPage = () => {
   }
 
 
-  const { varified } = useSelector((state: RootStateOrAny) => state.userReducer)
+  const { varified, User } = useSelector((state: RootStateOrAny) => state.userReducer)
 
-
+  console.log("User", User)
   const [authValue, setAuthValue] = useState<SignUp>({
     fullname: "",
     email: "",
@@ -63,28 +64,65 @@ const Home: NextPage = () => {
 
   const dispatch = useDispatch()
 
+  useEffect(() => {
+    if (User && User?.role === "student") {
+      router.push('/en/student/dashboard')
+
+    }
+    else if(User && User?.role === "instructor") {
+        router.push('/en/instructor')
+
+    }
+    else if (User && User.is_email_verified === "0") {
+      setMessage(true)
+    }
+  }, [User])
+
 
   const signInGog = async () => {
     const { user } = await signInWithPopup(firebaseAuth, provider);
-    const { providerData }:any = user;
+    const { providerData }: any = user;
 
     dispatch(SocialRegMedia(providerData, role === 1 ? "student" : "instructor"))
+    // if (User?.is_email_verified === "0") {
+    //   setMessage(true)
+    // }
+    // else if (User && User?.role === "student") {
+    //   router.push('/en/student/dashboard')
 
-    let object = Object.assign({}, ...providerData);
-    setTimeout(() => {
-      setMessage(true)
-    }, 1000);
-  
+    // }
+    // else if(User && User?.role === "instructor") {
+    //     router.push('/en/instructor')
+
+    // }
+   
+
+
+    // let object = Object.assign({}, ...providerData);
+    // setTimeout(() => {
+    //   setMessage(true)
+    // }, 1000);
+
   };
 
 
 
   const signInFb = async () => {
     const { user } = await signInWithPopup(firebaseAuth, Fbprovider);
-    const { providerData }:any = user;
+    const { providerData }: any = user;
     dispatch(SocialRegMedia(providerData, role === 1 ? "student" : "instructor"))
+    if (User?.is_email_verified === "0") {
+      setMessage(true)
+    }
+    else if (User && User?.role === "student") {
+      router.push('/en/student/dashboard')
 
-   
+    }
+    else if(User && User?.role === "instructor") {
+        router.push('/en/instructor')
+
+    }
+
   };
 
 
@@ -110,6 +148,9 @@ const Home: NextPage = () => {
         fullname: fullname,
         email: email,
         password: password,
+        device_name: Platform.Browser,
+        device_model: Platform.BrowserVersion,
+        operating_system: Platform.OS,
         role: role === 1 ? "student" : "instructor"
       }
 
@@ -175,8 +216,8 @@ const Home: NextPage = () => {
                       </label>
                     </div>{" "}
                     <div className="up-illustration">
-                    <Image src={insImg} width={40} height={40}/>
-                      
+                      <Image src={insImg} width={40} height={40} />
+
                     </div>{" "}
                     <div id="button-box-1" className="up-button-box-labels">
                       <div className="up-button-box-label">
@@ -207,7 +248,7 @@ const Home: NextPage = () => {
                       </label>
                     </div>{" "}
                     <div className="up-illustration">
-                      <Image src={stuImg} width={40} height={40}/>
+                      <Image src={stuImg} width={40} height={40} />
                     </div>{" "}
                     <div id="button-box-2" className="up-button-box-labels">
                       <div className="up-button-box-label">
@@ -221,11 +262,11 @@ const Home: NextPage = () => {
 
 
               <div className="hasdfkj mt-3">
-                <input className={ `full-2 ${errors.fullname && 'full-2 input_filed_error'}` } disabled={role === 0 ? true : false} type="text" value={fullname} name="fullname" onChange={handleChange} placeholder="Full Name" />
+                <input className={`full-2 ${errors.fullname && 'full-2 input_filed_error'}`} disabled={role === 0 ? true : false} type="text" value={fullname} name="fullname" onChange={handleChange} placeholder="Full Name" />
                 {errors.fullname && <div className="invalid mb-1">{errors?.fullname[0]}</div>}
               </div>
               <div className="hasdfkj">
-                <input className={ `full-3 ${errors.email && 'full-3 input_filed_error'}` }
+                <input className={`full-3 ${errors.email && 'full-3 input_filed_error'}`}
                   disabled={role === 0 ? true : false}
                   type="email"
                   value={email}
@@ -234,7 +275,7 @@ const Home: NextPage = () => {
 
               </div>
               <div className="hasdfkj">
-                <input className={ `full-3 ${errors.password && 'full-3 input_filed_error'}` }
+                <input className={`full-3 ${errors.password && 'full-3 input_filed_error'}`}
                   disabled={role === 0 ? true : false}
                   type="password"
                   value={password}
@@ -300,8 +341,8 @@ const Home: NextPage = () => {
       </section>
       <Footer />
 
-
-      {message && <Otp openToggle={(e:any) => setMessage(e)} providerEmail={"laherasif@gmail.com"} role={authValue.role} />}
+      
+      {message && <Otp openToggle={(e: any) => setMessage(e)} providerEmail={"laherasif@gmail.com"} role={authValue.role} />}
     </div>
   );
 };

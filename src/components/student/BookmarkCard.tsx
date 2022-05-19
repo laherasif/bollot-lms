@@ -1,34 +1,33 @@
 import React from 'react';
-import {FaStar} from 'react-icons/fa'
-export default ()=>{
-    return     <div className="cm-web kdsjf0ew-ew">
-    <div className="dhafusd9we0sd-p">
-      <div>
-        <img src="/assets/images/purple.svg" alt="" />
-      </div>
-      <div className="assahdwe0-ass">
-        <img src="/assets/images/heart.svg" alt="" />
-      </div>
-    </div>
-    <div className="sdhafadsie-sd">
-      <p  >By Andrei Neagoie</p>
-      <h3>Complete Web &amp; Mobile Designer in 2022...</h3>
-      <div className="jdsifsd-ds">
-        <div />
-        <div className="sha9dasd0em">
-          <div className='lasjdsad-sdjsa'>
-          <FaStar color='#FF981E'/>
-          <FaStar color='#FF981E'/>
-          <FaStar color='#FF981E'/>
-          <FaStar color='#FF981E'/>
-          <FaStar color='#FF981E'/>
+import Rating from '../ratingStar';
+export default ({ BookMark, key }: any) => {
+  return (
+    <>
+      <div className="cm-web kdsjf0ew-ew" key={key}>
+        <div className="dhafusd9we0sd-p">
+          <div>
+            <img src={BookMark?.cover_image || "/assets/images/purple.svg"} alt="book-mark" />
           </div>
-          <p>4.8(151)</p>
+          <div className="assahdwe0-ass">
+            <img src="/assets/images/heart.svg" alt="hert_image" />
+          </div>
+        </div>
+        <div className="sdhafadsie-sd">
+          <p  >By {BookMark?.instructor?.fullname }</p>
+          <h3>{BookMark?.title}</h3>
+          <div className="jdsifsd-ds">
+            <div />
+            <div className="sha9dasd0em">
+              <div className='lasjdsad-sdjsa'>
+               <Rating value={BookMark?.avg_rating?.aggr_rating}/>
+              </div>
+              <p>{BookMark?.avg_rating?.aggr_rating}({BookMark?.avg_rating?.total_reviews})</p>
+            </div>
+          </div>
+          <h3>${BookMark?.price}</h3>
         </div>
       </div>
-      <h3>$141.00</h3>
-    </div>
-  </div>
-  
-   
+    </>
+  )
+
 }

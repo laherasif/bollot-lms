@@ -32,13 +32,13 @@ export default ({ course, key }: any) => {
       {/* </Link> */}
       <div className="assahdwe0-ass ">
         <Dropdown>
-          <Dropdown.Toggle variant="success" id="dropdown-basic">
+          <Dropdown.Toggle  id="dropdown-basic">
             <i className="fa fa-ellipsis-h" style={{fontSize:'20px' , color:'black'}}></i>
           </Dropdown.Toggle>
 
           <Dropdown.Menu >
             <Dropdown.Item as={Link} href={`/en/instructor/managePreview/${course?.id}`}>Manage Previews </Dropdown.Item>
-            <Dropdown.Item as={Link} href={ `/en/instructor/manageCriculum/${course?.id}`}>Check Criculum</Dropdown.Item>
+            <Dropdown.Item as={Link} href={ `/en/instructor/manageCriculum/${course?.id}`}>Manage Curriculum</Dropdown.Item>
             <Dropdown.Item as={Link} href={ `/en/instructor/manageQuiz/${course?.id}`}>Manage Quiz</Dropdown.Item>
             <Dropdown.Item as={Link} href={`/en/instructor/manageEnrolledStudent/${course?.id}`}> Enrolled Student</Dropdown.Item>
             <Dropdown.Item as={Link} href={`/en/instructor/manageProgressStudent/${course?.id}`}>Student Progress</Dropdown.Item>
