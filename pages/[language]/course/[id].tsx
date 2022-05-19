@@ -69,10 +69,8 @@ const Home: NextPage = ({ Course }: any) => {
 
   }, [])
 
-  console.log("BookMark", Course)
 
-  let find = BookMark.some((f: any) => f.id === Course?.id)
-  console.log("find", find)
+  let find = BookMark?.some((f: any) => f.id === Course?.id)
 
 
 
