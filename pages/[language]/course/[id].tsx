@@ -48,7 +48,7 @@ const Home: NextPage = ({ Course }: any) => {
   const router = useRouter()
 
   const { AddCart, BookMark } = useSelector((state: RootStateOrAny) => state.cartReducer)
-  const { User , token  } = useSelector((state: RootStateOrAny) => state.userReducer)
+  const { User, token } = useSelector((state: RootStateOrAny) => state.userReducer)
 
   const AxInstance = axios.create({
     // .. where we make our configurations
@@ -121,12 +121,9 @@ const Home: NextPage = ({ Course }: any) => {
       let newObj = { ...Course, ...pair }
       try {
         setLoader(true)
-        let res = await AxInstance.post('api//student/bookmarks/save' , { course_id : Course?.id })
-        console.log("Res" , res )
+        let res = await AxInstance.post('api//student/bookmarks/save', { course_id: Course?.id })
         dispatch(SaveBookmark(newObj))
-        setTimeout(() => {
-          setLoader(false)
-        }, 1000);
+        setLoader(false)
       } catch (error) {
 
       }
@@ -423,9 +420,11 @@ const Home: NextPage = ({ Course }: any) => {
                   <div className="d-flex-wh align-items-center">
 
                     <button className="added-to-cart" >
-                      <div onClick={() => RegisterCart()}>
+                      <div onClick={() => RegisterCart()} >
                         {popUp ?
-                          <Spinner animation="border" />
+                          <div style={{marginLeft:'110px'}}>
+                            <Spinner animation="border" />
+                          </div>
                           : message ?
                             <Link href="/en/checkout">
                               <p> {"Proceed to cart"}</p>

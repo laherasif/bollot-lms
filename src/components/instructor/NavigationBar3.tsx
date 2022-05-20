@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Container, Nav, Navbar, Offcanvas } from "react-bootstrap";
 import { useMediaQuery } from "react-responsive";
 import Link from 'next/link'
@@ -10,6 +10,9 @@ import { LogoutIns } from '../../../src/redux/actions/auth/user'
 import Icons from "../../icons";
 import { useSelector, RootStateOrAny, useDispatch } from "react-redux";
 import { useRouter } from "next/router";
+import Notification from '../../components/instructor/notification'
+import Messages from '../../components/instructor/messages'
+import axios from "axios";
 export default () => {
   const isTab = useMediaQuery({
     query: "(max-width: 991px)",
@@ -17,13 +20,70 @@ export default () => {
   const isTabsm = useMediaQuery({
     query: "(max-width: 767px)",
   });
-  const { User } = useSelector((state: RootStateOrAny) => state?.userReducer)
+  const { User, token } = useSelector((state: RootStateOrAny) => state?.userReducer)
 
   const router = useRouter()
   const [loading, setLoading] = useState(false)
+  const [mesg, setMesg] = useState(false)
+  const [notif, setNotif] = useState(false)
+  const [notifications, setNotifications] = useState([])
+  const [messagess, setMessagess] = useState([])
+  const [unRead, setUnRead] = useState()
+  const messanger = useRef();
+  const notify = useRef();
+
+
+  const AxInstance = axios.create({
+    // .. where we make our configurations
+    baseURL: "https://dev.thetechub.us/bolloot/",
+    headers: {
+      token: token,
+    },
+  });
+
 
 
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    let value = {
+      page_no: 1,
+      rows_per_page: 5
+    }
+    let fetchNotif = async () => {
+      let res = await AxInstance.get('api//notifications')
+      // let count = await AxInstance.get('api//unread-notifications-count')
+      let message = await AxInstance.post('api//get-conversations', value)
+      setNotifications(res.data.response.notifs)
+      // setUnRead(count.data.response.unread_notifs)
+      setMessagess(message.data.response.conversations)
+
+    }
+    fetchNotif()
+  }, [])
+
+  console.log("noto", notifications)
+
+  const handleClickOutside = (event: any) => {
+
+
+    if (mesg && messanger.current && !messanger.current.contains(event.target)) {
+      setMesg(false);
+
+    }
+    else if (notif && notify.current && !notify.current.contains(event.target)) {
+      setNotif(false);
+
+    }
+
+  };
+
+  useEffect(() => {
+
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, [mesg, notif]);
+
 
   const Logout = () => {
     debugger
@@ -33,12 +93,29 @@ export default () => {
     //   setLoading(false)
     if (User?.role === "company") {
       router.push('/en/businesslogin')
-         
+
     }
     else {
       router.push('/en/login')
     }
     // }, 2000);
+  }
+
+
+  const messages = () => {
+    if (notif === true) {
+      setNotif(false)
+    }
+    setMesg(true)
+  }
+
+
+  const notification = async () => {
+    if (mesg === true) {
+      setMesg(false)
+    }
+    let res = await AxInstance.get('api//notifications-read')
+    setNotif(true)
   }
 
   return (
@@ -63,21 +140,34 @@ export default () => {
               <Nav className="me-auto ajisdf-adfser">
 
 
-                {/* <Link href="">
-                  <a className="kjdshfi-serjh">
-                    <Icons name="i6" />
-                    Help & Support
-                  </a>
-                </Link>
-                <Link href="">
-                  <a className="kjdshfi-serjh">
-                    <Icons name="i7" />
-                    Notifications
-                    <div className="idsjfa0-asdesaed" >
-                      1
+                <div className="idsafs-aadmsd">
+                  <div className="kdsfsd-dsdd" ref={notify}>
+                    <div onClick={() => notification()}>
+                      <BiBell size={20} color="#ffff" />
+                      {/* <p></p> */}
+                      {notifications.some((s: any) => s.is_read === "0") ? <p></p> : ""}
+
                     </div>
-                  </a>
-                </Link> */}
+
+                    {notif && <Notification notifications={notifications} />}
+
+
+                  </div>
+                  <div className="kdsfsd-dsdd" ref={messanger}>
+                    <div onClick={() => messages()}>
+                      <IoMailOutline color="#ffff" size={20} />
+                      {/* <p></p> */}
+                      {messagess.some((s: any) => s.last_message_obj.is_read === "0") ? <p></p> : ""}
+
+                    </div>
+                    {mesg && <Messages message={messagess} />}
+
+
+                  </div>
+                  {/* <p className="mt-3">{User.fullname || "instructor "}</p>
+                  <img src={User.image || "/assets/images/umpire-1.svg"} /> */}
+
+                </div>
 
                 <div className="kjdshfi-serjh">
                   <Dropdown>

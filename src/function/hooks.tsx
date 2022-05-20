@@ -98,3 +98,16 @@ export const getBase64Image = (url: any) => {
   }
   img.src = url
 }
+
+export function bytesToSize(bytes: any) {
+  var sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
+  for (var i = 0; i < sizes.length; i++) {
+    if (bytes <= 1024) {
+      return bytes + ' ' + sizes[i];
+    } else {
+      bytes = parseFloat(bytes / 1024).toFixed(2)
+    }
+  }
+  return bytes + ' P';
+}
+

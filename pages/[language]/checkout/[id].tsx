@@ -22,6 +22,8 @@ import withAuth from '../../../src/components/Hoc/authRoute'
 import SucessCheckout from '../../../src/components/sucessCheckout'
 import { useRouter } from 'next/router'
 import { SweetAlert } from "../../../src/function/hooks";
+import { Small } from "../../../src/components/student/loader";
+import CartCard from "../../../src/components/card/cartsCard";
 const Home: NextPage = () => {
   // const intl = useIntl();
   const [acoountDetail, setAcoountDetail] = useState({
@@ -49,13 +51,6 @@ const Home: NextPage = () => {
     '/assets/images/card-visa.svg',
     '/assets/images/mastercard.svg',
   ])
-
-  // const checkSubstring = (length: number, match: any) => {
-  //   return acoountDetail.cardNumber.substring(0, length) === match;
-  // };
-
-
-  console.log("cards", cards)
 
 
 
@@ -227,7 +222,7 @@ const Home: NextPage = () => {
 
       }
     }
-    catch(err){
+    catch (err) {
       setLoader(false)
       SweetAlert({ icon: "error", text: err })
 
@@ -252,6 +247,7 @@ const Home: NextPage = () => {
   }, 0).toFixed(2)
 
   let discountAmount = totalamount;
+
 
 
   const {
@@ -301,7 +297,7 @@ const Home: NextPage = () => {
                     </button>
                   </div>
                 ))
-                  : <div>No payment method Found </div>
+                  : Small()
                 }
 
                 <div>
@@ -364,18 +360,29 @@ const Home: NextPage = () => {
                   </>
                   : null}
 
+                <div className="mt-3">
+                  <h3 style={{ fontSize: '18px', fontWeight: '600' }}>Order Summary</h3>
+                  {
+                    Object.keys(buynow).length > 0 ?
+                      <CartCard item={buynow}  />
+                      :
+                      AddCart && AddCart.map((item: any, i: number) => (
+                        <CartCard item={item} key={i} />
+
+                      ))}
+
+                </div>
+
 
               </div>
               <div className="photo-maker-2">
-                {
-                  cardType ?
-                    "" : <div style={{ color: 'red' }}>Please Add payment then able to checkout </div>
-                }
+
                 <h4>Summary</h4>
                 <div className="hdsafj-dsae1">
                   <div className="d-flex justify-content-between w-100">
                     <h6>Total:</h6>
-                    <h6>${totalamount !== "0.00" ? totalamount : buynow?.price}</h6>
+                    <h6>${Object.keys(buynow).length > 0 ? buynow?.price : totalamount}</h6>
+                    {/* <h6>${totalamount !== "0.00" ? totalamount : buynow?.price}</h6> */}
                   </div>
                   <div className="d-flex justify-content-between w-100">
                     <h6>Coupon discount:</h6>
@@ -384,7 +391,8 @@ const Home: NextPage = () => {
                 </div>
                 <div className="d-flex justify-content-between hdsafj-dsae">
                   <h6>Total:</h6>
-                  <h6>${discountAmount !== "0.00" ? discountAmount : buynow?.price}</h6>
+                  <h6>${Object.keys(buynow).length > 0 ? buynow?.price : discountAmount}</h6>
+                  {/* <h6>${discountAmount !== "0.00" ? discountAmount : buynow?.price}</h6> */}
                 </div>
                 {/* <h6 className="mb-0">
                     <Icons name="c34" />
@@ -398,12 +406,13 @@ const Home: NextPage = () => {
                   className="btn-2s w-100 mt-3"
                   onClick={(e) => handleSubmit(e)}
                   disabled={cardType ? false : true}
+                  style={cardType ? { opacity: 1 } : { opacity: 0.5 }}
                 >
                   {complPay ?
                     <div className="spinner-border text-light" style={{ marginBottom: '-5px', fontSize: '20px', width: '25px', height: '25px' }} role="status">
                     </div>
                     :
-                    " Complete Payment "
+                    "Checkout"
                   }
 
                 </button>

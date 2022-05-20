@@ -11,8 +11,8 @@ import Link from "next/link";
 import CourseCard from "../../../../src/components/student/CourseCard1";
 import { db } from "../../../../src/confiq/firebase/firebase";
 import { useEffect, useState, useRef } from "react";
-import { useCollection } from 'react-firebase-hooks/firestore';
-import { collection, addDoc } from "@firebase/firestore";
+// import { useCollection } from 'react-firebase-hooks/firestore';
+// import { collection, addDoc } from "@firebase/firestore";
 import Sidebar from "../../../../src/components/student/sidebar";
 import TopNavbar from "../../../../src/components/student/TopNavbar";
 import NavigationBar1 from "../../../../src/components/student/NavigationBar1";
@@ -20,6 +20,7 @@ import axios from "axios";
 import { RootStateOrAny, useSelector } from "react-redux";
 import moment from "moment";
 import { pusher } from '../../../../src/confiq/pusher/pusher'
+import { useRouter } from 'next/router'
 import InfiniteScroll from "react-infinite-scroll-component";
 const options = ["one", "two", "three"];
 
@@ -48,23 +49,32 @@ const Home: NextPage = () => {
     },
   });
 
+  let router = useRouter()
+  let CovId = router.query.id
+
+
+  useEffect(() => {
+    if (CovId) {
+      let finds = conversation?.find((f:any) => f.id == CovId)
+      getMessages( finds?.user_id == User?.id ? finds.user_two_details : finds?.user_details, CovId)
+    }
+  }, [CovId])
+
 
   useEffect(() => {
 
     const channel = pusher.subscribe("messages-channel");
     channel.bind('new-message', function (data: any) {
       const { message } = data
-      console.log("message stu" , message )
-      console.log("message user" , user )
 
-      if(user?.id == message.from_user_id){
-      setMessages((prevState: any) => [
-        message,
-        ...prevState,
-      ]);
-      // setMessages([message, ...messages])
-      // setMessages([...messages ,message])
-    }
+      if (user?.id == message.from_user_id) {
+        setMessages((prevState: any) => [
+          message,
+          ...prevState,
+        ]);
+        // setMessages([message, ...messages])
+        // setMessages([...messages ,message])
+      }
     });
     return () => {
       pusher.unsubscribe("messages-channel");
@@ -102,6 +112,7 @@ const Home: NextPage = () => {
 
 
   const getMessages = async (data: any, id: number) => {
+    console.log("Data" , data , "id" , id  )
     setUser(data)
     setConvId(id)
     setPages(1)
@@ -140,7 +151,7 @@ const Home: NextPage = () => {
         image: User?.image,
       }
     }
-  
+
 
 
     try {
@@ -245,7 +256,7 @@ const Home: NextPage = () => {
                   {conversation?.length ? conversation?.map((ins: any, index: number) => {
                     if (ins?.user_id == User?.id)
                       return (
-                        <div className="user-card-inbox" onClick={() => getMessages(ins.user_two_details, ins.id)} key={index}>
+                        <div className={CovId == ins?.id  || convId == ins?.id ? "user-card-inbox active" :  "user-card-inbox "} onClick={() => getMessages(ins.user_two_details, ins.id)} key={index}>
                           <div className="user-card-inbox-inner">
                             <img src={ins?.user_two_details?.image || "/assets/images/umpire-1.svg"} />
                             <div>

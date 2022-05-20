@@ -84,7 +84,6 @@ const PreviewModel = ({ Toggle, previews }: any) => {
         <div className="hasiw0eskdwd">
             <Modal
                 show={show}
-                size="md"
                 onHide={handleClose}
 
             >
@@ -110,8 +109,8 @@ const PreviewModel = ({ Toggle, previews }: any) => {
                     <div className="preview">
                         <h3>Free Sample Videos:</h3>
                         <ul >
-                            {previews && previews.map((p: any, i: number) => (
-
+                            {previews && previews.map((p: any, i: number) => {
+                               return (
                                 <li
                                     key={i}
                                     onClick={() => GetVideo(p)}
@@ -130,7 +129,7 @@ const PreviewModel = ({ Toggle, previews }: any) => {
                                         </div>
                                     </div>
                                 </li>
-                            ))}
+                            )})}
                         </ul>
 
                     </div>

@@ -17,7 +17,7 @@ import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import Router, { useRouter } from "next/router";
 import { S3_BUCKET, myBucket } from "../../confiq/aws/aws";
-import { generateVideoThumbnail, SweetAlert } from "../../function/hooks";
+import { bytesToSize, generateVideoThumbnail, SweetAlert } from "../../function/hooks";
 import { pdfThumnail } from '../../constant/constant'
 import {
   addMoreCriculum,
@@ -54,7 +54,7 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
   }]);
 
 
- 
+
 
 
   const token = useSelector(
@@ -137,7 +137,8 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
               thumbnail: thumbnail,
               prog: prog,
               video: "Video",
-              file: file.name
+              file: file.name,
+              file_size: file.size
             }
 
             dispatch(addLectureThumanil({ data, index, i }))
@@ -174,7 +175,8 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
               thumbnail: pdfThumnail,
               prog: prog,
               video: "PDF",
-              file: file.name
+              file: file.name,
+              file_size: file.size
             }
 
             dispatch(addLectureThumanil({ data, index, i }))
@@ -424,7 +426,11 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
                         <div className="jodsa-wnedas">
                           <h6>Lectures</h6>
                         </div>
-                        {lec?.length !== -1 && <div onClick={() => removeInputFields(index, i)} style={{ cursor: 'pointer' }}><i className="fa fa-trash"></i></div>}
+                        {
+                          lec?.length !== -1 && <div style={lec?.progressbar > 0 && lec?.progressbar < 100 ? { cursor: 'not-allowed' } : { cursor: 'pointer' }} onClick={lec?.progressbar > 0 && lec?.progressbar < 100 ? null : () => removeInputFields(index, i)} ><i className="fa fa-trash"></i></div>
+
+                        }
+                        {/* {lec?.length !== -1 && <div onClick={() => removeInputFields(index, i)} style={{ cursor: 'pointer' }}><i className="fa fa-trash"></i></div>} */}
 
                       </div>
 
@@ -446,19 +452,21 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
 
                       <div className={lec.thumbnail && lec.id || lec.progressbar === 100 ? "image-container" : ""}>
                         <label>Video / PDF file for this Lecture</label>
-                        <div className="drop-box img-box" 
+                        <div className="drop-box img-box"
                           style={errors && errors?.sections && errors?.sections[index]?.lectures[i]?.object_key && { border: '1pt solid red' }}
-                        
+
                         >
                           <div className="kvjadsd-j43rm iasdufhvs-ernd" >
                             <Icons name="i29" />
                             <>
-                            <p>{lec.object_key}</p>
-                            {lec.progressbar === 100 ? <p className="mt-2">File Uploaded</p> : " "} 
+                              {lec?.id ? <img src={lec.thumbnail} alt="course_img" className="thum_img" /> : lec?.object_key}
+                              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                {lec?.file_size > 0 && <p className="mt-2">File Size : {bytesToSize(lec?.file_size)}</p>}
+                                {lec?.progressbar === 100 && <p className="mt-2">File Uploaded <i style={{ color: 'green' }} className="fa fa-check-circle"></i></p>}
+                              </div>
 
 
-                              {/* {lec.thumbnail ? <img src={lec.thumbnail} alt="course_img" className="thum_img" /> : ""} */}
-                              {/* {lec.file_type === "Video" ? "" : lec.object_key ? lec?.object_key : <p>Drag file here / Choose file</p>} */}
+
                             </>
                           </div>
                           {lec?.object_key ? "" :
@@ -488,8 +496,8 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
                   ))}
                   {/* {sec.lectures.some((s:any) => s.progressbar === 100 ? )} */}
                   <span className="add-mores"
-                   style={sec.lectures.some((s:any) => s.progressbar > 0 && s.progressbar < 100 ) ? {cursor:'not-allowed' } :{ cursor:'pointer'} }
-                   onClick={ sec.lectures.some((s:any) => s.progressbar > 0 && s.progressbar < 100 ) ? null : () => AddmoreLecture(index)} >+ Add more lectures </span>
+                    style={sec.lectures.some((s: any) => s.progressbar > 0 && s.progressbar < 100) ? { cursor: 'not-allowed' } : { cursor: 'pointer' }}
+                    onClick={sec.lectures.some((s: any) => s.progressbar > 0 && s.progressbar < 100) ? null : () => AddmoreLecture(index)} >+ Add more lectures </span>
 
 
                 </div>
@@ -499,8 +507,8 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
 
             </div>
             {/* <span style={{ fontSize: '12px', color: 'red', fontWeight: '500' }}>Note : During uploading leacture progressbar Section and Save will not created till leature upload </span> */}
-              
-           <h3 id="more-section" style={Criculums.some((s) => s.lectures.some((l)=> l.progressbar > 0 && l.progressbar < 100 )) ? {cursor:'not-allowed'} : {cursor:'pointer'}}  onClick={() => AddmoreSection()} >
+
+            <h3 id="more-section" style={Criculums.some((s) => s.lectures.some((l) => l.progressbar > 0 && l.progressbar < 100)) ? { cursor: 'not-allowed' } : { cursor: 'pointer' }} onClick={() => AddmoreSection()} >
               + Add more lectures and more sections
             </h3>
 
@@ -510,16 +518,18 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
                   <button
                     className="upload-1 sdisad-dsdactive "
                     onClick={() => onPrevStep(1 - 1)}
-                    disabled={Criculums.some((s) => s.lectures.some((l)=> l.progressbar > 0 && l.progressbar < 100 )) ? true : false}
-                  >
+                    disabled={Criculums.some((s) => s.lectures.some((l) => l.progressbar > 0 && l.progressbar < 100)) ? true : false}
+                    style={Criculums.some((s) => s.lectures.some((l) => l.progressbar > 0 && l.progressbar < 100)) ? {opacity:'0.5'} : {opacity:'1'}}
+                    
+                 >
                     Previous
                   </button>
                   <button
                     className="upload-1 sdisad-dsdactive"
                     onClick={() => SaveCriculum()}
-                    disabled={Criculums.some((s) => s.lectures.some((l)=> l.progressbar > 0 && l.progressbar < 100 )) ? true : false}
-
-                  >
+                    disabled={Criculums.some((s) => s.lectures.some((l) => l.progressbar > 0 && l.progressbar < 100)) ? true : false}
+                    style={Criculums.some((s) => s.lectures.some((l) => l.progressbar > 0 && l.progressbar < 100)) ? {opacity:'0.5'} : {opacity:'1'}}
+                 >
                     <i className="fa fa-save" style={{ marginRight: '10px' }}></i>
                     {loading ? <Spinner animation="border" /> : "Save & Next"}
                   </button>

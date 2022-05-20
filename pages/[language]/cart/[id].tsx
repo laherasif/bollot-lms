@@ -14,6 +14,7 @@ import Footer from "../../../src/components/footer";
 import Navbar from "../../../src/components/header/Navbar";
 import Icons from "../../../src/icons";
 import { useSelector, RootStateOrAny } from 'react-redux';
+import WishList from "../../../src/components/card/WishList";
 // import {largeSpinner}  from '../../../src/components/loader'
 
 const Home: NextPage = () => {
@@ -22,6 +23,7 @@ const Home: NextPage = () => {
   const [loading, setLoading] = React.useState(true);
 
   const carts = useSelector((state: RootStateOrAny) => state.cartReducer.AddCart)
+  const { BookMark } = useSelector((state: RootStateOrAny) => state.cartReducer)
 
   const totalamount = carts.reduce(function (currentTotal: any, obj: any) {
     let str = obj.price.replace(",", "");
@@ -63,8 +65,15 @@ const Home: NextPage = () => {
                     {
                       carts.map((item: object, index: number) => <CartCard item={item} key={index} />)
                     }
+                    {/* <div>
+                      <h3>Recently wishlisted</h3>
+                      {
 
+                        BookMark.map((item: object, index: number) => <WishList item={item} key={index} />)
+                      }
+                    </div> */}
                   </div>
+
                   <div className="photo-maker-2">
                     <div className="d-flex justify-content-between">
                       <h4>Total</h4>
@@ -100,6 +109,7 @@ const Home: NextPage = () => {
                   </div>
                 }
               </div>
+
             </>
           }
         </div>

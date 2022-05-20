@@ -74,7 +74,7 @@ const CriculumReducer = (state = initialState, action) => {
 
 
         case ADD_CRICULUM_THUMNAILS:
-            
+            debugger
             return {
                 ...state,
                 ...state.Criculums.map((item, ind) => {
@@ -83,6 +83,7 @@ const CriculumReducer = (state = initialState, action) => {
                         item.lectures[action.payload.i].progressbar = action.payload.data.prog
                         item.lectures[action.payload.i].file_type = action.payload.data.video
                         item.lectures[action.payload.i].object_key = action.payload.data.file
+                        item.lectures[action.payload.i].file_size = action.payload.data.file_size
                     }
                     return item
 
@@ -117,6 +118,9 @@ const CriculumReducer = (state = initialState, action) => {
                     if (ind === action.payload.index) {
                         item.lectures[action.payload.i].thumbnail = ""
                         item.lectures[action.payload.i].object_key = ""
+                        item.lectures[action.payload.i].file_size = null 
+                        item.lectures[action.payload.i].progressbar = null 
+
                        
                     }
                     return item

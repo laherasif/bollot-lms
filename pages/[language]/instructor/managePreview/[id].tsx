@@ -20,7 +20,7 @@ import axios from "axios";
 import { Small } from "../../../../src/components/instructor/loader";
 import { useRouter } from "next/router";
 import { ProgressBar, Spinner } from "react-bootstrap";
-import { generateVideoThumbnail, SweetAlert } from "../../../../src/function/hooks";
+import { bytesToSize, generateVideoThumbnail, SweetAlert } from "../../../../src/function/hooks";
 import { S3_BUCKET, myBucket } from '../../../../src/confiq/aws/aws'
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
@@ -49,6 +49,7 @@ const Home: NextPage = () => {
 
 
 
+
   useEffect(() => {
     let fetchCourse = async () => {
       try {
@@ -73,11 +74,10 @@ const Home: NextPage = () => {
   const AddmoreSection = () => {
     setSection([
       ...section,
-      { title: "", file_type: '', object_key: '', thumbnail: '', progressbar: '' },
+      { title: "", file_type: '', object_key: '', thumbnail: '', progressbar: '', file_size: '' , uuid:'' },
     ])
 
   }
-
 
 
   const handleChangeSection = (index: number, evnt: React.ChangeEvent<HTMLInputElement>) => {
@@ -119,6 +119,9 @@ const Home: NextPage = () => {
                 element.progressbar = prog;
                 element.file_type = "Video";
                 element.object_key = file.name;
+                element.file_size = file.size;
+                element.uuid = 123
+
               }
             }
             setSection(list)
@@ -184,19 +187,23 @@ const Home: NextPage = () => {
     }
   }
 
-  const delThumnail = (index: number, i: number) => {
+  console.log("sec" , section)
+
+  const delThumnail = (index: number,) => {
     debugger
     const lists: any = [...section];
     for (let j = 0; j < lists.length; j++) {
       if (j === index) {
         const element = lists[j];
-        element.lectures[i].thumbnail = ""
+        element.thumbnail = ""
+        element.object_key = ""
         if (network === true) {
-          element.lectures[i].progressbar = 0
+          element.progressbar = 0
         }
       }
 
     }
+    console.log("sec" , lists)
     setSection(lists)
   }
 
@@ -270,12 +277,16 @@ const Home: NextPage = () => {
                 </div>
                 <div className="complete-web-1">
                   {section ? section?.map((lec: any, index: number) => (
-                    <div className="drop-box" style={{ marginLeft: '10px', maxWidth: '30%' }}>
+                    console.log("section", lec?.progressbar > 0 && lec?.progressbar < 100),
+
+                    < div className="drop-box" style={{ marginLeft: '10px', maxWidth: '30%' }}>
                       <div className="kvjadsd-j43rm">
                         <div className="jodsa-wnedas">
                           <h6>Lectures</h6>
                         </div>
-                        {lec?.length !== -1 && <div onClick={() => removeInputField(index)} style={{ cursor: 'pointer' }}><i className="fa fa-trash"></i></div>}
+                        {
+
+                          lec?.length !== -1 && <div style={lec?.progressbar > 0 && lec?.progressbar < 100 ? { cursor: 'not-allowed' } : { cursor: 'pointer' }} onClick={lec?.progressbar > 0 && lec?.progressbar < 100 ? null : () => removeInputField(index)} ><i className="fa fa-trash"></i></div>}
 
                       </div>
 
@@ -308,15 +319,13 @@ const Home: NextPage = () => {
                         >
                           <div className="kvjadsd-j43rm iasdufhvs-ernd" >
                             <Icons name="i29" />
-                            <p>{lec?.object_key}</p>
-                            {/* {load ? <Spinner animation="border" size="sm"/> : */}
-                            {/* <>
-                              {lec.thumbnail ? <img src={lec.thumbnail} alt="course_img" className="thum_img" /> : ""}
-                              {lec.thumbnail || lec.file_type === "Video" ? "" : lec.object_key ? lec?.object_key : <p>Drag file here / Choose file</p>}
-                            </> */}
-                            {/* }/ */}
+                            {  lec?.id && !lec?.uuid && lec?.thumbnail !== '' ? <img src={lec.thumbnail  } alt="course_img" className="thum_img" /> : lec?.object_key}
+                            <div style={{ display: 'flex', flexDirection: 'column' }}>
+                              {lec?.file_size > 0 && <p className="mt-2">File Size : {bytesToSize(lec?.file_size)}</p>}
+                              {lec?.progressbar === 100 && <p className="mt-2">File Uploaded <i style={{ color: 'green' }} className="fa fa-check-circle"></i></p>}
+                            </div>
                           </div>
-                          {lec?.object_key ? "" :
+                          {lec.thumbnail  ? "" :
                             <input type="file" accept="pdf/*" onChange={(e) => handleChangeLectureFile(index, e)} className="custom-file-input" />
                           }
                           {errors && errors[index]?.object_key ? <div className="invalid mt-1">{errors[index]?.object_key}</div> : null}
@@ -326,12 +335,12 @@ const Home: NextPage = () => {
                         <div className="mt-2">
                           {lec.progressbar === 100 ? " "
                             :
-                            lec.progressbar && <ProgressBar animated now={lec.progressbar} />}
+                            lec?.progressbar && <ProgressBar animated now={lec.progressbar} />}
                         </div>
-                        {lec?.object_key && lec.progressbar === 100 ?
+                        {lec?.object_key ||  lec?.thumbnail && lec.progressbar === 100 ?
                           <>
                             <div className="overlay"></div>
-                            <div id="icon" onClick={() => delThumnail(index, i)}>
+                            <div id="icon" onClick={() => delThumnail(index)}>
                               <i className="fa fa-close" ></i>
                             </div>
                           </>

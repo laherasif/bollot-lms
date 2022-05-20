@@ -19,6 +19,7 @@ import { RootStateOrAny, useSelector } from "react-redux";
 import moment from "moment";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { pusher } from '../../../../src/confiq/pusher/pusher'
+import { useRouter } from "next/router";
 const options = ["one", "two", "three"];
 
 
@@ -49,12 +50,22 @@ const Home: NextPage = () => {
   });
 
 
+  let router = useRouter()
+  let CovId = router.query.id
+
+
+  useEffect(() => {
+    if (CovId) {
+      let finds = conversation?.find((f:any) => f.id == CovId)
+      console.log("finds" , finds)
+      getMessages( finds?.user_id == User?.id ? finds.user_two_details : finds?.user_details, CovId)
+    }
+  }, [CovId])
+
   useEffect(() => {
     const channel = pusher.subscribe("messages-channel");
     channel.bind('new-message', function (data: any) {
       const { message } = data
-      console.log("message ins" , message )
-      console.log("message user" , user )
       if(user?.id == message.from_user_id){
       setMessages((prevState: any) => [
         message,
@@ -115,6 +126,7 @@ const Home: NextPage = () => {
 
 
   const getMessages = async (data: any, id: number) => {
+    console.log("Data" , data )
     setUser(data)
     setConvId(id)
     setPages(1)
@@ -263,7 +275,7 @@ const Home: NextPage = () => {
                   {conversation?.length ? conversation?.map((ins: any, index: number) => {
                     if (ins?.user_two_id == User?.id)
                       return (
-                        <div className="user-card-inbox" onClick={() => getMessages(ins.user_details, ins.id)} key={index}>
+                        <div className={CovId == ins?.id  || convId == ins?.id ? "user-card-inbox active" :  "user-card-inbox "} onClick={() => getMessages(ins.user_details, ins.id)} key={index}>
                           <div className="user-card-inbox-inner">
                             <img src={ins?.user_details?.image || "/assets/images/umpire-1.svg"} />
                             <div>

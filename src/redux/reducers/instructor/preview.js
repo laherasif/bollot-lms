@@ -37,7 +37,6 @@ const PreviewReducer = (state = initialState, action) => {
 
             }
             case DELE_CRICULUM_LECTURE_PREVIEW:
-    debugger
 
                 let find = state.Previews.filter((f) => f.course_section_lecture_id !== action.payload.course_section_lecture_id)
                 return{
@@ -57,7 +56,6 @@ const PreviewReducer = (state = initialState, action) => {
 
 
         case ADD_CRICULUM_THUMNAIL_PREVIEW:
-           debugger
             return {
                 ...state,
                 ...state.Previews.map((item, ind) => {
@@ -65,7 +63,9 @@ const PreviewReducer = (state = initialState, action) => {
                         item.thumbnail = action.payload.data.thumbnail
                         item.progressbar = action.payload.data.prog
                         item.file_type = action.payload.data.video
-                        item.object_key = action.payload.data.file
+                        item.object_key = action.payload.data.file.name
+                        item.file_size = action.payload.data.file.size
+
                     }
                     return item
 
@@ -73,7 +73,6 @@ const PreviewReducer = (state = initialState, action) => {
             }
 
         case DEL_CRICULUM_LECTURE_PREVIEW:
-    debugger
            
             let findIndex = state.Previews.filter((item, ind) => ind !== action.payload)
             return {
@@ -91,6 +90,9 @@ const PreviewReducer = (state = initialState, action) => {
                     if (ind === action.payload) {
                         item.thumbnail = ""
                         item.object_key = ""
+                        item.file_size = null
+                        item.progressbar = null 
+
 
                     }
                     return item

@@ -14,7 +14,7 @@ import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import Router, { useRouter } from "next/router";
 import LiveVideo from './videoModel'
-import { generateVideoThumbnail, SweetAlert } from "../../function/hooks";
+import { bytesToSize, generateVideoThumbnail, SweetAlert } from "../../function/hooks";
 import { S3_BUCKET, myBucket } from '../../confiq/aws/aws'
 import {
   addLectureInputPreview,
@@ -108,13 +108,12 @@ export default ({ changeState, onPrevStep, step }: any) => {
       myBucket.putObject(params)
         .on('httpUploadProgress', (evt) => {
           if (evt.loaded && evt.total) {
-            debugger
             let prog = Math.round((evt.loaded / evt.total) * 100)
             let data = {
               thumbnail: thumbnail,
               prog: prog,
               video: "Video",
-              file: file.name
+              file: file
             }
 
             dispatch(addLectureThumanilPreview({ data, index }))
@@ -237,11 +236,12 @@ export default ({ changeState, onPrevStep, step }: any) => {
                     {pr?.lectures?.map((lec: any, i: number) => (
                       <Table responsive="md" key={i} >
                         <tbody >
-                          <tr style={lec?.file_type === "PDF" ? { visibility: 'hidden', cursor: 'pointer' } : { cursor: 'pointer' }} >
+                          <tr style={{ cursor: 'pointer' }} >
                             <td>
                               <div className="custom-checkbox">
 
                                 <input
+                                  disabled={lec?.file_type === "PDF" ? true : false}
                                   type="checkbox"
                                   className="custom-control-input "
                                   id="customCheck1"
@@ -252,139 +252,147 @@ export default ({ changeState, onPrevStep, step }: any) => {
 
                             </td>
                             <>
-                              <td onClick={() => VideoShow(lec)}>
-                                <div className="video_section" >
-                                  <img src={lec?.thumbnail} alt="previews" />
+                              <td  onClick ={lec?.file_type === "PDF" ? null : () => VideoShow(lec)}>
+                              <div className="video_section" >
+                                <img src={lec?.thumbnail} alt="previews" />
+                                {lec?.file_type === "Video" ?
                                   <div className="video-icon">
                                     <i className="fas fa-play-circle"></i>
                                   </div>
-                                </div>
-                              </td>
-                              <td>
-                                <div className="video-title">
-                                  {lec?.title}
+                                  : null}
+                              </div>
+                            </td>
+                            <td>
+                              <div className="video-title">
+                                {lec?.title}
 
-                                </div>
-                              </td>
-                            </>
+                              </div>
+                            </td>
+                          </>
 
-                          </tr>
-                        </tbody>
+                        </tr>
+                      </tbody>
                       </Table>
 
 
-                    ))}
+                ))}
 
-                  </div>
+            </div>
 
-                )
+            )
               })
-                : <div>Preview video not found </div>
+            : <div>Preview video not found </div>
               }
 
 
-            </div>
           </div>
         </div>
+      </div>
 
 
-        {Previews ? Previews?.map((lec: any, index: number) => {
-          if (!lec.course_section_lecture_id)
-            return (
-              <div className="drop-box" style={{ marginLeft: '40px', maxWidth: '80%', marginTop: '30px' }}>
-                <div className="kvjadsd-j43rm">
-                  <div className="jodsa-wnedas">
-                    <h6>Lectures</h6>
-                  </div>
-                  {lec?.length !== -1 && <div onClick={() => removeInputField(index)} style={{ cursor: 'pointer' }}><i className="fa fa-trash"></i></div>}
-
+      {Previews ? Previews?.map((lec: any, index: number) => {
+        if (!lec.course_section_lecture_id)
+          return (
+            <div className="drop-box" style={{ marginLeft: '40px', maxWidth: '80%', marginTop: '30px' }}>
+              <div className="kvjadsd-j43rm">
+                <div className="jodsa-wnedas">
+                  <h6>Lectures</h6>
                 </div>
+                {lec?.length !== -1 && <div onClick={() => removeInputField(index)} style={{ cursor: 'pointer' }}><i className="fa fa-trash"></i></div>}
 
-                <div className="">
-                  <div className="d-flex">
-                    <Icons name="i24" />
-                    <label>Title</label>
-                  </div>
-                  <input
-                    type="text"
-                    name="title"
-                    value={lec.title}
-                    onChange={(e) => handleChangeSection(index, e)}
-                    style={errors[index]?.title && { border: '1pt solid red ' }}
-                    placeholder="Write here..." />
-                  {errors && errors[index]?.title ? <div className="invalid mt-1">{errors[index]?.title}</div> : null}
+              </div>
 
+              <div className="">
+                <div className="d-flex">
+                  <Icons name="i24" />
+                  <label>Title</label>
                 </div>
+                <input
+                  type="text"
+                  name="title"
+                  value={lec.title}
+                  onChange={(e) => handleChangeSection(index, e)}
+                  style={errors[index]?.title && { border: '1pt solid red ' }}
+                  placeholder="Write here..." />
+                {errors && errors[index]?.title ? <div className="invalid mt-1">{errors[index]?.title}</div> : null}
+
+              </div>
 
 
-                <div className={lec.thumbnail && lec.id || lec.progressbar === 100 ? "image-container" : ""}>
-                  <label>Video file for this Lecture</label>
-                  <div className="drop-box img-box"
-                    style={errors[index]?.object_key && { border: '1pt solid red ' }}
-                  >
-                    <div className="kvjadsd-j43rm iasdufhvs-ernd" >
-                      <Icons name="i29" />
-                      <p>{lec.object_key}</p>
-                      {lec.progressbar === 100 ? <p className="mt-2">File Uploaded</p> : " "}
+              <div className={lec.thumbnail && lec.id || lec.progressbar === 100 ? "image-container" : ""}>
+                <label>Video file for this Lecture</label>
+                <div className="drop-box img-box"
+                  style={errors[index]?.object_key && { border: '1pt solid red ' }}
+                >
+                  <div className="kvjadsd-j43rm iasdufhvs-ernd" >
+                    <Icons name="i29" />
+                    {lec?.id ? <img src={lec.thumbnail} alt="course_img" className="thum_img" /> : lec?.object_key}
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                      {lec?.file_size > 0 && <p className="mt-2">File Size : {bytesToSize(lec?.file_size)}</p>}
+                      {lec?.progressbar === 100 && <p className="mt-2">File Uploaded <i style={{ color: 'green' }} className="fa fa-check-circle"></i></p>}
+                    </div>
 
-                      {/* <>
+                    {/* <p>{lec.object_key}</p> */}
+                    {/* {lec.progressbar === 100 ? <p className="mt-2">File Uploaded</p> : " "} */}
+
+                    {/* <>
                         {lec.thumbnail ? <img src={lec.thumbnail} alt="course_img" className="thum_img" /> : ""}
                         {lec.thumbnail || lec.file_type === "Video" ? "" : lec.object_key ? lec?.object_key : <p>Drag file here / Choose file</p>}
                       </> */}
 
-                    </div>
-                    {lec?.object_key ? "" :
-                      <input type="file" accept="pdf/*" onChange={(e) => handleChangeLectureFile(index, e)} className="custom-file-input" />
-                    }
-                    {errors && errors[index]?.object_key ? <div className="invalid mt-1">{errors[index]?.object_key}</div> : null}
-
                   </div>
-                  <div className="mt-2">
-                    {lec.progressbar === 100 ? " "
-                      :
-                      lec.progressbar && <ProgressBar animated now={lec.progressbar} />}
-                  </div>
-                  {lec?.object_key && lec.progressbar === 100 ?
-                    <>
-                      <div className="overlay"></div>
-                      <div id="icon" onClick={() => delThumnail(index)}>
-                        <i className="fa fa-close" ></i>
-                      </div>
-                    </>
-                    : null
+                  {lec?.object_key ? "" :
+                    <input type="file" accept="pdf/*" onChange={(e) => handleChangeLectureFile(index, e)} className="custom-file-input" />
                   }
+                  {errors && errors[index]?.object_key ? <div className="invalid mt-1">{errors[index]?.object_key}</div> : null}
+
                 </div>
-
-
+                <div className="mt-2">
+                  {lec.progressbar === 100 ? " "
+                    :
+                    lec.progressbar && <ProgressBar animated now={lec.progressbar} />}
+                </div>
+                {lec?.object_key && lec.progressbar === 100 ?
+                  <>
+                    <div className="overlay"></div>
+                    <div id="icon" onClick={() => delThumnail(index)}>
+                      <i className="fa fa-close" ></i>
+                    </div>
+                  </>
+                  : null
+                }
               </div>
-            )
-        })
-          : <div>Record not found </div>
-        }
 
-        <div className="umpire w-100 " >
-          <div className="umpire-1 umpire-1-cst d-flex justify-content-center mt-3 ">
-            <div className="d-flex mb-3 idfadsf-sads">
-              <button
-                className="upload-1 sdisad-dsdactive "
-                onClick={() => onPrevStep(step - 1)}
-              >
-                Previous
-              </button>
-              <button
-                className="upload-1 sdisad-dsdactive"
-                onClick={() => SaveCriculum()}
-              >
-                <i className="fa fa-save" style={{ marginRight: '10px' }}></i>
-                {loading ? <Spinner animation="border" /> : "Save & Next"}
-              </button>
+
             </div>
+          )
+      })
+        : <div>Record not found </div>
+      }
 
+      <div className="umpire w-100 " >
+        <div className="umpire-1 umpire-1-cst d-flex justify-content-center mt-3 ">
+          <div className="d-flex mb-3 idfadsf-sads">
+            <button
+              className="upload-1 sdisad-dsdactive "
+              onClick={() => onPrevStep(step - 1)}
+            >
+              Previous
+            </button>
+            <button
+              className="upload-1 sdisad-dsdactive"
+              onClick={() => SaveCriculum()}
+            >
+              <i className="fa fa-save" style={{ marginRight: '10px' }}></i>
+              {loading ? <Spinner animation="border" /> : "Finish"}
+            </button>
           </div>
+
         </div>
+      </div>
 
 
-        {/* <div className="d-flex mt-2 justify-content-center mt-2">
+      {/* <div className="d-flex mt-2 justify-content-center mt-2">
           <div className="idfadsf-sads kajfds-sdfe hfdajss-3ersad">
             <button className="upload-1 sdisad-dsdactive " onClick={() => onPrevStep(step - 1)}>
               Previous
@@ -402,13 +410,13 @@ export default ({ changeState, onPrevStep, step }: any) => {
         </div> */}
 
 
-      </div>
+    </div>
 
 
       {
-        live ?
-          <LiveVideo link={live} Toggle={(value) => setLive(value)} /> : null
-      }
+    live ?
+      <LiveVideo link={live} Toggle={(value) => setLive(value)} /> : null
+  }
 
 
     </>

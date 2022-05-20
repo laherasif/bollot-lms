@@ -19,7 +19,7 @@ import { RootStateOrAny, useSelector } from "react-redux";
 import axios from "axios";
 import { useRouter } from 'next/router'
 import { Small } from "../../../../src/components/instructor/loader";
-import { convertToBase64, generateVideoThumbnail, getBase64Image, SweetAlert } from "../../../../src/function/hooks";
+import { bytesToSize, convertToBase64, generateVideoThumbnail, getBase64Image, SweetAlert } from "../../../../src/function/hooks";
 import { myBucket, S3_BUCKET } from "../../../../src/confiq/aws/aws";
 import { ProgressBar, Spinner } from "react-bootstrap";
 import instance from "../../../../src/confiq/axios/instance";
@@ -91,7 +91,7 @@ const Home: NextPage = () => {
       {
         title: '',
         lectures: [
-          { title: "", file_type: '', object_key: '', thumbnail: '', progressbar: '' },
+          { title: "", file_type: '', object_key: '', thumbnail: '', progressbar: '', file_size: ' ' },
         ]
       }
     ])
@@ -154,6 +154,9 @@ const Home: NextPage = () => {
                   element.lectures[i].progressbar = prog;
                   element.lectures[i].file_type = "Video";
                   element.lectures[i].object_key = file.name;
+                  element.lectures[i].file_size = file.size;
+                  element.lectures[i].uuid = 123
+
                 }
               }
               setSection(list)
@@ -193,6 +196,9 @@ const Home: NextPage = () => {
                   element.lectures[i].progressbar = prog;
                   element.lectures[i].file_type = "PDF";
                   element.lectures[i].object_key = file.name;
+                  element.lectures[i].file_size = file.size;
+                  element.lectures[i].uuid = 123
+
                 }
               }
               setSection(list)
@@ -228,7 +234,7 @@ const Home: NextPage = () => {
     for (let i = 0; i < lists.length; i++) {
       if (i === index) {
         const element = lists[i];
-        element?.lectures.push({ title: "", file_type: '', file_url: '' })
+        element?.lectures.push({ title: "", file_type: '', file_url: '', file_size: '' , uuid :'' })
       }
 
     }
@@ -237,20 +243,6 @@ const Home: NextPage = () => {
   }
   const SaveCriculum = async () => {
 
-    let arr = []
-    for (let index = 0; index < section.length; index++) {
-      const element = section[index];
-      for (let j = 0; j < element.lectures.length; j++) {
-        const elements = element.lectures[j];
-        let regex = /data:.*base64,/
-        let checks = elements.thumbnail.replace(regex, "")
-        let regexBase64 = /^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/;
-        let check = regexBase64.test(checks);
-        elements.thumbnail = check ? elements.thumbnail : elements.thumbnail
-      }
-      arr.push(element)
-
-    }
 
 
 
@@ -289,6 +281,7 @@ const Home: NextPage = () => {
       if (j === index) {
         const element = lists[j];
         element.lectures[i].thumbnail = ""
+        element.lectures[i].object_key = ""
         if (network === true) {
           element.lectures[i].progressbar = 0
         }
@@ -411,7 +404,10 @@ const Home: NextPage = () => {
                               <div className="jodsa-wnedas">
                                 <h6>Lectures</h6>
                               </div>
-                              {lec?.length !== -1 && <div onClick={() => removeInputFields(index, i)} style={{ cursor: 'pointer' }}><i className="fa fa-trash"></i></div>}
+                              {
+                                lec?.length !== -1 && <div style={lec?.progressbar > 0 && lec?.progressbar < 100 ? { cursor: 'not-allowed' } : { cursor: 'pointer' }} onClick={lec?.progressbar > 0 && lec?.progressbar < 100 ? null : () => removeInputFields(index, i)} ><i className="fa fa-trash"></i></div>
+
+                              }
 
                             </div>
 
@@ -441,17 +437,28 @@ const Home: NextPage = () => {
                               >
                                 <div className="kvjadsd-j43rm iasdufhvs-ernd" >
                                   <Icons name="i29" />
-                                  <p>{lec?.object_key}</p>
-                                  {/* {load ? <Spinner animation="border" size="sm"/> : */}
-                                  {/* <>
-                                    {lec.thumbnail ? <img src={lec.thumbnail} alt="course_img" className="thum_img" /> : ""}
-                                    {lec.thumbnail || lec.file_type === "Video" ? "" : lec.object_key ? lec?.object_key : <p>Drag file here / Choose file</p>}
-                                  </> */}
-                                  {/* }/ */}
+                                  {lec?.id && !lec?.uuid && lec?.thumbnail !== '' ? <img src={lec.thumbnail} alt="course_img" className="thum_img" /> : lec?.object_key}
+                                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                    {lec?.file_size > 0 && <p className="mt-2">File Size : {bytesToSize(lec?.file_size)}</p>}
+                                    {lec?.progressbar === 100 && <p className="mt-2">File Uploaded <i style={{ color: 'green' }} className="fa fa-check-circle"></i></p>}
+                                  </div>
+                                </div>
+                                {lec.thumbnail ? "" :
+                                  <input type="file" accept="pdf/*" onChange={(e) => handleChangeLectureFile(index, i, e)} className="custom-file-input" />
+                                }
+
+                                {/* <div className="kvjadsd-j43rm iasdufhvs-ernd" >
+                                  <Icons name="i29" />
+                                 
+                                  {lec?.id ? <img src={lec.thumbnail} alt="course_img" className="thum_img" /> : lec?.object_key}
+                                  <div style={{display:'flex' , flexDirection:'column'}}> 
+                                    {lec?.file_size > 0 && <p className="mt-2">File Size : {bytesToSize(lec?.file_size)}</p>}
+                                    {lec?.progressbar === 100 && <p className="mt-2">File Uploaded <i style={{ color: 'green' }} className="fa fa-check-circle"></i></p>}
+                                  </div>
                                 </div>
                                 {lec?.object_key ? "" :
                                   <input type="file" accept="pdf/*" onChange={(e) => handleChangeLectureFile(index, i, e)} className="custom-file-input" />
-                                }
+                                } */}
                                 {errors && errors?.sections ? <div className="invalid mt-1">{errors?.sections[index]?.lectures[i]?.object_key}</div> : null}
 
 
@@ -461,10 +468,10 @@ const Home: NextPage = () => {
                                   :
                                   lec.progressbar && <ProgressBar animated now={lec.progressbar} />}
                               </div>
-                              {lec?.object_key && lec.progressbar === 100 ?
+                              {lec?.object_key || lec?.thumbnail && lec.progressbar === 100 ?
                                 <>
                                   <div className="overlay"></div>
-                                  <div id="icon" onClick={() => delThumnail(index, i)}>
+                                  <div id="icon" onClick={() => delThumnail(index , i )}>
                                     <i className="fa fa-close" ></i>
                                   </div>
                                 </>
@@ -475,8 +482,8 @@ const Home: NextPage = () => {
                           </div>
                         ))}
                         <span className="add-mores"
-                        style={sec.lectures.some((s:any) => s.progressbar > 0 && s.progressbar < 100 ) ? {cursor:'not-allowed' } :{ cursor:'pointer'} }
-                        onClick={ sec.lectures.some((s:any) => s.progressbar > 0 && s.progressbar < 100 ) ? null : () => AddmoreLecture(index)} >+ Add more lectures </span>
+                          style={sec.lectures.some((s: any) => s.progressbar > 0 && s.progressbar < 100) ? { cursor: 'not-allowed' } : { cursor: 'pointer' }}
+                          onClick={sec.lectures.some((s: any) => s.progressbar > 0 && s.progressbar < 100) ? null : () => AddmoreLecture(index)} >+ Add more lectures </span>
 
 
                       </div>

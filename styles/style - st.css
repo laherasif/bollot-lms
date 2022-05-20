@@ -502,7 +502,7 @@
 .dsaofjosd-ajeir button:hover,
 .dsaofjosd-ajeir button:active,
 .dsaofjosd-ajeir button:focus {
-  background-color: transparent ;
+  background-color: transparent;
   border: none !important;
   box-shadow: none !important;
 }
@@ -3203,6 +3203,11 @@
   background-color: rgb(251, 249, 249);
 }
 
+.active{
+  background-color: rgb(251, 249, 249);
+
+}
+
 .user-card-inbox p {
   font-weight: 400;
   font-size: 14px;
@@ -4902,3 +4907,194 @@ textarea::placeholder {
 
 
 /* Notification */
+
+
+.notification-container {
+  cursor: default;
+  position: absolute;
+  z-index: 999;
+  top: 2.5rem;
+  left: -190px;
+  width: 230px;
+  font-weight: 300;
+  padding: 20px 0px;
+  background: white;
+  border-radius: 0.5rem;
+  box-sizing: border-box;
+  animation-name: dropPanel;
+  animation-iteration-count: 1;
+  animation-timing-function: all;
+  animation-duration: 0.75s;
+}
+
+.notification-container:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0px;
+  width: 0;
+  height: 0;
+  transform: translate(-1rem, -100%);
+  border-left: 0.75rem solid transparent;
+  border-right: 0.75rem solid transparent;
+  border-bottom: 0.75rem solid white;
+}
+
+.notification-container h3 {
+  text-transform: uppercase;
+  font-size: 75%;
+  font-weight: 700;
+  text-align: left;
+  color: #84929f;
+  padding-left: 10px;
+}
+
+.notification-container i {
+  color: #b5c4d2;
+  font-size: 140%;
+}
+
+
+@keyframes dropPanel {
+  0% {
+    opacity: 0;
+    transform: translateY(-100px) scaleY(0.5);
+  }
+}
+
+.notification {
+  box-sizing: border-box;
+}
+
+.notification-manu {
+  padding: 0px;
+  margin: 0px;
+  list-style: none;
+}
+
+.notification-manu li {
+  padding: 5px;
+  border-bottom: 1pt solid lightgray;
+}
+
+.notification-manu li:hover {
+  background-color: rgb(243, 236, 236);
+}
+
+.notification_wraper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* messages  */
+.messages-container {
+  cursor: default;
+  position: absolute;
+  z-index: 999;
+  top: 2.5rem;
+  left: -260px;
+  width: 300px;
+  font-weight: 300;
+  padding: 20px 0px;
+  background: rgb(242, 240, 240);
+  border-radius: 0.5rem;
+  box-sizing: border-box;
+  animation-name: dropPanel;
+  animation-iteration-count: 1;
+  animation-timing-function: all;
+  animation-duration: 0.75s;
+}
+
+.messages-container:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0px;
+  width: 0;
+  height: 0;
+  transform: translate(-1rem, -100%);
+  border-left: 0.75rem solid transparent;
+  border-right: 0.75rem solid transparent;
+  border-bottom: 0.75rem solid white;
+}
+
+.messages-container h3 {
+  text-transform: uppercase;
+  font-size: 75%;
+  font-weight: 700;
+  text-align: left;
+  color: #84929f;
+  padding-left: 10px;
+}
+
+.messages-container i {
+  color: #b5c4d2;
+  font-size: 140%;
+}
+
+
+@keyframes dropPanel {
+  0% {
+    opacity: 0;
+    transform: translateY(-100px) scaleY(0.5);
+  }
+}
+
+.messages {
+  box-sizing: border-box;
+}
+
+.messages-manu {
+  padding: 0px;
+  margin: 0px;
+  list-style: none;
+}
+
+.messages-manu li {
+  padding: 5px 10px;
+  cursor: pointer;
+  border-bottom: 1pt solid lightgray;
+
+}
+.messages-manu  .active{
+ 
+  background-color: rgb(243, 236, 236);
+
+}
+
+.messages-manu li:hover {
+  background-color: rgb(243, 236, 236);
+}
+
+.messages_wraper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.messages_wraper .user_info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.messages_wraper .user_names {
+  margin-left: 10px;
+}
+
+.messages_wraper .user_names .instructor {
+  /* display: flex; */
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.messages_wraper .user_names .message{
+  width: 100%;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.messages_wraper .date{
+  font-size: 12px;
+}

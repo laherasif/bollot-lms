@@ -221,7 +221,7 @@ let checkRouter = router.query.checkout
               </div>
             </form>
 
-            <h6>Forgot Password?</h6>
+            {/* <h6>Forgot Password?</h6> */}
             <h6>Don't have an account?    <Link href={"/en/signup"}>Sign Up</Link></h6>
             <h4>OR</h4>
 
