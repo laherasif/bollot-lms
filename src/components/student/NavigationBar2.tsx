@@ -6,7 +6,7 @@ import Dropdown from "./dropdown";
 import { BiBell } from "react-icons/bi";
 import { FiSearch } from "react-icons/fi";
 import { IoMailOutline } from "react-icons/io5";
-import { Header2Item } from "../../../pages/[language]/student/details/[id]";
+// import { Header2Item } from "../../../pages/[language]/student/details/[id]";
 export default () => {
   const isTab = useMediaQuery({
     query: "(max-width: 991px)",
@@ -86,10 +86,10 @@ export default () => {
                       <div>
                         <h2 className="ksdfhd-active">Overview</h2>
                         <div>
-                          <Header2Item title="Week 01" isChecked={true} />
+                          {/* <Header2Item title="Week 01" isChecked={true} />
                           <Header2Item title="Week 02" isChecked={true} />
                           <Header2Item title="Week 03" isChecked={false} />
-                          <Header2Item title="Week 04" isChecked={false} />
+                          <Header2Item title="Week 04" isChecked={false} /> */}
                         </div>
                       </div>
                       <div>
