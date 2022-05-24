@@ -19,7 +19,7 @@
 //   const [loading, setLoading] = useState(false)
 //   const [email, setemail] = useState(false)
 //   const [banner, setBanner] = useState(false)
-//   const { User, token } = useSelector((state: RootStateOrAny) => state?.userReducer)
+//   const { User, token } = useSelector((state: RootStateOrAny) => state?.admin)
 
 //   const AxInstance = axios.create({
 //     // .. where we make our configurations
@@ -32,7 +32,7 @@
 //     let fetchCourse = async () => {
 //       try {
 //         setLoading(true)
-//         let res = await AxInstance.get('api//instructor/courses')
+//         let res = await AxInstance.get('api//admin/courses')
 //         if (res.data.success === true) {
 //           setLoading(false)
 //           setCourse(res.data.response.courses)
