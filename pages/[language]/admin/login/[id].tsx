@@ -145,7 +145,7 @@ const Home: NextPage = () => {
                 </button>
               </div>
             </form>
-            <Link href="/en/admin/forgot">
+            <Link href="/en/forgotpassword">
               <h6 style={{cursor:'pointer'}}>Forgot Password?</h6>
             </Link>
           </div>

@@ -7,6 +7,8 @@ import {
   CLEAN_STATE,
   LOGOUT_INST,
   UPDATE_USER,
+  FORGOT_PASSWORD,
+  FORGOT_PASSWORD_EMAIL,
 } from "../../types/types";
 const initialState = {
   token: null,
@@ -14,6 +16,8 @@ const initialState = {
   varified: false,
   USER: {},
   error: {},
+  pageNo: 0,
+  forgotEmail: ''
 };
 
 const userReducer = (state = initialState, action) => {
@@ -21,7 +25,7 @@ const userReducer = (state = initialState, action) => {
     case SIGNUP_USER: {
       return {
         ...state,
-        User: action.payload.response.student,
+        User: action.payload.response.student  ,
         token: action.payload.response.token.token,
         isAuth: true,
       };
@@ -43,13 +47,25 @@ const userReducer = (state = initialState, action) => {
 
       return {
         ...state,
-        User: action.payload.response.student,
+        User: action.payload.response.student || action.payload.response.user,
         token: action.payload.response.token.token,
         isAuth: true,
       };
     }
+    // case FORGOT_PASSWORD:
+    //   return {
+    //     ...state,
+    //     pageNo: action.payload
+
+    //   }
+    case FORGOT_PASSWORD_EMAIL:
+      return {
+        ...state,
+        forgotEmail: action.payload
+
+      }
     case UPDATE_USER: {
-      
+
       return {
         ...state,
         User: action.payload.response.user,
@@ -67,7 +83,7 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         User: null,
-        token : null 
+        token: null
       }
     }
     case ERROR: {

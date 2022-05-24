@@ -1,24 +1,62 @@
 import type { NextPage } from "next";
-import Dropdown from "../../../../src/components/student/dropdown";
-import { useIntl } from "react-intl";
+// import { useIntl } from "react-intl";
 import Sidebar from "../../../../src/components/student/sidebar";
-import { FiSearch } from "react-icons/fi";
-import { BiBell } from "react-icons/bi";
-import { IoMailOutline } from "react-icons/io5";
 import Icons from "../../../../src/icons";
 import TopNavbar from "../../../../src/components/student/TopNavbar";
-import CourseCard from "../../../../src/components/student/CourseCard";
-import BookmarkCard from "../../../../src/components/student/BookmarkCard";
 import NavigationBar1 from "../../../../src/components/student/NavigationBar1";
 import Link from "next/link";
 import withAuth from "../../../../src/components/Hoc/authRoute";
-// import { useEffect } from "react";
-// import { RootStateOrAny, useSelector } from "react-redux";
-// import axios from "axios";
-// import { useRouter } from "next/router";
+import Swal from "sweetalert2";
+import { LogoutIns}  from '../../../../src/redux/actions/auth/user'
+import { RootStateOrAny, useSelector, useDispatch } from "react-redux";
+import { useRouter } from 'next/router'
+import axios from "axios";
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
+
+  const token = useSelector((state: RootStateOrAny) => state?.userReducer?.token)
+  const dispatch = useDispatch()
+  const router = useRouter()
+  const AxInstance = axios.create({
+    // .. where we make our configurations
+    baseURL: 'https://dev.thetechub.us/bolloot/',
+    headers: {
+      token: token
+    }
+  });
+
+  const DelAccount = () => {
+    Swal.fire({
+      title: 'Are your sure?',
+      text: "You want to delete this user ?",
+      icon: "warning",
+      showDenyButton: true,
+
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        AxInstance.get('api//delete-my-account')
+          .then(res => {
+            Swal.fire({
+              title: "Done!",
+              text: res.data.message,
+              icon: "success",
+              // timer: 2000,
+              // button: false
+            })
+            dispatch(LogoutIns())
+            router.push('/en/login')
+          });
+      } else if (result.isDenied) {
+        Swal.fire('User are not deleted', '', 'info')
+      }
+    })
+
+  }
+
+
+
 
   return (
     <>
@@ -39,8 +77,10 @@ const Home: NextPage = () => {
 
                         <button className="upload-1">Payment</button>
                         <button className="upload-1">Notification</button>
-                        <button className="upload-1">Manage Devices</button>
-                        <button className="upload-1">Close Account</button>
+                        <Link href="/en/student/manageDevice">
+                          <button className="upload-1">Manage Devices</button>
+                        </Link>
+                        <button className="upload-1" onClick={() => DelAccount()}>Close Account</button>
                       </div>
                     </div>
                   </div>

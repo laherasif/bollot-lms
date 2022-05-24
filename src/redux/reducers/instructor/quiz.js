@@ -7,6 +7,7 @@ import {
     DEL_QUESTION,
     DEL_OPTIONS,
     CLEAR_STATE,
+    EDIT_QUIZ,
 } from "../../types/types";
 
 
@@ -114,6 +115,11 @@ const QuizReducer = (state = initialState, action) => {
                 }]
             }
 
+            case EDIT_QUIZ:
+            return {
+                ...state,
+                Quiz: action.payload
+            }
 
         default: {
             return state;

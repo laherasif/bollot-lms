@@ -3,6 +3,7 @@ import {
     ADD_LIVECLASS_MORE,
     CLEAR_STATE,
     DEL_LIVECLASS,
+    EDIT_LIVE_CLASSES,
 } from "../../types/types";
 
 
@@ -42,6 +43,14 @@ const ClassesReducer = (state = initialState, action) => {
                 ...state,
                 Classes: findIndex
             }
+
+            case EDIT_LIVE_CLASSES:
+                return{
+                    ...state ,
+                    Classes: action.payload
+                }
+            
+
             case CLEAR_STATE:
 
                 return {

@@ -33,22 +33,26 @@ const Home: NextPage = () => {
     password?: string,
     role?: number
   }
-
-
-  const { varified, User } = useSelector((state: RootStateOrAny) => state.userReducer)
-
-  console.log("User", User)
-  const [authValue, setAuthValue] = useState<SignUp>({
-    fullname: "",
-    email: "",
-    password: "",
-  })
   const [role, setRole] = useState(0)
   const [message, setMessage] = useState<boolean>(false)
   const [providerEmail, setProviderEmail] = useState<string>('')
   const [loader, setLoader] = useState<boolean>(false)
   const [errors, setErrors] = useState<Errors>({})
+  const [authValue, setAuthValue] = useState<SignUp>({
+    fullname: "",
+    email: "",
+    password: "",
+  })
 
+
+  const { varified, User } = useSelector((state: RootStateOrAny) => state.userReducer)
+
+  const firebaseAuth = getAuth(Firebaseapp);
+  const provider = new GoogleAuthProvider();
+  const Fbprovider = new FacebookAuthProvider();
+
+  const router = useRouter()
+  const dispatch = useDispatch()
 
   useEffect(() => {
     if (!varified) {
@@ -56,21 +60,26 @@ const Home: NextPage = () => {
     }
   }, [])
 
+  let register = router.query.join
 
-  const firebaseAuth = getAuth(Firebaseapp);
-  const provider = new GoogleAuthProvider();
-  const Fbprovider = new FacebookAuthProvider();
-  const router = useRouter();
+  useEffect(() => {
+    if (register === "student") {
+      setRole(1)
+    }
+    else if(register === "instructor") {
+      setRole(2)
+    }
+  }, [register])
 
-  const dispatch = useDispatch()
+
 
   useEffect(() => {
     if (User && User?.role === "student") {
       router.push('/en/student/dashboard')
 
     }
-    else if(User && User?.role === "instructor") {
-        router.push('/en/instructor')
+    else if (User && User?.role === "instructor") {
+      router.push('/en/instructor')
 
     }
     else if (User && User.is_email_verified === "0") {
@@ -84,24 +93,6 @@ const Home: NextPage = () => {
     const { providerData }: any = user;
 
     dispatch(SocialRegMedia(providerData, role === 1 ? "student" : "instructor"))
-    // if (User?.is_email_verified === "0") {
-    //   setMessage(true)
-    // }
-    // else if (User && User?.role === "student") {
-    //   router.push('/en/student/dashboard')
-
-    // }
-    // else if(User && User?.role === "instructor") {
-    //     router.push('/en/instructor')
-
-    // }
-   
-
-
-    // let object = Object.assign({}, ...providerData);
-    // setTimeout(() => {
-    //   setMessage(true)
-    // }, 1000);
 
   };
 
@@ -118,8 +109,8 @@ const Home: NextPage = () => {
       router.push('/en/student/dashboard')
 
     }
-    else if(User && User?.role === "instructor") {
-        router.push('/en/instructor')
+    else if (User && User?.role === "instructor") {
+      router.push('/en/instructor')
 
     }
 
@@ -206,7 +197,7 @@ const Home: NextPage = () => {
                       <label className="up-checkbox-label" htmlFor="up-button-box">
                         <input
                           type="radio"
-                          checked={role === 1}
+                          checked={role === 1 || register === "student"}
                           name="student"
                           onChange={(e) => setRole(1)}
                         />
@@ -341,7 +332,7 @@ const Home: NextPage = () => {
       </section>
       <Footer />
 
-      
+
       {message && <Otp openToggle={(e: any) => setMessage(e)} providerEmail={"laherasif@gmail.com"} role={authValue.role} />}
     </div>
   );

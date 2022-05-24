@@ -4,9 +4,16 @@ export const GET_COURSE_INPUTS = "GET_COURSE_INPUTS"
 export const GET_COURSE_INPUTS_MORE = 'GET_COURSE_INPUTS_MORE'
 export const ADD_COURSE_INPUTS_MORE = "ADD_COURSE_INPUTS_MORE"
 export const GET_COURSE_CRICULUM = "GET_COURSE_CRICULUM"
+export const EDIT_ADD_COURSE = "EDIT_ADD_COURSE"
+export const EDIT_CRICCULUM = "EDIT_CRICCULUM"
+export const EDIT_LIVE_CLASSES = "EDIT_LIVE_CLASSES"
+export const EDIT_PREVIEW = "EDIT_PREVIEW"
+export const EDIT_QUIZ = "EDIT_QUIZ"
+
 
 export const REGISTER_USER = 'REGISTER_USER';
 export const LOGIN_USER = 'LOGIN_USER';
+export const LOGOUT_ADMIN = 'LOGOUT_ADMIN'
 export const UPDATE_USER = 'UPDATE_USER'
 export const ERROR = 'ERROR';
 export const SET_TOKEN = 'SET_TOKEN';
@@ -14,6 +21,8 @@ export const REGISTER_SOCIAL_MEDIA = 'REGISTER_SOCIAL_MEDIA'
 export const SIGNUP_USER = "SIGNUP_USER"
 export const OPT_VERIFY = "OPT_VERIFY"
 export const CLEAN_STATE = "CLEAN_STATE"
+export const FORGOT_PASSWORD = "FORGOT_PASSWORD"
+export const FORGOT_PASSWORD_EMAIL = "FORGOT_PASSWORD_EMAIL" 
 
 export const GET_CATAGORY = "GET_CATAGORY"
 export const GET_FETAURE = "GET_FETAURE"
@@ -54,6 +63,15 @@ export const DELETE_INS = "DELETE_INS"
 export const UPDATE_INS = "UPDATE_INS"
 export const GET_SORTED_COURSE_SEARCH ="GET_SORTED_COURSE_SEARCH"
 
+// // clear state admin and instructor and company addCourse
+
+// export const CLEAR_ADCOURSE = "CLEAR_ADCOURSE"
+// export const CLEAR_CRICCULUM = "CLEAR_CRICCULUM"
+// export const CLEAR_QUIZ = "CLEAR_QUIZ"
+// export const CLEAR_lIVE = "CLEAR_lIVE"
+// export const CLEAR_PREVIEW = "CLEAR_PREVIEW"
+
+
 
 // Instructor AddCourse 
 export const ADD_COURSE_INPUTS = "ADD_COURSE_INPUTS"
@@ -62,8 +80,7 @@ export const ADD_COURSE_CONTENT = "ADD_COURSE_CONTENT"
 export const DEL_COURSE_CONTENT = "DEL_COURSE_CONTENT"
 export const DELE_CRICULUM_LECTURE_PREVIEW ="DELE_CRICULUM_LECTURE_PREVIEW"
 export const COURSE_ID ="COURSE_ID"
-    
-
+export const GET_COURSE_CATAGORIES = "GET_COURSE_CATAGORIES"
 
 
 // Instructor Criculum 

@@ -1,5 +1,15 @@
 
-import { LOGIN_USER, ERROR, LOGOUT_INST , UPDATE_USER,  REGISTER_SOCIAL_MEDIA , SIGNUP_USER , OPT_VERIFY, CLEAN_STATE} from '../../types/types'
+import {
+    LOGIN_USER,
+    ERROR, LOGOUT_INST,
+    UPDATE_USER,
+    // FORGOT_PASSWORD,
+    REGISTER_SOCIAL_MEDIA,
+    SIGNUP_USER,
+    OPT_VERIFY,
+    CLEAN_STATE,
+    FORGOT_PASSWORD_EMAIL
+} from '../../types/types'
 import { Dispatch } from 'redux';
 import instance from '../../../confiq/axios/instance'
 import Platform from 'react-platform-js'
@@ -18,7 +28,7 @@ import Platform from 'react-platform-js'
 
 
 
-export const SignUp = (data:object) => async (dispatch: any) => {
+export const SignUp = (data: object) => async (dispatch: any) => {
     try {
         dispatch({
             type: SIGNUP_USER,
@@ -30,7 +40,7 @@ export const SignUp = (data:object) => async (dispatch: any) => {
 }
 
 
-export const OtpVarif = (data:boolean) => async (dispatch: any) => {
+export const OtpVarif = (data: boolean) => async (dispatch: any) => {
     try {
         dispatch({
             type: OPT_VERIFY,
@@ -40,6 +50,35 @@ export const OtpVarif = (data:boolean) => async (dispatch: any) => {
 
     }
 }
+
+// export const forgotPageNo = (id: number) => async (dispatch: any) => {
+//     debugger
+//     try {
+//         dispatch({
+//             type: FORGOT_PASSWORD,
+//             payload: id
+//         })
+//     } catch (error) {
+
+//     }
+// }
+
+export const forgotEmail = (email: string) => async (dispatch: any) => {
+    debugger
+    try {
+        dispatch({
+            type: FORGOT_PASSWORD_EMAIL,
+            payload: email
+        })
+    } catch (error) {
+
+    }
+}
+
+
+
+
+
 
 export const CleanState = () => async (dispatch: any) => {
     try {
@@ -52,27 +91,27 @@ export const CleanState = () => async (dispatch: any) => {
     }
 }
 
-export const SocialRegComp = (providerData: [], role: string ) => async (dispatch: any) => {
+export const SocialRegComp = (providerData: [], role: string) => async (dispatch: any) => {
     try {
         let object = Object.assign({}, ...providerData)
 
         let fb = {
-            fullname : object.displayName,
+            fullname: object.displayName,
             email: object.email,
             fb_user_id: object.uid,
             image: object.photoURL,
             device_name: Platform.Browser,
-            device_model:Platform.BrowserVersion,
+            device_model: Platform.BrowserVersion,
             operating_system: Platform.OS,
             role: role
         }
         let google = {
-            fullname : object.displayName,
+            fullname: object.displayName,
             email: object.email,
             google_user_id: object.uid,
             image: object.photoURL,
             device_name: Platform.Browser,
-            device_model:Platform.BrowserVersion,
+            device_model: Platform.BrowserVersion,
             operating_system: Platform.OS,
             role: role
         }
@@ -85,16 +124,16 @@ export const SocialRegComp = (providerData: [], role: string ) => async (dispatc
         })
     }
     catch (err) {
-       dispatch({
-           type : ERROR,
-           payload :err
-       })
-    } 
+        dispatch({
+            type: ERROR,
+            payload: err
+        })
+    }
 }
 
 
 // Register User 
-export const SocialRegMedia = (providerData: [], role: string ) => async (dispatch: any) => {
+export const SocialRegMedia = (providerData: [], role: string) => async (dispatch: any) => {
     try {
         let object = Object.assign({}, ...providerData)
 
@@ -114,22 +153,22 @@ export const SocialRegMedia = (providerData: [], role: string ) => async (dispat
         // }
 
         let fb = {
-            fullname : object.displayName,
+            fullname: object.displayName,
             email: object.email,
             fb_user_id: object.uid,
             image: object.photoURL,
             device_name: Platform.Browser,
-            device_model:Platform.BrowserVersion,
+            device_model: Platform.BrowserVersion,
             operating_system: Platform.OS,
             role: role
         }
         let google = {
-            fullname : object.displayName,
+            fullname: object.displayName,
             email: object.email,
             google_user_id: object.uid,
             image: object.photoURL,
             device_name: Platform.Browser,
-            device_model:Platform.BrowserVersion,
+            device_model: Platform.BrowserVersion,
             operating_system: Platform.OS,
             role: role
         }
@@ -144,11 +183,11 @@ export const SocialRegMedia = (providerData: [], role: string ) => async (dispat
         })
     }
     catch (err) {
-       dispatch({
-           type : ERROR,
-           payload :err
-       })
-    } 
+        dispatch({
+            type: ERROR,
+            payload: err
+        })
+    }
 }
 
 
@@ -164,11 +203,11 @@ export const loginUser = (data: []) => {
 
     return async (dispatch: Dispatch<actionSuccess>) => {
         try {
-debugger
-                dispatch({
-                    type: LOGIN_USER,
-                    payload: data
-                })
+            debugger
+            dispatch({
+                type: LOGIN_USER,
+                payload: data
+            })
 
         }
         catch (err) {
@@ -184,10 +223,10 @@ export const updateUser = (data: any) => {
         debugger
         try {
 
-                dispatch({
-                    type: UPDATE_USER,
-                    payload: data
-                })
+            dispatch({
+                type: UPDATE_USER,
+                payload: data
+            })
 
         }
         catch (err) {
@@ -196,9 +235,9 @@ export const updateUser = (data: any) => {
     }
 }
 
-export const LogoutIns = () => (dispatch: any ) => {
-     dispatch({
-          type: LOGOUT_INST,
-          
-     })  
+export const LogoutIns = () => (dispatch: any) => {
+    dispatch({
+        type: LOGOUT_INST,
+
+    })
 }

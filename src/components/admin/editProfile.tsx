@@ -5,7 +5,7 @@ import { IoTrophySharp } from "react-icons/io5";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import { SweetAlert } from "../../function/hooks";
 import { updateUser } from '../../redux/actions/auth/user'
-const EditProfile = ({ Toggle, permition }: any) => {
+const EditUser = ({ Toggle, permition }: any) => {
 
     const { token, User } = useSelector((state: RootStateOrAny) => state?.userReducer)
 
@@ -244,5 +244,5 @@ const EditProfile = ({ Toggle, permition }: any) => {
         </div>
     );
 };
-export default EditProfile
+export default EditUser
 

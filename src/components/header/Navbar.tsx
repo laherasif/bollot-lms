@@ -69,7 +69,7 @@ const App = () => {
             </Nav.Link>
 
             <Nav.Link href="">
-              <Link href="/en/about">About Us</Link>
+              <Link href="/en/aboutUs">About Us</Link>
             </Nav.Link>
             <Nav.Link href="">
 

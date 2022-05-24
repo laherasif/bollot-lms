@@ -6,6 +6,7 @@ import {
   Navbar,
   NavDropdown,
   Offcanvas,
+  Spinner,
 
 } from "react-bootstrap";
 import Circulum from './circulum'
@@ -14,15 +15,18 @@ import FieldDropdown from "./Fields/FieldDropdown";
 // import ImagesUploader from "./ImagesUploader";
 import instance from "../../confiq/axios/instance";
 import { IoCloudCircleSharp } from "react-icons/io5";
+import { RootStateOrAny, useSelector } from "react-redux";
+import axios from "axios";
+import { SweetAlert } from "../../function/hooks";
+import {useRouter} from "next/router";
 
 
 interface Course {
-  title: string,
-  category_id: string,
-  short_desc: string,
-  long_desc: string,
-  price: number,
-  cover_image: string,
+
+  role?: string,
+  fullname?: string,
+  email?: string,
+  password?: string,
 
 }
 
@@ -41,22 +45,31 @@ interface Courses {
 
 
 
+const initialState = {
+  fullname: "",
+  email: "",
+  password: "",
+};
 
-
-
-
-export default (catagory: any) => {
-
-
-
+export default () => {
   const [item, setItem] = useState<Outcomes[]>([''])
   const [request, setRequest] = useState<Requirements[]>([''])
   const [course, setCourse] = useState<Courses[]>([''])
-  const [state, setState] = useState<Course[]>([])
+  const [state, setState] = useState<Course>(initialState)
   const [Courses, setCourses] = useState([])
-  const [url, setUrl] = useState()
-  const [showCirculm, setShowCirculm] = useState(true)
+  const [errors, setErrors] = useState({})
+  const [loading, setLoading] = useState(false)
 
+ const router = useRouter()
+  const { token } = useSelector((state: RootStateOrAny) => state?.admin)
+
+  const AxInstance = axios.create({
+    // .. where we make our configurations
+    baseURL: 'https://dev.thetechub.us/bolloot/',
+    headers: {
+      token: token
+    }
+  });
 
 
 
@@ -69,44 +82,43 @@ export default (catagory: any) => {
   };
 
 
+  const clearState = () => {
+    setState({ ...initialState });
+  };
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    let files: any = event.target.files;
-    let reader = new FileReader();
-    reader.readAsDataURL(files[0]);
-    reader.onload = (e) => {
-      setState({
-        ...state,
-        cover_image: e.target?.result
-      });
-      setUrl(URL.createObjectURL(event.target.files[0]))
 
-    }
-  }
 
   const SaveCourse = async () => {
 
     let data = {
-      title: state.title,
-      category_id: state.category_id,
-      short_desc: state.short_desc,
-      long_desc: state.long_desc,
-      price: state.price,
-      cover_image: state.cover_image,
-      outcomes: item,
-      requirements: request,
-      course_for: course
-
+      role: state.role,
+      fullname: state.fullname,
+      email: state.email,
+      password: state.password,
     }
 
-    console.log("daa", state)
 
     try {
-      let res = await instance.post('api//instructor/courses/store', data)
-      console.log("res", res)
-      setShowCirculm(true)
+      setLoading(true)
+      let stu = await AxInstance.post('api//admin/students/add', data)
+      let ins = await AxInstance.post('api//admin/instructors/add', data)
+      let res = state.role === "student" ? stu : ins
+      if (res.data.success === true ) {
+        setLoading(false)
+        SweetAlert({icon :"success" , text :res.data.message })
+        router.push('/en/admin/employe')
+        clearState()
+      }
+      else {
+        setLoading(false)
+        setErrors(res.data.error)
+
+      }
     } catch (error) {
-      console.log("err", error)
+      setLoading(false)
+      SweetAlert({icon :"error" , text : error })
+
+
     }
   }
 
@@ -117,10 +129,10 @@ export default (catagory: any) => {
     <Navbar expand={false} className="jds0sas0w-eawne">
       <Container fluid>
         <Navbar.Toggle aria-controls="offcanvasNavbar">
-            <button className="upload-active ">
-              <Icons name="i9" />
-              Add New Employe
-            </button>
+          <button className="upload-active ">
+            <Icons name="i9" />
+            Add New Employe
+          </button>
         </Navbar.Toggle>
         <Navbar.Offcanvas
           id="offcanvasNavbar"
@@ -138,17 +150,16 @@ export default (catagory: any) => {
             <div className="p-field">
               <label>Role </label>
               <div className="kns-sanweso02e">
-                <Form.Select name="category_id">
+                <Form.Select name="role" value={state?.role} onChange={(e) => hendleFields(e)}>
                   <option defaultChecked>Select User</option>
                   <option value="Instructor" >Instructor</option>
                   <option value="student" >Student</option>
                 </Form.Select>
+                {errors?.role && <div className="invalid mt-1">{errors?.role[0]}</div>}
 
               </div>
 
             </div>
-
-
 
             <div className="p-field mt-2">
               <div>
@@ -158,6 +169,8 @@ export default (catagory: any) => {
                   value={state.fullname}
                   onChange={(e) => hendleFields(e)}
                   placeholder="Write here..." />
+                {errors?.fullname && <div className="invalid mt-1">{errors?.fullname[0]}</div>}
+
               </div>
               <div>
                 <label>Email Address</label>
@@ -166,30 +179,34 @@ export default (catagory: any) => {
                   value={state.email}
                   onChange={(e) => hendleFields(e)}
                   placeholder="Write here..." />
+                {errors?.email && <div className="invalid mt-1">{errors?.email[0]}</div>}
+
               </div>
-              
 
               <div>
-                <label>Cover Image</label>
-                <div className="drop-box">
-                  <label htmlFor="img" style={{ cursor: 'pointer' }}>
-                    <div className="kvjadsd-j43rm iasdufhvs-ernd">
-                      <Icons name="i29" />
-                      <img src={url} alt="course_img" style={{ width: '100%', objectFit: 'cover' }} />
-                      {!url && <p>Drag your photos here</p>}
-                      {/* <p>Add at least 5 photos</p> */}
-                    </div>
-                  </label>
-                  <input type="file" name="cover_image" onChange={(e) => handleInputChange(e)} id="img" style={{ display: 'none' }} />
-                </div>
+                <label>Password</label>
+                <input type="password"
+                  name="password"
+                  value={state.password}
+                  onChange={(e) => hendleFields(e)}
+                  placeholder="Write here..." />
+                {errors?.password && <div className="invalid mt-1">{errors?.password[0]}</div>}
+
               </div>
+
+
+              
 
 
             </div>
-            <div style={{ display: 'flex', justifyContent: 'center' , marginTop:'20px'}}>
-              <div className="active_color">
-                <button onClick={() => SaveCourse()} className="upload-active ">
-                  Save
+            <div style={{ marginTop: '20px',width:'100%' , textAlign:'center'}}>
+              <div className="active_color w-100">
+                <button onClick={() => SaveCourse()} className="upload-active-save ">
+                  {loading ?
+                    <Spinner animation="border" />
+                    :
+                    "Save"
+                  }
                 </button>
               </div>
             </div>

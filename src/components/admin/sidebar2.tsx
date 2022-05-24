@@ -56,12 +56,12 @@ export default () => {
               <h3>Manage Certificate</h3>
             </div>
           </Link>
-          <Link href="/en/admin/account">
+          {/* <Link href="/en/admin/account">
             <div className={`dash-ch-2 sdisad-dsd ${router.asPath === "/en/admin/account" ? "dash-ch-2 sdisad-dsdactive" : ""}`}>
               <Icons name="i4" />
               <h3>Manage Accounts</h3>
             </div>
-          </Link>
+          </Link> */}
           <Link href="/en/admin/profile">
             <div className={`dash-ch-2 sdisad-dsd ${router.asPath === "/en/admin/profile" ? "dash-ch-2 sdisad-dsdactive" : ""}`}>
               <Icons name="i5" />

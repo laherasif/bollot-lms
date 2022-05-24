@@ -9,15 +9,10 @@ import Icons from "../../../src/icons";
 import CourseAccordian from "../../../src/components/accordian";
 import FeaturedReview from "../../../src/components/FeaturedReview";
 import BoughtCourseCard from "../../../src/components/BoughtCourseCard";
-// import CourseCard1 from "../../../src/components/card/CourseCard1";
-// import CourseCardBig from "../../../src/components/card/CourseCardBig";
-// import FBTCard from "../../../src/components/card/FBTCard";
 import FBCBox from "../../../src/components/FBCBox";
 import InstructorCard from "../../../src/components/InstructorCard";
 import RatingBar from "../../../src/components/RatingBar";
 import Review from "../../../src/components/Review";
-// import CourseCard from "../../../src/components/card/CourseCard";
-// import Multicarousel from "../../../src/components/Multicarousel";
 import MulticarouselCourse from "../../../src/components/MulticarouselCourse";
 import instance from "../../../src/confiq/axios/instance";
 import Rating from "../../../src/components/ratingStar";
@@ -75,25 +70,13 @@ const Home: NextPage = ({ Course }: any) => {
 
 
 
-  const ratings = () => {
-    // for (const [key, value] of Object.entries(Cours?.ratings_breakdown)) {
-    //   // "a 5", "b 7", "c 9"
-    //   <RatingBar stars={key} rates={value} />
-
-    // }
-    Object.entries(Cours?.ratings_breakdown).map((key, value) => {
-      return (
-        <RatingBar stars={key} rates={value} />
-      )
-    });
-  }
 
 
 
 
 
   let numberofLect = 0
-  Course?.sections?.forEach(datum => numberofLect += datum.lectures.length)
+  Course?.sections?.forEach((datum: any) => numberofLect += datum.lectures.length)
 
 
 
@@ -303,8 +286,10 @@ const Home: NextPage = ({ Course }: any) => {
                   })
                   }
                 </div>
-
-                <button className="mt-3" onClick={() => setShow(!show)}>{show ? "Show less" : "Show more"}</button>
+                {Course?.other_courses.length > 3 ?
+                  <button className="mt-3" onClick={() => setShow(!show)}>{show ? "Show less" : "Show more"}</button>
+                : null 
+                }
               </div>
               : null}
             {/* <FBCBox /> */}
@@ -422,7 +407,7 @@ const Home: NextPage = ({ Course }: any) => {
                     <button className="added-to-cart" >
                       <div onClick={() => RegisterCart()} >
                         {popUp ?
-                          <div style={{marginLeft:'110px'}}>
+                          <div style={{ marginLeft: '110px' }}>
                             <Spinner animation="border" />
                           </div>
                           : message ?

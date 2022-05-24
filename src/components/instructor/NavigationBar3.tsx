@@ -13,6 +13,7 @@ import { useRouter } from "next/router";
 import Notification from '../../components/instructor/notification'
 import Messages from '../../components/instructor/messages'
 import axios from "axios";
+import { clearStates } from "../../redux/actions/instructor/preview";
 export default () => {
   const isTab = useMediaQuery({
     query: "(max-width: 991px)",
@@ -89,6 +90,8 @@ export default () => {
     debugger
     // setLoading(true)
     dispatch(LogoutIns())
+    dispatch(clearStates())
+    
     // setTimeout(() => {
     //   setLoading(false)
     if (User?.role === "company") {
@@ -114,8 +117,8 @@ export default () => {
     if (mesg === true) {
       setMesg(false)
     }
-    let res = await AxInstance.get('api//notifications-read')
     setNotif(true)
+    await AxInstance.get('api//notifications-read')
   }
 
   return (
@@ -141,20 +144,19 @@ export default () => {
 
 
                 <div className="idsafs-aadmsd">
-                  <div className="kdsfsd-dsdd" ref={notify}>
+                  <div className="" ref={notify} style={{ cursor: 'pointer' }}>
                     <div onClick={() => notification()}>
-                      <BiBell size={20} color="#ffff" />
+                      <BiBell size={20} color="#ffff"/>
                       {/* <p></p> */}
                       {notifications.some((s: any) => s.is_read === "0") ? <p></p> : ""}
-
                     </div>
-
                     {notif && <Notification notifications={notifications} />}
 
 
+
                   </div>
-                  <div className="kdsfsd-dsdd" ref={messanger}>
-                    <div onClick={() => messages()}>
+                  <div style={{marginLeft:'10px'}} ref={messanger} >
+                    <div onClick={() => messages()} style={{ cursor: 'pointer' }}>
                       <IoMailOutline color="#ffff" size={20} />
                       {/* <p></p> */}
                       {messagess.some((s: any) => s.last_message_obj.is_read === "0") ? <p></p> : ""}

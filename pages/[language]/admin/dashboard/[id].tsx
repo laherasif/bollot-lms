@@ -18,8 +18,7 @@ const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
 
-  const dispatch = useDispatch()
-
+  // const dispatch = useDispatch()
   // useEffect(() => {
   //   dispatch(getAllInstructor())
   //   dispatch(getAllStudent())

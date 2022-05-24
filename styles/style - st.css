@@ -1,4 +1,5 @@
-@import url("https://fonts.googleapis.com/css?family=Questrial:100,200,300,400,500,600,700,800,900");
+/* @import url("https://fonts.googleapis.com/css?family=Roboto:100,200,300,400,500,600,700,800,900"); */
+@import url("https://fonts.googleapis.com/css?family=Roboto:100,200,300,400,500,600,700,800,900");
 
 * {
   padding: 0;
@@ -43,7 +44,7 @@
 }
 
 .logo-2 h3 {
-  font-family: "Questrial";
+  font-family: "Roboto";
   font-style: normal;
   font-weight: 400;
   font-size: 20px;
@@ -53,7 +54,7 @@
 
 .logo-2 p {
   padding-left: 6px;
-  font-family: "Questrial";
+  font-family: "Roboto";
   font-style: normal;
   font-weight: 400;
   font-size: 20px;
@@ -67,7 +68,7 @@
 
 .wel h3,
 .two-step h3 {
-  font-family: "Questrial";
+  font-family: "Roboto";
   font-style: normal;
   font-weight: 600;
   font-size: 37px;
@@ -95,7 +96,7 @@
 
 .lbl-login,
 .two-step p {
-  font-family: "Questrial";
+  font-family: "Roboto";
   font-style: normal;
   font-weight: 400;
   font-size: 20px;
@@ -123,7 +124,7 @@
 
 .djksfbasdjk-sddsa input::placeholder,
 .djksfbasdjk-sddsa input {
-  font-family: "Questrial";
+  font-family: "Roboto";
   font-style: normal;
   font-weight: 400;
   font-size: 17px;
@@ -153,7 +154,7 @@
   border-radius: 100px;
   padding: 15px 0px;
   border: none;
-  font-family: "Questrial";
+  font-family: "Roboto";
   font-style: normal;
   font-weight: 600;
   font-size: 20px;
@@ -169,7 +170,7 @@
 }
 
 .login-bar h4 {
-  font-family: "Questrial";
+  font-family: "Roboto";
   font-style: normal;
   font-weight: 400;
   font-size: 20px;
@@ -320,7 +321,7 @@
 }
 
 .dash-ch-2 h3 {
-  font-family: "Questrial";
+  font-family: "Roboto";
   padding-left: 12px;
   font-style: normal;
   font-weight: 400;
@@ -339,7 +340,7 @@
 }
 
 .client-img h3 {
-  font-family: "Questrial";
+  font-family: "Roboto";
   font-style: normal;
   font-weight: 600;
   font-size: 16px;
@@ -382,7 +383,7 @@
 }
 
 .client-ch h3 {
-  font-family: "Questrial";
+  font-family: "Roboto";
   font-style: normal;
   font-weight: 600;
   font-size: 15px;
@@ -574,7 +575,7 @@
 }
 
 .dash-flex-rht h4 {
-  font-family: "Questrial";
+  font-family: "Roboto";
   font-style: normal;
   font-weight: 500;
   font-size: 20px;
@@ -593,7 +594,7 @@
 }
 
 .my-course h3 {
-  font-family: "Questrial";
+  font-family: "Roboto";
   font-style: normal;
   font-weight: 600;
   font-size: 25px;
@@ -1188,7 +1189,7 @@
 }
 
 .pay-method h4 {
-  font-family: "Questrial" !important;
+  font-family: "Roboto" !important;
   padding: 0 15px;
   font-style: normal;
   font-weight: 400;
@@ -3203,10 +3204,10 @@
   background-color: rgb(251, 249, 249);
 }
 
-.active{
+/* .active{
   background-color: rgb(251, 249, 249);
 
-}
+} */
 
 .user-card-inbox p {
   font-weight: 400;
@@ -3783,7 +3784,7 @@
 .kns-sanweso02e button:active,
 .kns-sanweso02e button:focus,
 .kns-sanweso02e button:hover {
-  border: 0.5px solid #c4c4c4 !important;
+  border: 0.5px solid #c4c4c4 ;
   box-sizing: border-box;
   box-shadow: 0px 12px 20px rgba(152, 152, 152, 0.118);
   border-radius: 100px;
@@ -4412,7 +4413,7 @@ textarea::placeholder {
 }
 
 .add-more {
-  font-family: "Questrial";
+  font-family: "Roboto";
   font-style: normal;
   font-weight: 600;
   font-size: 14px;
@@ -4913,8 +4914,10 @@ textarea::placeholder {
   cursor: default;
   position: absolute;
   z-index: 999;
-  top: 2.5rem;
-  left: -190px;
+  top: 4.5rem;
+  right: 12.2rem;
+  /* top: 2.5rem;
+  left: -190px; */
   width: 230px;
   font-weight: 300;
   padding: 20px 0px;
@@ -4992,8 +4995,8 @@ textarea::placeholder {
   cursor: default;
   position: absolute;
   z-index: 999;
-  top: 2.5rem;
-  left: -260px;
+  top: 4.5rem;
+  right: 10.5rem;
   width: 300px;
   font-weight: 300;
   padding: 20px 0px;

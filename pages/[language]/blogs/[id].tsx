@@ -1,4 +1,5 @@
 import type { NextPage } from "next";
+import { useEffect } from "react";
 import { Dropdown } from "react-bootstrap";
 
 import { useIntl } from "react-intl";
@@ -6,10 +7,21 @@ import BlogCard from "../../../src/components/card/BlogCard";
 import CourseCard from "../../../src/components/card/CourseCard";
 import Footer from "../../../src/components/footer";
 import Navbar from "../../../src/components/header/Navbar";
+import instance from "../../../src/confiq/axios/instance";
 import Icons from "../../../src/icons";
 
 const Home: NextPage = () => {
   // const intl = useIntl();
+
+  // useEffect(() => {
+  //   let fetchData = async () => {
+  //       let res = await instance.get('api//admin/blogs/')
+  //   }
+  //   try{
+      
+  //   }
+  //   catch(err){}
+  // },[])
 
   return (
     <>

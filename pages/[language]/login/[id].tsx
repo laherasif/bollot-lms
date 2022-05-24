@@ -50,28 +50,28 @@ const Home: NextPage = () => {
   const [permistion, setPermition] = useState()
   const [plateform, setPlateform] = useState('')
 
-  
+
   const firebaseAuth = getAuth(Firebaseapp);
   const provider = new GoogleAuthProvider();
   const Fbprovider = new FacebookAuthProvider();
   const router = useRouter();
 
 
-let checkRouter = router.query.checkout 
+  let checkRouter = router.query.checkout
 
 
   useEffect(() => {
     if (User && User.is_email_verified === "1" && User.role === "student") {
-      
-        router.replace('/en/student/dashboard')
-    
+
+      router.replace('/en/student/dashboard')
+
     }
-    else if ( checkRouter === "true") {
+    else if (checkRouter === "true") {
       router.push('/en/login')
     }
-    
+
     else if (User && User.is_email_verified === "1" && User.role === "instructor") {
-      
+
       router.replace('/en/instructor')
     }
     else if (User && User.is_email_verified === "0") {
@@ -80,7 +80,7 @@ let checkRouter = router.query.checkout
     // else {
     //   setMessage(false)
     // }
-  }, [User , checkRouter])
+  }, [User, checkRouter])
 
 
   // HendleInputs 
@@ -97,7 +97,7 @@ let checkRouter = router.query.checkout
 
   const signInGog = async () => {
     const { user } = await signInWithPopup(firebaseAuth, provider);
-    const { refreshToken, providerData }:any = user;
+    const { refreshToken, providerData }: any = user;
     console.log(refreshToken, providerData);
     dispatch(SocialRegMedia(providerData, permistion === 0 ? "student" : "instructor"))
 
@@ -107,7 +107,7 @@ let checkRouter = router.query.checkout
   const signInFb = async () => {
 
     const { user } = await signInWithPopup(firebaseAuth, Fbprovider);
-    const { refreshToken, providerData }:any = user;
+    const { refreshToken, providerData }: any = user;
     console.log(refreshToken, providerData);
     dispatch(SocialRegMedia(providerData, permistion === 0 ? "student" : "instructor"))
   };
@@ -130,11 +130,11 @@ let checkRouter = router.query.checkout
     setLoader(true)
     try {
 
-      let value ={
-        email : authValue.email,
-        password : authValue.password , 
+      let value = {
+        email: authValue.email,
+        password: authValue.password,
         device_name: Platform.Browser,
-        device_model:Platform.BrowserVersion,
+        device_model: Platform.BrowserVersion,
         operating_system: Platform.OS
       }
 
@@ -197,7 +197,8 @@ let checkRouter = router.query.checkout
               <p>Log In to Your Bolloot Account!</p>
               <br />
               <div className="hasdfkj">
-                <input className={`full-2 ${errors.email && 'full-2 input_filed_error'}`} name="email" value={email} onChange={handleChange} type="email" placeholder="Email" />
+                <input
+                 className={`full-2 ${errors.email && 'full-2 input_filed_error'}`} name="email" value={email} onChange={handleChange} type="email" placeholder="Email" />
                 {errors?.email && <div className="invalid mb-1">{errors?.email[0]}</div>}
 
               </div>
@@ -220,8 +221,9 @@ let checkRouter = router.query.checkout
                 </button>
               </div>
             </form>
-
-            {/* <h6>Forgot Password?</h6> */}
+            <Link href="/en/forgotpassword">
+              <h6 style={{ cursor: 'pointer' }}>Forgot Password?</h6>
+            </Link>
             <h6>Don't have an account?    <Link href={"/en/signup"}>Sign Up</Link></h6>
             <h4>OR</h4>
 
@@ -239,8 +241,8 @@ let checkRouter = router.query.checkout
             </button>
           </div>
         </div>
-        {message && <Otp openToggle={(e:any) => setMessage(e)} providerEmail={"laherasif@gmail.com"} role={message} />}
-        {toggal && <Role permition={(e:any) => setPermition(e)} Toggle={(e:any) => setToggal(e)} />}
+        {message && <Otp openToggle={(e: any) => setMessage(e)} providerEmail={"laherasif@gmail.com"} role={message} />}
+        {toggal && <Role permition={(e: any) => setPermition(e)} Toggle={(e: any) => setToggal(e)} />}
       </section>
       <Footer />
     </>

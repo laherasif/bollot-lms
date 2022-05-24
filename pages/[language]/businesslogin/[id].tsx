@@ -43,7 +43,7 @@ const Home: NextPage = () => {
   const [permistion, setPermition] = useState()
   const [plateform, setPlateform] = useState('')
 
-  
+
   const firebaseAuth = getAuth(Firebaseapp);
   const provider = new GoogleAuthProvider();
   const Fbprovider = new FacebookAuthProvider();
@@ -51,28 +51,28 @@ const Home: NextPage = () => {
 
   console.log("routyer", router)
 
-let checkRouter = router.query.checkout 
+  let checkRouter = router.query.checkout
 
 
   useEffect(() => {
     if (User && User.is_email_verified === "1" && User.role === "company") {
-      
+
       router.replace('/en/instructor')
 
-    
+
     }
-    else if ( checkRouter === "true") {
+    else if (checkRouter === "true") {
       router.push('/en/login')
     }
-    
-    
+
+
     else if (User && User.is_email_verified === "0") {
       setMessage(true)
     }
     // else {
     //   setMessage(false)
     // }
-  }, [User , checkRouter])
+  }, [User, checkRouter])
 
 
   // HendleInputs 
@@ -91,7 +91,7 @@ let checkRouter = router.query.checkout
     const { user } = await signInWithPopup(firebaseAuth, provider);
     const { refreshToken, providerData } = user;
     console.log(refreshToken, providerData);
-    dispatch(SocialRegComp(providerData,  "company"))
+    dispatch(SocialRegComp(providerData, "company"))
 
   };
 
@@ -101,11 +101,11 @@ let checkRouter = router.query.checkout
     const { user } = await signInWithPopup(firebaseAuth, Fbprovider);
     const { refreshToken, providerData } = user;
     console.log(refreshToken, providerData);
-    dispatch(SocialRegComp(providerData,  "company"))
+    dispatch(SocialRegComp(providerData, "company"))
   };
 
 
-  
+
 
 
   const handleClick = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -114,16 +114,16 @@ let checkRouter = router.query.checkout
     setLoader(true)
     try {
 
-      let value ={
-        email : authValue.email,
-        password : authValue.password , 
+      let value = {
+        email: authValue.email,
+        password: authValue.password,
         device_name: Platform.Browser,
-        device_model:Platform.BrowserVersion,
+        device_model: Platform.BrowserVersion,
         operating_system: Platform.OS
       }
- 
+
       let res = await instance.post("api//company/login", value)
-      if (res.data.success === true && res.data.response.student.is_email_verified === "1" ) {
+      if (res.data.success === true && res.data.response.student.is_email_verified === "1") {
         setLoader(false)
         dispatch(loginUser(res.data))
         if (router.query.checkout === "true") {
@@ -135,7 +135,7 @@ let checkRouter = router.query.checkout
         }
 
       }
-     
+
       else if (res.data.errors || res.data.error) {
         setLoader(false)
         setErrors(res.data.errors || res.data.error)
@@ -200,18 +200,20 @@ let checkRouter = router.query.checkout
               </div>
             </form>
 
-            <h6>Forgot Password?</h6>
+            <Link href="/en/forgotpassword">
+              <h6 style={{ cursor: 'pointer' }}>Forgot Password?</h6>
+            </Link>
             <h6>Don't have an account?    <Link href={"/en/signup"}>Sign Up</Link></h6>
             <h4>OR</h4>
 
             <button
-              onClick={signInFb }
+              onClick={signInFb}
               className="face-book-1 w-100">
               <Icons name="c21" />
               <h4>Sign in with Facebook</h4>
             </button>
             <button
-              onClick={ signInGog }
+              onClick={signInGog}
               className="google-1 w-100">
               <Icons name="c22" />
               <h4>Sign in with Google</h4>

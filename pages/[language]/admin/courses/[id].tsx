@@ -5,42 +5,22 @@ import NavigationBar1 from "../../../../src/components/admin/NavigationBar3";
 import Link from "next/link";
 import CourseCard from "../../../../src/components/admin/CourseCard";
 import { useEffect, useState } from "react";
-import { RootStateOrAny, useSelector } from "react-redux";
+import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { Small } from "../../../../src/components/instructor/loader";
 import Invitation from "../../../../src/components/instructor/invitationForm";
 import Search from "../../../../src/components/instructor/search";
+import { clearStates } from "../../../../src/redux/actions/instructor/preview";
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
-  const [course, setCourse] = useState([])
-  const [loading, setLoading] = useState(false)
-  const [email, setemail] = useState(false)
-  const { User, token } = useSelector((state: RootStateOrAny) => state?.userReducer)
 
-  const AxInstance = axios.create({
-    // .. where we make our configurations
-    baseURL: 'https://dev.thetechub.us/bolloot/',
-    headers: {
-      token: token
-    }
-  });
-  useEffect(() => {
-    let fetchCourse = async () => {
-      try {
-        setLoading(true)
-        let res = await AxInstance.get('api//instructor/courses')
-        if (res.data.success === true) {
-          setLoading(false)
-          setCourse(res.data.response.courses)
-        }
-      }
-      catch (err) {
+  const dispatch = useDispatch()
+  
 
-      }
-    }
-    fetchCourse()
-  }, [])
+  const ClearData = () => {
+    dispatch(clearStates())
+  }
 
   return (
     <div className="inst">
@@ -64,28 +44,31 @@ const Home: NextPage = () => {
                       <i className="fa fa-arrow-left"></i>
                       Back</h3>
                   </Link>
-                  <h3>Manage Course and Catagory </h3>
+                  <h3>Courses and Catagories </h3>
                 </div>
                 <div className=" jidfjsd-asjreid">
                   <Search />
-                  {/* <div className="d-flex idfadsf-sads">
-                    <Link href='/en/instructor/addCourse'>
-                      <button className="upload-1 sdisad-dsdactive">
+                  <div className="d-flex idfadsf-sads">
+                    <Link href='/en/admin/addCourse'>
+                      <button className="upload-1 sdisad-dsdactive" onClick={() => ClearData()}>
                         + Add New Course </button>
                     </Link>
-                  </div> */}
+                  </div>
                 </div>
               </div>
 
-              <div className="complete-web-1 ">
+              <div className="complete-web-1 mt-2">
                 <div className="umpire w-100">
                   <div className="umpire-1 umpire-1-cst ">
                     <div className="d-flex mb-3 idfadsf-sads">
                       <button className="upload-1 sdisad-dsdactive">
                         All Courses
                       </button>
-                      <Link href="/en/instructor/liveCourses">
-                        <button className="upload-1" >Manage Catagories</button>
+                      <Link href="/en/admin/liveCourses">
+                        <button className="upload-1" >Live Courses</button>
+                      </Link>
+                      <Link href="/en/admin/catagories">
+                        <button className="upload-1" >Course Catagories</button>
                       </Link>
                     </div>
 
@@ -93,14 +76,7 @@ const Home: NextPage = () => {
                 </div>
               </div>
               <div className="complete-web-1">
-                {course && course.length > 0 ? course.map((course: any) => {
-                  if (!course?.schedule.length)
-                    return (
-                      <CourseCard course={course} key={course.id} />
-                    )
-                })
-                  : <div>Record not found </div>
-                }
+                <CourseCard />
 
 
               </div>
@@ -109,7 +85,6 @@ const Home: NextPage = () => {
         </div>
         {/* } */}
 
-        {/* {email && <Invitation permition={email} Toggle={(value: any) => setemail(value)} />} */}
       </section >
     </div >
   );

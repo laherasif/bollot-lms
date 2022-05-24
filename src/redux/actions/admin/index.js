@@ -3,15 +3,23 @@ import {
     LOGIN_ADMIN,
     GET_ALL_INSTRUCTOR,
     GET_ALL_STUDENT,
-    DELETE_INT,
+    DELETE_INS,
     UPDATE_INT,
     DELETE_STU,
     UPDATE_STU,
+    EDIT_ADD_COURSE,
+    EDIT_CRICCULUM,
+    EDIT_LIVE_CLASSES,
+    EDIT_PREVIEW,
+    EDIT_QUIZ,
+    UPDATE_INS,
+    LOGOUT_ADMIN,
+    GET_COURSE_CATAGORIES,
 } from '../../types/types'
 import instance from '../../../confiq/axios/instance'
 
 // Register User 
-export const loginAdmin = (res) => async  dispatch => {
+export const loginAdmin = (res) => async dispatch => {
     try {
         // let res = await instance.post('api//admin/login', data)
         dispatch({
@@ -26,15 +34,23 @@ export const loginAdmin = (res) => async  dispatch => {
 }
 
 
+export const logoutAdmin = () => async dispatch => {
+    dispatch({
+        type: LOGOUT_ADMIN,
+    })
+
+
+}
+
+
 
 // Register User 
-export const getAllStudent = () => async dispatch => {
-   
+export const getAllStudent = (data) => async dispatch => {
+
     try {
-        let res = await instance.get('api//admin/students')
         dispatch({
             type: GET_ALL_STUDENT,
-            payload: res.data.response.students
+            payload: data.response.students
         })
     }
     catch (err) {
@@ -42,13 +58,12 @@ export const getAllStudent = () => async dispatch => {
     }
 }
 
-export const getAllInstructor = () => async dispatch => {
+export const getAllInstructor = (data) => async dispatch => {
     try {
-        let res = await instance.get('api//admin/instructors')
 
         dispatch({
             type: GET_ALL_INSTRUCTOR,
-            payload: res.data.response.instructors
+            payload: data.response.instructors
         })
     }
     catch (err) {
@@ -56,9 +71,8 @@ export const getAllInstructor = () => async dispatch => {
     }
 }
 
-export const delStuIns = (id) => async dispatch => {
+export const delStuIns = ({ id, role }) => async (dispatch) => {
     try {
-        await instance.post('api//admin/user/delete', id)
         if (role === "student") {
             dispatch({
                 type: DELETE_STU,
@@ -67,7 +81,7 @@ export const delStuIns = (id) => async dispatch => {
         }
         else {
             dispatch({
-                type: DELETE_INT,
+                type: DELETE_INS,
                 payload: id
             })
         }
@@ -77,19 +91,21 @@ export const delStuIns = (id) => async dispatch => {
     }
 }
 
-export const updateStuIns = (id) => async dispatch => {
+export const updateStuIns = ({ role, data }) => async dispatch => {
+    debugger
+
     try {
-         await instance.post('api//admin/user/update', id)
+
         if (role === "student") {
             dispatch({
                 type: UPDATE_STU,
-                payload: id
+                payload: data
             })
         }
         else {
             dispatch({
-                type: UPDATE_INT,
-                payload: id
+                type: UPDATE_INS,
+                payload: data
             })
         }
     }
@@ -97,4 +113,26 @@ export const updateStuIns = (id) => async dispatch => {
 
     }
 }
+
+
+
+
+export const getCatagories = (data) => dispatch => {
+    debugger
+    try {
+            dispatch({
+                type: GET_COURSE_CATAGORIES,
+                payload: data 
+            })
+
+    }
+    catch (err) { }
+
+
+}
+
+
+
+
+
 

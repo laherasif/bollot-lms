@@ -9,6 +9,7 @@ import {
     DEL_CRICULUM,
     DEL_CRICULUM_LECTURE,
     CLEAR_STATE,
+    EDIT_CRICCULUM,
 } from "../../types/types";
 
 
@@ -140,6 +141,12 @@ const CriculumReducer = (state = initialState, action) => {
                     })
 
             }
+
+            case EDIT_CRICCULUM:
+                return{
+                    ...state,
+                    Criculums :action.payload
+                }
 
             case CLEAR_STATE:
 

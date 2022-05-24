@@ -1,4 +1,5 @@
-@import url("https://fonts.googleapis.com/css?family=Questrial:100,200,300,400,500,600,700,800,900");
+/* @import url("https://fonts.googleapis.com/css?family=Roboto:100,200,300,400,500,600,700,800,900"); */
+@import url("https://fonts.googleapis.com/css?family=Roboto:100,200,300,400,500,600,700,800,900");
 
 * {
   padding: 0;
@@ -43,7 +44,7 @@
 }
 
 .logo-2 h3 {
-  font-family: "Questrial";
+  font-family: "Roboto";
   font-style: normal;
   font-weight: 400;
   font-size: 20px;
@@ -53,7 +54,7 @@
 
 .logo-2 p {
   padding-left: 6px;
-  font-family: "Questrial";
+  font-family: "Roboto";
   font-style: normal;
   font-weight: 400;
   font-size: 20px;
@@ -67,7 +68,7 @@
 
 .wel h3,
 .two-step h3 {
-  font-family: "Questrial";
+  font-family: "Roboto";
   font-style: normal;
   font-weight: 600;
   font-size: 37px;
@@ -95,7 +96,7 @@
 
 .lbl-login,
 .two-step p {
-  font-family: "Questrial";
+  font-family: "Roboto";
   font-style: normal;
   font-weight: 400;
   font-size: 20px;
@@ -123,7 +124,7 @@
 
 .djksfbasdjk-sddsa input::placeholder,
 .djksfbasdjk-sddsa input {
-  font-family: "Questrial";
+  font-family: "Roboto";
   font-style: normal;
   font-weight: 400;
   font-size: 17px;
@@ -153,7 +154,7 @@
   border-radius: 100px;
   padding: 15px 0px;
   border: none;
-  font-family: "Questrial";
+  font-family: "Roboto";
   font-style: normal;
   font-weight: 600;
   font-size: 20px;
@@ -169,7 +170,7 @@
 }
 
 .login-bar h4 {
-  font-family: "Questrial";
+  font-family: "Roboto";
   font-style: normal;
   font-weight: 400;
   font-size: 20px;
@@ -320,7 +321,7 @@
 }
 
 .dash-ch-2 h3 {
-  font-family: "Questrial";
+  font-family: "Roboto";
   padding-left: 12px;
   font-style: normal;
   font-weight: 400;
@@ -339,7 +340,7 @@
 }
 
 .client-img h3 {
-  font-family: "Questrial";
+  font-family: "Roboto";
   font-style: normal;
   font-weight: 600;
   font-size: 16px;
@@ -382,7 +383,7 @@
 }
 
 .client-ch h3 {
-  font-family: "Questrial";
+  font-family: "Roboto";
   font-style: normal;
   font-weight: 600;
   font-size: 15px;
@@ -574,7 +575,7 @@
 }
 
 .dash-flex-rht h4 {
-  font-family: "Questrial";
+  font-family: "Roboto";
   font-style: normal;
   font-weight: 500;
   font-size: 20px;
@@ -593,7 +594,7 @@
 }
 
 .my-course h3 {
-  font-family: "Questrial";
+  font-family: "Roboto";
   font-style: normal;
   font-weight: 600;
   font-size: 25px;
@@ -1188,7 +1189,7 @@
 }
 
 .pay-method h4 {
-  font-family: "Questrial" !important;
+  font-family: "Roboto" !important;
   padding: 0 15px;
   font-style: normal;
   font-weight: 400;
@@ -3133,6 +3134,7 @@
   border: none;
   display: flex;
   align-items: center;
+  justify-content: center;
   font-size: 16px;
 }
 
@@ -3159,6 +3161,24 @@
   background-color: #0753b0 ;
   color: white;
   
+}
+
+.upload-active-save {
+  margin-left: 15px;
+  font-style: normal;
+  width: 95%;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 20px;
+  color: #131313;
+  background: #f9f9f9;
+  border: 1px solid #131313;
+  border-radius: 29px;
+  padding: 10px 25px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  color: white;
+  text-align: center;
 }
 
 .jidfjsd-asjreid {
@@ -3804,7 +3824,7 @@
 .kns-sanweso02e button:active,
 .kns-sanweso02e button:focus,
 .kns-sanweso02e button:hover {
-  border: 0.5px solid #c4c4c4 !important;
+  border: 0.5px solid #c4c4c4 ;
   box-sizing: border-box;
   box-shadow: 0px 12px 20px rgba(152, 152, 152, 0.118);
   border-radius: 100px;
@@ -4433,7 +4453,7 @@ textarea::placeholder {
 }
 
 .add-more {
-  font-family: "Questrial";
+  font-family: "Roboto";
   font-style: normal;
   font-weight: 600;
   font-size: 14px;
@@ -4917,6 +4937,88 @@ textarea::placeholder {
   width: 100%;
 }
 
+
+/* Tag add */
+
+.tags-input {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  min-height: 48px;
+  width: 100%;
+  padding: 0 8px;
+  border: 1px solid #d6d8da;
+  border-radius: 6px;
+}
+
+.tags-input input {
+  flex: 1;
+  border: none;
+  height: 46px;
+  width: 120px;
+  font-size: 14px;
+  padding: 4px 0 0 0;
+}
+.tags-input input:focus {
+  outline: transparent;
+}
+#tags {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+  margin: 8px 0 0 0;
+}
+.tag {
+  width: auto;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  padding: 0 8px;
+  font-size: 14px;
+  list-style: none;
+  border-radius: 6px;
+  margin: 0 8px 8px 0;
+  background: #0052cc;
+}
+.tag .tag-title {
+  margin-top: 3px;
+}
+.tag .tag-close-icon {
+  display: block;
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
+  text-align: center;
+  font-size: 14px;
+  margin-left: 8px;
+  color: #0052cc;
+  border-radius: 50%;
+  background: #fff;
+  cursor: pointer;
+}
+@media screen and (max-width: 567px) {
+  .tags-input {
+    width: calc(100vw - 32px);
+ }
+}
+
+/* blog */
+
+.blog{
+  max-width: 70%;
+  border: 1pt solid lightgray;
+  border-radius: 20px;
+  padding: 20px;
+  margin: auto;
+}
+
+/* ck edi */
+
+.ck-editor__editable_inline {
+ height: 250px;
+}
 
 
 /* .criculum_field input{

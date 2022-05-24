@@ -20,21 +20,21 @@ export default ({ message }: any) => {
                                 <li className={mg?.last_message_obj.is_read === "0" ? "active" : ""} key={index}>
                                     <div className="messages_wraper">
                                         <div className="user_info">
-                                            <img src={mg?.user_id == User?.id ? mg?.user_two_details.image : mg?.user_two_id == User?.id ? mg?.user_details.image : "/assets/images/umpire-1.svg"} />
+                                            <img src={mg?.user_id == User?.id ? mg?.user_two_details?.image : mg?.user_two_id == User?.id ? mg?.user_details?.image : "/assets/images/umpire-1.svg"} />
                                             <div className="user_names">
                                                 <span className="instructor">
-                                                    {mg.user_id == User?.id ? mg?.user_two_details.fullname : mg.user_two_id == User?.id ? mg?.user_details.fullname : ""}
+                                                    {mg?.user_id == User?.id ? mg?.user_two_details?.fullname : mg?.user_two_id == User?.id ? mg?.user_details?.fullname : ""}
                                                 </span>
                                                 <br />
                                                 <span className="message">
-                                                    {mg?.last_message_obj.message}
+                                                    {mg?.last_message_obj?.message}
 
                                                 </span>
                                             </div>
                                         </div>
 
                                         <div className="date">
-                                            {moment(mg?.last_message_obj.createdAt).format('ll')}
+                                            {moment(mg?.last_message_obj?.createdAt).format('ll')}
                                         </div>
 
 

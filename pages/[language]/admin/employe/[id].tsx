@@ -5,12 +5,13 @@ import NavigationBar1 from "../../../../src/components/admin/NavigationBar3";
 import Link from "next/link";
 import CourseCard from "../../../../src/components/admin/CourseCard1";
 import { useEffect, useState } from "react";
-import { RootStateOrAny, useSelector } from "react-redux";
+import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { Small } from "../../../../src/components/instructor/loader";
 import Invitation from "../../../../src/components/instructor/invitationForm";
 import Search from "../../../../src/components/instructor/search";
 import NewCourse from "../../../../src/components/admin/newCourse";
+import { getAllInstructor, getAllStudent } from "../../../../src/redux/actions/admin";
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
@@ -19,7 +20,7 @@ const Home: NextPage = () => {
   const [loading, setLoading] = useState(false)
   const [ins, setIns] = useState(false)
   const [email, setemail] = useState(false)
-  const { User, token } = useSelector((state: RootStateOrAny) => state?.userReducer)
+  const {  token , Students , Instructor } = useSelector((state: RootStateOrAny) => state?.admin)
 
   const AxInstance = axios.create({
     // .. where we make our configurations
@@ -28,6 +29,9 @@ const Home: NextPage = () => {
       token: token
     }
   });
+
+    const dispatch = useDispatch()
+
   useEffect(() => {
     let fetchCourse = async () => {
       try {
@@ -35,9 +39,11 @@ const Home: NextPage = () => {
         let res = await AxInstance.get('api//admin/students')
         let resIns = await AxInstance.get('api//admin/instructors')
         if (res.data.success === true) {
-          setLoading(false)
-          setShowStu(res.data.response.students)
-          setShowIns(resIns.data.response.instructors)
+          dispatch(getAllStudent(res.data))
+          dispatch(getAllInstructor(resIns.data))
+          // setLoading(false)
+          // setShowStu(res.data.response.students)
+          // setShowIns(resIns.data.response.instructors)
 
         }
       }
@@ -47,6 +53,7 @@ const Home: NextPage = () => {
     }
     fetchCourse()
   }, [])
+
 
   return (
     <div className="inst">
@@ -73,7 +80,7 @@ const Home: NextPage = () => {
                   <h3>Manage Student  and Instructor </h3>
                 </div>
                 <div className=" jidfjsd-asjreid">
-                  <Search />
+                  {/* <Search /> */}
                   <div className="d-flex active_color">
                     <NewCourse/>
                     {/* <button className="upload-1 sdisad-dsdactive">
@@ -98,7 +105,7 @@ const Home: NextPage = () => {
               </div>
               <div className="complete-web-1">
                 {
-                  ins ? <CourseCard Instructor={showIns} /> : <CourseCard Student={showIns} />
+                  ins ? <CourseCard Instructor={Instructor}  /> : <CourseCard Student={Students} role={"student"} />
                 }
 
 

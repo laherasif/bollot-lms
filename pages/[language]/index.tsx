@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import { useEffect, useState } from "react";
 import Head from "next/head";
 import Image from "next/image";
-import { Dropdown } from "react-bootstrap";
+import { Dropdown, Spinner } from "react-bootstrap";
 import Navbar from "../../src/components/header/Navbar";
 
 import { useIntl } from "react-intl";
@@ -25,16 +25,40 @@ import { GetCourse } from '../../src/redux/actions/courses'
 import { Catagories } from '../../src/components/skeleton'
 import instance from "../../src/confiq/axios/instance";
 import { GET_CATAGORY } from "../../src/redux/types/types";
+import { SweetAlert } from "../../src/function/hooks";
 const Home: NextPage = () => {
   // const intl = useIntl();
 
+  const [state, setState] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState({})
+
   const dispatch = useDispatch()
 
-  const { Catagory , loader  } = useSelector((state: RootStateOrAny) => state.course)
+  const { Catagory, loader } = useSelector((state: RootStateOrAny) => state.course)
 
   useEffect(() => {
     dispatch(GetCourse())
   }, [])
+
+  const subsNews = async () => {
+    try {
+      setLoading(true)
+      let res = await instance.post('api//newsletter', { email: state })
+      if (res.data.success === true) {
+        setState('')
+        SweetAlert({ icon: "success", text: res.data.message })
+        setLoading(false)
+
+      }
+      else {
+        setError(res.data.error)
+        setLoading(false)
+      }
+    }
+    catch (err) { }
+
+  }
 
 
   return (
@@ -223,7 +247,9 @@ const Home: NextPage = () => {
                   Bolloot. We <br />
                   provide the tools and skills to teach what you love.
                 </p>
-                <button className="btn-1s">Start Now !!</button>
+                <Link href="/en/signup/?join=instructor">
+                  <button className="btn-1s">Start Now !!</button>
+                </Link>
               </div>
             </div>
             <img src="/side-left.png" className="side-leftimg" />
@@ -242,14 +268,36 @@ const Home: NextPage = () => {
                         your inbox for free!
                       </p>
                     </div>
-                    <div className="email">
-                      <input
-                        type="email"
-                        placeholder=" email"
-                        className="email-1"
-                      />
-                      <button className="btn-2s">Submit</button>
+                    <div className="email" >
+                      <div className="w-100">
+                        <input
+                          type="email"
+                          placeholder="email"
+                          className={error?.email ? "email-1-error" : "email-1"}
+                          value={state}
+                          name="state"
+                          onChange={(e: any) => setState(e.target.value)}
+                        />
+                        {error?.email && <div className="invalid mt-1">{error?.email[0]}</div>}
+
+                      </div>
+
+                      <div >
+                        <button
+                          className="btn-2s"
+                          style={{ height: '50px' }}
+                          onClick={() => subsNews()}
+                        >
+                          {loading ?
+                            <Spinner animation="border" />
+                            :
+                            "Submit"
+                          }
+                        </button>
+                      </div>
+
                     </div>
+
                   </div>
                 </div>
               </section>
@@ -270,7 +318,10 @@ const Home: NextPage = () => {
                       pursue a career in digital marketing, Accounting, Web
                       development, <br /> Programming. Multimedia and CAD design.
                     </p>
-                    <button className="btn-2s">Register Now</button>
+                    <Link href="/en/signup">
+
+                      <button className="btn-2s">Register Now</button>
+                    </Link>
                   </div>
                 </section>
               </div>

@@ -3,20 +3,21 @@ import { useIntl } from "react-intl";
 import Sidebar from "../../../../src/components/admin/sidebar2";
 import NavigationBar1 from "../../../../src/components/admin/NavigationBar3";
 import Link from "next/link";
-import CourseCard from "../../../../src/components/admin/CourseCard";
 import { useEffect, useState } from "react";
 import { RootStateOrAny, useSelector } from "react-redux";
 import axios from "axios";
 import { Small } from "../../../../src/components/instructor/loader";
-import Invitation from "../../../../src/components/instructor/invitationForm";
 import Search from "../../../../src/components/instructor/search";
+import DataTable from "react-data-table-component";
+import AddBlog from "../../../../src/components/admin/addBlog";
+import { useRouter } from "next/router";
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
-  const [course, setCourse] = useState([])
+  const [blog, setBlog] = useState([])
+  const [showblog, setShowBlog] = useState(true)
   const [loading, setLoading] = useState(false)
-  const [email, setemail] = useState(false)
-  const { User, token } = useSelector((state: RootStateOrAny) => state?.userReducer)
+  const { token } = useSelector((state: RootStateOrAny) => state?.admin)
 
   const AxInstance = axios.create({
     // .. where we make our configurations
@@ -25,14 +26,18 @@ const Home: NextPage = () => {
       token: token
     }
   });
+
+
+
+
   useEffect(() => {
     let fetchCourse = async () => {
       try {
         setLoading(true)
-        let res = await AxInstance.get('api//instructor/courses')
+        let res = await AxInstance.get('api//admin/blogs')
         if (res.data.success === true) {
           setLoading(false)
-          setCourse(res.data.response.courses)
+          setBlog(res.data.response.blogs)
         }
       }
       catch (err) {
@@ -41,6 +46,54 @@ const Home: NextPage = () => {
     }
     fetchCourse()
   }, [])
+
+  const columns: any = [
+    {
+      name: "Image",
+      selector: "image",
+      sortable: true,
+      cell: (d: any) => (
+        <img src={d?.cover_image} className="dlink" width="30%" height="90%" style={{ objectFit: 'contain' }} />
+      )
+    },
+    {
+      name: "Title",
+      selector: "title",
+      sortable: true,
+
+
+    },
+    {
+      name: "Tags",
+      selector: "tags",
+      sortable: true,
+      cell: (d: any) => (
+        d.tags.map((t) => (
+          <span style={{ margin: '0px 3px' }} >{t}{","}</span>
+
+        ))
+      )
+    },
+    {
+      name: "Action",
+      selector: "id",
+      sortable: true,
+      cell: (d: any) => (
+        <div className='d-flex pl-2'>
+          <Link href={`/en/admin/manageBlog/${d.id}`}>
+            <div>
+              <i className='fa fa-edit'></i>
+            </div>
+          </Link>
+          <div style={{ marginLeft: '20px' }}>
+            <i className='fa fa-trash'></i>
+          </div>
+
+        </div >
+      )
+    }
+  ];
+
 
   return (
     <div className="inst">
@@ -51,71 +104,71 @@ const Home: NextPage = () => {
             <Sidebar />
           </div>
         </div>
-        {/* {loading ? Small()
-          : */}
-        <div className="dash-board-1">
-          <div className="dash-2 ">
-            <div className="my-course">
-              <div className="hdsf0s-sadmsa">
+        {loading ? Small()
+          :
+          <div className="dash-board-1">
+            <div className="dash-2 ">
+              <div className="my-course">
+                <div className="hdsf0s-sadmsa">
 
-                <div className="back-btn">
-                  <Link href="/en/instructor/" >
-                    <h3>
-                      <i className="fa fa-arrow-left"></i>
-                      Back</h3>
-                  </Link>
-                  <h3>Manage Website Components</h3>
-                </div>
-                {/* <div className=" jidfjsd-asjreid">
-                  <Search />
-                  <div className="d-flex idfadsf-sads">
-                    <Link href='/en/instructor/addCourse'>
-                      <button className="upload-1 sdisad-dsdactive">
-                        + Add New Employe </button>
+                  <div className="back-btn">
+                    <Link href="/en/instructor/" >
+                      <h3>
+                        <i className="fa fa-arrow-left"></i>
+                        Back</h3>
+                    </Link>
+                    <h3>Manage Website Components</h3>
+                  </div>
+                  <div className=" jidfjsd-asjreid">
+                    <Search />
+                    <Link href="/en/admin/manageBlog">
+                      <div className="d-flex idfadsf-sads">
+                        <button className="upload-1 sdisad-dsdactive" >
+                          + Add New Blog </button>
+                      </div>
                     </Link>
                   </div>
-                </div> */}
-              </div>
+                </div>
 
-              <div className="complete-web-1 ">
-                <div className="umpire w-100">
-                  <div className="umpire-1 umpire-1-cst ">
-                    <div className="d-flex mb-3 idfadsf-sads">
-                      <button className="upload-1 sdisad-dsdactive">
-                        Manage Blogs
-                      </button>
-                      <Link href="/en/instructor/liveCourses">
-                        <button className="upload-1" >Manage Header Menu</button>
-                      </Link>
-                      <Link href="/en/instructor/liveCourses">
-                        <button className="upload-1" >Manage Banners</button>
-                      </Link>
-                      {/* <Link href="/en/instructor/liveCourses">
+                <div className="complete-web-1 ">
+                  <div className="umpire w-100">
+                    <div className="umpire-1 umpire-1-cst ">
+                      <div className="d-flex mb-3 idfadsf-sads">
+                        <button className="upload-1 sdisad-dsdactive">
+                          Manage Blogs
+                        </button>
+                        <Link href="/en/admin/manageHeader">
+                          <button className="upload-1" >Manage Header Menu</button>
+                        </Link>
+                        <Link href="/en/admin/manageBanner">
+                          <button className="upload-1" >Manage Banners</button>
+                        </Link>
+                        {/* <Link href="/en/admin/add">
                         <button className="upload-1" >Manage Banners</button>
                       </Link> */}
-                    </div>
+                      </div>
 
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="complete-web-1">
-                {course && course.length > 0 ? course.map((course: any) => {
-                  if (!course?.schedule.length)
-                    return (
-                      <CourseCard course={course} key={course.id} />
-                    )
-                })
-                  : <div>Record not found </div>
-                }
+                <div className="complete-web-1">
 
-
+                  <div style={{ width: '100%' }}>
+                    <DataTable
+                      columns={columns}
+                      data={blog}
+                      sortIcon={<i className='fa fa-arrow-down'></i>}
+                      pagination
+                      selectableRows
+                      highlightOnHover
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        {/* } */}
+        }
 
-        {/* {email && <Invitation permition={email} Toggle={(value: any) => setemail(value)} />} */}
       </section >
     </div >
   );
