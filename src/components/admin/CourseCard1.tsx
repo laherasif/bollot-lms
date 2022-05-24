@@ -21,7 +21,7 @@ export default ({ role, Student, Instructor }: any) => {
   const [view, setView] = useState(false)
   const [edit, setEdit] = useState({})
   const [filterText, setFilterText] = useState('');
-  const filteredItems = Student.filter(item => item.fullname && item.fullname.toLowerCase().includes(filterText.toLowerCase()));
+  // const filteredItems = Student.filter(item => item.fullname && item.fullname.toLowerCase().includes(filterText.toLowerCase()));
   const dispatch = useDispatch()
   const { token } = useSelector((state: RootStateOrAny) => state?.admin)
 
@@ -118,16 +118,16 @@ export default ({ role, Student, Instructor }: any) => {
   ];
 
   
-  const subHeaderComponentMemo = useMemo(() => {
-    const handleClear = () => {
-      if (filterText) {
-        // setResetPaginationToggle(!resetPaginationToggle);
-        setFilterText('');
-      }
-    };
+  // const subHeaderComponentMemo = useMemo(() => {
+  //   const handleClear = () => {
+  //     if (filterText) {
+  //       // setResetPaginationToggle(!resetPaginationToggle);
+  //       setFilterText('');
+  //     }
+  //   };
 
-    return <FilterComponent onFilter={e => setFilterText(e.target.value)} onClear={handleClear} filterText={filterText} />;
-  }, [filterText]);
+  //   return <FilterComponent onFilter={e => setFilterText(e.target.value)} onClear={handleClear} filterText={filterText} />;
+  // }, [filterText]);
 
 
 return (
@@ -137,9 +137,9 @@ return (
         <div style={{ width: '100%' }}>
 
           <DataTable
-            subHeaderComponent={subHeaderComponentMemo}
+            // subHeaderComponent={subHeaderComponentMemo}
             columns={columns}
-            data={filteredItems}
+            data={Student}
             sortIcon={<i className='fa fa-arrow-down'></i>}
             pagination
             selectableRows
