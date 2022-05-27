@@ -75,7 +75,7 @@ const Home: NextPage = () => {
   };
 
 
-  const { AddCart } = useSelector(
+  const { AddCart , discount } = useSelector(
     (state: RootStateOrAny) => state.cartReducer
   );
 
@@ -246,7 +246,7 @@ const Home: NextPage = () => {
     return currentTotal;
   }, 0).toFixed(2)
 
-  let discountAmount = totalamount;
+  let discountAmount = totalamount - discount?.discount  ;
 
 
 
@@ -386,7 +386,7 @@ const Home: NextPage = () => {
                   </div>
                   <div className="d-flex justify-content-between w-100">
                     <h6>Coupon discount:</h6>
-                    <h6>-$ {0}</h6>
+                    <h6>-$ {discount?.discount}</h6>
                   </div>
                 </div>
                 <div className="d-flex justify-content-between hdsafj-dsae">

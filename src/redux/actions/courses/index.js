@@ -84,11 +84,11 @@ export const GetCourse = () => async (dispatch) => {
             }
 
         }
-        let all = {
-            page_no: 1,
-            rows_per_page: 10,
+        // let all = {
+        //     page_no: 1,
+        //     rows_per_page: 10,
 
-        }
+        // }
 
 
         let liveCourse = {
@@ -98,7 +98,7 @@ export const GetCourse = () => async (dispatch) => {
         }
 
 
-        let AllCourse = await instance.post('api//courses', all)
+        let AllCourse = await instance.get('api//courses')
         dispatch({
             type: GET_ALL_COURSES,
             payload: AllCourse.data.response.courses,
@@ -109,19 +109,19 @@ export const GetCourse = () => async (dispatch) => {
             type: GET_CATAGORY,
             payload: res.data.response.categories
         })
-        let featurs = await instance.post('api//courses', feature)
+        let featurs = await instance.get('api//courses')
 
         dispatch({
             type: GET_FETAURE,
             payload: featurs.data.response.courses
         })
-        let latests = await instance.post('api//courses', latest)
+        let latests = await instance.get('api//courses')
 
         dispatch({
             type: GET_LATEST,
             payload: latests.data.response.courses
         })
-        let live = await instance.post('api//courses', liveCourse)
+        let live = await instance.get('api//courses')
         dispatch({
             type: LIVE_COURSE,
             payload: live.data.response.courses

@@ -128,6 +128,8 @@ const Secdule = ({  onStepChange, onPrevStep, step }: any) => {
                                     onKeyDown={(e) => {
                                         e.preventDefault();
                                     }}
+                                    placeholderText={'YYYY-MM-DD'} 
+
                                     selected={dat.date}
                                     onChange={(date) => handleDateChange("date", index, date)}
                                     dateFormat="yyyy-MM-dd"
@@ -145,6 +147,7 @@ const Secdule = ({  onStepChange, onPrevStep, step }: any) => {
                                     onKeyDown={(e) => {
                                         e.preventDefault();
                                     }}
+                                    placeholderText={'HH-MM'} 
                                     selected={dat.from_time}
                                     onChange={(date) => handleDateChange("from_time", index, date)}
                                     showTimeSelect
@@ -166,6 +169,8 @@ const Secdule = ({  onStepChange, onPrevStep, step }: any) => {
                                         e.preventDefault();
                                     }}
                                     name="to_time"
+                                    placeholderText={'HH-MM'} 
+                                
                                     selected={dat.to_time}
                                     onChange={(date) => handleDateChange("to_time", index, date)}
                                     showTimeSelect

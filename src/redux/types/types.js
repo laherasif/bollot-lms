@@ -44,6 +44,7 @@ export const LIVE_COURSE = "LIVE_COURSE"
 export const REG_CART = 'REG_CART'
 export const GET_CART = 'GET_CART'
 export const DELETE_CART = 'DELETE_CART'
+export const UPDATE_CART = "UPDATE_CART"
 
 export const REG_BOOK_MARK = "REG_BOOK_MARK"
 export const GET_BOOK_MARK = "GET_BOOK_MARK"
@@ -135,6 +136,13 @@ export const GET_COURSES_SEARCH = "GET_COURSES_SEARCH"
 // Page no 
 
 export const PAGE_NO = "PAGE_NO"
+
+
+// WEBSITE blogs and News 
+
+export const GET_BLOGS = "GET_BLOGS"
+export const GET_NEWS = "GET_NEWS"
+
 
 
 

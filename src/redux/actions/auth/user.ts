@@ -134,6 +134,7 @@ export const SocialRegComp = (providerData: [], role: string) => async (dispatch
 
 // Register User 
 export const SocialRegMedia = (providerData: [], role: string) => async (dispatch: any) => {
+    debugger
     try {
         let object = Object.assign({}, ...providerData)
 

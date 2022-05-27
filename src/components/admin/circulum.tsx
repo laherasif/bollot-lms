@@ -15,7 +15,7 @@ import AWS from "aws-sdk";
 import Secdule from "./secdule";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { S3_BUCKET, myBucket } from "../../confiq/aws/aws";
 import { bytesToSize, generateVideoThumbnail, SweetAlert } from "../../function/hooks";
 import { pdfThumnail } from '../../constant/constant'
@@ -31,7 +31,9 @@ import {
   networkFail
 } from '../../redux/actions/instructor/criculum'
 export default ({ onStepChange, onPrevStep, step }: any) => {
-  const [progress, setProgress] = useState(0);
+
+
+  const [progress, setProgress] = useState(0 || liveCourse);
   const [selectedFile, setSelectedFile] = useState(null);
   const [thumb, setTumb] = useState();
   const [videos, setVideos] = useState();
@@ -54,6 +56,15 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
   }]);
 
 
+
+  const router = useRouter()
+  let liveCourse = router.query.live
+
+  useEffect(() => {
+    if (liveCourse === '') {
+      setType(1)
+    }
+  }, [liveCourse])
 
 
 
@@ -214,6 +225,8 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
   }
 
 
+  console.log("courseId", courseId)
+
 
   const SaveCriculum = async () => {
 
@@ -253,6 +266,13 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
     ac.lectures.some((sa: any) => sa.progressbar < 100)
   );
 
+
+  const isImgLink = (url) => {
+    if (typeof url !== 'string') {
+      return false;
+    }
+    return (url.match(/^http[^\?]*.(jpg|jpeg|gif|png|tiff|bmp)(\?(.*))?$/gmi) !== null);
+  }
 
   // const f = 
   // console.log("f" , f )
@@ -336,7 +356,7 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
           <div className="col-12 col-md-6 mt-10">
             <div
               data-cy="button-box"
-              className={`up-button-box ${type === 1 ? "up-button-box  up-button-box-radio active" : ""
+              className={`up-button-box ${type === 1 || liveCourse ? "up-button-box  up-button-box-radio active" : ""
                 } `}
               onClick={() => setType(1)}
             >
@@ -459,17 +479,44 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
                           <div className="kvjadsd-j43rm iasdufhvs-ernd" >
                             <Icons name="i29" />
                             <>
-                              {lec?.id ? <img src={lec.thumbnail} alt="course_img" className="thum_img" /> : lec?.object_key}
-                              <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                {lec?.file_size > 0 && <p className="mt-2">File Size : {bytesToSize(lec?.file_size)}</p>}
-                                {lec?.progressbar === 100 && <p className="mt-2">File Uploaded <i style={{ color: 'green' }} className="fa fa-check-circle"></i></p>}
-                              </div>
-
+                              {/* <div>
+                                {lec?.id && isImgLink(lec?.thumbnail) ? <img src={lec.thumbnail} alt="course_img" className="thum_img" /> : lec?.object_key}
+                                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                  {lec?.file_size > 0 && <p className="mt-2">File Size : {bytesToSize(lec?.file_size)}</p>}
+                                  {lec?.progressbar === 100 && <p className="mt-2">File Uploaded <i style={{ color: 'green' }} className="fa fa-check-circle"></i></p>}
+                                </div>
+                              </div> */}
+                              {
+                                lec?.id && lec?.thumbnail ?
+                                  <div>
+                                    {lec?.id && isImgLink(lec?.thumbnail) ? <img src={lec.thumbnail} alt="course_img" className="thum_img" /> : lec?.object_key}
+                                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                      {lec?.file_size > 0 && <p className="mt-2">File Size : {bytesToSize(lec?.file_size)}</p>}
+                                      {lec?.progressbar === 100 && <p className="mt-2">File Uploaded <i style={{ color: 'green' }} className="fa fa-check-circle"></i></p>}
+                                    </div>
+                                  </div>
+                                  :
+                                  <>
+                                    {lec?.object_key}
+                                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                      {lec?.file_size > 0 && <p className="mt-2">File Size : {bytesToSize(lec?.file_size)}</p>}
+                                      {lec?.progressbar === 100 && <p className="mt-2">File Uploaded <i style={{ color: 'green' }} className="fa fa-check-circle"></i></p>}
+                                    </div>
+                                  </>
+                                // <div>
+                                //   {lec?.object_key}
+                                //   <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                //     {lec?.file_size > 0 && <p className="mt-2">File Size : {bytesToSize(lec?.file_size)}</p>}
+                                //     {lec?.progressbar === 100 && <p className="mt-2">File Uploaded <i style={{ color: 'green' }} className="fa fa-check-circle"></i></p>}
+                                //   </div>
+                                // </div>
+                              }
 
 
                             </>
                           </div>
-                          {lec?.object_key ? "" :
+                          {lec?.object_key && lec?.thumbnail ? "" :
+
                             <input type="file" accept="pdf/*" onChange={(e) => handleChangeLectureFile(index, i, e)} className="custom-file-input" />
                           }
                           {errors && errors?.sections ? <div className="invalid mt-1">{errors?.sections[index]?.lectures[i]?.object_key}</div> : null}
@@ -481,8 +528,9 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
                             :
                             lec.progressbar && <ProgressBar animated now={lec.progressbar} />}
                         </div>
-                        {lec?.object_key && lec.progressbar === 100 ?
+                        {lec?.object_key && lec.progressbar === 100 || !lec.progressbar && lec?.thumbnail ?
                           <>
+
                             <div className="overlay"></div>
                             <div id="icon" onClick={() => delThumnail(index, i)}>
                               <i className="fa fa-close" ></i>
@@ -519,17 +567,17 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
                     className="upload-1 sdisad-dsdactive "
                     onClick={() => onPrevStep(1 - 1)}
                     disabled={Criculums.some((s) => s.lectures.some((l) => l.progressbar > 0 && l.progressbar < 100)) ? true : false}
-                    style={Criculums.some((s) => s.lectures.some((l) => l.progressbar > 0 && l.progressbar < 100)) ? {opacity:'0.5'} : {opacity:'1'}}
-                    
-                 >
+                    style={Criculums.some((s) => s.lectures.some((l) => l.progressbar > 0 && l.progressbar < 100)) ? { opacity: '0.5' } : { opacity: '1' }}
+
+                  >
                     Previous
                   </button>
                   <button
                     className="upload-1 sdisad-dsdactive"
                     onClick={() => SaveCriculum()}
                     disabled={Criculums.some((s) => s.lectures.some((l) => l.progressbar > 0 && l.progressbar < 100)) ? true : false}
-                    style={Criculums.some((s) => s.lectures.some((l) => l.progressbar > 0 && l.progressbar < 100)) ? {opacity:'0.5'} : {opacity:'1'}}
-                 >
+                    style={Criculums.some((s) => s.lectures.some((l) => l.progressbar > 0 && l.progressbar < 100)) ? { opacity: '0.5' } : { opacity: '1' }}
+                  >
                     <i className="fa fa-save" style={{ marginRight: '10px' }}></i>
                     {loading ? <Spinner animation="border" /> : "Save & Next"}
                   </button>

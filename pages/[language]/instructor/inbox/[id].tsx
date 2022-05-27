@@ -1,18 +1,18 @@
 import type { NextPage } from "next";
-import { useIntl } from "react-intl";
+// import { useIntl } from "react-intl";
 import Sidebar from "../../../../src/components/instructor/sidebar2";
 import { FiSearch } from "react-icons/fi";
-import { BiBell } from "react-icons/bi";
+// import { BiBell } from "react-icons/bi";
 import { Spinner, Dropdown } from "react-bootstrap";
-import { IoMailOutline } from "react-icons/io5";
-import Icons from "../../../../src/icons";
-import TopNavbar from "../../../../src/components/instructor/TopNavbar";
+// import { IoMailOutline } from "react-icons/io5";
+// import Icons from "../../../../src/icons";
+// import TopNavbar from "../../../../src/components/instructor/TopNavbar";
 import NavigationBar1 from "../../../../src/components/instructor/NavigationBar3";
-import Chart from "../../../../src/components/instructor/chart";
-import Chart1 from "../../../../src/components/instructor/chart1";
-import BarChart from "../../../../src/components/instructor/barchart";
+// import Chart from "../../../../src/components/instructor/chart";
+// import Chart1 from "../../../../src/components/instructor/chart1";
+// import BarChart from "../../../../src/components/instructor/barchart";
 import Link from "next/link";
-import CourseCard from "../../../../src/components/instructor/CourseCard1";
+// import CourseCard from "../../../../src/components/instructor/CourseCard1";
 import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { RootStateOrAny, useSelector } from "react-redux";
@@ -20,8 +20,7 @@ import moment from "moment";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { pusher } from '../../../../src/confiq/pusher/pusher'
 import { useRouter } from "next/router";
-const options = ["one", "two", "three"];
-
+// const options = ["one", "two", "three"];
 
 const Home: NextPage = () => {
   // const intl = useIntl();
@@ -30,12 +29,14 @@ const Home: NextPage = () => {
   const [messagess, setMessagess] = useState([])
   const [conversation, setConversation] = useState([])
   const [user, setUser] = useState('')
-  const [convId, setConvId] = useState('')
+  const [convId, setConvId] = useState(0)
   const [loading, setLoading] = useState(false)
   const [loader, setLoader] = useState(false)
   const [loaders, setLoaders] = useState(false)
   const [state, setState] = useState('')
   const [page, setPages] = useState(1)
+  const [filterText, setFilterText] = useState('');
+
   const ScrollRef = useRef<HTMLDivElement>(null);
   const { token, User } = useSelector(
     (state: RootStateOrAny) => state?.userReducer
@@ -54,27 +55,22 @@ const Home: NextPage = () => {
   let CovId = router.query.id
 
 
-  useEffect(() => {
-    if (CovId) {
-      let finds = conversation?.find((f:any) => f.id == CovId)
-      console.log("finds" , finds)
-      getMessages( finds?.user_id == User?.id ? finds.user_two_details : finds?.user_details, CovId)
-    }
-  }, [CovId])
+  // Filer search conversation
+
+
+
 
   useEffect(() => {
     const channel = pusher.subscribe("messages-channel");
     channel.bind('new-message', function (data: any) {
       const { message } = data
-      if(user?.id == message.from_user_id){
-      setMessages((prevState: any) => [
-        message,
-        ...prevState,
-      ]);
-    }
-      // setMessages([message, ...messages]) 
-      // setMessages([...messages, message])
-      
+      if (user?.id == message.from_user_id) {
+        setMessages((prevState: any) => [
+          message,
+          ...prevState,
+        ]);
+      }
+
     });
 
     return () => {
@@ -87,16 +83,7 @@ const Home: NextPage = () => {
   }, [messages]);
 
 
-  console.log("messages", messages)
 
-
-  // useEffect(() => {
-  //   if (ScrollRef.current) {
-  //     ScrollRef.current.scrollIntoView({
-  //       behavior: 'smooth',
-  //     });
-  //   }
-  // }, [messages, loading])
 
 
 
@@ -107,10 +94,15 @@ const Home: NextPage = () => {
       try {
         setLoaders(true)
         let res = await AxInstance.post('api//get-conversations')
-        console.log("res", res)
         if (res.data.success === true) {
           setLoaders(false)
           setConversation(res.data.response.conversations)
+          if (CovId) {
+            debugger
+          let finds = res.data.response.conversations?.find((f: any) => f.id == CovId)
+          getMessages(finds?.user_id == User?.id ? finds.user_two_details : finds?.user_details, CovId)
+        }
+
 
         }
       }
@@ -121,12 +113,17 @@ const Home: NextPage = () => {
     fetchMesg()
   }, [])
 
+  
+  // useEffect(() => {
+  
+  // }, [CovId])
 
-
+  const filteredCon = conversation?.filter((item: any) => item?.user_details?.fullname && item?.user_details?.fullname.toLowerCase().includes(filterText.toLowerCase()));
+ 
 
 
   const getMessages = async (data: any, id: number) => {
-    console.log("Data" , data )
+    console.log("Data", data)
     setUser(data)
     setConvId(id)
     setPages(1)
@@ -150,7 +147,7 @@ const Home: NextPage = () => {
   }
 
 
-  const SendMessage = async (e) => {
+  const SendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     let value = {
       to_user_id: user.id,
@@ -167,7 +164,7 @@ const Home: NextPage = () => {
 
 
     try {
-     
+
       setMessages([userData, ...messages])
       setState('')
       let res = await AxInstance.post('api//send-message', value)
@@ -214,7 +211,6 @@ const Home: NextPage = () => {
 
 
 
-  console.log("messages", messages)
 
   return (
     <div className="inst">
@@ -270,12 +266,12 @@ const Home: NextPage = () => {
                 <div className="card-daskfj-e dskfajs-asjds" style={{ position: 'relative' }}>
                   <div className="dsnodi-sdjsad">
                     <FiSearch color="#8A8A8A" size={17} />
-                    <input type="text" placeholder="Search" />
+                    <input type="text" placeholder="Search" name="filterText" value={filterText} onChange={(e) => setFilterText(e.target.value)} />
                   </div>
-                  {conversation?.length ? conversation?.map((ins: any, index: number) => {
+                  {filteredCon && filteredCon?.length > 0  ? filteredCon?.map((ins: any, index: number) => {
                     if (ins?.user_two_id == User?.id)
                       return (
-                        <div className={CovId == ins?.id  || convId == ins?.id ? "user-card-inbox active" :  "user-card-inbox "} onClick={() => getMessages(ins.user_details, ins.id)} key={index}>
+                        <div className={CovId == ins?.id || convId == ins?.id ? "user-card-inbox active" : "user-card-inbox "} onClick={() => getMessages(ins.user_details, ins.id)} key={index}>
                           <div className="user-card-inbox-inner">
                             <img src={ins?.user_details?.image || "/assets/images/umpire-1.svg"} />
                             <div>
@@ -290,8 +286,8 @@ const Home: NextPage = () => {
                         // <UserChatCard users={ins.user_two_details} key={index} handleClick={(value) => getMessages(value)} />
                       )
                   })
-                    : ""
-                    // <div>No conversation </div>
+                    : <div style={{padding:'20px'}}>No conversation </div>
+                    
                   }
                   {loaders ?
                     <div className="spinner-chatbox">
@@ -307,14 +303,18 @@ const Home: NextPage = () => {
                     <>
                       <div className="d-flex justify-content-between kjhadfd-sdfas " style={user?.tagline ? { paddingBottom: '5px' } : { paddingBottom: '15px' }}>
                         <div className="user-card-inbox-inner kjhadfd-sdfas" style={{ borderBottom: 'none' }}>
-                          <div style={{ padding: '0px' }}>
-                            <h3 >{user?.fullname} </h3>
-                            <p>{user?.tagline}</p>
+                          
+                          <div className="user-card-inbox-inner">
+                            <img  src={user?.image || "/assets/images/umpire-1.svg" } width="100%" height="100%" />
+                            <div>
+                              <h3>{user?.fullname}</h3>
+                              <p>{user?.tagline}</p>
+                            </div>
                           </div>
                         </div>
                         <div className="pos-redsfnds">
                           <div className="assahdwe0-ass">
-                            <Dropdown>
+                            {/* <Dropdown>
                               <Dropdown.Toggle
                                 variant="success"
                                 id="dropdown-basic"
@@ -324,16 +324,13 @@ const Home: NextPage = () => {
 
                               <Dropdown.Menu>
                                 <Dropdown.Item href="#/action-1">
-                                  Action
+                                  <i className="fa fa-trash"></i>
+                                  Conversation
+
                                 </Dropdown.Item>
-                                <Dropdown.Item href="#/action-2">
-                                  Another action
-                                </Dropdown.Item>
-                                <Dropdown.Item href="#/action-3">
-                                  Something else
-                                </Dropdown.Item>
+                                
                               </Dropdown.Menu>
-                            </Dropdown>
+                            </Dropdown> */}
                           </div>
                         </div>
 
@@ -367,7 +364,7 @@ const Home: NextPage = () => {
                                 return (
                                   <div className="user-card-inbox mt-0" key={index}   >
                                     <div className="user-card-inbox-inner" >
-                                      <img src={ms?.sender.image} />
+                                      <img src={ms?.sender?.image} />
                                       <div>
                                         <h3 style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
                                           {ms?.sender?.fullname}

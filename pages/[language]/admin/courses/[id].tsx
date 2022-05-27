@@ -16,7 +16,7 @@ const Home: NextPage = () => {
   // const intl = useIntl();
 
   const dispatch = useDispatch()
-  
+
 
   const ClearData = () => {
     dispatch(clearStates())
@@ -40,14 +40,14 @@ const Home: NextPage = () => {
 
                 <div className="back-btn">
                   <Link href="/en/instructor/" >
-                    <h3>
+                    <h3 className="back-arrow">
                       <i className="fa fa-arrow-left"></i>
                       Back</h3>
                   </Link>
                   <h3>Courses and Catagories </h3>
                 </div>
                 <div className=" jidfjsd-asjreid">
-                  <Search />
+                  {/* <Search /> */}
                   <div className="d-flex idfadsf-sads">
                     <Link href='/en/admin/addCourse'>
                       <button className="upload-1 sdisad-dsdactive" onClick={() => ClearData()}>
@@ -64,12 +64,17 @@ const Home: NextPage = () => {
                       <button className="upload-1 sdisad-dsdactive">
                         All Courses
                       </button>
+                      <Link href="/en/admin/coupon">
+                        <button className="upload-1" >Coupons</button>
+                      </Link>
                       <Link href="/en/admin/liveCourses">
                         <button className="upload-1" >Live Courses</button>
                       </Link>
                       <Link href="/en/admin/catagories">
                         <button className="upload-1" >Course Catagories</button>
                       </Link>
+                     
+                      
                     </div>
 
                   </div>

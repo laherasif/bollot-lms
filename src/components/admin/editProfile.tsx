@@ -1,24 +1,24 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { Modal, Button, Spinner} from 'react-bootstrap'
+import { Modal, Button, Spinner } from 'react-bootstrap'
 import { IoTrophySharp } from "react-icons/io5";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import { SweetAlert } from "../../function/hooks";
 import { updateUser } from '../../redux/actions/auth/user'
 const EditUser = ({ Toggle, permition }: any) => {
 
-    const { token, User } = useSelector((state: RootStateOrAny) => state?.userReducer)
+    const { token, Admin } = useSelector((state: RootStateOrAny) => state?.admin)
 
 
     const [show, setShow] = useState(permition);
     const [loading, setLoading] = useState(false);
     const [state, setState] = useState({
-        image: User?.image,
-        fullname: User?.fullname,
-        email: User?.email,
-        about: User?.about || '',
+        image: Admin?.image,
+        fullname: Admin?.fullname,
+        email: Admin?.email,
+        about: Admin?.about || '',
         password: '', old_password: '',
-        tagline: User?.tagline || ''
+        tagline: Admin?.tagline || ''
     });
     const [url, setUrl] = useState('');
     const [errors, setErrros] = useState('');
@@ -80,23 +80,20 @@ const EditUser = ({ Toggle, permition }: any) => {
         // let check = regexBase64.test(checks);
         try {
             setLoading(true)
-            
-        let value = {
-            fullname: state.fullname,
-            image: state.image,
-            email: state.email,
-            about: state.about,
-            password: state.password,
-            tagline: state.tagline,
-            // old_password : state.old_password
 
-        }
+            let value = {
+                fullname: state.fullname,
+                image: state.image,
+                email: state.email,
+                about: state.about,
+                password: state.password,
+                tagline: state.tagline,
+                // old_password : state.old_password
 
-        let ins = await AxInstance.post('api//edit-profile', value)
-        let comp = await AxInstance.post('api//edit-profile', value)
+            }
 
-            let res = User.role === "instructor" ? ins : comp
-            if (!res.data.error) {
+            let res = await AxInstance.post('api//edit-profile', value)
+            if (res.data.success === true ) {
                 setLoading(false)
                 SweetAlert({ icon: 'success', text: res.data.message })
                 dispatch(updateUser(res.data))
@@ -118,7 +115,7 @@ const EditUser = ({ Toggle, permition }: any) => {
 
     // let selectImage = User?.image || state.image
 
-    console.log("loading" , loading)
+    console.log("loading", loading)
     return (
 
         <div className="hasiw0eskdwd">
@@ -232,8 +229,8 @@ const EditUser = ({ Toggle, permition }: any) => {
                     <div className="idfadsf-sads kajfds-sdfe">
                         <button onClick={() => SaveProfile()} className="upload-1 sdisad-dsdactive">
                             {loading ?
-                                <Spinner animation="border"  />
-                               
+                                <Spinner animation="border" />
+
                                 :
                                 "Update"
                             }

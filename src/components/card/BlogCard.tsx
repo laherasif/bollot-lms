@@ -1,36 +1,31 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-const CardImage = require("../../images/blog1.png");
-export default ({type}:{type?:string}) => {
+import { add3Dots } from "../../function/hooks";
+import moment from "moment";
+// const CardImage = require("../../images/blog1.png");
+export default ({ blog }: any) => {
+
   return (
-    <Link href="/en/blogpost">
-      <a className="card-item">
-        <div className="">
-          <Image className="images-2" src={CardImage} alt="" />
-          <h3>The hate you give is the hate you’ll eventually get</h3>
+    <Link href={`/en/blogpost/${blog?.id}`}>
+      <div className="card-item">
+        <div className="card-container">
+          <img className="images-2" src={blog?.cover_image} alt="" />
+          <h3>{blog?.title}</h3>
           <h4>
-            By <span>Tommy Land</span>
+            By <span>{blog?.uploaded_by?.fullname}</span>
           </h4>
           <div className="mon">
-           {type?<>
-            <h5>19 August,2050 </h5>
- 
-           </>:<> <h5>19 August </h5>
+            <h5>{moment(blog?.createdAt).format('ll')} </h5>
             <h5 className="sfsdfsd-s">6 comment</h5>
-            <h5 className="sfsdfsd-s">7 shares</h5></>}
+            {/* <h5 className="sfsdfsd-s">7 shares</h5> */}
           </div>
           <div className="dklsfjsdf-dsf"></div>
           <p>
-            Luxury is something everyone deserves from time to time. Such an
-            indulgence can make a vacation a truly rejuvenating experience. One
-            of the best ways to get the luxury of the rich and famous to fit
-            into your budget can be yours through yacht charter companies. These
-            companies specialize in creating custom selling vacations that
-            redefine travel.
+            <div dangerouslySetInnerHTML={{ __html: add3Dots(blog?.full_content, 150) }} />
           </p>
         </div>
-      </a>
+      </div>
     </Link>
   );
 };

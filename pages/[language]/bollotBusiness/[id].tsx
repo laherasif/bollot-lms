@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import Link from "next/link";
 import { Dropdown } from "react-bootstrap";
-
+import { useEffect, useState } from 'react'
 import { useIntl } from "react-intl";
 import BlogCard from "../../../src/components/card/BlogCard";
 import CommentCard from "../../../src/components/card/CommentCard";
@@ -10,9 +10,23 @@ import CommentCard2 from "../../../src/components/card/CommentCard2";
 import CourseCard from "../../../src/components/card/CourseCard";
 import Footer from "../../../src/components/footer";
 import Navbar from "../../../src/components/header/Navbar";
-
+import instance from '../../../src/confiq/axios/instance'
 const Home: NextPage = () => {
   // const intl = useIntl();
+
+  const [member, setMember] = useState([])
+
+  useEffect(() => {
+    try {
+      let fetchMembership = async () => {
+        let res = await instance.get('api//get-memberships')
+        console.log("Res", res)
+        setMember(res.data.response.memberships)
+      }
+      fetchMembership()
+    }
+    catch (err) { }
+  }, [])
 
   return (
     <>
@@ -77,90 +91,35 @@ const Home: NextPage = () => {
             <div className="main-comission">
               <section className="layer plans">
                 <section>
-                  <section
-                    className="third lift plan-tier callout"
-                  >
-                    <h4>Solo</h4>
-                    <h5>
-                      <sup className="superscript">$</sup>
-                      <span className="plan-price">5</span>
-                    </h5>
-                    <p className="early-adopter-price">Early adopter price</p>
-                    <Link href="/en/businessSignup">
-                      <button className="btn-2s" >Get started now</button>
+                  {member && member.map((m: any) => (
+                    <section
+                      className="third lift plan-tier callout"
+                      key={m?.id}
+                    >
+                      <h4>{m?.title}</h4>
+                      <h5>
+                        <sup className="superscript">$</sup>
+                        <span className="plan-price">{m?.price_per_month}</span>
+                      </h5>
+                      <p className="early-adopter-price"> Per Month</p>
+                      <Link href="/en/businessSignup">
+                        <button className="btn-2s" >Get started now</button>
 
-                    </Link>
-                    <ul>
-                      <li>
-                        <strong>1</strong> site
-                      </li>
-                      <li>
-                        <strong>1</strong> user
-                      </li>
-                      <li>
-                        <strong>Free hosting</strong> (beta)
-                      </li>
-                      <li>
-                        14 day <strong>free trial</strong>
-                      </li>
-                    </ul>
-                  </section>
-                  <section
-                    className="third lift plan-tier "
-                  >
-                    <h4>Team</h4>
-                    <h5>
-                      <sup className="superscript">$</sup>
-                      <span className="plan-price">20</span>
-                    </h5>
-                    <p className="early-adopter-price">Early adopter price</p>
-                    <Link href="/en/businessSignup">
-                      <button className="btn-2s" >Get started now</button>
-                    </Link>
-                    <ul>
-                      <li>
-                        Up to <strong>10</strong> sites
-                      </li>
-                      <li>
-                        Up to <strong>10</strong> users per site
-                      </li>
-                      <li>
-                        <strong>Free hosting</strong> (beta)
-                      </li>
-                      <li>
-                        14 day <strong>free trial</strong>
-                      </li>
-                    </ul>
-                  </section>
-                  <section
-                    className="third lift plan-tier"
-                  >
-                    <h4>Agency</h4>
-                    <h5>
-                      <sup className="superscript">$</sup>
-                      <span className="plan-price">100</span>
-                    </h5>
-                    <p className="early-adopter-price">Early adopter price</p>
-                    <Link href="/en/businessSignup">
-                      <button className="btn-1s" >Get started now</button>
+                      </Link>
+                      <ul>
+                        <li>
+                          <strong>{m?.courses_allowed}</strong> Course Allowed
+                        </li>
+                        <li>
+                          <strong>{m?.users_per_course_allowed}</strong> Users Allowed
+                        </li>
 
-                    </Link>
-                    <ul>
-                      <li>
-                        <strong>Unlimited</strong> sites
-                      </li>
-                      <li>
-                        <strong>Unlimited</strong> users
-                      </li>
-                      <li>
-                        <strong>Free hosting</strong> (beta)
-                      </li>
-                      <li>
-                        14 day <strong>free trial</strong>
-                      </li>
-                    </ul>
-                  </section>
-                  <div style={{ clear: "both" }} />
+                        <li>
+                          {m?.free_trial_days} day <strong>free trial</strong>
+                        </li>
+                      </ul>
+                    </section>
+                  ))}
                 </section>
               </section>
 

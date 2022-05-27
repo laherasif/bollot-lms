@@ -11,12 +11,15 @@ import Search from "../../../../src/components/instructor/search";
 import DataTable from "react-data-table-component";
 import AddBlog from "../../../../src/components/admin/addBlog";
 import { useRouter } from "next/router";
+import { FiSearch } from "react-icons/fi";
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
   const [blog, setBlog] = useState([])
   const [showblog, setShowBlog] = useState(true)
   const [loading, setLoading] = useState(false)
+  const [filterText, setFilterText] = useState('');
+
   const { token } = useSelector((state: RootStateOrAny) => state?.admin)
 
   const AxInstance = axios.create({
@@ -35,6 +38,7 @@ const Home: NextPage = () => {
       try {
         setLoading(true)
         let res = await AxInstance.get('api//admin/blogs')
+      
         if (res.data.success === true) {
           setLoading(false)
           setBlog(res.data.response.blogs)
@@ -93,6 +97,7 @@ const Home: NextPage = () => {
       )
     }
   ];
+  const filteredItems = blog?.filter(item => item.title && item.title.toLowerCase().includes(filterText.toLowerCase()));
 
 
   return (
@@ -113,14 +118,14 @@ const Home: NextPage = () => {
 
                   <div className="back-btn">
                     <Link href="/en/instructor/" >
-                      <h3>
+                      <h3 className="back-arrow">
                         <i className="fa fa-arrow-left"></i>
                         Back</h3>
                     </Link>
                     <h3>Manage Website Components</h3>
                   </div>
                   <div className=" jidfjsd-asjreid">
-                    <Search />
+                    {/* <Search /> */}
                     <Link href="/en/admin/manageBlog">
                       <div className="d-flex idfadsf-sads">
                         <button className="upload-1 sdisad-dsdactive" >
@@ -137,15 +142,15 @@ const Home: NextPage = () => {
                         <button className="upload-1 sdisad-dsdactive">
                           Manage Blogs
                         </button>
+                        <Link href="/en/admin/newsEvent">
+                        <button className="upload-1" >Manage New and Event</button>
+                      </Link>
                         <Link href="/en/admin/manageHeader">
                           <button className="upload-1" >Manage Header Menu</button>
                         </Link>
-                        <Link href="/en/admin/manageBanner">
+                        <Link href="/en/admin/banner">
                           <button className="upload-1" >Manage Banners</button>
                         </Link>
-                        {/* <Link href="/en/admin/add">
-                        <button className="upload-1" >Manage Banners</button>
-                      </Link> */}
                       </div>
 
                     </div>
@@ -153,10 +158,21 @@ const Home: NextPage = () => {
                 </div>
                 <div className="complete-web-1">
 
+                  <div style={{ display: 'flex', justifyContent: 'center', width: '100%', marginBottom: '20px' }}>
+                    <div className="dsnodi-sdjsad">
+                      <div className="searchbar-icon">
+                        <FiSearch color="#8A8A8A" size={17} />
+
+                      </div>
+                      <input type="text" placeholder="Search" onChange={(e) => setFilterText(e.target.value)} value={filterText} />
+                    </div>
+
+                  </div>
+
                   <div style={{ width: '100%' }}>
                     <DataTable
                       columns={columns}
-                      data={blog}
+                      data={filteredItems}
                       sortIcon={<i className='fa fa-arrow-down'></i>}
                       pagination
                       selectableRows

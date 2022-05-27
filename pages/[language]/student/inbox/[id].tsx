@@ -22,6 +22,7 @@ import moment from "moment";
 import { pusher } from '../../../../src/confiq/pusher/pusher'
 import { useRouter } from 'next/router'
 import InfiniteScroll from "react-infinite-scroll-component";
+import { SweetAlert } from "../../../../src/function/hooks";
 const options = ["one", "two", "three"];
 
 const Home: NextPage = () => {
@@ -30,12 +31,14 @@ const Home: NextPage = () => {
   const [messagess, setMessagess] = useState([])
   const [conversation, setConversation] = useState([])
   const [user, setUser] = useState('')
-  const [convId, setConvId] = useState('')
+  const [convId, setConvId] = useState(0)
   const [loading, setLoading] = useState(false)
   const [loader, setLoader] = useState(false)
   const [loaders, setLoaders] = useState(false)
   const [state, setState] = useState('')
   const [page, setPages] = useState(1)
+  const [filterText, setFilterText] = useState('');
+
   const ScrollRef = useRef<HTMLDivElement>(null);
   const { token, User } = useSelector(
     (state: RootStateOrAny) => state?.userReducer
@@ -53,12 +56,9 @@ const Home: NextPage = () => {
   let CovId = router.query.id
 
 
-  useEffect(() => {
-    if (CovId) {
-      let finds = conversation?.find((f:any) => f.id == CovId)
-      getMessages( finds?.user_id == User?.id ? finds.user_two_details : finds?.user_details, CovId)
-    }
-  }, [CovId])
+  // useEffect(() => {
+
+  // }, [CovId])
 
 
   useEffect(() => {
@@ -97,22 +97,30 @@ const Home: NextPage = () => {
         if (res.data.success === true) {
           setLoaders(false)
           setConversation(res.data.response.conversations)
-
+          if (CovId) {
+            let finds = res.data.response.conversations?.find((f: any) => f.id == CovId)
+            getMessages(finds?.user_id == User?.id ? finds?.user_two_details : finds?.user_details, CovId)
+          }
         }
       }
       catch (err) {
-        console.log("err", err)
+        setLoader(false)
+        SweetAlert({ icon:  "error" , text : err})
+
       }
     }
     fetchMesg()
   }, [])
 
 
+  // Search Filter Conversation
+
+  const filteredCon = conversation?.filter((item: any) => item?.user_two_details?.fullname && item?.user_two_details?.fullname.toLowerCase().includes(filterText.toLowerCase()));
+
 
 
 
   const getMessages = async (data: any, id: number) => {
-    console.log("Data" , data , "id" , id  )
     setUser(data)
     setConvId(id)
     setPages(1)
@@ -198,7 +206,6 @@ const Home: NextPage = () => {
     }
   };
 
-  console.log("messgaes", messages)
 
 
   return (
@@ -251,12 +258,12 @@ const Home: NextPage = () => {
                 <div className="card-daskfj-e dskfajs-asjds" style={{ position: 'relative' }}>
                   <div className="dsnodi-sdjsad">
                     <FiSearch color="#8A8A8A" size={17} />
-                    <input type="text" placeholder="Search" />
+                    <input type="text" placeholder="Search" name="filterText" value={filterText} onChange={(e) => setFilterText(e.target.value)} />
                   </div>
-                  {conversation?.length ? conversation?.map((ins: any, index: number) => {
+                  {filteredCon?.length ? filteredCon?.map((ins: any, index: number) => {
                     if (ins?.user_id == User?.id)
                       return (
-                        <div className={CovId == ins?.id  || convId == ins?.id ? "user-card-inbox active" :  "user-card-inbox "} onClick={() => getMessages(ins.user_two_details, ins.id)} key={index}>
+                        <div className={CovId == ins?.id || convId == ins?.id ? "user-card-inbox active" : "user-card-inbox "} onClick={() => getMessages(ins.user_two_details, ins.id)} key={index}>
                           <div className="user-card-inbox-inner">
                             <img src={ins?.user_two_details?.image || "/assets/images/umpire-1.svg"} />
                             <div>
@@ -286,16 +293,17 @@ const Home: NextPage = () => {
                     <>
                       <div className="d-flex justify-content-between kjhadfd-sdfas ">
                         <div className="user-card-inbox-inner kjhadfd-sdfas">
-                          <div>
-                            <h3>{user?.fullname} </h3>
-                            <p>{user?.tagline}</p>
-
-                            {/* <p>{user?.}</p> */}
+                          <div className="user-card-inbox-inner">
+                            <img src={user?.image || "/assets/images/umpire-1.svg"} width="100%" height="100%" />
+                            <div>
+                              <h3>{user?.fullname}</h3>
+                              <p>{user?.tagline}</p>
+                            </div>
                           </div>
                         </div>
                         <div className="pos-redsfnds">
                           <div className="assahdwe0-ass">
-                            <Dropdown>
+                            {/* <Dropdown>
                               <Dropdown.Toggle
                                 variant="success"
                                 id="dropdown-basic"
@@ -314,7 +322,7 @@ const Home: NextPage = () => {
                                   Something else
                                 </Dropdown.Item>
                               </Dropdown.Menu>
-                            </Dropdown>
+                            </Dropdown> */}
                           </div>
                         </div>
 

@@ -66,10 +66,15 @@ const Home: NextPage = () => {
               <div className="my-course">
                 <div className="hdsf0s-sadmsa">
                   <div>
+                    <Link href="/en/instructor/courses" >
+                      <h3 className="back-arrow">
+                        <i className="fa fa-arrow-left"></i>
+                        Back</h3>
+                    </Link>
                     <h3>My Live Courses</h3>
                   </div>
                   <div className=" jidfjsd-asjreid">
-                   <Search/>
+                    <Search />
                   </div>
                 </div>
 

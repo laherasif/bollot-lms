@@ -110,8 +110,8 @@ export default () => {
     if (mesg === true) {
       setMesg(false)
     }
-    let res = await AxInstance.get('api//notifications-read')
     setNotif(true)
+    await AxInstance.get('api//notifications-read')
   }
 
 

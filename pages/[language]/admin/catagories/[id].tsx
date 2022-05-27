@@ -62,14 +62,14 @@ const Home: NextPage = () => {
 
                 <div className="back-btn">
                   <Link href="/en/instructor/" >
-                    <h3>
+                    <h3 className="back-arrow">
                       <i className="fa fa-arrow-left"></i>
                       Back</h3>
                   </Link>
                   <h3>Manage  Catagory </h3>
                 </div>
                 <div className=" jidfjsd-asjreid">
-                  <Search />
+                  {/* <Search /> */}
                   <div className="d-flex idfadsf-sads" onClick={() => setAdd(true)}>
                       <button className="upload-1 sdisad-dsdactive">
                         + Add New Catagory </button>

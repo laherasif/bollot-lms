@@ -17,12 +17,15 @@ import { useRouter } from 'next/router'
 import { useIntl } from "react-intl";
 import { useSelector, RootStateOrAny, useDispatch } from "react-redux";
 import { LogoutIns } from '../../redux/actions/auth/user';
+import { loginAdmin, logoutAdmin } from "../../redux/actions/admin";
+import { clearStates } from "../../redux/actions/instructor/preview";
 const App = () => {
   // const intl = useIntl();
   const router = useRouter()
   const [search, setSearch] = useState('')
   const carts = useSelector((state: RootStateOrAny) => state.cartReducer.AddCart)
   const { User } = useSelector((state: RootStateOrAny) => state.userReducer)
+  const { Admin } = useSelector((state: RootStateOrAny) => state.admin)
 
 
   const dispatch = useDispatch()
@@ -34,15 +37,27 @@ const App = () => {
   }
 
   const Logout = () => {
-    dispatch(LogoutIns())
+    if (User) {
+      dispatch(LogoutIns())
+    }
+    else {
+      dispatch(clearStates())
+      dispatch(logoutAdmin())
+
+    }
     setTimeout(() => {
-      if (User.role === "company") {
+      if (User?.role === "company") {
         router.push('/en/businesslogin')
 
       }
-      else {
+      else if (User?.role === "student" || "instructor") {
         router.push('/en/login')
       }
+      else {
+        router.push('/en/admin/login')
+
+      }
+
     }, 2000);
   }
 
@@ -88,10 +103,10 @@ const App = () => {
                 <Icons name="search" />
 
               </div>
-              </div>
+            </div>
 
-              {/* <form > */}
-              {/* <div className="search-bar">
+            {/* <form > */}
+            {/* <div className="search-bar">
                   <input
                     placeholder="Search here"
                     type="text"
@@ -103,48 +118,48 @@ const App = () => {
                     <Icons name="search" />
 
                   </div> */}
-              {/* </div> */}
-              {/* </form> */}
-              {/* </Nav.Link > */}
+            {/* </div> */}
+            {/* </form> */}
+            {/* </Nav.Link > */}
 
-              <Link href="/en/cart">
-                <button className="btn brd-no pos-rel">
-                  <Icons name="cart" />
-                  {carts && carts.length > 0 ?
-                    <>
-                      <div className="cart-inner">{carts?.length}</div>
-                    </>
-                    : null}
-                </button>
-              </Link>
+            <Link href="/en/cart">
+              <button className="btn brd-no pos-rel">
+                <Icons name="cart" />
+                {carts && carts.length > 0 ?
+                  <>
+                    <div className="cart-inner">{carts?.length}</div>
+                  </>
+                  : null}
+              </button>
+            </Link>
 
-              {User ?
-                <div className="kjdshfi-serjh">
+            {User || Admin ?
+              <div className="kjdshfi-serjh">
 
-                  
-                  <Dropdown>
-                    <Dropdown.Toggle id="dropdown-basic">
-                      <img style={{ borderRadius: '50%' }} src={User?.image || "/assets/images/umpire-1.svg"} alt="profile_img" />
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu >
-                      <Dropdown.Item as={Link} href={User?.role === "student" ? "/en/student/dashboard" : "/en/instructor"} >Dashboard</Dropdown.Item>
-                      <Dropdown.Item as={Link} href={User?.role === "student" ? "/en/student/courses" : "/en/instructor/courses"} >My Courses</Dropdown.Item>
-                      <Dropdown.Item as={Link} href={User?.role === "student" ? "/en/student/profile" : "/en/instructor/profile"} >Profile</Dropdown.Item>
-                      <Dropdown.Item ><span onClick={() => Logout()}>Logout</span></Dropdown.Item>
 
-                    </Dropdown.Menu>
-                  </Dropdown>
-                </div>
-                :
-                <>
-                  <Link href="/en/signup">
-                    <button className="btn-2s">Sign Up</button>
-                  </Link>
-                  <Link href="/en/login">
-                    <button className="btn-1s">Log in</button>
-                  </Link>
-                </>
-              }
+                <Dropdown>
+                  <Dropdown.Toggle id="dropdown-basic">
+                    <img style={{ borderRadius: '50%' }} src={User?.image || Admin?.image} alt="profile_img" />
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu >
+                    <Dropdown.Item as={Link} href={User?.role === "student" ? "/en/student/dashboard" : User?.role === "instructor" ? "/en/instructor" : "/en/admin/dashboard"} >Dashboard</Dropdown.Item>
+                    {User && <Dropdown.Item as={Link} href={User?.role === "student" ? "/en/student/courses" : "/en/instructor/courses"} >My Courses</Dropdown.Item>}
+                    <Dropdown.Item as={Link} href={User?.role === "student" ? "/en/student/profile" : User?.role === "instructor" ? "/en/instructor/profile" : "/en/admin/profile"} >Profile</Dropdown.Item>
+                    <Dropdown.Item ><span onClick={() => Logout()}>Logout</span></Dropdown.Item>
+
+                  </Dropdown.Menu>
+                </Dropdown>
+              </div>
+              :
+              <>
+                <Link href="/en/signup">
+                  <button className="btn-2s">Sign Up</button>
+                </Link>
+                <Link href="/en/login">
+                  <button className="btn-1s">Log in</button>
+                </Link>
+              </>
+            }
 
           </Nav>
           {/* <Form className="d-flex">

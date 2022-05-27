@@ -6,6 +6,7 @@ import {
     DELETE_CART,
     REG_BOOK_MARK,
     GET_BOOK_MARK,
+    UPDATE_CART,
 } from '../../types/types'
 import instance from '../../../confiq/axios/instance'
 
@@ -76,4 +77,19 @@ export const ResetCart = () => async dispatch => {
 
     }
 }
+
+
+export const updateCart = (data ) => async dispatch => {
+    try {
+        dispatch({
+            type: UPDATE_CART,
+            payload: data 
+
+        })
+    }
+    catch (err) {
+
+    }
+}
+
 

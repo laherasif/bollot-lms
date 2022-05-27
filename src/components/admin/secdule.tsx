@@ -5,6 +5,8 @@ import { useSelector, RootStateOrAny, useDispatch } from 'react-redux';
 import axios from 'axios'
 import moment from 'moment'
 import { useRouter } from 'next/router';
+import { format, parse } from 'date-fns'
+
 import { Spinner } from 'react-bootstrap';
 import { addMoreLive, addLiveInput, delPreview } from '../../redux/actions/instructor/live'
 import { SweetAlert } from '../../function/hooks';
@@ -108,9 +110,9 @@ const Secdule = ({  onStepChange, onPrevStep, step }: any) => {
 
                     </div>
                 </div>
-                {Classes && Classes.map((dat, index) => {
+                {Classes && Classes.map((dat, i) => {
                     return (
-                        <div style={{ border: '1pt solid lightgray', marginBottom: '10px', padding: '10px', borderRadius: '10px' }} key={index}>
+                        <div style={{ border: '1pt solid lightgray', marginBottom: '10px', padding: '10px', borderRadius: '10px' }} key={i}>
                             <div className="p-field mt-2 ">
                                 <div className="d-flex" style={{ justifyContent: 'space-between' }}>
                                     <div>
@@ -118,66 +120,79 @@ const Secdule = ({  onStepChange, onPrevStep, step }: any) => {
                                         <label>Date</label>
                                     </div>
                                     {(Classes.length !== 1) ?
-                                        <div onClick={() => DelSedule(index)}>
+                                        <div onClick={() => DelSedule(i)}>
                                             <i className='fa fa-trash'></i>
                                         </div>
                                         : null}
 
                                 </div>
                                 <DatePicker
-                                    onKeyDown={(e) => {
-                                        e.preventDefault();
-                                    }}
-                                    selected={dat.date}
-                                    onChange={(date) => handleDateChange("date", index, date)}
-                                    dateFormat="yyyy-MM-dd"
-                                />
-                                {errors && errors?.schedule ? <div className="invalid mt-1">{errors?.schedule[index]?.date}</div> : null}
+                              onKeyDown={(e) => {
+                                e.preventDefault();
+                              }}
+                              selected={dat?.id || dat.date !== '' ? parse(dat.date, "yyyy-MM-dd", new Date()) : dat.date}
+                            //   selected={dat.date}
+                              locale="en-GB"
+                              placeholderText={'YYYY-MM-DD'} 
+
+                              showWeekNumbers
+                              onChange={(date) => handleDateChange("date", i, date)}
+                              dateFormat="yyyy-MM-dd"
+                            />
+
+                            {errors && errors?.schedule ? <div className="invalid mt-1">{errors?.schedule[i]?.date}</div> : null}
 
 
+                          </div>
+                          <div className="p-field mt-2 ">
+                            <div className="d-flex">
+                              {/* <Icons name="i24" /> */}
+                              <label>From</label>
                             </div>
-                            <div className="p-field mt-2 ">
-                                <div className="d-flex">
-                                    {/* <Icons name="i24" /> */}
-                                    <label>From</label>
-                                </div>
-                                <DatePicker
-                                    onKeyDown={(e) => {
-                                        e.preventDefault();
-                                    }}
-                                    selected={dat.from_time}
-                                    onChange={(date) => handleDateChange("from_time", index, date)}
-                                    showTimeSelect
-                                    showTimeSelectOnly
-                                    timeIntervals={24}
-                                    timeCaption="Time"
-                                    dateFormat="h:mm "
-                                />
-                                {errors && errors?.schedule ? <div className="invalid mt-1">{errors?.schedule[index]?.from_time}</div> : null}
+                            <DatePicker
+                              onKeyDown={(e) => {
+                                e.preventDefault();
+                              }}
+                              placeholderText={'HH-MM'} 
 
+                              selected={dat?.id || dat.from_time !== '' ? parse(dat.from_time, "HH:mm:ss", new Date()) : dat.from_time}
+                            //   selected={dat.from_time}
+                              onChange={(date) => handleDateChange("from_time", i, date)}
+                              showTimeSelect
+                              showTimeSelectOnly
+                            //   timeIntervals={24}
+                              timeCaption="Time"
+                              dateFormat="h:mm"
+                            />
+                            {errors && errors?.schedule ? <div className="invalid mt-1">{errors?.schedule[i]?.from_time}</div> : null}
+
+                          </div>
+                          <div className="p-field mt-2 ">
+                            <div className="d-flex">
+                              {/* <Icons name="i24" /> */}
+                              <label>To </label>
                             </div>
-                            <div className="p-field mt-2 ">
-                                <div className="d-flex">
-                                    {/* <Icons name="i24" /> */}
-                                    <label>To </label>
-                                </div>
-                                <DatePicker
-                                    onKeyDown={(e) => {
-                                        e.preventDefault();
-                                    }}
-                                    name="to_time"
-                                    selected={dat.to_time}
-                                    onChange={(date) => handleDateChange("to_time", index, date)}
-                                    showTimeSelect
-                                    showTimeSelectOnly
-                                    timeIntervals={24}
-                                    timeCaption="Time"
-                                    dateFormat="h:mm"
-                                />
-                                {errors && errors?.schedule ? <div className="invalid mt-1">{errors?.schedule[index]?.to_time}</div> : null}
+                            <DatePicker
+                              onKeyDown={(e) => {
+                                e.preventDefault();
+                              }}
+                              placeholderText={'HH-MM'} 
+
+                              name="to_time"
+                              selected={dat?.id || dat.to_time !== '' ? parse(dat.to_time, "HH:mm:ss", new Date()) : dat.to_time}
+                              // selected={dat.to_time}
+                              onChange={(date) => handleDateChange("to_time", i, date)}
+                              showTimeSelect
+                              showTimeSelectOnly
+                            //   timeIntervals={24}
+                              timeCaption="Time"
+                              dateFormat="h:mm"
+                            />
+
+                            {errors && errors?.schedule ? <div className="invalid mt-1">{errors?.schedule[i]?.to_time}</div> : null}
 
 
-                            </div>
+                          </div>
                         </div>
 
                     )

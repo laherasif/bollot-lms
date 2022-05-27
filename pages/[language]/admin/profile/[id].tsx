@@ -18,10 +18,10 @@ import { useState } from "react";
 import EditProfile from '../../../../src/components/admin/editProfile'
 const options = ["one", "two", "three"];
 
-const UserChatCard = () => {
+const AdminChatCard = () => {
   return (
-    <div className="user-card-inbox">
-      <div className="user-card-inbox-inner">
+    <div className="Admin-card-inbox">
+      <div className="Admin-card-inbox-inner">
         <img src="/assets/images/umpire-1.svg" />
         <div>
           <h3>John Doe</h3>
@@ -40,7 +40,7 @@ const Home: NextPage = () => {
     query: "(min-width: 767px)",
   });
 
-  const { User } = useSelector((state: RootStateOrAny) => state?.userReducer)
+  const { Admin } = useSelector((state: RootStateOrAny) => state?.admin)
   const [edit, setEdit] = useState(false)
 
 
@@ -63,9 +63,9 @@ const Home: NextPage = () => {
             <div className="jdsfaf-sdfni3e-d">
               <div>
                 <div className="jfoadsf-sadmad">
-                  <img src={User?.image || "/assets/images/umpire-1.svg"} />
+                  <img src={Admin?.image || "/assets/images/umpire-1.svg"} />
                   <div>
-                    <h5>{User?.fullname}</h5>
+                    <h5>{Admin?.fullname}</h5>
                     <div className="idfadsf-sads adsjkfdsao-sadsk">
                       <button className="upload-1 sdisad-dsdactive" onClick={() => setEdit(true)}>
                         <i className="fa fa-edit"></i>
@@ -85,7 +85,7 @@ const Home: NextPage = () => {
                 </div>
               </div>
               <div>
-                <p>{User?.tagline}</p>
+                <p>{Admin?.tagline}</p>
               </div>
             </div>
 
@@ -104,7 +104,7 @@ const Home: NextPage = () => {
               <h4 className="sijdas-w3edj">About Me</h4>
               <div className="jdsfioas03kewsd">
                 <p>
-                  {User?.about}
+                  {Admin?.about}
                 </p>
 
               </div>
@@ -118,7 +118,7 @@ const Home: NextPage = () => {
           </div>
         </div>
       </section>
-      {edit && <EditProfile User={User} permition={edit} Toggle={(value: any) => setEdit(value)} />}
+      {edit && <EditProfile  permition={edit} Toggle={(value: any) => setEdit(value)} />}
     </div>
   );
 };

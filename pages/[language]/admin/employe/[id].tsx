@@ -7,11 +7,11 @@ import CourseCard from "../../../../src/components/admin/CourseCard1";
 import { useEffect, useState } from "react";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import { Small } from "../../../../src/components/instructor/loader";
-import Invitation from "../../../../src/components/instructor/invitationForm";
-import Search from "../../../../src/components/instructor/search";
+// import { Small } from "../../../../src/components/instructor/loader";
+// import Invitation from "../../../../src/components/instructor/invitationForm";
+// import Search from "../../../../src/components/instructor/search";
 import NewCourse from "../../../../src/components/admin/newCourse";
-import { getAllInstructor, getAllStudent } from "../../../../src/redux/actions/admin";
+import { getAllInstructor, getAllStudent, getCatagories } from "../../../../src/redux/actions/admin";
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
@@ -32,27 +32,30 @@ const Home: NextPage = () => {
 
     const dispatch = useDispatch()
 
-  useEffect(() => {
-    let fetchCourse = async () => {
-      try {
-        setLoading(true)
-        let res = await AxInstance.get('api//admin/students')
-        let resIns = await AxInstance.get('api//admin/instructors')
-        if (res.data.success === true) {
-          dispatch(getAllStudent(res.data))
-          dispatch(getAllInstructor(resIns.data))
-          // setLoading(false)
-          // setShowStu(res.data.response.students)
-          // setShowIns(resIns.data.response.instructors)
+  // useEffect(() => {
+  //   let fetchCourse = async () => {
+  //     try {
+  //       setLoading(true)
+  //       let res = await AxInstance.get('api//admin/students')
+  //       let resIns = await AxInstance.get('api//admin/instructors')
+  //       let resCata = await AxInstance.get('api//admin/categories')
+  //       if (res.data.success === true) {
+  //         dispatch(getAllStudent(res.data))
+  //         dispatch(getAllInstructor(resIns.data))
+  //         dispatch(getCatagories(resCata.data.response.categories))
 
-        }
-      }
-      catch (err) {
+  //         // setLoading(false)
+  //         // setShowStu(res.data.response.students)
+  //         // setShowIns(resIns.data.response.instructors)
 
-      }
-    }
-    fetchCourse()
-  }, [])
+  //       }
+  //     }
+  //     catch (err) {
+
+  //     }
+  //   }
+  //   fetchCourse()
+  // }, [])
 
 
   return (
@@ -73,7 +76,7 @@ const Home: NextPage = () => {
 
                 <div className="back-btn">
                   <Link href="/en/instructor/" >
-                    <h3>
+                    <h3 className="back-arrow">
                       <i className="fa fa-arrow-left"></i>
                       Back</h3>
                   </Link>

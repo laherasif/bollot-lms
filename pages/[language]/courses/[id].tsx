@@ -50,7 +50,7 @@ const Home: NextPage = () => {
 
   const dispatch = useDispatch()
   const router = useRouter()
-  let param = router.query.id;
+  let param = router.query.p;
   let searchC = router.query.search
 
 
@@ -122,6 +122,11 @@ const Home: NextPage = () => {
 
   const { AllCourse, Catagory, loader } = useSelector((state: RootStateOrAny) => state.course)
 
+  useEffect(() => {
+    router.replace(`/en/courses/?p=1`)
+
+  },[])
+
 
   useEffect(() => {
     setTimeout(() => {
@@ -154,13 +159,7 @@ const Home: NextPage = () => {
   const handlePageClick = (event: any) => {
     setMainLoading(true)
     const newOffset = (event.selected * page) % AllCourse?.length;
-    if (param) {
-      router.replace(`/en/courses/${param}?p=${event.selected + 1}`)
-
-    }
-    else {
-      router.replace(`/en/courses?p=${event.selected + 1}`)
-    }
+    router.replace(`/en/courses?p=${event.selected + 1}`)
     setItemOffset(newOffset);
     setTimeout(() => {
       setMainLoading(false)

@@ -221,6 +221,8 @@ const Home: NextPage = () => {
                               onKeyDown={(e) => {
                                 e.preventDefault();
                               }}
+                              placeholderText={'YYYY-MM-DD'} 
+
                               selected={dat?.id || dat.date !== '' ? parse(dat.date, "yyyy-MM-dd", new Date()) : null}
                               // selected={dat.date}
                               onChange={(date) => handleDateChange("date", i, date)}
@@ -244,8 +246,10 @@ const Home: NextPage = () => {
                               // selected={dat.from_time}
                               onChange={(date) => handleDateChange("from_time", i, date)}
                               showTimeSelect
+                              placeholderText={'HH-MM'} 
+
                               showTimeSelectOnly
-                              timeIntervals={24}
+                              // timeIntervals={24}
                               timeCaption="Time"
                               dateFormat="h:mm "
                             />
@@ -267,7 +271,9 @@ const Home: NextPage = () => {
                               onChange={(date) => handleDateChange("to_time", i, date)}
                               showTimeSelect
                               showTimeSelectOnly
-                              timeIntervals={24}
+                              placeholderText={'HH-MM'} 
+
+                              // timeIntervals={24}
                               timeCaption="Time"
                               dateFormat="h:mm"
                             />

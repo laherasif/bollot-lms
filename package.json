@@ -56,6 +56,7 @@
     "redux-devtools-extension": "^2.13.9",
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.4.1",
+    "sassy-datepicker": "^0.8.0",
     "stripe": "^8.215.0",
     "styled-components": "^5.3.5",
     "sweetalert2": "^11.4.8"

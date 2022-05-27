@@ -45,7 +45,7 @@ const Home: NextPage = () => {
                   <h3>Live Courses </h3>
                 </div>
                 <div className=" jidfjsd-asjreid">
-                  <Search />
+                  {/* <Search /> */}
                   <div className="d-flex idfadsf-sads">
                     <Link href='/en/admin/addCourse/?live'>
                       <button className="upload-1 sdisad-dsdactive">

@@ -6,7 +6,7 @@ console.log("notifications" , notifications)
     return (
         <>
             <main>
-                <div className="notification-container">
+                <div className="stu-notification-container">
                     <h3>
                         Notifications
                     </h3>

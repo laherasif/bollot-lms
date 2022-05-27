@@ -5020,6 +5020,10 @@ textarea::placeholder {
  height: 250px;
 }
 
+.back-arrow{
+  cursor: pointer;
+}
+
 
 /* .criculum_field input{
   border: none;

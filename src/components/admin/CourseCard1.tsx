@@ -5,14 +5,9 @@ import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import Swal from 'sweetalert2'
 import EditUser from "./editUser";
 import { delStuIns } from '../../redux/actions/admin'
+import { FiSearch } from "react-icons/fi";
 
 
-const FilterComponent = ( { filterText, onClear, onFilter }) => (
-  <>
-    <input id="search" style={{border:'1pt solid '} }type="text" placeholder="Filter By Name" aria-label="Search Input" value={filterText} onChange={onFilter} />
-    <button type="button" onClick={onClear}>X</button>
-  </>
-)
 
 
 
@@ -21,7 +16,8 @@ export default ({ role, Student, Instructor }: any) => {
   const [view, setView] = useState(false)
   const [edit, setEdit] = useState({})
   const [filterText, setFilterText] = useState('');
-  // const filteredItems = Student.filter(item => item.fullname && item.fullname.toLowerCase().includes(filterText.toLowerCase()));
+  const filteredItems = Student?.filter(item => item.fullname && item.fullname.toLowerCase().includes(filterText.toLowerCase()));
+  const filteredIns = Instructor?.filter(item => item.fullname && item.fullname.toLowerCase().includes(filterText.toLowerCase()));
   const dispatch = useDispatch()
   const { token } = useSelector((state: RootStateOrAny) => state?.admin)
 
@@ -66,7 +62,7 @@ export default ({ role, Student, Instructor }: any) => {
 
   }
 
- 
+
 
   const columns: any = [
     {
@@ -117,70 +113,69 @@ export default ({ role, Student, Instructor }: any) => {
     }
   ];
 
-  
-  // const subHeaderComponentMemo = useMemo(() => {
-  //   const handleClear = () => {
-  //     if (filterText) {
-  //       // setResetPaginationToggle(!resetPaginationToggle);
-  //       setFilterText('');
-  //     }
-  //   };
-
-  //   return <FilterComponent onFilter={e => setFilterText(e.target.value)} onClear={handleClear} filterText={filterText} />;
-  // }, [filterText]);
 
 
-return (
-  <>
-    {
-      role === "student" ?
-        <div style={{ width: '100%' }}>
+  return (
+    <>
+      <div style={{display :'flex' , justifyContent:'center' , width:'100%' , marginBottom:'20px'}}>
+        <div className="dsnodi-sdjsad">
+          <div className="searchbar-icon">
+            <FiSearch color="#8A8A8A" size={17} />
 
-          <DataTable
-            // subHeaderComponent={subHeaderComponentMemo}
-            columns={columns}
-            data={Student}
-            sortIcon={<i className='fa fa-arrow-down'></i>}
-            pagination
-            selectableRows
-            highlightOnHover
-
-          />
+          </div>
+          <input type="text" placeholder="Search" onChange={(e) => setFilterText(e.target.value)} value={filterText} />
         </div>
-        :
-        <div style={{ width: '100%' }}>
-          <DataTable
-            columns={columns}
-            data={Instructor}
-            sortIcon={<i className='fa fa-arrow-down'></i>}
-            pagination
-            selectableRows
-            highlightOnHover
 
-          />
-        </div>
-    }
+      </div>
+      {
+        role === "student" ?
+          <div >
 
-    {
-      show &&
-      <EditUser
-        User={edit}
-        permition={show}
-        Toggle={(value: any) => setShow(value)}
-      />
-    }
+            <DataTable
+              columns={columns}
+              data={filteredItems}
+              sortIcon={<i className='fa fa-arrow-down'></i>}
+              pagination
+              selectableRows
+              highlightOnHover
+              responsive={true}
 
-    {
-      view &&
-      <EditUser
-        User={edit}
-        permition={view}
-        views="views"
-        Toggle={(value: any) => setView(value)}
-      />
-    }
+            />
+          </div>
+          :
+          <div style={{ width: '100%' }}>
+            <DataTable
+              columns={columns}
+              data={filteredIns}
+              sortIcon={<i className='fa fa-arrow-down'></i>}
+              pagination
+              selectableRows
+              highlightOnHover
+
+            />
+          </div>
+      }
+
+      {
+        show &&
+        <EditUser
+          User={edit}
+          permition={show}
+          Toggle={(value: any) => setShow(value)}
+        />
+      }
+
+      {
+        view &&
+        <EditUser
+          User={edit}
+          permition={view}
+          views="views"
+          Toggle={(value: any) => setView(value)}
+        />
+      }
 
 
-  </>
-);
+    </>
+  );
 };

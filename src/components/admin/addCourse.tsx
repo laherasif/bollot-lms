@@ -162,21 +162,21 @@ export default ({ onStepChange }: any) => {
 
 
 
+    onStepChange()
     try {
       setLoading(true)
       let res = await AxInstance.post('api//admin/courses/store', data)
-      if (res.data.success === true) {
+      // if (res.data.success === true) {
         setLoading(false)
-        SweetAlert({ icon: 'success', text: res.data.message })
+        // SweetAlert({ icon: 'success', text: res.data.message })
         dispatch(coursesId(res.data.response.course.id))
-        onStepChange()
 
-      }
-      else {
-        setErrors(res.data.error)
+      // }
+      // else {
+      //   setErrors(res.data.error)
 
-        setLoading(false)
-      }
+      //   setLoading(false)
+      // }
     } catch (error) {
       setLoading(false)
 
@@ -187,7 +187,6 @@ export default ({ onStepChange }: any) => {
   }
 
 
-  console.log("addCourse" , AddCourse)
 
 
 
@@ -285,7 +284,7 @@ export default ({ onStepChange }: any) => {
           <label className="drop-box" htmlFor="img" style={{ cursor: 'pointer' }}>
             <div className="kvjadsd-j43rm iasdufhvs-ernd">
               {AddCourse?.url || AddCourse?.cover_image ? <img src={AddCourse?.url || AddCourse?.cover_image} alt="course_img" style={{ width: '20%', height: ' 20%', objectFit: 'cover' }} /> : ""}
-              {!AddCourse?.url || AddCourse?.cover_image &&  <p>Drag your photos here</p>}
+              {!AddCourse?.url || AddCourse?.cover_image ? "" : <p>Drag your photos here</p> }
             </div>
             <input type="file" accept="image/png, image/gif, image/jpeg" name="cover_image" onChange={(e) => handleInputChange(e)} id="img" style={{ display: 'none' }} />
           </label>
@@ -340,7 +339,6 @@ export default ({ onStepChange }: any) => {
               <span>List down the consequences of this course</span>
             </div>
             {outcomes?.map((data: any, index: number) => {
-              console.log("out" , data )
               return (
                 < div style={{ display: 'flex' }}>
                   <input type="text" placeholder="Write here..." className="mt-1" onChange={(evnt) => handleChange(index, evnt, "outcoms")} value={data.id ?  data?.outcome :  data } name="desc" />

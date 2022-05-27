@@ -35,33 +35,33 @@ export default () => {
           <Link href="/en/admin/courses">
             <div className={`dash-ch-2 sdisad-dsd ${router.asPath === "/en/admin/courses" ? "dash-ch-2 sdisad-dsdactive" : ""}`}>
               <Icons name="i2" />
-              <h3>Manage Courses</h3>
+              <h3> Courses</h3>
             </div>
           </Link>
           <Link href="/en/admin/employe">
             <div className={`dash-ch-2 sdisad-dsd ${router.asPath === "/en/admin/employe" ? "dash-ch-2 sdisad-dsdactive" : ""}`}>
               <Icons name="i2" />
-              <h3>Manage Employes</h3>
+              <h3> Employes</h3>
             </div>
           </Link>
           <Link href="/en/admin/website">
             <div className={`dash-ch-2 sdisad-dsd ${router.asPath === "/en/admin/website" ? "dash-ch-2 sdisad-dsdactive" : ""}`}>
               <Icons name="i3" />
-              <h3>Manage Website</h3>
+              <h3> Website</h3>
             </div>
           </Link>
           <Link href="/en/admin/certificate">
             <div className={`dash-ch-2 sdisad-dsd ${router.asPath === "/en/admin/certificate" ? "dash-ch-2 sdisad-dsdactive" : ""}`}>
               <Icons name="i4" />
-              <h3>Manage Certificate</h3>
+              <h3> Certificate</h3>
             </div>
           </Link>
-          {/* <Link href="/en/admin/account">
+          <Link href="/en/admin/membership">
             <div className={`dash-ch-2 sdisad-dsd ${router.asPath === "/en/admin/account" ? "dash-ch-2 sdisad-dsdactive" : ""}`}>
               <Icons name="i4" />
-              <h3>Manage Accounts</h3>
+              <h3> MemberShip</h3>
             </div>
-          </Link> */}
+          </Link>
           <Link href="/en/admin/profile">
             <div className={`dash-ch-2 sdisad-dsd ${router.asPath === "/en/admin/profile" ? "dash-ch-2 sdisad-dsdactive" : ""}`}>
               <Icons name="i5" />

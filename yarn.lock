@@ -4919,6 +4919,11 @@
   dependencies:
     "rust-result" "^1.0.0"
 
+"sassy-datepicker@^0.8.0":
+  "integrity" "sha512-OBn2Gq5IlUOkv07hZ0N6IM58PqdI5vJTuuWt54qlKxd8Fur5rd1B1/hwhtlt4rO/H9gq3SV9/3Cb/TXW15P/1w=="
+  "resolved" "https://registry.npmjs.org/sassy-datepicker/-/sassy-datepicker-0.8.0.tgz"
+  "version" "0.8.0"
+
 "sax@>=0.6.0", "sax@1.2.1":
   "integrity" "sha1-e45lYZCyKOgaZq6nSEgNgozS03o="
   "resolved" "https://registry.npmjs.org/sax/-/sax-1.2.1.tgz"

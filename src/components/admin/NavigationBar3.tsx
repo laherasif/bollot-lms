@@ -64,7 +64,6 @@ export default () => {
     fetchNotif()
   }, [])
 
-  console.log("noto", notifications)
 
   const handleClickOutside = (event: any) => {
 
@@ -88,7 +87,6 @@ export default () => {
 
 
   const Logout = () => {
-    debugger
     dispatch(logoutAdmin())
     dispatch(clearStates())
       router.push('/en/admin/login')
@@ -134,17 +132,16 @@ export default () => {
 
 
                 <div className="idsafs-aadmsd">
-                  <div className="" ref={notify} style={{ cursor: 'pointer' }}>
+                  {/* <div className="" ref={notify} style={{ cursor: 'pointer' }}>
                     <div onClick={() => notification()}>
                       <BiBell size={20} color="#ffff"/>
-                      {/* <p></p> */}
                       {notifications?.some((s: any) => s?.is_read === "0") ? <p></p> : ""}
                     </div>
                     {notif && <Notification notifications={notifications} />}
 
 
 
-                  </div>
+                  </div> */}
                   {/* <div style={{marginLeft:'10px'}} ref={messanger} >
                     <div onClick={() => messages()} style={{ cursor: 'pointer' }}>
                       <IoMailOutline color="#ffff" size={20} />

@@ -2,6 +2,7 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import DataTable from 'react-data-table-component'
+import { FiSearch } from 'react-icons/fi'
 import { RootStateOrAny, useDispatch, useSelector } from 'react-redux'
 import { getCatagories } from '../../redux/actions/admin'
 import AddCatagory from './addCatagory'
@@ -10,35 +11,40 @@ export default () => {
   const [loading, setLoading] = useState(false)
   const [edit, setEdit] = useState({})
   const [show, setShow] = useState(false)
-  const { token , Catagories} = useSelector((state: RootStateOrAny) => state?.admin)
+  const [filterText, setFilterText] = useState('');
 
-  const dispatch = useDispatch()
+  const { token, Catagories } = useSelector((state: RootStateOrAny) => state?.admin)
 
-  const AxInstance = axios.create({
-    // .. where we make our configurations
-    baseURL: 'https://dev.thetechub.us/bolloot/',
-    headers: {
-      token: token
-    }
-  });
-  useEffect(() => {
-    let fetchCourse = async () => {
-      try {
-        setLoading(true)
-        let res = await AxInstance.get('api//admin/categories')
-        if (res.data.success === true) {
-          setLoading(false)
-          // setCatagory(res.data.response.categories)
-          dispatch(getCatagories(res.data.response.categories))
+  // const dispatch = useDispatch()
 
-        }
-      }
-      catch (err) {
+  // const AxInstance = axios.create({
+  //   // .. where we make our configurations
+  //   baseURL: 'https://dev.thetechub.us/bolloot/',
+  //   headers: {
+  //     token: token
+  //   }
+  // });
+  // useEffect(() => {
+  //   let fetchCourse = async () => {
+  //     try {
+  //       setLoading(true)
+  //       let res = await AxInstance.get('api//admin/categories')
+  //       if (res.data.success === true) {
+  //         setLoading(false)
+  //         // setCatagory(res.data.response.categories)
+  //         dispatch(getCatagories(res.data.response.categories))
 
-      }
-    }
-    fetchCourse()
-  }, [])
+  //       }
+  //     }
+  //     catch (err) {
+
+  //     }
+  //   }
+  //   fetchCourse()
+  // }, [])
+
+  const filteredItems = Catagories?.filter(item => item.name && item.name.toLowerCase().includes(filterText.toLowerCase()));
+
 
   const columns: any = [
     {
@@ -76,10 +82,20 @@ export default () => {
 
   return (
     <>
+      <div style={{ display: 'flex', justifyContent: 'center', width: '100%', marginBottom: '20px' }}>
+        <div className="dsnodi-sdjsad">
+          <div className="searchbar-icon">
+            <FiSearch color="#8A8A8A" size={17} />
+
+          </div>
+          <input type="text" placeholder="Search" onChange={(e) => setFilterText(e.target.value)} value={filterText} />
+        </div>
+
+      </div>
       <div style={{ width: '100%' }}>
         <DataTable
           columns={columns}
-          data={Catagories}
+          data={filteredItems}
           sortIcon={<i className='fa fa-arrow-down'></i>}
           pagination
           selectableRows

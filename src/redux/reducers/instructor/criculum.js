@@ -24,6 +24,7 @@ const initialState = {
             object_key: "",
             thumbnail: "",
             progressbar: "",
+            del :false
           },
         ],
       }]
@@ -85,6 +86,7 @@ const CriculumReducer = (state = initialState, action) => {
                         item.lectures[action.payload.i].file_type = action.payload.data.video
                         item.lectures[action.payload.i].object_key = action.payload.data.file
                         item.lectures[action.payload.i].file_size = action.payload.data.file_size
+                        item.lectures[action.payload.i].uuid = 123
                     }
                     return item
 
@@ -121,6 +123,7 @@ const CriculumReducer = (state = initialState, action) => {
                         item.lectures[action.payload.i].object_key = ""
                         item.lectures[action.payload.i].file_size = null 
                         item.lectures[action.payload.i].progressbar = null 
+
 
                        
                     }

@@ -12,17 +12,51 @@ import Chart1 from "../../../../src/components/admin/chart1";
 import BarChart from "../../../../src/components/admin/barchart";
 import DashboardRightBar from "../../../../src/components/admin/DashboardRightBar";
 import React, { useState, useEffect } from 'react'
-import { useDispatch } from "react-redux";
-import { getAllInstructor, getAllStudent } from '../../../../src/redux/actions/admin'
+import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
+import { getAllInstructor, getAllStudent, getCatagories } from '../../../../src/redux/actions/admin'
+import axios from "axios";
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
 
-  // const dispatch = useDispatch()
-  // useEffect(() => {
-  //   dispatch(getAllInstructor())
-  //   dispatch(getAllStudent())
-  // }, [])
+  const {  token  } = useSelector((state: RootStateOrAny) => state?.admin)
+
+  const AxInstance = axios.create({
+    // .. where we make our configurations
+    baseURL: 'https://dev.thetechub.us/bolloot/',
+    headers: {
+      token: token
+    }
+  });
+
+
+  const dispatch = useDispatch()
+ 
+
+
+  useEffect(() => {
+    let fetchCourse = async () => {
+      try {
+        let res = await AxInstance.get('api//admin/students')
+        let resIns = await AxInstance.get('api//admin/instructors')
+        let resCata = await AxInstance.get('api//admin/categories')
+        if (res.data.success === true) {
+          dispatch(getAllStudent(res.data))
+          dispatch(getAllInstructor(resIns.data))
+          dispatch(getCatagories(resCata.data.response.categories))
+
+          // setLoading(false)
+          // setShowStu(res.data.response.students)
+          // setShowIns(resIns.data.response.instructors)
+
+        }
+      }
+      catch (err) {
+
+      }
+    }
+    fetchCourse()
+  }, [])
 
   return (
     <div className="inst">

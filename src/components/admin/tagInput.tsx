@@ -1,8 +1,12 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const TagsInput = (props: any) => {
   console.log("props", props)
-  const [tags, setTags] = useState(props.tags);
+  const [tags, setTags] = useState([]);
+
+  useEffect(()=>{
+   setTags(props.tags)
+  },[props])
   const removeTags = (indexToRemove: any) => {
     setTags([...tags.filter((_, index) => index !== indexToRemove)]);
     props.selectedTags([...tags.filter((_, index) => index !== indexToRemove)]);

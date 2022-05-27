@@ -5,11 +5,14 @@ import { Dropdown } from 'react-bootstrap'
 import DataTable from 'react-data-table-component'
 import { RootStateOrAny, useSelector } from 'react-redux'
 import Link from 'next/link'
+import { FiSearch } from 'react-icons/fi'
 export default () => {
   const [course, setCourses] = useState([])
   const [loading, setLoading] = useState(false)
   const [edit, setEdit] = useState({})
   const [show, setShow] = useState(false)
+  const [filterText, setFilterText] = useState('');
+
   const { token } = useSelector((state: RootStateOrAny) => state?.admin)
 
 
@@ -80,13 +83,14 @@ export default () => {
       )
 
     },
+    
     {
       name: "Action",
       selector: "id",
       sortable: true,
       cell: (d: any) => (
         <div className='d-flex pl-2'>
-          <Link href={`/en/admin/addCourse/${d?.slug}`}>
+          <Link href={`/en/admin/addCourse/${d?.slug}/?live`}>
             <div onClick={() => { setEdit(d), setShow(true) }}>
               <i className='fa fa-edit'></i>
             </div>
@@ -99,7 +103,7 @@ export default () => {
       )
     },
     {
-      name: "Action",
+      name: "Manages",
       selector: "id",
       sortable: true,
       cell: (d: any) => (
@@ -108,10 +112,11 @@ export default () => {
             <Dropdown.Toggle id="dropdown-basic">
               <i className="fa fa-ellipsis-h" style={{ fontSize: '20px', color: 'black' }}></i>
             </Dropdown.Toggle>
+
             <Dropdown.Menu >
-              <Dropdown.Item as={Link} href={`/en/admin/addCourse/${d?.id}`}>Edit Course</Dropdown.Item>
-              <Dropdown.Item as={Link} href={`/en/admin/managePreview/${d?.id}`}>Manage Previews </Dropdown.Item>
-              <Dropdown.Item as={Link} href={`/en/admin/manageQuiz/${d?.id}`}>Manage Quiz</Dropdown.Item>
+              <Dropdown.Item as={Link} href={`/en/admin/manageLiveClasses/${d?.id}`}>LiveClasses </Dropdown.Item>
+              <Dropdown.Item as={Link} href={`/en/admin/manageCriculum/${d?.id}`}> Curriculum</Dropdown.Item>
+              <Dropdown.Item as={Link} href={`/en/admin/manageQuiz/${d?.id}`}> Quiz</Dropdown.Item>
               <Dropdown.Item as={Link} href={`/en/admin/manageEnrolledStudent/${d?.id}`}> Enrolled Student</Dropdown.Item>
               <Dropdown.Item as={Link} href={`/en/admin/manageProgressStudent/${d?.id}`}>Student Progress</Dropdown.Item>
 
@@ -125,12 +130,27 @@ export default () => {
   ];
 
 
+  const filteredItems = course?.filter(item => item.title && item.title.toLowerCase().includes(filterText.toLowerCase()));
+
+
   return (
     <>
+
+      <div style={{ display: 'flex', justifyContent: 'center', width: '100%', marginBottom: '20px' }}>
+        <div className="dsnodi-sdjsad">
+          <div className="searchbar-icon">
+            <FiSearch color="#8A8A8A" size={17} />
+
+          </div>
+          <input type="text" placeholder="Search" onChange={(e) => setFilterText(e.target.value)} value={filterText} />
+        </div>
+
+      </div>
+
       <div style={{ width: '100%' }}>
         <DataTable
           columns={columns}
-          data={course}
+          data={filteredItems}
           sortIcon={<i className='fa fa-arrow-down'></i>}
           pagination
           selectableRows

@@ -18,7 +18,7 @@ import { IoCloudCircleSharp } from "react-icons/io5";
 import { RootStateOrAny, useSelector } from "react-redux";
 import axios from "axios";
 import { SweetAlert } from "../../function/hooks";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 
 
 interface Course {
@@ -60,7 +60,7 @@ export default () => {
   const [errors, setErrors] = useState({})
   const [loading, setLoading] = useState(false)
 
- const router = useRouter()
+  const router = useRouter()
   const { token } = useSelector((state: RootStateOrAny) => state?.admin)
 
   const AxInstance = axios.create({
@@ -87,11 +87,11 @@ export default () => {
   };
 
 
-
+  console.log("role", state.role)
   const SaveCourse = async () => {
 
     let data = {
-      role: state.role,
+      // role: state.role,
       fullname: state.fullname,
       email: state.email,
       password: state.password,
@@ -100,23 +100,37 @@ export default () => {
 
     try {
       setLoading(true)
-      let stu = await AxInstance.post('api//admin/students/add', data)
-      let ins = await AxInstance.post('api//admin/instructors/add', data)
-      let res = state.role === "student" ? stu : ins
-      if (res.data.success === true ) {
-        setLoading(false)
-        SweetAlert({icon :"success" , text :res.data.message })
-        router.push('/en/admin/employe')
-        clearState()
+      if (state.role === "student") {
+        let res = await AxInstance.post('api//admin/students/add', data)
+        if (res.data.success === true) {
+          setLoading(false)
+          SweetAlert({ icon: "success", text: res.data.message })
+          router.push('/en/admin/employe')
+          clearState()
+        }
+        else {
+          setLoading(false)
+          setErrors(res.data.error)
+
+        }
       }
       else {
-        setLoading(false)
-        setErrors(res.data.error)
+        let res = await AxInstance.post('api//admin/instructors/add', data)
+        if (res.data.success === true) {
+          setLoading(false)
+          SweetAlert({ icon: "success", text: res.data.message })
+          router.push('/en/admin/employe')
+          clearState()
+        }
+        else {
+          setLoading(false)
+          setErrors(res.data.error)
 
+        }
       }
     } catch (error) {
       setLoading(false)
-      SweetAlert({icon :"error" , text : error })
+      SweetAlert({ icon: "error", text: error })
 
 
     }
@@ -195,11 +209,11 @@ export default () => {
               </div>
 
 
-              
+
 
 
             </div>
-            <div style={{ marginTop: '20px',width:'100%' , textAlign:'center'}}>
+            <div style={{ marginTop: '20px', width: '100%', textAlign: 'center' }}>
               <div className="active_color w-100">
                 <button onClick={() => SaveCourse()} className="upload-active-save ">
                   {loading ?

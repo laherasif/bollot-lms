@@ -143,7 +143,7 @@ export default () => {
               <Nav className="me-auto ajisdf-adfser">
 
 
-                <div className="idsafs-aadmsd">
+                <div className="idsafs-aadmsd " >
                   <div className="" ref={notify} style={{ cursor: 'pointer' }}>
                     <div onClick={() => notification()}>
                       <BiBell size={20} color="#ffff"/>
@@ -155,7 +155,7 @@ export default () => {
 
 
                   </div>
-                  <div style={{marginLeft:'10px'}} ref={messanger} >
+                  <div style={{marginLeft:'10px' , marginTop:'10px'}} ref={messanger} >
                     <div onClick={() => messages()} style={{ cursor: 'pointer' }}>
                       <IoMailOutline color="#ffff" size={20} />
                       {/* <p></p> */}

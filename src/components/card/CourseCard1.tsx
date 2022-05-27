@@ -23,7 +23,7 @@ export default ({ live, i }: any) => {
 
         <div className="start">
           <h2>Starting from:</h2>
-          <span>{moment(live?.schedule[0].date).format('LL')}</span>
+          <span>{moment(live?.schedule[0]?.date).format('LL')}</span>
         </div>
         <div className='card-course-rel align-items-center '>
 

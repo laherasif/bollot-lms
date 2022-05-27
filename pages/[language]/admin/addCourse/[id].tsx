@@ -11,6 +11,8 @@ import Previews from "../../../../src/components/admin/preview";
 import { Small } from "../../../../src/components/admin/loader";
 import { useRouter } from "next/router";
 import instance from "../../../../src/confiq/axios/instance";
+import { clearStates } from "../../../../src/redux/actions/instructor/preview";
+import { useDispatch } from "react-redux";
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
@@ -21,7 +23,7 @@ const Home: NextPage = () => {
     { one: true },
    
   ]);
-
+   const dispatch = useDispatch()
  
   // const [courseId, setCourseId] = useState('');
 
@@ -46,6 +48,10 @@ const Home: NextPage = () => {
     }, 2000);
   }, [])
 
+
+  const ClearState = () => {
+    dispatch(clearStates())
+  }
 
 
 
@@ -84,7 +90,7 @@ return (
               <div className="hdsf0s-sadmsa">
                 <div className="back-btn">
                   <Link href="/en/admin/courses" >
-                    <h3>
+                    <h3 onClick={() => ClearState()} className="back-arrow">
                       <i className="fa fa-arrow-left"></i>
                       Back</h3>
                   </Link>

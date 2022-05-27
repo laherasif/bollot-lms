@@ -4613,7 +4613,7 @@ textarea::placeholder {
 }
 
 .custom-file-input::before {
-  content: 'Select some files';
+  content: 'Select file';
   color: black;
   display: inline-block;
   background: -webkit-linear-gradient(top, #f9f9f9, #e3e3e3);
@@ -4915,7 +4915,7 @@ textarea::placeholder {
   position: absolute;
   z-index: 999;
   top: 4.5rem;
-  right: 12.2rem;
+  right: 10.5rem;
   /* top: 2.5rem;
   left: -190px; */
   width: 230px;
@@ -4958,6 +4958,105 @@ textarea::placeholder {
 }
 
 
+.stu-notification-container {
+  cursor: default;
+  position: absolute;
+  z-index: 999;
+  top: 3rem;
+  right: -20px;
+  /* top: 2.5rem;
+  left: -190px; */
+
+  width: 230px;
+  font-weight: 300;
+  padding: 20px 0px;
+  background: white;
+  border-radius: 0.5rem;
+  box-sizing: border-box;
+  animation-name: dropPanel;
+  animation-iteration-count: 1;
+  animation-timing-function: all;
+  animation-duration: 0.75s;
+}
+
+.stu-notification-container:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0px;
+  width: 0;
+  height: 0;
+  transform: translate(-1rem, -100%);
+  border-left: 0.75rem solid transparent;
+  border-right: 0.75rem solid transparent;
+  border-bottom: 0.75rem solid white;
+}
+
+.stu-notification-container h3 {
+  text-transform: uppercase;
+  font-size: 75%;
+  font-weight: 700;
+  text-align: left;
+  color: #84929f;
+  padding-left: 10px;
+}
+
+.stu-notification-container i {
+  color: #b5c4d2;
+  font-size: 140%;
+}
+
+
+.stu-messages-container {
+  cursor: default;
+  position: absolute;
+  z-index: 999;
+  top: 3rem;
+  right: -20px;
+  /* top: 2.5rem;
+  left: -190px; */
+
+  width: 300px;
+  font-weight: 300;
+  padding: 20px 0px;
+  background: white;
+  border-radius: 0.5rem;
+  box-sizing: border-box;
+  animation-name: dropPanel;
+  animation-iteration-count: 1;
+  animation-timing-function: all;
+  animation-duration: 0.75s;
+}
+
+.stu-messages-container:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0px;
+  width: 0;
+  height: 0;
+  transform: translate(-1rem, -100%);
+  border-left: 0.75rem solid transparent;
+  border-right: 0.75rem solid transparent;
+  border-bottom: 0.75rem solid white;
+}
+
+.stu-messages-container h3 {
+  text-transform: uppercase;
+  font-size: 75%;
+  font-weight: 700;
+  text-align: left;
+  color: #84929f;
+  padding-left: 10px;
+}
+
+.stu-messages-container i {
+  color: #b5c4d2;
+  font-size: 140%;
+}
+
+
+
 @keyframes dropPanel {
   0% {
     opacity: 0;
@@ -4996,11 +5095,11 @@ textarea::placeholder {
   position: absolute;
   z-index: 999;
   top: 4.5rem;
-  right: 10.5rem;
+  right: 8.5rem;
   width: 300px;
   font-weight: 300;
   padding: 20px 0px;
-  background: rgb(242, 240, 240);
+  background: white;
   border-radius: 0.5rem;
   box-sizing: border-box;
   animation-name: dropPanel;
@@ -5101,3 +5200,5 @@ textarea::placeholder {
 .messages_wraper .date{
   font-size: 12px;
 }
+
+

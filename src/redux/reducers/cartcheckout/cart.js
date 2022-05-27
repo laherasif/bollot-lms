@@ -7,10 +7,12 @@ import {
   RESET_CART,
   PAYEMENT_CARD,
   REG_BOOK_MARK,
+  UPDATE_CART,
 } from "../../types/types";
 
 const initialState = {
   AddCart: [],
+  discount : {},
   BookMark: [],
   CheckOuts: [],
   isAuth: false,
@@ -57,6 +59,11 @@ const CartReducer = (state = initialState, action) => {
         isAuth: true
 
       };
+       case UPDATE_CART:
+         return{
+           ...state , 
+           discount : action.payload
+         }
 
     case RESET_CART:
 

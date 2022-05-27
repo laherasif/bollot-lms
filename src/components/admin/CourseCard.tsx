@@ -5,14 +5,16 @@ import { Dropdown } from 'react-bootstrap'
 import DataTable from 'react-data-table-component'
 import { RootStateOrAny, useSelector } from 'react-redux'
 import Link from 'next/link'
+import { FiSearch } from 'react-icons/fi'
 export default () => {
   const [course, setCourses] = useState([])
   const [loading, setLoading] = useState(false)
   const [edit, setEdit] = useState({})
   const [show, setShow] = useState(false)
+  const [filterText, setFilterText] = useState('');
+
   const { token } = useSelector((state: RootStateOrAny) => state?.admin)
-
-
+ 
 
   const AxInstance = axios.create({
     // .. where we make our configurations
@@ -38,6 +40,8 @@ export default () => {
     }
     fetchCourse()
   }, [])
+
+  const filteredItems = course?.filter(item => item.title && item.title.toLowerCase().includes(filterText.toLowerCase()));
 
   const columns: any = [
     {
@@ -107,9 +111,9 @@ export default () => {
             </Dropdown.Toggle>
 
             <Dropdown.Menu >
-              <Dropdown.Item as={Link} href={`/en/admin/managePreview/${d?.id}`}>Manage Previews </Dropdown.Item>
-              <Dropdown.Item as={Link} href={`/en/admin/manageCriculum/${d?.id}`}>Manage Curriculum</Dropdown.Item>
-              <Dropdown.Item as={Link} href={`/en/admin/manageQuiz/${d?.id}`}>Manage Quiz</Dropdown.Item>
+              <Dropdown.Item as={Link} href={`/en/admin/managePreview/${d?.id}`}> Previews </Dropdown.Item>
+              <Dropdown.Item as={Link} href={`/en/admin/manageCriculum/${d?.id}`}> Curriculum</Dropdown.Item>
+              <Dropdown.Item as={Link} href={`/en/admin/manageQuiz/${d?.id}`}> Quiz</Dropdown.Item>
               <Dropdown.Item as={Link} href={`/en/admin/manageEnrolledStudent/${d?.id}`}> Enrolled Student</Dropdown.Item>
               <Dropdown.Item as={Link} href={`/en/admin/manageProgressStudent/${d?.id}`}>Student Progress</Dropdown.Item>
 
@@ -125,10 +129,21 @@ export default () => {
 
   return (
     <>
+
+      <div style={{ display: 'flex', justifyContent: 'center', width: '100%', marginBottom: '20px' }}>
+        <div className="dsnodi-sdjsad">
+          <div className="searchbar-icon">
+            <FiSearch color="#8A8A8A" size={17} />
+
+          </div>
+          <input type="text" placeholder="Search" onChange={(e) => setFilterText(e.target.value)} value={filterText} />
+        </div>
+
+      </div>
       <div style={{ width: '100%' }}>
         <DataTable
           columns={columns}
-          data={course}
+          data={filteredItems}
           sortIcon={<i className='fa fa-arrow-down'></i>}
           pagination
           selectableRows

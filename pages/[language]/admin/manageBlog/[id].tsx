@@ -32,7 +32,6 @@ const Home: NextPage = () => {
     title: '',
     short_desc: '',
     tags: [],
-    full_content: '',
     cover_image: '',
   }
   );
@@ -40,13 +39,16 @@ const Home: NextPage = () => {
   const [url, setUrl] = useState('');
   const [error, setError] = useState()
   const [editorLoaded, setEditorLoaded] = useState(false);
-  const [data, setData] = useState("");
+  const [data, setData] = useState({
+    full_content: '',
+
+  });
 
   useEffect(() => {
     setEditorLoaded(true);
   }, []);
 
-  
+
   const router = useRouter()
   let blogId = router.query.id
 
@@ -60,20 +62,30 @@ const Home: NextPage = () => {
     }
   });
 
-  // useEffect(() => {
-  //   let fetchCourse = async () => {
-  //     try {
-  //       let res = await AxInstance.get('api//admin/blogs')
-  //       if (res.data.success === true) {
-  //         setValues(res.data.response.blogs)
-  //       }
-  //     }
-  //     catch (err) {
+  useEffect(() => {
+    let fetchCourse = async () => {
+      try {
+        // setLoading(true)
+        let res = await AxInstance.get(`api//admin/blogs/${blogId}`)
+        if (res.data.success === true && res.data.response.blog !== null) {
+        // setLoading(false)
+          setValues({
+            title: res.data.response.blog.title,
+            short_desc: res.data.response.blog.short_desc,
+            tags: res.data.response.blog.tags,
+            cover_image: res.data.response.blog.cover_image,
+          })
+          setData({
+            full_content: res.data.response.blog.full_content,
+          })
+        }
+      }
+      catch (err) {
 
-  //     }
-  //   }
-  //   fetchCourse()
-  // }, [])
+      }
+    }
+    fetchCourse()
+  }, [blogId])
 
 
 
@@ -114,12 +126,29 @@ const Home: NextPage = () => {
 
   let saveBlog = async () => {
 
+    let valueWithoutId  = {
+      title: values?.title,
+      short_desc: values?.short_desc,
+      tags: values?.tags,
+      cover_image: values?.cover_image,
+      full_content : data?.full_content
+    }
+    let valuesWithId = {
+      id : blogId,
+      title: values?.title,
+      short_desc: values?.short_desc,
+      tags: values?.tags,
+      cover_image: values?.cover_image,
+      full_content : data?.full_content
+
+    }
+
     try {
       setLoader(true)
-      let res = await AxInstance.post('api//admin/blogs/store', values)
+      let res = await AxInstance.post('api//admin/blogs/store', blogId ? valuesWithId :  valueWithoutId)
       if (res.data.success === true) {
         setLoader(false)
-        setValues({...intialState})
+        setValues({ ...intialState })
         // setValues({ title : "" , short_desc : '' , cover_image: '' , tags : [] })
         SweetAlert({ icon: 'success', text: res.data.message })
         router.push('/en/admin/website ')
@@ -138,7 +167,7 @@ const Home: NextPage = () => {
   }
 
 
-  console.log("state " , values)
+  console.log("state ", values)
 
 
   return (
@@ -159,12 +188,12 @@ const Home: NextPage = () => {
 
                   <div className="back-btn">
                     <Link href="/en/admin/website" >
-                      <h3>
+                      <h3 className="back-arrow">
                         <i className="fa fa-arrow-left"></i>
                         Back</h3>
                     </Link>
 
-                    <h3> Manage Website Banners</h3>
+                    <h3> Manage Website Blogs</h3>
                   </div>
 
                 </div>
@@ -174,7 +203,7 @@ const Home: NextPage = () => {
                     <div className="umpire-1 umpire-1-cst ">
                       <div className="d-flex mb-3 idfadsf-sads">
                         <button className="upload-1 sdisad-dsdactive">
-                          Banners
+                        Blogs
                         </button>
 
                       </div>
@@ -217,7 +246,7 @@ const Home: NextPage = () => {
                         <div className="mt-3">
                           <label>Tags </label>
 
-                          <TagsInput selectedTags={selectedTags} tags={[]} />
+                          <TagsInput selectedTags={selectedTags} tags={values?.tags} />
                           {error?.tags && <div className="invalid mt-1">{error?.tags[0]}</div>}
 
                         </div>
@@ -225,26 +254,16 @@ const Home: NextPage = () => {
                         <div className="mt-3">
                           <Editor
                             name="description"
-                            value={values?.full_content}
+                            value={data?.full_content}
                             onChange={(data) => {
-                              setValues({ ...values, full_content: data })
-                              
+                              setData({ ...data, full_content: data })
+
 
                             }}
                             editorLoaded={editorLoaded}
                           />
                           {error?.full_content && <div className="invalid mt-1">{error?.full_content[0]}</div>}
 
-                          {/* <CKEditor
-                            editor={ClassicEditor}
-                            data="<p>Hello from CKEditor 5!</p>"
-                           
-                            onChange={(event, editor) => {
-                              const data = editor.getData();
-                              // setValues({full_content : data })
-
-                            }}
-                          /> */}
                         </div>
 
 
@@ -253,8 +272,8 @@ const Home: NextPage = () => {
                           <span >Catagory Image</span>
                           <label className="drop-box" htmlFor="img" style={{ cursor: 'pointer' }}>
                             <div className="kvjadsd-j43rm iasdufhvs-ernd" >
-                              {url ? <img src={url || values?.cover_image} alt="course_img" style={{ width: '30%', height: ' 50%', objectFit: 'cover' }} /> : ""}
-                              {url ? " " : <p>Drag your photos here</p>}
+                              {url || values?.cover_image ? <img src={url || values?.cover_image} alt="course_img" style={{ width: '30%', height: ' 50%', objectFit: 'cover' }} /> : ""}
+                              {url || values?.cover_image ? "" : <p>Drag your photos here</p>}
                             </div>
                             <input type="file" accept="image/png, image/gif, image/jpeg" name="cover_image"
                               onChange={(e) => handleInputChange(e)}

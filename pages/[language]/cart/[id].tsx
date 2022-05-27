@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import Link from "next/link";
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Spinner } from "react-bootstrap";
 
 import { useIntl } from "react-intl";
@@ -13,14 +13,20 @@ import CourseCard from "../../../src/components/card/CourseCard";
 import Footer from "../../../src/components/footer";
 import Navbar from "../../../src/components/header/Navbar";
 import Icons from "../../../src/icons";
-import { useSelector, RootStateOrAny } from 'react-redux';
+import { useSelector, RootStateOrAny, useStore, useDispatch } from 'react-redux';
 import WishList from "../../../src/components/card/WishList";
+import instance from "../../../src/confiq/axios/instance";
+import { updateCart } from "../../../src/redux/actions/course/course";
+import { SweetAlert } from "../../../src/function/hooks";
 // import {largeSpinner}  from '../../../src/components/loader'
 
 const Home: NextPage = () => {
   // const intl = useIntl();
-  const [items, setitesm] = React.useState([0, 1, 2]);
-  const [loading, setLoading] = React.useState(true);
+  const [items, setitesm] = useState([0, 1, 2]);
+  const [loading, setLoading] = useState(true);
+  const [load, setLoad] = useState(false);
+  const [error, setError] = useState({});
+  const [coupon, setCoupon] = useState('')
 
   const carts = useSelector((state: RootStateOrAny) => state.cartReducer.AddCart)
   const { BookMark } = useSelector((state: RootStateOrAny) => state.cartReducer)
@@ -34,12 +40,42 @@ const Home: NextPage = () => {
 
   // let totalamount = carts.reduce((total: number, product: any) => total + parseFloat(product.price) * product.Quantity, 0).toFixed(2)
 
+
+  const dispatch = useDispatch()
+
+
+
   useEffect(() => {
     setTimeout(() => {
       setLoading(false)
     }, 2000);
   }, [])
   console.log(carts)
+
+
+  const saveDiscount = async () => {
+    try {
+      setLoad(true)
+      let res = await instance.post('api//check-coupon', { coupon_code: coupon })
+      console.log("res", res)
+      if (res.data.success === true) {
+        dispatch(updateCart(res.data.response.coupon))
+        setLoad(false)
+
+        SweetAlert({ icon: 'success', text: res.data.message })
+        setCoupon('')
+      }
+      else {
+        setError(res.data.error)
+        setLoad(false)
+      }
+    }
+    catch (err) {
+      SweetAlert({ icon: 'error', text: err })
+
+    }
+
+  }
 
   return (
     <>
@@ -95,9 +131,16 @@ const Home: NextPage = () => {
                       </p>
                     </h6> */}
                     <div className="btnn-1">
-                      <input placeholder="Enter Coupon" />
-                      <button>Apply</button>
+                      <input placeholder="Enter Coupon" name="coupon" value={coupon} onChange={(e) => setCoupon(e.target.value)} />
+                      <button onClick={() => saveDiscount()}>
+                        {load ?
+                          <Spinner animation="border" />
+                          :
+                          "Apply"}
+                      </button>
+
                     </div>
+                      {error?.coupon_code && <div className="invalid mt-1">{error?.coupon_code[0]}</div>}
                   </div>
                 </> :
                   <div className="nofdaisf-sdnew" style={{ width: '100%' }}>

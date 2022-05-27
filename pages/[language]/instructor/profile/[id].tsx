@@ -1,22 +1,22 @@
 import type { NextPage } from "next";
-import { useIntl } from "react-intl";
-import Sidebar from "../../../../src/components/instructor/sidebar2";
-import { FiSearch } from "react-icons/fi";
-import { BiBell } from "react-icons/bi";
-import { Dropdown } from "react-bootstrap";
-import { IoMailOutline } from "react-icons/io5";
-import Icons from "../../../../src/icons";
-import TopNavbar from "../../../../src/components/instructor/TopNavbar";
+// import { useIntl } from "react-intl";
+// import Sidebar from "../../../../src/components/instructor/sidebar2";
+// import { FiSearch } from "react-icons/fi";
+// import { BiBell } from "react-icons/bi";
+// import { Dropdown } from "react-bootstrap";
+// import { IoMailOutline } from "react-icons/io5";
+// import Icons from "../../../../src/icons";
+// import TopNavbar from "../../../../src/components/instructor/TopNavbar";
 import NavigationBar1 from "../../../../src/components/instructor/NavigationBar3";
-import Chart from "../../../../src/components/instructor/chart";
-import Chart1 from "../../../../src/components/instructor/chart1";
+// import Chart from "../../../../src/components/instructor/chart";
+// import Chart1 from "../../../../src/components/instructor/chart1";
 import { useMediaQuery } from "react-responsive";
 import Link from "next/link";
-import BookmarkCard from "../../../../src/components/instructor/BookmarkCard";
+// import BookmarkCard from "../../../../src/components/instructor/BookmarkCard";
 import { useSelector, RootStateOrAny } from "react-redux";
 import { useState } from "react";
 import EditProfile from '../../../../src/components/instructor/editProfile'
-const options = ["one", "two", "three"];
+// const options = ["one", "two", "three"];
 
 const UserChatCard = () => {
   return (

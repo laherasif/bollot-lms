@@ -1,14 +1,15 @@
 import React from 'react';
 import Image from "next/image";
+import moment from 'moment';
 const CardImage=require('../../images/blog1.png');
-export default ()=>{
+export default ({comment}:any)=>{
     return  <div className='blogcomment'>
-      <img src='/usr1.png'/>
+      <img src={comment?.image}/>
       <div>
-        <p>“With your budget in mind, it is easy to plan a chartered yacht vacation. Companies often have a fleet of sailing vessels that can accommodate parties of various sizes.”</p>
+        <p>“ {comment?.message}”</p>
         <div className='d-flex'>
-        <h5>35 mins ago, 15 November 2050</h5>
-        <h4>Reply</h4>
+        <h5>{moment(comment?.createdAt).startOf('hour').fromNow()}, {moment(comment?.createdAt).format('ll')}  </h5>
+        {/* <h4>Reply</h4> */}
       </div>
       </div>
      

@@ -26,7 +26,7 @@ const Home: NextPage = () => {
   const [course, setCourse] = useState([])
   const [loading, setLoading] = useState(false)
   const [email, setemail] = useState(false)
-  const { User , token } = useSelector((state: RootStateOrAny) => state?.userReducer)
+  const { User, token } = useSelector((state: RootStateOrAny) => state?.userReducer)
 
   const AxInstance = axios.create({
     // .. where we make our configurations
@@ -70,14 +70,14 @@ const Home: NextPage = () => {
 
                   <div className="back-btn">
                     <Link href="/en/instructor/" >
-                      <h3>
+                      <h3 className="back-arrow">
                         <i className="fa fa-arrow-left"></i>
                         Back</h3>
                     </Link>
                     <h3>My Courses</h3>
                   </div>
                   <div className=" jidfjsd-asjreid">
-                   <Search/>
+                    <Search />
                     <div className="d-flex idfadsf-sads">
                       <Link href='/en/instructor/addCourse'>
                         <button className="upload-1 sdisad-dsdactive">
@@ -96,6 +96,9 @@ const Home: NextPage = () => {
                         </button>
                         <Link href="/en/instructor/liveCourses">
                           <button className="upload-1" >My Live Courses</button>
+                        </Link>
+                        <Link href="/en/instructor/coupon">
+                          <button className="upload-1" >Generate Coupon</button>
                         </Link>
                         {User?.role === "company" &&
                           <button className="upload-1 sdisad-dsd" onClick={() => setemail(true)}>
