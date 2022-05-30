@@ -49,6 +49,7 @@ const initialState = {
   fullname: "",
   email: "",
   password: "",
+  role: ''
 };
 
 export default () => {
@@ -100,34 +101,44 @@ export default () => {
 
     try {
       setLoading(true)
-      if (state.role === "student") {
-        let res = await AxInstance.post('api//admin/students/add', data)
-        if (res.data.success === true) {
-          setLoading(false)
-          SweetAlert({ icon: "success", text: res.data.message })
-          router.push('/en/admin/employe')
-          clearState()
+      if (state.role !== "") {
+        if (state.role === "student") {
+          let res = await AxInstance.post('api//admin/students/add', data)
+          if (res.data.success === true) {
+            setLoading(false)
+            SweetAlert({ icon: "success", text: res.data.message })
+            router.push('/en/admin/employe')
+            clearState()
+          }
+          else {
+            setLoading(false)
+            setErrors(res.data.error)
+
+          }
         }
         else {
-          setLoading(false)
-          setErrors(res.data.error)
+          let res = await AxInstance.post('api//admin/instructors/add', data)
+          if (res.data.success === true) {
+            setLoading(false)
+            SweetAlert({ icon: "success", text: res.data.message })
+            router.push('/en/admin/employe')
+            clearState()
+          }
+          else {
+            setLoading(false)
+            setErrors(res.data.error)
 
+          }
         }
       }
       else {
-        let res = await AxInstance.post('api//admin/instructors/add', data)
-        if (res.data.success === true) {
-          setLoading(false)
-          SweetAlert({ icon: "success", text: res.data.message })
-          router.push('/en/admin/employe')
-          clearState()
-        }
-        else {
-          setLoading(false)
-          setErrors(res.data.error)
+        setLoading(false)
+        SweetAlert({ icon: "error", text: "Role is required"})
 
-        }
+
       }
+
+
     } catch (error) {
       setLoading(false)
       SweetAlert({ icon: "error", text: error })
@@ -136,7 +147,7 @@ export default () => {
     }
   }
 
-
+  console.log("rol", state)
 
 
   return (
@@ -169,7 +180,7 @@ export default () => {
                   <option value="Instructor" >Instructor</option>
                   <option value="student" >Student</option>
                 </Form.Select>
-                {errors?.role && <div className="invalid mt-1">{errors?.role[0]}</div>}
+                {errors?.role && <div className="invalid mt-1">{errors.role}</div>}
 
               </div>
 

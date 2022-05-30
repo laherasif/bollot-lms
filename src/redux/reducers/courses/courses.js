@@ -11,22 +11,20 @@ import {
   GET_ALL_COURSES,
   LIVE_COURSE,
   GET_FILTER_PRICE,
-  // GET_COURSE_INPUTS,
-  // GET_COURSE_INPUTS_MORE,
-  // ADD_COURSE_INPUTS_MORE,
+  GET_MEMERSHIP, 
+
   GET_COURSE_CRICULUM,
   GET_SORTED_COURSE_SEARCH,
 } from "../../types/types";
 
 
 const initialState = {
-
-
   Catagory: [],
   Latest: [],
   Feature: [],
   AllCourse: [],
   Criculum: [],
+  MemberShip : [],
   loaders: false,
 };
 
@@ -149,6 +147,12 @@ const CourseReducer = (state = initialState, action) => {
         ...state,
         LiveCouse: action.payload
       }
+
+      case GET_MEMERSHIP:
+        return{
+          ...state ,
+          MemberShip : action.payload 
+        }
 
     // case INCREMENT:
     //   state.localD[state.localD.findIndex((item) => item._id === action.id)]

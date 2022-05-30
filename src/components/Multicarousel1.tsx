@@ -31,18 +31,22 @@ import React from 'react';
 import CourseCard from "./card/CourseCard";
 import CourseCard1 from "./card/CourseCard1";
 import { useSelector, RootStateOrAny } from 'react-redux'
+import { Course } from "../skeleton/course";
 export default () => {
   const { LiveCouse } = useSelector((state: RootStateOrAny) => state.course)
   return (
-  <>
-    <Carousel responsive={responsive}>
-      {LiveCouse ? LiveCouse.map((li, i) => (
-        <CourseCard1 live={li} key={i} />
-      ))
-      : <div>Not Found </div>
-    }
+    <>
+      <Carousel responsive={responsive}>
+        {LiveCouse ? LiveCouse.map((li:any , i:number ) => (
+          <CourseCard1 live={li} key={i} />
+        ))
+          :
+          Array.from({ length: 5 }, (_, i) => (
+            <Course />
+          ))
+        }
 
-    </Carousel>
-  </>
+      </Carousel>
+    </>
   )
 }

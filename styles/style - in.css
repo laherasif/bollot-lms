@@ -3419,7 +3419,7 @@
   border: 0.5px solid #c4c4c4;
   box-sizing: border-box;
   border-radius: 15px;
-  max-width: 890px;
+  /* max-width: 890px; */
   width: 100%;
   padding: 20px;
 }
@@ -3718,7 +3718,7 @@
 }
 
 #kjsda03ejisaeas {
-  width: 150px !important;
+  width: 40%;
 }
 
 #kjsdadja39s .jaodsfjsd-sdfjewi {
@@ -4423,7 +4423,7 @@ textarea::placeholder {
 
 
 /* carsoule */
-
+/* 
 .carousel-control-prev {
   position: absolute;
   left: -39px;
@@ -4444,7 +4444,7 @@ textarea::placeholder {
   border-radius: 20px;
   height: 38px;
   background-color: black;
-}
+} */
 
 /* back to dashbaod btn */
 

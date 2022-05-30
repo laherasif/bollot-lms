@@ -223,8 +223,12 @@ export function OTPInputComponent(props: OTPInputProps) {
         if (User?.role === "student" || res?.data?.response?.student?.role === "student") {
             router.push("/en/student/dashboard"); 
         }
-        else {
+        else if(User?.role === "instructor" || res?.data?.response?.student?.role === "instructor") {
           router.push("/en/instructor");
+
+        }
+        else{
+          router.push("/en/membership");
 
         }
         setLoading(false)

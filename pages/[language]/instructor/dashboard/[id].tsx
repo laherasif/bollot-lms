@@ -11,13 +11,45 @@ import NavigationBar1 from "../../../../src/components/instructor/NavigationBar3
 import Chart1 from "../../../../src/components/instructor/chart1";
 // import BarChart from "../../../../src/components/instructor/barchart";
 import DashboardRightBar from "../../../../src/components/instructor/DashboardRightBar";
-import { RootStateOrAny, useSelector } from "react-redux";
+import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
+import { useEffect } from "react";
+import axios from "axios";
+import { getDashbaordStatic , getTransactionStatic , getTransactions } from "../../../../src/redux/actions/instructor/courses";
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
 
-  const { User } = useSelector((state: RootStateOrAny) => state?.userReducer)
+  const { User , token  } = useSelector((state: RootStateOrAny) => state?.userReducer)
+  const { Statistic  } = useSelector((state: RootStateOrAny) => state?.InsDash)
+
+  const dispatch = useDispatch()
+
+  const AxInstance = axios.create({
+    // .. where we make our configurations
+    baseURL: "https://dev.thetechub.us/bolloot/",
+    headers: {
+      token: token,
+    },
+  });
+
+useEffect(()=>{
+  try{
+    let fetchStatic = async() => {
+      let res = await AxInstance.get('api//instructor/dashboard-stats')
+      let transaction = await AxInstance.get('api//instructor/transaction-stats')
+      let Alltransaction = await AxInstance.get('api//instructor/transactions')
+      if(res.data.success === true ){
+        dispatch(getDashbaordStatic(res.data.response.data))
+        dispatch(getTransactionStatic(transaction.data.response.data))
+        dispatch(getTransactions(Alltransaction.data.response.transactions))
+      }
+      // console.log("REs trns" , res )
+    }
+    fetchStatic()
+  }
+  catch(err){}
+},[])
 
 
   return (
@@ -71,10 +103,10 @@ const Home: NextPage = () => {
                   <div className="col-md-4">
                     <div className="cst-c-card pioner-ch">
                       <div>
-                        <h3>Your earning this monthe</h3>
+                        <h3>Wallet balance</h3>
                       </div>
                       <div className="aisdad-j3n2eidaw">
-                        <h2>$454.55</h2>
+                        <h2>${Statistic?.wallet_balance}</h2>
                         <button className="withdraw lkadsjfkadsf-sad">Withdraw</button>
                       </div>
                     </div>
@@ -85,25 +117,30 @@ const Home: NextPage = () => {
                 <div className="njadfskdfns-dsfsad">
                   <Chart1
                     label="Courses"
-                    value="05"
+                    value={Statistic?.total_courses}
                     color={"#FCCE40"}
                     strokeColor="#E1A902"
+                    chart={Statistic?.courses_chart}
                   />
                 </div>
                 <div className="njadfskdfns-dsfsad">
                   <Chart1
                     label="Total students"
-                    value="105"
+                    value={Statistic?.total_students}
                     color={"#03BCD4"}
                     strokeColor="#0BACC0"
+                    chart={Statistic?.students_chart}
+
                   />
                 </div>
                 <div className="njadfskdfns-dsfsad">
                   <Chart1
                     label="Revenue"
-                    value="$45k"
+                    value={Statistic?.total_revenue}
                     color={"#5469C9"}
                     strokeColor="#2C42A5"
+                    chart={Statistic?.revenue_chart}
+
                   />
                 </div>
               </div>

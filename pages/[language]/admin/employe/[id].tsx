@@ -75,7 +75,7 @@ const Home: NextPage = () => {
               <div className="hdsf0s-sadmsa">
 
                 <div className="back-btn">
-                  <Link href="/en/instructor/" >
+                  <Link href="/en/admin/dashboard" >
                     <h3 className="back-arrow">
                       <i className="fa fa-arrow-left"></i>
                       Back</h3>
@@ -83,12 +83,9 @@ const Home: NextPage = () => {
                   <h3>Manage Student  and Instructor </h3>
                 </div>
                 <div className=" jidfjsd-asjreid">
-                  {/* <Search /> */}
                   <div className="d-flex active_color">
                     <NewCourse/>
-                    {/* <button className="upload-1 sdisad-dsdactive">
-                      + Add New Employe
-                    </button> */}
+                  
                   </div>
                 </div>
               </div>

@@ -110,7 +110,7 @@ const Home: NextPage = () => {
       }
     }
     fetchMesg()
-  }, [])
+  }, [CovId])
 
 
   // Search Filter Conversation

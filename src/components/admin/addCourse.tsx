@@ -158,29 +158,27 @@ export default ({ onStepChange }: any) => {
       course_for: course_for
 
     }
-    console.log("Daata" , data )
 
 
 
-    onStepChange()
     try {
       setLoading(true)
       let res = await AxInstance.post('api//admin/courses/store', data)
-      // if (res.data.success === true) {
+      if (res.data.success === true) {
         setLoading(false)
-        // SweetAlert({ icon: 'success', text: res.data.message })
+        SweetAlert({ icon: 'success', text: res.data.message })
         dispatch(coursesId(res.data.response.course.id))
+        onStepChange()
 
-      // }
-      // else {
-      //   setErrors(res.data.error)
-
-      //   setLoading(false)
-      // }
+      }
+      else {
+        setErrors(res.data.error)
+        setLoading(false)
+      }
     } catch (error) {
       setLoading(false)
 
-      SweetAlert({ icon: 'success', text: error })
+      SweetAlert({ icon: 'error', text: error })
 
     }
     // return null

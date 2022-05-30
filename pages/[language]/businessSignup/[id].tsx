@@ -33,7 +33,7 @@ const Home: NextPage = () => {
   }
 
 
-  const { varified , User  } = useSelector((state: RootStateOrAny) => state.userReducer)
+  const { varified, User } = useSelector((state: RootStateOrAny) => state.userReducer)
 
 
   const [authValue, setAuthValue] = useState<SignUp>({
@@ -59,19 +59,19 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     if (User && User.is_email_verified === "1" && User.role === "company") {
-      router.replace('/en/instructor/profile')
+      router.replace('/en/membership')
     }
-  
+
     else if (User && User.is_email_verified === "0") {
       setMessage(true)
     }
-  
-  }, [User ])
+
+  }, [User])
 
 
 
 
- 
+
 
   const firebaseAuth = getAuth(Firebaseapp);
   const provider = new GoogleAuthProvider();
@@ -83,14 +83,14 @@ const Home: NextPage = () => {
 
   const signInGog = async () => {
     const { user } = await signInWithPopup(firebaseAuth, provider);
-    const { refreshToken, providerData }:any = user;
+    const { refreshToken, providerData }: any = user;
 
     dispatch(SocialRegComp(providerData, "company"))
     if (User?.is_email_verified === "0") {
       setMessage(true)
     }
     else if (User && User?.role === "compnay") {
-      router.push('/en/instructor/')
+      router.push('/en/membership')
 
     }
     // let object = Object.assign({}, ...providerData);
@@ -104,17 +104,17 @@ const Home: NextPage = () => {
 
   const signInFb = async () => {
     const { user } = await signInWithPopup(firebaseAuth, Fbprovider);
-    const { refreshToken, providerData }:any = user;
+    const { refreshToken, providerData }: any = user;
     dispatch(SocialRegComp(providerData, "company"))
     if (User?.is_email_verified === "0") {
       setMessage(true)
     }
     else if (User && User?.role === "compnay") {
-      router.push('/en/instructor/')
+      router.push('/en/membership')
 
     }
-    
-  
+
+
   };
 
 
@@ -139,21 +139,21 @@ const Home: NextPage = () => {
       let value = {
         fullname: fullname,
         email: email,
-        password : password ,
+        password: password,
         company_name: company_name,
         company_size: company_size,
         legal_address: legal_address,
         device_name: Platform.Browser,
-        device_model:Platform.BrowserVersion,
+        device_model: Platform.BrowserVersion,
         operating_system: Platform.OS,
         role: "company"
       }
 
 
       let res = await instance.post("api//company/signup", value)
-
       if (res.data.success === true) {
         dispatch(SignUp(res.data))
+
         setMessage(true)
         setLoader(false)
 

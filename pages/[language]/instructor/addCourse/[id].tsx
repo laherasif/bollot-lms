@@ -198,7 +198,7 @@ return (
               <div className="complete-web-1">
                 <div className="container-fluid">
                   <div className="row justify-content-center">
-                    <div className="col-11 col-sm-10 col-md-10 col-lg-6 col-xl-5  p-0 mt-3 mb-2" style={{ width: '60%' }}>
+                    <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12  p-0 mt-3 mb-2" >
                       <div className="card px-0 pt-4 pb-0 mt-3 mb-3">
                         <div id="msform">
                           {/* progressbar */}

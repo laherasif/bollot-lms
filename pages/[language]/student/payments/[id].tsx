@@ -13,13 +13,19 @@ import NavigationBar1 from "../../../../src/components/student/NavigationBar1";
 import Link from "next/link";
 import BarChart1 from "../../../../src/components/student/barchart1";
 import withAuth from "../../../../src/components/Hoc/authRoute";
+import { useEffect } from "react";
+import { RootStateOrAny, useSelector } from "react-redux";
+import axios from "axios";
 const options = ["one", "two", "three"];
 
 const Home: NextPage = () => {
   // const intl = useIntl();
 
-  
+ 
 
+
+  const { Payment } = useSelector((state: RootStateOrAny) => state.studentCourse)
+ 
 
   return (
     <>
@@ -105,7 +111,7 @@ const Home: NextPage = () => {
                       <div className="cst-c-card pioner-ch nkjdsa-snefds">
                         <BarChart1 />
                         <h3>Total Balance</h3>
-                        <h2>$454.55</h2>
+                        <h2>${Payment?.wallet_balance}</h2>
                         <button className="withdraw">Withdraw</button>
                       </div>
                     </div>
@@ -120,4 +126,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default withAuth( Home );
+export default withAuth(Home);

@@ -122,7 +122,7 @@ const Home: NextPage = () => {
 
                   <div className="back-btn">
                     <Link href="/en/instructor/courses" >
-                      <h3>
+                      <h3 className="back-arrow">
                         <i className="fa fa-arrow-left"></i>
                         Back</h3>
                     </Link>

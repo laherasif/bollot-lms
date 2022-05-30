@@ -4,17 +4,19 @@ import {
     GET_ALL_INSTRUCTOR,
     GET_ALL_STUDENT,
     DELETE_INS,
-    UPDATE_INT,
+    // UPDATE_INT,
     DELETE_STU,
     UPDATE_STU,
-    EDIT_ADD_COURSE,
-    EDIT_CRICCULUM,
-    EDIT_LIVE_CLASSES,
-    EDIT_PREVIEW,
-    EDIT_QUIZ,
+    // EDIT_ADD_COURSE,
+    // EDIT_CRICCULUM,
+    // EDIT_LIVE_CLASSES,
+    // EDIT_PREVIEW,
+    // EDIT_QUIZ,
     UPDATE_INS,
     LOGOUT_ADMIN,
     GET_COURSE_CATAGORIES,
+    GET_ADMIN_DASHBOARD_STAT,
+    GET_ADMIN_TRANSACTION_STATICS,
 } from '../../types/types'
 import instance from '../../../confiq/axios/instance'
 
@@ -131,6 +133,34 @@ export const getCatagories = (data) => dispatch => {
 
 }
 
+export const getStatistic = (data) => dispatch => {
+    debugger
+    try {
+            dispatch({
+                type: GET_ADMIN_DASHBOARD_STAT,
+                payload: data 
+            })
+
+    }
+    catch (err) { }
+
+
+}
+
+
+export const getTransaction = (data) => dispatch => {
+    debugger
+    try {
+            dispatch({
+                type: GET_ADMIN_TRANSACTION_STATICS,
+                payload: data 
+            })
+
+    }
+    catch (err) { }
+
+
+}
 
 
 

@@ -7,7 +7,7 @@ import NavigationBar1 from "../../../../src/components/student/NavigationBar1";
 import Link from "next/link";
 import withAuth from "../../../../src/components/Hoc/authRoute";
 import Swal from "sweetalert2";
-import { LogoutIns}  from '../../../../src/redux/actions/auth/user'
+import { LogoutIns } from '../../../../src/redux/actions/auth/user'
 import { RootStateOrAny, useSelector, useDispatch } from "react-redux";
 import { useRouter } from 'next/router'
 import axios from "axios";
@@ -74,10 +74,13 @@ const Home: NextPage = () => {
                     <div className="umpire-1 umpire-1-cst ">
                       <div className="maxima">
                         <button className="upload-1 sdisad-dsdactive">Account Security</button>
-
-                        <button className="upload-1">Payment</button>
-                        <button className="upload-1">Notification</button>
-                        <Link href="/en/student/manageDevice">
+                        <Link href="/en/student/payments">
+                          <button className="upload-1">Payment</button>
+                        </Link>
+                        <Link href="/en/student/notification">
+                          <button className="upload-1">Notification</button>
+                        </Link>
+                        <Link href="/en/student/device">
                           <button className="upload-1">Manage Devices</button>
                         </Link>
                         <button className="upload-1" onClick={() => DelAccount()}>Close Account</button>

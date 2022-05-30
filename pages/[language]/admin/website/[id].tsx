@@ -38,7 +38,7 @@ const Home: NextPage = () => {
       try {
         setLoading(true)
         let res = await AxInstance.get('api//admin/blogs')
-      
+
         if (res.data.success === true) {
           setLoading(false)
           setBlog(res.data.response.blogs)
@@ -138,19 +138,23 @@ const Home: NextPage = () => {
                 <div className="complete-web-1 ">
                   <div className="umpire w-100">
                     <div className="umpire-1 umpire-1-cst ">
-                      <div className="d-flex mb-3 idfadsf-sads">
+                      <div className="d-flex mb-3 idfadsf-sads w-100">
                         <button className="upload-1 sdisad-dsdactive">
-                          Manage Blogs
+                           Blogs
                         </button>
                         <Link href="/en/admin/newsEvent">
-                        <button className="upload-1" >Manage New and Event</button>
-                      </Link>
+                          <button className="upload-1" > New and Event</button>
+                        </Link>
                         <Link href="/en/admin/manageHeader">
-                          <button className="upload-1" >Manage Header Menu</button>
+                          <button className="upload-1" > Header Menu</button>
                         </Link>
                         <Link href="/en/admin/banner">
-                          <button className="upload-1" >Manage Banners</button>
+                          <button className="upload-1" > Banners</button>
                         </Link>
+                        <Link href="/en/admin/contactForm">
+                          <button className="upload-1" >Users Emails</button>
+                        </Link>
+                        
                       </div>
 
                     </div>

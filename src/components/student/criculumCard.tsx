@@ -49,17 +49,22 @@ export default ({ lectures, CourseId }: any) => {
     }
   }
 
+
+  const [intervalID, setInterID] = useState(); // created a useState for intervalID
+
   useEffect(() => {
-    let interval: any
     if (errors === false) {
-      interval = setInterval(async () => {
-        debugger
+      let letintervalID = setInterval(() => {
         countTime()
       }, 60000);
+      setInterID(letintervalID); // took letintervalID and stored it in useState intervalID
+    } else if (errors === true) {
+      console.log("clearInterval stop!");
+      clearInterval(intervalID);
     }
-    return () => clearInterval(interval)
+  }, [errors]);
 
-  }, [errors])
+  
 
   useEffect(() => {
 
@@ -91,14 +96,14 @@ export default ({ lectures, CourseId }: any) => {
     catch (err) { }
   }
 
-  const [numPages, setNumPages] = useState(null);
+  const [numPages, setNumPages] = useState(0);
   const [pageNumber, setPageNumber] = useState(1);
-  function onDocumentLoadSuccess({ numPages }) {
+  function onDocumentLoadSuccess(numPages: number) {
     setNumPages(numPages);
     setPageNumber(1);
   }
 
-  function changePage(offset) {
+  function changePage(offset: number) {
     setPageNumber(prevPageNumber => prevPageNumber + offset);
   }
 
@@ -110,7 +115,6 @@ export default ({ lectures, CourseId }: any) => {
     changePage(1);
   }
 
-  console.log("value", value)
 
 
   return (
@@ -119,23 +123,22 @@ export default ({ lectures, CourseId }: any) => {
         <div>
           <h4>Title : {lectures[index].title}</h4>
         </div>
-        {/* {lectures.some((s) => s.file_type === "Video") ? */}
         <div>
           Lectures : {index + 1} / {lectures.length}
         </div>
-        {/* : null} */}
       </div>
 
-      {lectures.some((s) => s.file_type === "Video") ?
-      
+      {lectures.some((s: any) => s.file_type === "Video") && lectures.length === 1 ?
+
         lectures.length && lectures?.map((lec: any, i: number) => (
-        <ReactPlayer
-          width="100%"
-          height="100%"
-          preload="none"
-          playing={lectures[index].id === lec.id ? true : false}
-          controls
-          url={value} />
+         
+          <ReactPlayer
+            width="100%"
+            height="100%"
+            preload="none"
+            playing={lectures[index].id === lec.id ? true : false}
+            controls
+            url={value} />
         ))
         : lectures.some((s) => s.file_type === "Video") && lectures.length > 1 ?
           <Carousel activeIndex={index} interval={null} indicators={false} onSelect={handleSelect}>
@@ -147,6 +150,7 @@ export default ({ lectures, CourseId }: any) => {
                     width="100%"
                     height="100%"
                     preload="none"
+                    pip={true}
                     playing={lectures[index].id === lec.id ? true : false}
                     controls
                     url={value} />
@@ -204,7 +208,7 @@ export default ({ lectures, CourseId }: any) => {
             </Carousel>
 
             :
-            lectures.length && lectures?.map((lec: any, i: number) => (
+            lectures.length === 1 && lectures?.map((lec: any, i: number) => (
               <div style={{ textAlign: '-webkit-center' }}>
 
                 <Document

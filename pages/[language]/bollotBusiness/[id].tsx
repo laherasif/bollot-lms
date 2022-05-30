@@ -11,22 +11,54 @@ import CourseCard from "../../../src/components/card/CourseCard";
 import Footer from "../../../src/components/footer";
 import Navbar from "../../../src/components/header/Navbar";
 import instance from '../../../src/confiq/axios/instance'
+import { GetMembership } from "../../../src/redux/actions/courses";
+import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
+import axios from "axios";
 const Home: NextPage = () => {
   // const intl = useIntl();
 
-  const [member, setMember] = useState([])
+  const [member, setMember] = useState({})
+
+  const dispatch = useDispatch()
+
+  const { MemberShip } = useSelector((state: RootStateOrAny) => state?.course)
+  const { token, User } = useSelector((state: RootStateOrAny) => state?.userReducer)
+
+  const AxInstance = axios.create({
+    // .. where we make our configurations
+    baseURL: 'https://dev.thetechub.us/bolloot/',
+    headers: {
+      token: token
+    }
+  });
+  console.log("MemberShip", MemberShip)
 
   useEffect(() => {
+    dispatch(GetMembership())
     try {
       let fetchMembership = async () => {
-        let res = await instance.get('api//get-memberships')
+        let res = await AxInstance.get('api//company/current-status')
         console.log("Res", res)
-        setMember(res.data.response.memberships)
+        setMember(res.data.response.status)
       }
       fetchMembership()
     }
     catch (err) { }
   }, [])
+
+
+  const UpgradePlan = async () => {
+    let value = {
+      membership_id: find?.id,
+      payment_method: cardType,
+      auto_renew: true
+    }
+    try {
+      let res = await AxInstance.post('')
+    }
+    catch (err) { }
+  }
+
 
   return (
     <>
@@ -91,7 +123,7 @@ const Home: NextPage = () => {
             <div className="main-comission">
               <section className="layer plans">
                 <section>
-                  {member && member.map((m: any) => (
+                  {MemberShip && MemberShip.map((m: any) => (
                     <section
                       className="third lift plan-tier callout"
                       key={m?.id}
@@ -102,10 +134,24 @@ const Home: NextPage = () => {
                         <span className="plan-price">{m?.price_per_month}</span>
                       </h5>
                       <p className="early-adopter-price"> Per Month</p>
-                      <Link href="/en/businessSignup">
-                        <button className="btn-2s" >Get started now</button>
+                      {User && member?.membership?.id === m?.id ?
+                        <button className="btn-1s" >
+                          Subscribed
+                        </button>
 
-                      </Link>
+                        : User && member ?
+                          <Link href={`/en/paymentMethod/${m?.id}`}>
+                            <button className="btn-2s" >
+                              Get Upgrade now
+                            </button>
+                          </Link>
+                          :
+                          <Link href={User ? "/en/membership" : "/en/businessSignup"}>
+                            <button className="btn-2s">
+                              Subscribe
+                            </button>
+                          </Link>
+                      }
                       <ul>
                         <li>
                           <strong>{m?.courses_allowed}</strong> Course Allowed

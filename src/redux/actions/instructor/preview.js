@@ -35,7 +35,7 @@ export const addMoreLectPreview = () => dispatch => {
 export const addLecturePreview = (data) => dispatch => {
 
     let lectId = {
-        course_section_lecture_id : data.course_section_id,
+        course_section_lecture_id : data.id,
     }
     debugger
     dispatch({

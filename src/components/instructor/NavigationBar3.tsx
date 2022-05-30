@@ -148,7 +148,7 @@ export default () => {
                     <div onClick={() => notification()}>
                       <BiBell size={20} color="#ffff"/>
                       {/* <p></p> */}
-                      {notifications.some((s: any) => s.is_read === "0") ? <p></p> : ""}
+                      {notifications?.some((s: any) => s?.is_read === "0") ? <p></p> : ""}
                     </div>
                     {notif && <Notification notifications={notifications} />}
 
@@ -159,7 +159,7 @@ export default () => {
                     <div onClick={() => messages()} style={{ cursor: 'pointer' }}>
                       <IoMailOutline color="#ffff" size={20} />
                       {/* <p></p> */}
-                      {messagess.some((s: any) => s.last_message_obj.is_read === "0") ? <p></p> : ""}
+                      {messagess?.some((s: any) => s?.last_message_obj.is_read === "0") ? <p></p> : ""}
 
                     </div>
                     {mesg && <Messages message={messagess} />}

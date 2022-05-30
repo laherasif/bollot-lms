@@ -19,7 +19,7 @@ import AdminReducer from "../reducers/admin/";
 // webiste 
 import BlogReducer from "../reducers/blogNews/blogs";
 
-// import AdminCriculumReducer from "../reducers/admin/criculum";
+import InsDashboardReducer from "../reducers/instructor/";
 // import AdminClassesReducer from "../reducers/admin/liveclasses";
 // import AdminQuizReducer from "../reducers/admin/quiz";
 // import AdminPreviewReducer from "../reducers/admin/preview";
@@ -47,9 +47,9 @@ const rootReducer = combineReducers({
   quiz: QuizReducer,
   preview: PreviewReducer,
   studentCourse: CourseReducer,
-  blogs : BlogReducer
+  blogs : BlogReducer,
+  InsDash: InsDashboardReducer,
   // admin course add reducers 
-  // AdminAddCourse: AdminAddCourseReducer,
   // Admincriculum: AdminCriculumReducer,
   // adminlive: AdminClassesReducer,
   // adminquiz: AdminQuizReducer,

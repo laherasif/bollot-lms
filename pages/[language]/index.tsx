@@ -26,6 +26,7 @@ import { Catagories } from '../../src/components/skeleton'
 import instance from "../../src/confiq/axios/instance";
 import { GET_CATAGORY } from "../../src/redux/types/types";
 import { SweetAlert } from "../../src/function/hooks";
+import { CatagoryCard, CatagoryList } from "../../src/skeleton/course";
 const Home: NextPage = () => {
   // const intl = useIntl();
 
@@ -40,6 +41,8 @@ const Home: NextPage = () => {
   useEffect(() => {
     dispatch(GetCourse())
   }, [])
+
+ 
 
   const subsNews = async () => {
     try {
@@ -75,13 +78,17 @@ const Home: NextPage = () => {
 
           <section className="container-3 all-head">
             <div className="courses-bar">
-              {Catagory?.map((cat: any, i: number) => (
+              {Catagory && Catagory.length > 0  ? Catagory?.map((cat: any, i: number) => (
                 <Link href={`/en/courses/${cat.slug}`}>
                   <span key={i} style={{ cursor: 'pointer' }}>
                     <h3 id="bol" >{cat.name}</h3>
                   </span>
                 </Link>
-              ))}
+
+              ))
+                :
+                  <CatagoryList />
+              }
 
             </div>
           </section>
@@ -109,10 +116,15 @@ const Home: NextPage = () => {
             <h3 className="future text-center">Top Category</h3>
             <div className="container-3">
               <div className="all-category">
-                {Catagory ? Catagory.map((cat: any) => (
+                {Catagory && Catagory.length ? Catagory?.map((cat: any) => (
                   <CategoryCard icon={cat.icon} catagory={cat} key={cat.id} />
                 ))
-                  : <div>Catagory not Avaliable </div>
+                  :
+                  Array.from({ length: 5 }, (_, i) => (
+                    <CatagoryCard />
+
+                  ))
+
                 }
 
               </div>

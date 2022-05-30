@@ -42,7 +42,7 @@ export default ({ course, key }: any) => {
 
           <Dropdown.Menu>
               <>
-                <Dropdown.Item as={Link} href={`/en/student/liveClasses/${course?.id}`}>Up comming live Classes </Dropdown.Item>
+                <Dropdown.Item as={Link} href={`/en/student/liveClasses/${course?.id}`}>Live Classes </Dropdown.Item>
                 <Dropdown.Item as={Link} href={`/en/student/quiz/${course?.id}`}>Quiz</Dropdown.Item>
               </>
           </Dropdown.Menu>

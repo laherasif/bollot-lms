@@ -46,7 +46,7 @@ const Home: NextPage = () => {
       try {
         let res = await AxInstance.get(`api//student/my-courses/${courseTitle}`)
         setSections(res.data.response.course)
-        // setCourseId(res.data.response.course.id)
+        setCourseId(res.data.response.course.id)
       } catch (error) {
 
       }
@@ -109,7 +109,7 @@ const Home: NextPage = () => {
 
                 </div>
               </div>
-              <div>
+              {/* <div>
                 <h2>Notes</h2>
               </div>
               <div>
@@ -120,7 +120,7 @@ const Home: NextPage = () => {
               </Link>
               <div>
                 <h2>Live Classes</h2>
-              </div>
+              </div> */}
               <div onClick={() => setConversation(true)}>
                 <h2>Message to Instructor</h2>
               </div>
@@ -129,9 +129,9 @@ const Home: NextPage = () => {
                   <h2>Quiz</h2>
                 </Link>
               </div>
-              <div>
+              {/* <div>
                 <h2>Review</h2>
-              </div>
+              </div> */}
             </div>
           </div>
 
@@ -187,8 +187,7 @@ const Home: NextPage = () => {
                   {/* <h6 style={{paddingTop:'15px'}}>lectures : {lectures?.length}</h6> */}
 
                 </div>
-                <div className="first-payment-1">
-
+                <div className="first-payment-1 ">
                   {lectures.length ?
                     <CriculumCard lectures={lectures} CourseId={section?.id} />
                     :

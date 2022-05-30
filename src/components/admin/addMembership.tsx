@@ -38,7 +38,7 @@ const MemberShip = ({ Toggle, permition, User }: any) => {
     });
 
     const handleClose = () => {
-        Toggle(false)
+        Toggle()
     }
 
 
@@ -110,7 +110,6 @@ const MemberShip = ({ Toggle, permition, User }: any) => {
 
     // let selectImage = User?.image || state.image
 
-    console.log("loading", User)
     return (
 
         <div className="hasiw0eskdwd">

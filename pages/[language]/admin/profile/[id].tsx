@@ -52,7 +52,7 @@ const Home: NextPage = () => {
       <section className="dash-board kjasf-asdasd2 jadsifd-asdasi ">
         <div className="dash-board-1">
           <div className="dash-2 ">
-            <Link href="/en/instructor">
+            <Link href="/en/admin/dashboard">
               <div className="my-course jifas-saw3iesd9">
                 <h5>
                   <i className="fa fa-arrow-left"></i>

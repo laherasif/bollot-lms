@@ -17,6 +17,7 @@ import {
     GET_COURSE_INPUTS_MORE,
     ADD_COURSE_INPUTS_MORE,
     GET_SORTED_COURSE_SEARCH,
+    GET_MEMERSHIP,
 
 } from '../../types/types'
 import instance from '../../../confiq/axios/instance'
@@ -94,7 +95,7 @@ export const GetCourse = () => async (dispatch) => {
         let liveCourse = {
             page_no: 1,
             rows_per_page: 10,
-            course_type: "live"
+            
         }
 
 
@@ -292,6 +293,25 @@ export const GetSearchCourse = (name) => async dispatch => {
 
 
 }
+
+
+export const GetMembership = () => async dispatch => {
+    try {
+
+        let res = await instance.get('api//get-memberships')
+        dispatch({
+            type: GET_MEMERSHIP,
+            payload: res.data.response.memberships
+        })
+    } catch (error) {
+
+    }
+
+
+}
+
+
+
 
 
 

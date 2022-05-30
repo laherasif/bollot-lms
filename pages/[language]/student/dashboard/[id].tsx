@@ -14,15 +14,48 @@ import BarChart from '../../../../src/components/student/barchart'
 import withAuth from "../../../../src/components/Hoc/authRoute";
 import { useEffect, useState } from "react";
 import { Main } from "../../../../src/components/student/loader";
-import { RootStateOrAny, useSelector } from "react-redux";
+import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
+import {
+  getDashboardStatic,
+  getPayemnts,
+  getTransactions
+} from "../../../../src/redux/actions/student/courses";
+import axios from "axios";
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
   const [loading, setLoading] = useState(true)
+  const [charts, setCharts] = useState([])
+  const dispatch = useDispatch()
 
-  const { User } = useSelector((state: RootStateOrAny) => state.userReducer)
+  const { User, token } = useSelector((state: RootStateOrAny) => state.userReducer)
+  const { Dashboard } = useSelector((state: RootStateOrAny) => state.studentCourse)
 
 
+  const AxInstance = axios.create({
+    // .. where we make our configurations
+    baseURL: 'https://dev.thetechub.us/bolloot/',
+    headers: {
+      token: token
+    }
+  });
+
+
+  useEffect(() => {
+    try {
+      let fetchStat = async () => {
+        let res = await AxInstance.get('api//student/dashboard-stats')
+        let resPayment = await AxInstance.get('api//student/payments')
+        let resTrns = await AxInstance.get('api//student/transactions')
+        dispatch(getDashboardStatic(res.data.response.data))
+        dispatch(getPayemnts(resPayment.data.response))
+        dispatch(getTransactions(resTrns.data.response.transactions))
+        setCharts(res.data.response.data)
+      }
+      fetchStat()
+    }
+    catch (err) { }
+  }, [])
 
   useEffect(() => {
     setTimeout(() => {
@@ -51,15 +84,14 @@ const Home: NextPage = () => {
                   </div>
                   <div className="d-flex flex-wrap my-5" >
                     <div className="njadfskdfns-dsfsad">
-                      <Chart1 label="Inprogress" value="04" color={"#FCCE40"} strokeColor="#E1A902" />
+                      <Chart1 chart={Dashboard?.inprogress} label="Inprogress" value={Dashboard?.total_inprogress} color={"#FCCE40"} strokeColor="#E1A902" />
+                    </div>
+                    <div className="njadfskdfns-dsfsad">
+                      <Chart1 chart={Dashboard?.completed} label="Completed" value={Dashboard?.total_completed} color={"#03BCD4"} strokeColor="#0BACC0" />
 
                     </div>
                     <div className="njadfskdfns-dsfsad">
-                      <Chart1 label="Completed" value="10" color={"#03BCD4"} strokeColor="#0BACC0" />
-
-                    </div>
-                    <div className="njadfskdfns-dsfsad">
-                      <Chart1 label="Total Enrolled" value="15" color={"#5469C9"} strokeColor="#2C42A5" />
+                      <Chart1 chart={Dashboard?.inprogress} label="Total Enrolled" value={Dashboard?.total_enrolled} color={"#5469C9"} strokeColor="#2C42A5" />
 
                     </div>
                   </div>
@@ -67,24 +99,14 @@ const Home: NextPage = () => {
                     <div className="w-100 kdsafjdas-sadn">
                       <h5 className="jdiofsdf-fndsf">Daily Learning Activity</h5>
                       <div className="odsafoskdf-dsnaier">
-                        <Chart />
+                        <Chart chart={Dashboard?.progress_daily} />
                       </div>
                     </div>
                     <div className="w-100 diafdsfi-dsaf">
                       <h5 className="jdiofsdf-fndsf">Weekly Status</h5>
-                      <div className="odsafoskdf-dsnaier">
-                        <h5 className="sanfkf-dafn">From Jan 10-18</h5>
-                        <BarChart />
-                        <div className="d-flex justify-content-between jasfidsf-afnesf3">
-                          <div>
-                            <span>Minimum</span>
-                            <h5>04 Hrs</h5>
-                          </div>
-                          <div>
-                            <span>Maximum</span>
-                            <h5>08 Hrs</h5>
-                          </div>
-                        </div>
+                      <div className="odsafoskdf-dsnaier" style={{ height: '87%' }}>
+                        <BarChart chart={Dashboard?.progress_weekly} />
+
                       </div>
                     </div>
                   </div>

@@ -1,11 +1,20 @@
 
 import {
-  LOGIN_ADMIN, LOGOUT_ADMIN, GET_ALL_INSTRUCTOR, GET_ALL_STUDENT, DELETE_STU, DELETE_INS, UPDATE_STU, UPDATE_INS, GET_COURSE_CATAGORIES
+  LOGIN_ADMIN, LOGOUT_ADMIN,
+  GET_ALL_INSTRUCTOR,
+  GET_ADMIN_DASHBOARD_STAT,
+  GET_ALL_STUDENT,
+  DELETE_STU, DELETE_INS,
+  UPDATE_STU, UPDATE_INS,
+  GET_COURSE_CATAGORIES,
+  GET_ADMIN_TRANSACTION_STATICS,
 } from "../../types/types";
 
 const initialState = {
   Admin: {},
   token: "",
+  Statistic: {},
+  Transaction:{},
   Students: [],
   Instructor: [],
   Catagories: []
@@ -22,6 +31,17 @@ const AdminReducer = (state = initialState, action) => {
         token: action.payload.response.token.token,
         isAuth: true,
       };
+
+    case GET_ADMIN_DASHBOARD_STAT:
+      return {
+        ...state,
+        Statistic: action.payload
+      }
+      case GET_ADMIN_TRANSACTION_STATICS:
+        return{
+          ...state,
+          Transaction : action.payload
+        }
 
     case GET_ALL_INSTRUCTOR:
 

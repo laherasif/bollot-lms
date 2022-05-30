@@ -13,13 +13,14 @@ import BarChart from "../../../../src/components/admin/barchart";
 import DashboardRightBar from "../../../../src/components/admin/DashboardRightBar";
 import React, { useState, useEffect } from 'react'
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
-import { getAllInstructor, getAllStudent, getCatagories } from '../../../../src/redux/actions/admin'
+import { getAllInstructor, getAllStudent, getCatagories, getStatistic, getTransaction } from '../../../../src/redux/actions/admin'
 import axios from "axios";
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
 
-  const {  token  } = useSelector((state: RootStateOrAny) => state?.admin)
+  const { token, Admin } = useSelector((state: RootStateOrAny) => state?.admin)
+  const { Statistic } = useSelector((state: RootStateOrAny) => state?.admin)
 
   const AxInstance = axios.create({
     // .. where we make our configurations
@@ -31,7 +32,7 @@ const Home: NextPage = () => {
 
 
   const dispatch = useDispatch()
- 
+
 
 
   useEffect(() => {
@@ -40,10 +41,14 @@ const Home: NextPage = () => {
         let res = await AxInstance.get('api//admin/students')
         let resIns = await AxInstance.get('api//admin/instructors')
         let resCata = await AxInstance.get('api//admin/categories')
+        let resStat = await AxInstance.get('api//admin/dashboard-stats')
+        let resTran = await AxInstance.get('api//admin/transactions')
         if (res.data.success === true) {
           dispatch(getAllStudent(res.data))
           dispatch(getAllInstructor(resIns.data))
           dispatch(getCatagories(resCata.data.response.categories))
+          dispatch(getStatistic(resStat.data.response.data))
+          dispatch(getTransaction(resTran.data.response))
 
           // setLoading(false)
           // setShowStu(res.data.response.students)
@@ -77,7 +82,7 @@ const Home: NextPage = () => {
               <div className="hdsf0s-sadmsa">
                 <div>
                   <h3 className="lsjadf-sadnsd">
-                    <span>Hi Tam Tran,</span>
+                    <span>Hi {Admin?.fullname},</span>
                   </h3>
                   <h3>Welcome back👋</h3>
                 </div>
@@ -89,61 +94,85 @@ const Home: NextPage = () => {
               <div className="d-flex flex-wrap my-5">
                 <div className="cards">
                   <Chart1
-                    label="Courses"
-                    value="05"
+                    label="Total Courses"
+                    value={Statistic?.total_courses}
                     color={"#FCCE40"}
                     strokeColor="#E1A902"
+                    chart={Statistic?.courses_chart}
                   />
                 </div>
                 <div className="cards">
                   <Chart1
-                    label="Courses"
-                    value="05"
-                    color={"#FCCE40"}
-                    strokeColor="#E1A902"
+                    label="Student Enrolled"
+                    value={Statistic?.total_students_learning}
+                    color={"green"}
+                    strokeColor="green"
+                    chart={Statistic?.students_learning_chart}
+
                   />
                 </div>
                 <div className="cards">
                   <Chart1
                     label="Total students"
-                    value="105"
+                    value={Statistic?.total_students_registered}
                     color={"#03BCD4"}
                     strokeColor="#0BACC0"
+                    chart={Statistic?.total_students_registered_chart}
+
+                  />
+                </div>
+                {/* <div className="cards">
+                  <Chart1
+                    label="Revenue"
+                    value={Statistic?.total_revenue}
+                    color={"#5469C9"}
+                    strokeColor="#2C42A5"
+                  />
+                </div> */}
+                <div className="cards">
+                  <Chart1
+                    label="Instructors"
+                    value={Statistic?.total_instructors_registered}
+                    color={"pink"}
+                    strokeColor="pink"
+                    chart={Statistic?.total_instructors_registered_chart}
+
                   />
                 </div>
                 <div className="cards">
                   <Chart1
-                    label="Revenue"
-                    value="$45k"
-                    color={"#5469C9"}
-                    strokeColor="#2C42A5"
+                    label="Companies"
+                    value={Statistic?.total_companies_registered}
+                    color={"lightgray"}
+                    strokeColor="lightgray"
+                    chart={Statistic?.total_companies_registered_chart}
+
                   />
                 </div>
+
+                <div className="cards info_card">
+                  <h2>Total Revenue</h2>
+                  <h3>{Statistic?.total_revenue}</h3>
+                </div>
+                <div className="cards info_card">
+                  <h2>Stripe Balance</h2>
+                  <h3>{Statistic?.stripe_balance_available}</h3>
+                </div>
+                <div className="cards info_card">
+                  <h2>Stripe Balance Pending</h2>
+                  <h3>{Statistic?.stripe_balance_pending}</h3>
+                </div>
+
               </div>
               <div className="d-flex w-100 kafsdfidsa-fen">
                 <div className="w-100 kdsafjdas-sadn">
-                  <h5 className="jdiofsdf-fndsf">Daily Learning Activity</h5>
-                  <div className="odsafoskdf-dsnaier">
-                    <Chart />
+                  <h5 className="jdiofsdf-fndsf">Total Revenue</h5>
+                  <div className="odsafoskdf-dsnaier" style={{ height: '100%', width: '50%' }}>
+                    <BarChart chart={Statistic?.revenue_chart} />
+
                   </div>
                 </div>
-                <div className="w-100 diafdsfi-dsaf">
-                  <h5 className="jdiofsdf-fndsf">Weekly Status</h5>
-                  <div className="odsafoskdf-dsnaier">
-                    <h5 className="sanfkf-dafn">From Jan 10-18</h5>
-                    <BarChart />
-                    <div className="d-flex justify-content-between jasfidsf-afnesf3">
-                      <div>
-                        <span>Minimum</span>
-                        <h5>04 Hrs</h5>
-                      </div>
-                      <div>
-                        <span>Maximum</span>
-                        <h5>08 Hrs</h5>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+
               </div>
             </div>
           </div>

@@ -89,7 +89,7 @@ const Home: NextPage = () => {
     setMainLoading(true)
 
     if (searchC) {
-      dispatch(GetSortedSearch(e.target.value , searchC))
+      dispatch(GetSortedSearch(e.target.value, searchC))
 
     }
     else {
@@ -125,7 +125,7 @@ const Home: NextPage = () => {
   useEffect(() => {
     router.replace(`/en/courses/?p=1`)
 
-  },[])
+  }, [])
 
 
   useEffect(() => {
@@ -332,6 +332,9 @@ const Home: NextPage = () => {
             <section className="container-3 number mt-2">
               {currentItems && currentItems?.length > 0 ?
                 <ReactPaginate
+                  breakLabel={<a href="">...</a>}
+                  breakClassName ={"break-label"}
+                  pageRangeDisplayed={2}
                   previousLabel={"Previous"}
                   nextLabel={"Next"}
                   pageCount={pageCount}

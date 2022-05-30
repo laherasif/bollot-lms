@@ -4,8 +4,42 @@ import {
     EDIT_CRICCULUM,
     EDIT_QUIZ,
     EDIT_PREVIEW,
-    EDIT_LIVE_CLASSES
+    EDIT_LIVE_CLASSES,
+    DASHBOAD_STATICS,
+    TRANSACTION_STATICS,
+    GET_TRANSACTIONS
 } from '../../types/types'
+
+
+export const getDashbaordStatic = (data) => dispatch => {
+    dispatch({
+        type: DASHBOAD_STATICS,
+        payload: data
+    })
+
+}
+
+export const getTransactionStatic = (data) => dispatch => {
+    dispatch({
+        type: TRANSACTION_STATICS,
+        payload: data
+    })
+
+}
+
+export const getTransactions = (data) => dispatch => {
+    dispatch({
+        type: GET_TRANSACTIONS,
+        payload: data
+    })
+
+}
+
+
+
+
+
+
 
 export const SaveCourse = (course) => dispatch => {
     dispatch({

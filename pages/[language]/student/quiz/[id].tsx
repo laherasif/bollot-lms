@@ -61,48 +61,10 @@ const Home: NextPage = () => {
 
 
 
-  // const handleSubmit = (type: any) => {
-  //   // e.preventDefault();
-  //   let findIndx = Object.keys(quiz).length ? quiz.quiz[currentStep] : null
 
-  //   if (type === "next") {
-  //     if (currentStep !== quiz?.quiz?.length) {
-  //       let answser = findIndx?.options?.find((i: any) => quizValue?.some((f: any) => f?.option_id == i?.id))
-  //       if (answser) {
-  //         setCurrentStep(currentStep + 1);
-  //         setSelectedAns(answser?.option)
-
-  //       }
-  //       else {
-  //         setCurrentStep(currentStep + 1);
-  //         setSelectedAns('')
-  //         let question = findIndx?.id
-  //         let ans = findIndx?.options?.find((i: any) => i.option === selectedAns)
-  //         let value: any = {
-  //           question_id: question,
-  //           option_id: ans?.id
-  //         }
-  //         setQuizValue([...quizValue, value])
-  //       }
-
-
-  //     }
-  //   }
-  //   else {
-  //     debugger
-  //     setCurrentStep(--currentStep);
-  //     let ans = findIndx?.options.find((i: any) => quizValue?.some((f: any) => i?.id == f?.option_id))
-  //     setSelectedAns(ans?.option)
-
-  //   }
-
-
-  // }
-  console.log("anser", answers)
 
 
   const handleSubmit = (e: React.FormEvent<EventTarget>, questionId: number, answer: string) => {
-    let arr = []
     e.preventDefault();
     setAnswer([
       ...answers,
@@ -159,7 +121,7 @@ const Home: NextPage = () => {
     }
   }
 
-  if (answers && answers.length > 0  &&  quiz?.quiz?.length > 0 && answers.length === quiz?.quiz?.length) {
+  if (answers && answers.length > 0 && quiz?.quiz?.length > 0 && answers.length === quiz?.quiz?.length) {
     QuizSubmit()
   }
 
@@ -193,14 +155,21 @@ const Home: NextPage = () => {
                   <div className='quiz-info'>
                     <div className="d-flex justify-content-between">
                       <h3>Title : {quiz?.title} </h3>
-                      <h3>Total Questions : {quiz?.quiz?.length}  </h3>
-                      <h3>Attempt Questions : {currentStep + 1} </h3>
+                      {
+                        quiz?.quiz?.length > 0 ? 
+                        <>
+                          <h3>Total Questions : {quiz?.quiz?.length}  </h3>
+                          <h3>Attempt Questions : {currentStep + 1} </h3>
+
+                        </>
+                        :  null 
+                      }
                     </div>
 
                   </div>
                   <div className="complete-web-1">
-                  { quiz?.quiz?.length ? 
-                       quiz && quiz?.quiz?.length && !showResult ?
+                    {quiz?.quiz?.length ?
+                      quiz && quiz?.quiz?.length && !showResult ?
                         <Card
                           options={quiz?.quiz[currentStep]?.options}
                           question={quiz?.quiz[currentStep]?.question}
@@ -220,7 +189,7 @@ const Home: NextPage = () => {
                             </div>
                           }
                         </div>
-                    : <div> Quiz not uploaded yet </div>}
+                      : <div> Quiz not uploaded yet </div>}
 
                   </div>
                 </div>

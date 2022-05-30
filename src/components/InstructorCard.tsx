@@ -22,8 +22,8 @@ export default ({
             <img src={instructor?.image} />
           </div>
           <div>
-            <h6>{reviews.avg || 0 } Rating </h6>
-            <h6>{reviews.count} Reviews</h6>
+            <h6>{reviews?.avg || 0 } Rating </h6>
+            <h6>{reviews?.count} Reviews</h6>
             <h6>{enrolled} Students</h6>
             <h6>{allCourses} Courses</h6>
           </div>

@@ -50,6 +50,12 @@ export default () => {
               <h3> Website</h3>
             </div>
           </Link>
+          <Link href="/en/admin/transaction">
+            <div className={`dash-ch-2 sdisad-dsd ${router.asPath === "/en/admin/website" ? "dash-ch-2 sdisad-dsdactive" : ""}`}>
+              <Icons name="i3" />
+              <h3> Transaction</h3>
+            </div>
+          </Link>
           <Link href="/en/admin/certificate">
             <div className={`dash-ch-2 sdisad-dsd ${router.asPath === "/en/admin/certificate" ? "dash-ch-2 sdisad-dsdactive" : ""}`}>
               <Icons name="i4" />
@@ -57,9 +63,9 @@ export default () => {
             </div>
           </Link>
           <Link href="/en/admin/membership">
-            <div className={`dash-ch-2 sdisad-dsd ${router.asPath === "/en/admin/account" ? "dash-ch-2 sdisad-dsdactive" : ""}`}>
+            <div className={`dash-ch-2 sdisad-dsd ${router.asPath === "/en/admin/membership" ? "dash-ch-2 sdisad-dsdactive" : ""}`}>
               <Icons name="i4" />
-              <h3> MemberShip</h3>
+              <h3>MemberShip</h3>
             </div>
           </Link>
           <Link href="/en/admin/profile">
@@ -87,7 +93,7 @@ export default () => {
               placement="end"
             >
               <Offcanvas.Header closeButton></Offcanvas.Header>
-              <Offcanvas.Body>
+              <Offcanvas.Body >
                 <SideBarChild />
               </Offcanvas.Body>
             </Navbar.Offcanvas>

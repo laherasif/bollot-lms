@@ -118,7 +118,7 @@ export default () => {
   return (
     <div className="jsad-asdnsake">
       <div className="nadjfksad-asds">
-        <Dropdowns />
+        {/* <Dropdowns /> */}
         <div className="dsnodi-sdjsad searchbar-icon">
           <FiSearch color="#8A8A8A" size={17} onClick={() => state.length > 0 ? SeacchCourse() : ''} />
           <input type="text" name="state" value={state} onChange={(e) => setState(e.target.value)} placeholder="Search" />

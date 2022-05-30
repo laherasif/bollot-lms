@@ -81,7 +81,7 @@ const data = [
 ];
 
 
-const Chart = () => {
+const Chart = ({chart}) => {
 
   return (
     <ResponsiveContainer width="99%"   aspect={2.8}  >
@@ -90,7 +90,7 @@ const Chart = () => {
       <BarChart
         width={1080}
         height={321}
-        data={data}
+        data={chart}
         margin={{
           top: 5,
           right: 30,
@@ -102,7 +102,7 @@ const Chart = () => {
            {/* <ReferenceLine y={80} label={} stroke="red" strokeWidth={0}  /> */}
           <Bar radius={[5, 5, 5, 5]} className='ksldjafds-dsfads' dataKey="uv" barSize={18} fill="#8884d8" >
           {
-                       data.map((entry, index) => (
+                       chart.map((entry, index) => (
                             <Cell key={`cell-${index}`} fill={index%2!=0?"#9FF5FF":"#00778F"} />
                         ))
                     }

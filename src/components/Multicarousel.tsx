@@ -32,23 +32,31 @@ const responsive = {
 };
 import React from 'react';
 import CourseCard from "./card/CourseCard";
+import { Course } from "../skeleton/course";
 export default ({ cata }: any) => {
   const { Feature, Latest } = useSelector((state: RootStateOrAny) => state.course)
-  
+
   return (<div>
     <Carousel responsive={responsive}>
       {cata === "feature" ? (
-        Feature ? Feature.map((fet: any) => (
+        Feature && Feature?.length ? Feature?.map((fet: any) => (
           <CourseCard f={fet} key={fet.id} />
         ))
-          : <div>Course not avalible</div>
+          :
+          Array.from({ length: 5 }, (_, i) => (
+            <Course />
+          ))
+
       )
         : (
-          Latest  ? Latest.map((fet: any) => (
+          Latest && Latest?.length ? Latest?.map((fet: any) => (
             <CourseCard f={fet} key={fet.id} />
 
           ))
-            : <div>Course not avalible</div>
+            : 
+            Array.from({ length: 5 }, (_, i) => (
+              <Course />
+            ))
 
         )
       }
