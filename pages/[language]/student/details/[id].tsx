@@ -55,7 +55,7 @@ const Home: NextPage = () => {
     fetchCourse()
   }, [courseTitle])
 
-
+console.log("Section" , section )
 
   return (
     <>
@@ -77,7 +77,7 @@ const Home: NextPage = () => {
                     console.log("sectionid" , sec.id)
                       return (
                         <div className="ksajdfds-sads" onClick={() => { setLectures(sec?.lectures), setCourseId(sec?.id) }} key={i}>
-                          {sec.id === courseId ? (
+                          {sec.id === courseId || sec?.is_completed === 1 ? (
                             <svg
                               width={18}
                               height={18}
@@ -182,7 +182,7 @@ const Home: NextPage = () => {
 
               <div className="seting-method-payment">
                 <div className="d-flex justify-content-between " style={{ padding: '0px 20px' }}>
-                  <h3>Title : {section?.title}</h3>
+                  <h3>Title : {section?.title} </h3>
                   <h5 style={{ paddingTop: '15px' }}>By : {section?.instructor?.fullname}</h5>
                   {/* <h6 style={{paddingTop:'15px'}}>lectures : {lectures?.length}</h6> */}
 

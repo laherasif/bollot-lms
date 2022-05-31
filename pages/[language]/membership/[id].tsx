@@ -34,7 +34,7 @@ const Home: NextPage = () => {
         let res = await AxInstance.get('api//company/current-status')
         if (res.data.success === true) {
           setMember(res.data.response.status)
-          setmemberships({ auto_renew: Number(res.data.response.status.auto_renew) })
+          setmemberships({ auto_renew: Number(res.data.response?.status?.auto_renew) })
         }
       }
       fetchMembership()
@@ -97,7 +97,7 @@ const Home: NextPage = () => {
             <p>Current Membership</p>
           </div>
 
-          {Object.keys(member).length > 0 ?
+          {member ?
 
             <div className="table-responsive">
               <table className="table ">
@@ -199,11 +199,19 @@ const Home: NextPage = () => {
                         </button>
                       </Link>
                       :
-                      <Link href={User ? "/en/membership" : "/en/businessSignup"}>
-                        <button className="btn-2s">
-                          Subscribe
-                        </button>
-                      </Link>
+                      User && member?.length > 0
+                        ?
+                        <Link href={User ? "/en/membership" : "/en/businessSignup"}>
+                          <button className="btn-2s">
+                            Subscribe
+                          </button>
+                        </Link>
+                        :
+                        <Link href={`/en/paymentMethod/${m?.id}`}>
+                          <button className="btn-2s" >
+                            Subscribe
+                          </button>
+                        </Link>
                   }
                   <ul>
                     <li>

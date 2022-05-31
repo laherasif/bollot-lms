@@ -64,7 +64,7 @@ export default ({ lectures, CourseId }: any) => {
     }
   }, [errors]);
 
-  
+
 
   useEffect(() => {
 
@@ -121,7 +121,18 @@ export default ({ lectures, CourseId }: any) => {
     <>
       <div className="videos-title">
         <div>
-          <h4>Title : {lectures[index].title}</h4>
+          <h4>
+            <>
+              Title : {lectures[index].title}
+              {/* <span>
+                {lectures[index]?.is_completed  &&
+                  <>
+                    <i style={{ color: 'green' }} className="fa fa-check-circle"></i>
+                  </>
+                  }
+              </span> */}
+            </>
+          </h4>
         </div>
         <div>
           Lectures : {index + 1} / {lectures.length}
@@ -131,7 +142,7 @@ export default ({ lectures, CourseId }: any) => {
       {lectures.some((s: any) => s.file_type === "Video") && lectures.length === 1 ?
 
         lectures.length && lectures?.map((lec: any, i: number) => (
-         
+
           <ReactPlayer
             width="100%"
             height="100%"

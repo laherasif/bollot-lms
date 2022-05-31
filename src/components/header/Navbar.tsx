@@ -133,16 +133,16 @@ const App = () => {
               </button>
             </Link>
 
-            {User  || Admin  ?
+            { Admin  || User   ?
               <div className="kjdshfi-serjh">
 
 
                 <Dropdown>
                   <Dropdown.Toggle id="dropdown-basic">
-                    <img style={{ borderRadius: '50%' }} src={User?.image || Admin?.image} alt="profile_img" />
+                    <img style={{ borderRadius: '50%' }} src={User?.image || Admin?.image || "/assets/images/umpire-1.svg" } alt="profile_img" />
                   </Dropdown.Toggle>
                   <Dropdown.Menu >
-                    <Dropdown.Item as={Link} href={User?.role === "student" ? "/en/student/dashboard" : User?.role === "instructor" ? "/en/instructor" : "/en/admin/dashboard"} >Dashboard</Dropdown.Item>
+                    <Dropdown.Item as={Link} href={User?.role === "student" ? "/en/student/dashboard" : User?.role === "instructor" ? "/en/instructor" :  User?.role === "company" ? "/en/instructor" :"/en/admin/dashboard"} >Dashboard</Dropdown.Item>
                     {User && <Dropdown.Item as={Link} href={User?.role === "student" ? "/en/student/courses" : "/en/instructor/courses"} >My Courses</Dropdown.Item>}
                     <Dropdown.Item as={Link} href={User?.role === "student" ? "/en/student/profile" : User?.role === "instructor" ? "/en/instructor/profile" : "/en/admin/profile"} >Profile</Dropdown.Item>
                     <Dropdown.Item ><span onClick={() => Logout()}>Logout</span></Dropdown.Item>
