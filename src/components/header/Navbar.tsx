@@ -30,8 +30,8 @@ const App = () => {
 
   const dispatch = useDispatch()
 
-  const searchCourse = () => {
-    // e.preventDefault()
+  const searchCourse = (e) => {
+    e.preventDefault()
     // let removeSpace = search.split(" ").join("");
     router.push(`/en/courses/?search=${search}`)
   }
@@ -62,7 +62,7 @@ const App = () => {
   }
 
   return (
-    <Navbar expand="lg" expand="xl">
+    <Navbar expand="lg" expand="xl" >
       <Container fluid>
         <Navbar.Brand style={{ cursor: 'pointer' }}>
           <Link href="/" >
@@ -91,35 +91,39 @@ const App = () => {
               <Link href="/en/contact">Contact Us</Link>
             </Nav.Link>
             {/* <Nav.Link > */}
-            <div className="search-bar">
-              <input
-                placeholder="Search here"
-                type="text"
-                className="dsifs-sadi3adasd"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-              <div onClick={() => searchCourse()} className="searchbar-icon">
-                <Icons name="search" />
-
-              </div>
-            </div>
-
-            {/* <form > */}
             {/* <div className="search-bar">
-                  <input
-                    placeholder="Search here"
-                    type="text"
-                    className="dsifs-sadi3adasd"
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                  />
-                  <div onClick={() => searchCourse()}>
-                    <Icons name="search" />
+              <form onSubmit={searchCourse}>
+                <input
+                  placeholder="Search here"
+                  type="text"
+                  className="dsifs-sadi3adasd"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                />
+                <div
+                  //  onClick={() => searchCourse()} 
+                  className="searchbar-icon">
+                  <Icons name="search" />
 
-                  </div> */}
-            {/* </div> */}
-            {/* </form> */}
+                </div>
+              </form>
+            </div> */}
+
+            <form onSubmit={searchCourse}>
+              <div className="search-bar">
+                <input
+                  placeholder="Search here"
+                  type="text"
+                  className="dsifs-sadi3adasd"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                />
+                <div >
+                  <Icons name="search" />
+
+                </div>
+              </div>
+            </form>
             {/* </Nav.Link > */}
 
             <Link href="/en/cart">
@@ -133,16 +137,14 @@ const App = () => {
               </button>
             </Link>
 
-            { Admin  || User   ?
+            {Object.keys(Admin || User).length ?
               <div className="kjdshfi-serjh">
-
-
                 <Dropdown>
                   <Dropdown.Toggle id="dropdown-basic">
-                    <img style={{ borderRadius: '50%' }} src={User?.image || Admin?.image || "/assets/images/umpire-1.svg" } alt="profile_img" />
+                    <img style={{ borderRadius: '50%' }} src={User?.image || Admin?.image || "/assets/images/umpire-1.svg"} alt="profile_img" />
                   </Dropdown.Toggle>
                   <Dropdown.Menu >
-                    <Dropdown.Item as={Link} href={User?.role === "student" ? "/en/student/dashboard" : User?.role === "instructor" ? "/en/instructor" :  User?.role === "company" ? "/en/instructor" :"/en/admin/dashboard"} >Dashboard</Dropdown.Item>
+                    <Dropdown.Item as={Link} href={User?.role === "student" ? "/en/student/dashboard" : User?.role === "instructor" ? "/en/instructor" : User?.role === "company" ? "/en/instructor" : "/en/admin/dashboard"} >Dashboard</Dropdown.Item>
                     {User && <Dropdown.Item as={Link} href={User?.role === "student" ? "/en/student/courses" : "/en/instructor/courses"} >My Courses</Dropdown.Item>}
                     <Dropdown.Item as={Link} href={User?.role === "student" ? "/en/student/profile" : User?.role === "instructor" ? "/en/instructor/profile" : "/en/admin/profile"} >Profile</Dropdown.Item>
                     <Dropdown.Item ><span onClick={() => Logout()}>Logout</span></Dropdown.Item>
@@ -153,10 +155,10 @@ const App = () => {
               :
               <>
                 <Link href="/en/signup">
-                  <button className="btn-2s">Sign Up</button>
+                  <button className="btn-2s" style={{fontSize:'15px'}}>Sign Up</button>
                 </Link>
                 <Link href="/en/login">
-                  <button className="btn-1s">Log in</button>
+                  <button className="btn-1s" style={{fontSize:'15px'}}>Log in</button>
                 </Link>
               </>
             }

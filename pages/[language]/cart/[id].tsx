@@ -50,14 +50,12 @@ const Home: NextPage = () => {
       setLoading(false)
     }, 2000);
   }, [])
-  console.log(carts)
 
 
   const saveDiscount = async () => {
     try {
       setLoad(true)
       let res = await instance.post('api//check-coupon', { coupon_code: coupon })
-      console.log("res", res)
       if (res.data.success === true) {
         dispatch(updateCart(res.data.response.coupon))
         setLoad(false)

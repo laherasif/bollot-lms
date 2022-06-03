@@ -22,6 +22,7 @@ import EnrolledStudent from "../../../../src/components/instructor/EnrolledStude
 import moment from "moment";
 import { useRouter } from "next/router";
 import ProgressStudent from "../../../../src/components/instructor/ProgressStudent";
+import withAuth from "../../../../src/components/Hoc/authRoute";
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
@@ -46,7 +47,6 @@ const Home: NextPage = () => {
       try {
         setLoading(true)
         let res = await AxInstance.post('api//instructor/courses/students-progress', { course_id: courseId })
-         console.log("Res" , res )
         if (res.data.response.progress.length) {
           setLoading(false)
           setProgress(res.data.response.progress)
@@ -137,4 +137,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default withAuth( Home );

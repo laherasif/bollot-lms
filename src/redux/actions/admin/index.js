@@ -4,21 +4,25 @@ import {
     GET_ALL_INSTRUCTOR,
     GET_ALL_STUDENT,
     DELETE_INS,
-    // UPDATE_INT,
     DELETE_STU,
     UPDATE_STU,
-    // EDIT_ADD_COURSE,
-    // EDIT_CRICCULUM,
-    // EDIT_LIVE_CLASSES,
-    // EDIT_PREVIEW,
-    // EDIT_QUIZ,
+    ADD_CATAGORY,
+    DEL_CATEGORY,
+    UPDATE_CATEGORY,
     UPDATE_INS,
     LOGOUT_ADMIN,
+    UPDATE_ADMIN,
     GET_COURSE_CATAGORIES,
     GET_ADMIN_DASHBOARD_STAT,
     GET_ADMIN_TRANSACTION_STATICS,
+    GET_LIVE_COURSES,
+    GET_COURSES,
+    DEL_MEMBERSHIP,
+    ADD_MEMBERSHIP,
+    UPDATE_MEMBERSHIP,
+    GET_MEMBERSHIP,
+
 } from '../../types/types'
-import instance from '../../../confiq/axios/instance'
 
 // Register User 
 export const loginAdmin = (res) => async dispatch => {
@@ -29,7 +33,6 @@ export const loginAdmin = (res) => async dispatch => {
             payload: res.data
         })
     } catch (error) {
-        console.log("admin error", error)
 
     }
 
@@ -39,6 +42,16 @@ export const loginAdmin = (res) => async dispatch => {
 export const logoutAdmin = () => async dispatch => {
     dispatch({
         type: LOGOUT_ADMIN,
+    })
+
+
+}
+
+export const updateAdmin = (data ) => async dispatch => {
+    dispatch({
+        type: UPDATE_ADMIN,
+        payload: data
+
     })
 
 
@@ -94,7 +107,6 @@ export const delStuIns = ({ id, role }) => async (dispatch) => {
 }
 
 export const updateStuIns = ({ role, data }) => async dispatch => {
-    debugger
 
     try {
 
@@ -116,16 +128,51 @@ export const updateStuIns = ({ role, data }) => async dispatch => {
     }
 }
 
+export const getCourses = ({ data, type }) => async dispatch => {
+
+    try {
+
+        if (type === "live") {
+            dispatch({
+                type: GET_LIVE_COURSES,
+                payload: data
+            })
+        }
+        else {
+            dispatch({
+                type: GET_COURSES,
+                payload: data
+            })
+        }
+    }
+    catch (err) {
+
+    }
+}
 
 
-
-export const getCatagories = (data) => dispatch => {
+export const AdddelUpdateCatagories = ({ data, type }) => dispatch => {
     debugger
     try {
+        if (type === "del") {
             dispatch({
-                type: GET_COURSE_CATAGORIES,
-                payload: data 
+                type: DEL_CATEGORY,
+                payload: data.id
             })
+        }
+        else if (type === "add") {
+            dispatch({
+                type: ADD_CATAGORY,
+                payload: data
+            })
+        }
+        else {
+            dispatch({
+                type: UPDATE_CATEGORY,
+                payload: data
+            })
+        }
+
 
     }
     catch (err) { }
@@ -133,13 +180,33 @@ export const getCatagories = (data) => dispatch => {
 
 }
 
-export const getStatistic = (data) => dispatch => {
-    debugger
+
+
+
+export const getCatagories = (data) => dispatch => {
     try {
-            dispatch({
-                type: GET_ADMIN_DASHBOARD_STAT,
-                payload: data 
-            })
+        dispatch({
+            type: GET_COURSE_CATAGORIES,
+            payload: data
+        })
+
+    }
+    catch (err) { }
+
+
+}
+
+
+
+
+
+
+export const getStatistic = (data) => dispatch => {
+    try {
+        dispatch({
+            type: GET_ADMIN_DASHBOARD_STAT,
+            payload: data
+        })
 
     }
     catch (err) { }
@@ -149,12 +216,46 @@ export const getStatistic = (data) => dispatch => {
 
 
 export const getTransaction = (data) => dispatch => {
+    try {
+        dispatch({
+            type: GET_ADMIN_TRANSACTION_STATICS,
+            payload: data
+        })
+
+    }
+    catch (err) { }
+
+
+}
+
+export const AdddelUpdateMembership = ({ data, type }) => dispatch => {
     debugger
     try {
+        if (type === "del") {
             dispatch({
-                type: GET_ADMIN_TRANSACTION_STATICS,
-                payload: data 
+                type: DEL_MEMBERSHIP,
+                payload: data
             })
+        }
+        else if (type === "add") {
+            dispatch({
+                type: ADD_MEMBERSHIP,
+                payload: data
+            })
+        }
+        else if (type === "get") {
+            dispatch({
+                type: GET_MEMBERSHIP,
+                payload: data
+            })
+        }
+        else {
+            dispatch({
+                type: UPDATE_MEMBERSHIP,
+                payload: data
+            })
+        }
+
 
     }
     catch (err) { }

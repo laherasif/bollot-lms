@@ -37,6 +37,8 @@ export default ({ role, Student, Instructor }: any) => {
       text: "You want to delete this user ?",
       icon: "warning",
       showDenyButton: true,
+      confirmButtonText: 'Yes',
+
 
 
     }).then((result) => {
@@ -136,7 +138,7 @@ export default ({ role, Student, Instructor }: any) => {
               data={filteredItems}
               sortIcon={<i className='fa fa-arrow-down'></i>}
               pagination
-              selectableRows
+              // selectableRows
               highlightOnHover
               responsive={true}
 
@@ -148,7 +150,7 @@ export default ({ role, Student, Instructor }: any) => {
               columns={columns}
               data={filteredIns}
               sortIcon={<i className='fa fa-arrow-down'></i>}
-              pagination
+              // pagination
               selectableRows
               highlightOnHover
 

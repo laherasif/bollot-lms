@@ -6,15 +6,19 @@ import Link from "next/link";
 import CourseCard from "../../../../src/components/admin/CourseCard";
 import { useEffect, useState } from "react";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
-import axios from "axios";
-import { Small } from "../../../../src/components/instructor/loader";
-import Invitation from "../../../../src/components/instructor/invitationForm";
-import Search from "../../../../src/components/instructor/search";
+// import axios from "axios";
+import { Small } from "../../../../src/components/admin/loader";
 import { clearStates } from "../../../../src/redux/actions/instructor/preview";
+// import { SweetAlert } from "../../../../src/function/hooks";
+import { Breadcrumb } from "react-bootstrap";
+// import Swal from "sweetalert2";
+import AdminAuth from '../../../../src/components/Hoc/adminRoute'
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
-
+  const [loading, setLoading] = useState(false)
+  const [del, setDel] = useState(false)
+ 
   const dispatch = useDispatch()
 
 
@@ -31,68 +35,72 @@ const Home: NextPage = () => {
             <Sidebar />
           </div>
         </div>
-        {/* {loading ? Small()
-          : */}
-        <div className="dash-board-1">
-          <div className="dash-2 ">
-            <div className="my-course">
-              <div className="hdsf0s-sadmsa">
+        {loading ? Small()
+          :
+          <div className="dash-board-1">
+            <div className="dash-2 ">
+              <div className="my-course">
+                <div className="hdsf0s-sadmsa">
 
-                <div className="back-btn">
-                  <Link href="/en/admin/" >
+                  <div className="back-btn">
+                    <Breadcrumb>
+                      <Breadcrumb.Item linkAs={Link} href="/en/admin/dashboard">Dashboard</Breadcrumb.Item>
+                      <Breadcrumb.Item active>Courses</Breadcrumb.Item>
+                    </Breadcrumb>
+                    {/* <Link href="/en/admin/" >
                     <h3 className="back-arrow">
                       <i className="fa fa-arrow-left"></i>
                       Back</h3>
                   </Link>
-                  <h3>Courses and Catagories </h3>
-                </div>
-                <div className=" jidfjsd-asjreid">
-                  {/* <Search /> */}
-                  <div className="d-flex idfadsf-sads">
-                    <Link href='/en/admin/addCourse'>
-                      <button className="upload-1 sdisad-dsdactive" onClick={() => ClearData()}>
-                        + Add New Course </button>
-                    </Link>
+                  <h3>Courses and Catagories </h3> */}
                   </div>
-                </div>
-              </div>
-
-              <div className="complete-web-1 mt-2">
-                <div className="umpire w-100">
-                  <div className="umpire-1 umpire-1-cst ">
-                    <div className="d-flex mb-3 idfadsf-sads">
-                      <button className="upload-1 sdisad-dsdactive">
-                        All Courses
-                      </button>
-                      <Link href="/en/admin/coupon">
-                        <button className="upload-1" >Coupons</button>
+                  <div className="my-2">
+                    {/* <Search /> */}
+                    <div className="d-flex idfadsf-sads">
+                      <Link href='/en/admin/addCourse'>
+                        <button className="upload-1 sdisad-dsdactive" onClick={() => ClearData()}>
+                          + Add New Course </button>
                       </Link>
-                      <Link href="/en/admin/liveCourses">
-                        <button className="upload-1" >Live Courses</button>
-                      </Link>
-                      <Link href="/en/admin/catagories">
-                        <button className="upload-1" >Course Catagories</button>
-                      </Link>
-                     
-                      
                     </div>
-
                   </div>
                 </div>
-              </div>
-              <div className="complete-web-1">
-                <CourseCard />
+
+                <div className="complete-web-1 mt-2">
+                  <div className="umpire w-100">
+                    <div className="umpire-1 umpire-1-cst ">
+                      <div className="d-flex mb-3 course">
+                        <button className="upload-1 sdisad-dsdactive">
+                          All Courses
+                        </button>
+                        <Link href="/en/admin/coupon">
+                          <button className="upload-1" >Coupons</button>
+                        </Link>
+                        <Link href="/en/admin/liveCourses">
+                          <button className="upload-1" >Live Courses</button>
+                        </Link>
+                        <Link href="/en/admin/catagories">
+                          <button className="upload-1" >Course Categories</button>
+                        </Link>
 
 
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+                <div className="complete-web-1">
+                  <CourseCard  />
+
+
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        {/* } */}
+        }
 
       </section >
     </div >
   );
 };
 
-export default Home;
+export default AdminAuth( Home );

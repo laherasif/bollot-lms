@@ -9,9 +9,10 @@ import axios from "axios";
 import { Small } from "../../../../src/components/instructor/loader";
 import { SweetAlert } from "../../../../src/function/hooks";
 import TagsInput from '../../../../src/components/admin/tagInput'
-import Editor from "../../../../src/components/admin/Editor";
-import { Spinner } from "react-bootstrap";
+import Editor from "../../../../src/components/admin/BlogEditor";
+import { Breadcrumb, Spinner } from "react-bootstrap";
 import { useRouter } from "next/router";
+import AdminAuth from "../../../../src/components/Hoc/adminRoute";
 const options = ["one", "two", "three"];
 
 
@@ -44,6 +45,8 @@ const Home: NextPage = () => {
 
   });
 
+  console.log("full_content", data)
+
   useEffect(() => {
     setEditorLoaded(true);
   }, []);
@@ -68,7 +71,7 @@ const Home: NextPage = () => {
         // setLoading(true)
         let res = await AxInstance.get(`api//admin/blogs/${blogId}`)
         if (res.data.success === true && res.data.response.blog !== null) {
-        // setLoading(false)
+          // setLoading(false)
           setValues({
             title: res.data.response.blog.title,
             short_desc: res.data.response.blog.short_desc,
@@ -126,32 +129,35 @@ const Home: NextPage = () => {
 
   let saveBlog = async () => {
 
-    let valueWithoutId  = {
+    let valueWithoutId = {
       title: values?.title,
       short_desc: values?.short_desc,
       tags: values?.tags,
       cover_image: values?.cover_image,
-      full_content : data?.full_content
+      full_content: data?.full_content
     }
     let valuesWithId = {
-      id : blogId,
+      id: blogId,
       title: values?.title,
       short_desc: values?.short_desc,
       tags: values?.tags,
       cover_image: values?.cover_image,
-      full_content : data?.full_content
+      full_content: data?.full_content
 
     }
 
     try {
       setLoader(true)
-      let res = await AxInstance.post('api//admin/blogs/store', blogId ? valuesWithId :  valueWithoutId)
+      let res = await AxInstance.post('api//admin/blogs/store', blogId ? valuesWithId : valueWithoutId)
       if (res.data.success === true) {
         setLoader(false)
         setValues({ ...intialState })
-        // setValues({ title : "" , short_desc : '' , cover_image: '' , tags : [] })
+        setData({ full_content: '' })
+        setUrl('')
         SweetAlert({ icon: 'success', text: res.data.message })
-        router.push('/en/admin/website ')
+        if (blogId) {
+          router.push('/en/admin/website')
+        }
 
       }
       else {
@@ -167,7 +173,9 @@ const Home: NextPage = () => {
   }
 
 
-  console.log("state ", values)
+
+
+ 
 
 
   return (
@@ -187,30 +195,23 @@ const Home: NextPage = () => {
                 <div className="hdsf0s-sadmsa">
 
                   <div className="back-btn">
-                    <Link href="/en/admin/website" >
+                    <Breadcrumb>
+                      <Breadcrumb.Item linkAs={Link} href="/en/admin/dashboard">Dashboard</Breadcrumb.Item>
+                      <Breadcrumb.Item linkAs={Link} href="/en/admin/website">Website</Breadcrumb.Item>
+                      <Breadcrumb.Item active>Manage Blog</Breadcrumb.Item>
+                    </Breadcrumb>
+                    {/* <Link href="/en/admin/website" >
                       <h3 className="back-arrow">
                         <i className="fa fa-arrow-left"></i>
                         Back</h3>
                     </Link>
 
-                    <h3> Manage Website Blogs</h3>
+                    <h3> Manage Website Blogs</h3> */}
                   </div>
 
                 </div>
 
-                <div className="complete-web-1 mt-2">
-                  <div className="umpire w-100">
-                    <div className="umpire-1 umpire-1-cst ">
-                      <div className="d-flex mb-3 idfadsf-sads">
-                        <button className="upload-1 sdisad-dsdactive">
-                        Blogs
-                        </button>
 
-                      </div>
-
-                    </div>
-                  </div>
-                </div>
                 <div className="complete-web-1">
                   <div className="blog">
 
@@ -230,7 +231,7 @@ const Home: NextPage = () => {
 
                         </div>
                         <div >
-                          <label>Catagory Name </label>
+                          <label>Short Description</label>
                           <br />
                           <textarea
                             className="form-control w-100"
@@ -252,13 +253,13 @@ const Home: NextPage = () => {
                         </div>
 
                         <div className="mt-3">
+                          <label>Full Content</label>
                           <Editor
                             name="description"
                             value={data?.full_content}
+
                             onChange={(data) => {
                               setData({ ...data, full_content: data })
-
-
                             }}
                             editorLoaded={editorLoaded}
                           />
@@ -269,11 +270,11 @@ const Home: NextPage = () => {
 
 
                         <div style={{ display: 'flex', flexDirection: 'column', paddingTop: '10px' }}>
-                          <span >Catagory Image</span>
+                          <span >Image</span>
                           <label className="drop-box" htmlFor="img" style={{ cursor: 'pointer' }}>
                             <div className="kvjadsd-j43rm iasdufhvs-ernd" >
                               {url || values?.cover_image ? <img src={url || values?.cover_image} alt="course_img" style={{ width: '30%', height: ' 50%', objectFit: 'cover' }} /> : ""}
-                              {url || values?.cover_image ? "" : <p>Drag your photos here</p>}
+                              {url || values?.cover_image ? "" : <p>Select Image</p>}
                             </div>
                             <input type="file" accept="image/png, image/gif, image/jpeg" name="cover_image"
                               onChange={(e) => handleInputChange(e)}
@@ -319,4 +320,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default AdminAuth( Home );

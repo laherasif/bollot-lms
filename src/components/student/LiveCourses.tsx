@@ -4,7 +4,6 @@ import { Dropdown } from "react-bootstrap";
 import Icons from "../../icons";
 import blackIcon from '../../assets/images/apple.svg'
 export default ({ course, key }: any) => {
-  console.log("course" , course)
   return (
     <div className="cm-web" key={key}>
       <Link href={`/en/student/details/${course?.slug}`}>

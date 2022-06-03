@@ -24,7 +24,7 @@ export default () => {
     <>
       <div className='kdsfdpd-dsfasdnf'>
         {banner && banner.length > 0 ?
-          <Carousel showStatus={false} showThumbs={false} showArrows={false} infiniteLoop={true}>
+          <Carousel showStatus={false} showThumbs={false} showArrows={false} transitionTime={200}  infiniteLoop={true} autoPlay={true}>
             {banner && banner?.map((b: any) => (
               <div>
                 <section className="flex">

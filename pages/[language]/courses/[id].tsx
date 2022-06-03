@@ -10,7 +10,7 @@ import Icons from "../../../src/icons";
 import CourseCardBig from "../../../src/components/card/CourseCardBig";
 import { RootStateOrAny, useSelector, useDispatch } from 'react-redux'
 import { Catagories } from '../../../src/components/skeleton'
-import { GetCatagory, priceFilter, GetSorted, GetSearchCourse, GetAllCatagory, GetSortedSearch } from '../../../src/redux/actions/courses'
+import { GetCatagory, priceFilter, GetLiveCourse, GetSorted, GetSearchCourse, GetAllCatagory, GetSortedSearch } from '../../../src/redux/actions/courses'
 import dynamic from "next/dynamic";
 import ReactPaginate from "react-paginate";
 import { useRouter } from "next/router";
@@ -19,32 +19,30 @@ import instance from "../../../src/confiq/axios/instance";
 //@ts-ignore
 
 
-const DynamicRangeComponent =
-  typeof window !== "undefined"
-    ? dynamic(() => import("multi-range-slider-react"))
-    : null;
+// cnst DynamicRangeComponent =
+//   typeof window !== "undefined"
+//     ? dynamic(() => import("multi-range-slider-react"))
+//     : null;
 
 const Home: NextPage = () => {
   // const intl = useIntl();]
 
 
   const [view, setView] = useState(true);
-  const [minValue, set_minValue] = useState(0);
-  const [maxValue, set_maxValue] = useState(0);
+  const [minValue, set_minValue] = useState(null);
+  const [maxValue, set_maxValue] = useState(null);
   const [sorting, setSorting] = useState('');
   const [searchCourse, setSearchCourse] = useState('')
   const [page, setPage] = useState(10);
   const [loading, setLoading] = useState(true);
+  const [liveCourse, setLiveCourse] = useState(true );
   const [mainLoading, setMainLoading] = useState(false);
   const [currentItems, setCurrentItems] = useState(null);
   const [pageCount, setPageCount] = useState(0);
   // Here we use item offsets; we could also use page offsets
   // following the API or data you're working with.
   const [itemOffset, setItemOffset] = useState(0);
-  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    set_minValue(e.minValue);
-    set_maxValue(e.maxValue);
-  };
+
 
 
 
@@ -55,6 +53,16 @@ const Home: NextPage = () => {
 
 
 
+  const getLiveCourse = () => {
+    console.log("liveCourse", liveCourse)
+    if (liveCourse === true) {
+      setMainLoading(true)
+      dispatch(GetLiveCourse())
+      setTimeout(() => {
+        setMainLoading(false)
+      }, 2000);
+    }
+  }
 
   const getCatagory = (id: number) => {
     setMainLoading(true)
@@ -77,6 +85,8 @@ const Home: NextPage = () => {
     setMainLoading(true)
     let arr = []
     arr.push(minValue, maxValue)
+    set_maxValue('')
+    set_minValue('')
     dispatch(priceFilter(arr))
     setTimeout(() => {
       setMainLoading(false)
@@ -122,10 +132,10 @@ const Home: NextPage = () => {
 
   const { AllCourse, Catagory, loader } = useSelector((state: RootStateOrAny) => state.course)
 
-  useEffect(() => {
-    router.replace(`/en/courses/?p=1`)
+  // useEffect(() => {
+  //   router.replace(`/en/courses/?p=1`)
 
-  }, [])
+  // }, [])
 
 
   useEffect(() => {
@@ -269,8 +279,8 @@ const Home: NextPage = () => {
                   <div className="mx-2 sortdrp">
                     <Form.Select name="sorting" value={sorting} onChange={(e) => getSorted(e)}>
                       <option disabled>Sort By </option>
-                      <option value="low">Sort by Price - Low to High</option>
-                      <option value="high">Sort by Price - High to Low</option>
+                      <option value="high">Sort by Price - Low to High</option>
+                      <option value="low">Sort by Price - High to Low</option>
                       <option value="rating">Sort by Top Rated</option>
                       <option value="recent">Sort by most recent</option>
                     </Form.Select>
@@ -289,13 +299,24 @@ const Home: NextPage = () => {
                         <h5 key={cat.id} style={{ cursor: 'pointer' }} onClick={() => getCatagory(cat.id)}>{cat.name}</h5>
                       </Link>
                     ))}
-
-                    <div className="kjsado-sadnw2">
-                      <button className="asldjsa-sadns">Live </button>
-                      <button className="asldjsa-sadns" style={{ width: 'max-content' }}>Criculum</button>
+                    {/* <h3>Live Courses</h3> */}
+                    <div style={{ marginBottom: '10px' }}>
+                      <Form.Check
+                        type="switch"
+                        id="custom-switch"
+                        name="renew"
+                        onChange={(e) => {  setLiveCourse(!liveCourse) ,  getLiveCourse()} }
+                        label="Live Courses"
+                      />
                     </div>
                     <h3>Price</h3>
-                    {typeof window !== "undefined" ? (
+
+                    <div className="min_max_value">
+                      <input type="number" name="minValue" value={minValue} onChange={(e) => set_minValue(e.target.value)} className="form-control" placeholder="Min" />
+                      <span>-</span>
+                      <input type="number" name="maxValue" value={maxValue} onChange={(e) => set_maxValue(e.target.value)} className="form-control" placeholder="Max" />
+                    </div>
+                    {/* {typeof window !== "undefined" ? (
                       <DynamicRangeComponent
                         min={0}
                         max={100}
@@ -309,9 +330,9 @@ const Home: NextPage = () => {
                           handleInput(e);
                         }}
                       />
-                    ) : null}
+                    ) : null} */}
 
-                    <p>Price ${minValue} - ${maxValue}</p>
+                    {/* <p>Price ${minValue} - ${maxValue}</p> */}
 
                     <div className="d-flex jsutify-content-center w-100">
                       <button className="btn-1s px-5" onClick={() => filterPrice()}>Filter</button>
@@ -333,7 +354,7 @@ const Home: NextPage = () => {
               {currentItems && currentItems?.length > 0 ?
                 <ReactPaginate
                   breakLabel={<a href="">...</a>}
-                  breakClassName ={"break-label"}
+                  breakClassName={"break-label"}
                   pageRangeDisplayed={2}
                   previousLabel={"Previous"}
                   nextLabel={"Next"}

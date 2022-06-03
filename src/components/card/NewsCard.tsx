@@ -5,7 +5,6 @@ import { add3Dots } from "../../function/hooks";
 import moment from "moment";
 // import  CardImage from "/images/news1.png";
 export default ({ news }: any) => {
-
   return (
     <Link href={`/en/newspost/${news?.id}`}>
       <div className="card-item">
@@ -17,7 +16,9 @@ export default ({ news }: any) => {
           </h4>
           <div className="mon">
             <h5>{moment(news?.createdAt).format('ll')} </h5>
-            <h5 className="sfsdfsd-s">6 comment</h5>
+            { news?.comment_count > 0 ? 
+            <h5 className="sfsdfsd-s">{news?.comment_count} comment</h5>
+            : null }
             {/* <h5 className="sfsdfsd-s">7 shares</h5> */}
           </div>
           <div className="dklsfjsdf-dsf"></div>

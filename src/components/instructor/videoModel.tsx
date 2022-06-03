@@ -33,7 +33,6 @@ const Role = ({ Toggle, permition, link }: any) => {
         Toggle('')
     }
 
-    console.log("link " , link )
 
     const handleShow = () => setShow(true);
 
@@ -49,7 +48,6 @@ const Role = ({ Toggle, permition, link }: any) => {
         try {
             const url = myBucket.getSignedUrl('getObject', paramss);
             setValue(url)
-            console.log("url", url)
         }
         catch (err) { }
     }, [link])

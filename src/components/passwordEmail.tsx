@@ -53,7 +53,6 @@ const handleClick = async () => {
     }
   } catch (err) {
     setLoader(false)
-    console.log("err", err)
   }
 };
 

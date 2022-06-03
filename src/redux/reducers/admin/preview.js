@@ -20,7 +20,6 @@ const initialState = {
 };
 
 const PreviewReducer = (state = initialState, action) => {
-    console.log("state ,", state)
     switch (action.type) {
 
         case ADD_MORE_LECTURE_PREVIEW:

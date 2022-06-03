@@ -28,7 +28,6 @@ const Home: NextPage = () => {
   const token = useSelector((state: RootStateOrAny) => state?.userReducer?.token)
   const {Courses} = useSelector((state: RootStateOrAny) => state?.studentCourse)
 
-  // console.log("Courses" , Courses)
 
   const dispatch = useDispatch()
 

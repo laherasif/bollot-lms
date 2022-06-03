@@ -35,7 +35,7 @@ interface Courses {
 
 }
 
-export default ({ handleCourseId, onStepChange }: any) => {
+export default ({ onStepChange }: any) => {
   // const intl = useIntl();
   const [item, setItem] = useState<Outcomes[]>([''])
   const [request, setRequest] = useState<Requirements[]>([''])
@@ -59,9 +59,6 @@ export default ({ handleCourseId, onStepChange }: any) => {
     requirements,
     courseId,
     outcomes } = useSelector((state: RootStateOrAny) => state.addCourse)
-
-console.log("Da" , requirements )
-console.log("course_for" , course_for )
   const AxInstance = axios.create({
     // .. where we make our configurations
     baseURL: 'https://dev.thetechub.us/bolloot/',
@@ -163,13 +160,11 @@ console.log("course_for" , course_for )
       }
       else {
         setErrors(res.data.error)
-
         setLoading(false)
       }
     } catch (error) {
       setLoading(false)
-
-      SweetAlert({ icon: 'success', text: error })
+      SweetAlert({ icon: 'error', text: error })
 
     }
     // return null
@@ -180,14 +175,14 @@ console.log("course_for" , course_for )
 
   return (
     <div className="inst" style={{ padding: '0px 35px' }}>
-      <h3>Add Course </h3>
-      <div className="p-field">
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
+      {/* <h3>Add Course </h3> */}
+      <div className="p-field" >
+        <div style={{ display: 'flex', flexDirection: 'column' , margin:'0px 10px' }}>
           <label>Category</label>
           <span>Which category suites the best for this course</span>
 
         </div>
-        <div className="kns-sanweso02e">
+        <div className="kns-sanweso02e" style={{padding:'0px 10px'}}>
           <Form.Select name="category_id"
             value={AddCourse?.category_id} onChange={(e) => hendleFields(e)}>
             <option defaultChecked>Select Catagory</option>
@@ -200,7 +195,7 @@ console.log("course_for" , course_for )
 
         </div>
 
-        <div className="mt-2">
+        <div className="mt-2" style={{margin:'0px 10px'}}>
           <label>Course title</label>
           <br />
           <span>The first information to user describing your course</span>
@@ -213,7 +208,7 @@ console.log("course_for" , course_for )
 
         </div>
 
-        <div className="mt-2">
+        <div className="mt-2" style={{margin:'0px 10px'}}>
           <label>Short Description</label>
           <br />
           <span>Complete details about your course</span>
@@ -230,7 +225,7 @@ console.log("course_for" , course_for )
 
         </div>
 
-        <div className="mt-2">
+        <div className="mt-2" style={{margin:'0px 10px'}}>
           <label>Description</label><br />
           <span>A prescribed informaiton about your course</span>
           <textarea
@@ -245,13 +240,13 @@ console.log("course_for" , course_for )
 
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <div style={{ display: 'flex', flexDirection: 'column' , margin:'0px 10px'}} >
           <label>Course Image</label>
           <span>A cover photo show on website and landing page</span>
           <label className="drop-box" htmlFor="img" style={{ cursor: 'pointer' }}>
             <div className="kvjadsd-j43rm iasdufhvs-ernd">
               {AddCourse?.url ? <img src={AddCourse?.url} alt="course_img" style={{ width: '20%', height: ' 20%', objectFit: 'cover' }} /> : ""}
-              {!AddCourse?.url && <p>Drag your photos here</p>}
+              {AddCourse?.url ? "" : <p>Select Image</p>}
             </div>
             <input type="file" accept="image/png, image/gif, image/jpeg" name="cover_image" onChange={(e) => handleInputChange(e)} id="img" style={{ display: 'none' }} />
           </label>
@@ -259,7 +254,7 @@ console.log("course_for" , course_for )
         {errors?.cover_image && <div className="invalid mt-1">{errors?.cover_image[0]}</div>}
 
         <div>
-          <div className="p-field my-4 mt-0">
+          <div className="p-field  mt-0">
             <div >
               <label>Pricing</label><br />
               <span>How much to charge a student for this course</span>
@@ -275,7 +270,7 @@ console.log("course_for" , course_for )
           </div>
 
 
-          <div className="p-field my-4 mt-0">
+          <div className="p-field  mt-0">
             <div >
               <label>Discounted  Price</label><br />
               <span>How much to charge a student for this course</span>
@@ -290,7 +285,7 @@ console.log("course_for" , course_for )
 
           </div>
 
-          <div className="p-field my-4 mt-0">
+          <div className="p-field  mt-0">
             <div >
               <label>Outcomes</label><br />
               <span>List down the consequences of this course</span>
@@ -309,7 +304,7 @@ console.log("course_for" , course_for )
             <h3 style={{ cursor: 'pointer' }} onClick={() => addItem('outcoms')} >+ Add more </h3>
 
           </div>
-          <div className="p-field my-4 mt-0">
+          <div className="p-field  mt-0">
             <div >
               <label>Requirements</label><br />
               <span>Education required for enrolling in this course</span>
@@ -328,7 +323,7 @@ console.log("course_for" , course_for )
             <h3 style={{ cursor: 'pointer' }} onClick={() => addItem('request')} >+ Add more </h3>
 
           </div>
-          <div className="p-field my-4 mt-0">
+          <div className="p-field  mt-0">
             <div >
               <label>Course for</label><br />
               <span>List down who should take this course</span>

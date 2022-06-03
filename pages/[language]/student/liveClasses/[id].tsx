@@ -33,7 +33,6 @@ const Home: NextPage = () => {
       try {
         setLoading(true)
         let res = await AxInstance.get(`api//student/my-live-courses/schedule/${CourseId}`)
-        console.log("REs", res)
         if (res.data.success === true) {
           setLoading(false)
           setQuiz(res.data.response.course_with_schedule)
@@ -47,7 +46,6 @@ const Home: NextPage = () => {
     fetchQuiz()
   }, [CourseId])
 
-  console.log("res", quiz)
 
 
   return (

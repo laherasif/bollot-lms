@@ -5,10 +5,8 @@ import { SaveCart } from '../../redux/actions/course/course'
 import Rating from '../ratingStar';
 import Link from 'next/link'
 import InfoCart from '../cartInfoPopup';
-import { Spinner } from 'react-bootstrap';
-import { add3Dots } from '../../function/hooks';
 export default ({ cours }: any) => {
-
+  console.log('course', cours)
   const [toglecart, setTogalcart] = useState({})
   const [loading, setLoading] = useState(false)
   const [showPopUp, setShowPopUp] = useState(false)
@@ -40,8 +38,16 @@ export default ({ cours }: any) => {
     setShowPopUp(true)
 
   }
+
+  console.log("price", (cours?.discounted_price), parseFloat(cours?.price))
+
+  let str = cours.price.replace(",", "");
+  let strds = cours.discounted_price.replace(",", "");
+  var priceReal = parseFloat(str);
+  var priceDiscount = parseFloat(strds);
+
   return (
-    < div style={{ position: 'relative' ,  width:'100%'}}>
+    < div style={{ position: 'relative', width: '100%' }}>
 
       <div className="photo-maker" style={{ cursor: 'pointer', position: 'relative' }} >
         <div className="photo-maker-1" style={{ cursor: 'pointer' }}>
@@ -52,30 +58,41 @@ export default ({ cours }: any) => {
               <div className="sajkdf-dasas">
                 <div className="f-col">
                   <h3>
-                    {cours?.title }
+                    {cours?.title}
+
                   </h3>
-                  <h4 className="mb-2">
+                  <span>{cours?.short_desc}</span>
+
+                  <p className="mb-2" style={{fontSize:'14px' , color:'darkgray'}}>
                     by Instructor {cours?.instructor?.fullname}
 
-                  </h4>
+                  </p>
                   <div className="d-flex justify-content-between fdsfads-sadd">
                     <h5 className="mb-2">
                       {cours?.avg_rating.aggr_rating}
-                      <Rating value={3.3} />
-                      <span>({3.3} ratings)</span>
+                      <div className='d-flex'>
+                        <Rating value={cours?.avg_rating.aggr_rating} />
+                        {cours?.avg_rating.aggr_rating > 0 ? <span style={{ marginLeft: '10px', paddingTop: '1px', fontSize: '14px' }}>({cours?.avg_rating.aggr_rating})</span> : null}
+                      </div>
                     </h5>
-                    <h5 className="mb-2">
-                      ${cours?.price}
-                      <span className="rat">(76% off)</span>
-                    </h5>
+                    
                   </div>
                   <h6 className="mb-2">
-                    78 Lectures
-                    {/* <span>12.5 total hours</span> */}
+                    {cours?.lectures_count} Lectures
                   </h6>
                 </div>
                 <div className="">
-                  <h6 className="jdsfd-sad">${cours?.price}</h6>
+                  <h6 className="jdsfd-sad">
+                    ${cours?.price}
+                    <br />
+                    {
+                      priceReal > priceDiscount ?
+                        <h5 className="text-decoration-line">${cours?.discounted_price}</h5>
+                        : null
+                    }
+                  </h6>
+
+
                 </div>
               </div>
             </Link>

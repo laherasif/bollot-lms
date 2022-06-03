@@ -25,7 +25,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment'
 const options = ["one", "two", "three"];
 import { format, parse } from 'date-fns'
-import { Spinner } from "react-bootstrap";
+import { Breadcrumb, Spinner } from "react-bootstrap";
+import AdminAuth from "../../../../src/components/Hoc/adminRoute";
 const Home: NextPage = () => {
   // const intl = useIntl();
   let router = useRouter()
@@ -90,13 +91,13 @@ const Home: NextPage = () => {
   const addFormFields = () => {
 
     setDateTime([
-
+      ...dateTime,
       {
         date: '',
         from_time: '',
         to_time: '',
 
-      }, ...dateTime,])
+      },])
 
   }
 
@@ -158,12 +159,17 @@ const Home: NextPage = () => {
                 <div className="hdsf0s-sadmsa">
 
                   <div className="back-btn">
-                    <Link href={`/en/admin/liveCourses`} >
+                    <Breadcrumb>
+                      <Breadcrumb.Item linkAs={Link} href="/en/admin/dashboard">Dashboard</Breadcrumb.Item>
+                      <Breadcrumb.Item linkAs={Link} href="/en/admin/liveCourses">Live Courses</Breadcrumb.Item>
+                      <Breadcrumb.Item active>Live Classes </Breadcrumb.Item>
+                    </Breadcrumb>
+                    {/* <Link href={`/en/admin/liveCourses`} >
                       <h3>
                         <i className="fa fa-arrow-left"></i>
                         Back</h3>
                     </Link>
-                    <h3>Manage Live Classes Secdule </h3>
+                    <h3>Manage Live Classes Secdule </h3> */}
                   </div>
                   <div className=" jidfjsd-asjreid ">
 
@@ -179,7 +185,7 @@ const Home: NextPage = () => {
                           onClick={() => addFormFields()}
 
                         >
-                          + Add more secdule </button>
+                          + Add more classes </button>
                         <button className="upload-1 sdisad-dsdactive"
                           onClick={() => SaveLiveClasses()}
                         >
@@ -204,7 +210,7 @@ const Home: NextPage = () => {
                       return (
                         <div className="datepicker_container" key={i}>
                           <div className="p-field mt-2 ">
-                            <p>Sedule no </p>
+                            <p>Schedule cards</p>
                             <div className="d-flex" style={{ justifyContent: 'space-between' }}>
                               <div>
                                 {/* <Icons name="i24" /> */}
@@ -224,8 +230,7 @@ const Home: NextPage = () => {
                               selected={dat?.id || dat.date !== '' ? parse(dat.date, "yyyy-MM-dd", new Date()) : null}
                               // selected={dat.date}
                               locale="en-GB"
-                              placeholderText={'YYYY-MM-DD'} 
-
+                              placeholderText={'YYYY-MM-DD'}
                               showWeekNumbers
                               onChange={(date) => handleDateChange("date", i, date)}
                               dateFormat="yyyy-MM-dd"
@@ -244,14 +249,14 @@ const Home: NextPage = () => {
                               onKeyDown={(e) => {
                                 e.preventDefault();
                               }}
-                              placeholderText={'HH-MM'} 
+                              placeholderText={'HH-MM'}
 
                               selected={dat?.id || dat.from_time !== '' ? parse(dat.from_time, "HH:mm:ss", new Date()) : dat.from_time}
                               // selected={dat.from_time}
                               onChange={(date) => handleDateChange("from_time", i, date)}
                               showTimeSelect
                               showTimeSelectOnly
-                              // timeIntervals={24}
+                              timeIntervals={30}
                               timeCaption="Time"
                               dateFormat="h:mm "
                             />
@@ -267,7 +272,7 @@ const Home: NextPage = () => {
                               onKeyDown={(e) => {
                                 e.preventDefault();
                               }}
-                              placeholderText={'HH-MM'} 
+                              placeholderText={'HH-MM'}
 
                               name="to_time"
                               selected={dat?.id || dat.to_time !== '' ? parse(dat.to_time, "HH:mm:ss", new Date()) : dat.to_time}
@@ -275,7 +280,7 @@ const Home: NextPage = () => {
                               onChange={(date) => handleDateChange("to_time", i, date)}
                               showTimeSelect
                               showTimeSelectOnly
-                              // timeIntervals={24}
+                              timeIntervals={30}
                               timeCaption="Time"
                               dateFormat="h:mm"
                             />
@@ -306,4 +311,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default AdminAuth( Home );

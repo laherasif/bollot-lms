@@ -93,7 +93,6 @@ const Home: NextPage = () => {
       try {
         setLoaders(true)
         let res = await AxInstance.post('api//get-conversations')
-        console.log("res", res)
         if (res.data.success === true) {
           setLoaders(false)
           setConversation(res.data.response.conversations)
@@ -189,7 +188,6 @@ const Home: NextPage = () => {
 
       setLoading(true)
       let res = await AxInstance.post('api//get-messages', value)
-      console.log(res)
       if (res.data.success === true) {
         setMessages([...messages, ...res.data.response.messages])
         setLoading(false)

@@ -1,19 +1,6 @@
 import type { NextPage } from "next";
-import Dropdown from "../../../../src/components/admin/dropdown";
-import { useIntl } from "react-intl";
 import Sidebar from "../../../../src/components/admin/sidebar2";
-import { FiSearch } from "react-icons/fi";
-import { BiBell } from "react-icons/bi";
-import { IoMailOutline } from "react-icons/io5";
-import Icons from "../../../../src/icons";
-import TopNavbar from "../../../../src/components/admin/TopNavbar";
 import NavigationBar1 from "../../../../src/components/admin/NavigationBar3";
-import Chart from "../../../../src/components/admin/chart";
-import Chart1 from "../../../../src/components/admin/chart1";
-import BarChart from "../../../../src/components/admin/barchart";
-import Link from "next/link";
-import CourseCard from "../../../../src/components/admin/CourseCard1";
-import NewCourse from "../../../../src/components/admin/newCourse";
 import { useEffect, useState } from "react";
 import { RootStateOrAny, useSelector } from "react-redux";
 import axios from "axios";
@@ -46,7 +33,6 @@ const Home: NextPage = () => {
       try {
         setLoading(true)
         let res = await AxInstance.post('api//admin/courses/students-progress', { course_id: courseId })
-         console.log("Res" , res )
         if (res.data.response.progress.length) {
           setLoading(false)
           setProgress(res.data.response.progress)

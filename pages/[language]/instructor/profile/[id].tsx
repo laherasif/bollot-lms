@@ -16,32 +16,19 @@ import Link from "next/link";
 import { useSelector, RootStateOrAny } from "react-redux";
 import { useState } from "react";
 import EditProfile from '../../../../src/components/instructor/editProfile'
+import withAuth from "../../../../src/components/Hoc/authRoute";
 // const options = ["one", "two", "three"];
 
-const UserChatCard = () => {
-  return (
-    <div className="user-card-inbox">
-      <div className="user-card-inbox-inner">
-        <img src="/assets/images/umpire-1.svg" />
-        <div>
-          <h3>John Doe</h3>
-          <p>Me: What is difficulty...</p>
-        </div>
-      </div>
-      <div>
-        <p>12 Jun</p>
-      </div>
-    </div>
-  );
-};
+
 const Home: NextPage = () => {
   // const intl = useIntl();
-  const isTabsm = useMediaQuery({
-    query: "(min-width: 767px)",
-  });
+ 
 
   const { User } = useSelector((state: RootStateOrAny) => state?.userReducer)
   const [edit, setEdit] = useState(false)
+
+
+  console.log(User)
 
 
   return (
@@ -93,11 +80,11 @@ const Home: NextPage = () => {
               <div className="dsfjaio3-ejsd">
                 <div className="fidaso-keosad">
                   <p>Total students</p>
-                  <h3></h3>
+                  <h3>0</h3>
                 </div>
                 <div className="fidaso-keosad">
                   <p>Reviews</p>
-                  <h3></h3>
+                  <h3>{User?.avg_instructor_reviews?.count}</h3>
                 </div>
               </div>
 
@@ -123,4 +110,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default withAuth( Home );

@@ -21,8 +21,9 @@ import { useRouter } from 'next/router'
 import { Small } from "../../../../src/components/admin/loader";
 import { bytesToSize, convertToBase64, generateVideoThumbnail, getBase64Image, SweetAlert } from "../../../../src/function/hooks";
 import { myBucket, S3_BUCKET } from "../../../../src/confiq/aws/aws";
-import { ProgressBar, Spinner } from "react-bootstrap";
+import { Breadcrumb, ProgressBar, Spinner } from "react-bootstrap";
 import instance from "../../../../src/confiq/axios/instance";
+import AdminAuth from "../../../../src/components/Hoc/adminRoute";
 const options = ["one", "two", "three"];
 
 
@@ -34,12 +35,11 @@ const Home: NextPage = () => {
   const [network, setNetwork] = useState(false)
   const [load, setLoad] = useState(false)
   const [pregress, setProgress] = useState([])
-  const [errors, setErrors] = useState()
+  const [errors, setErrors] = useState({})
   const [section, setSection] = useState([
 
   ])
 
-  console.log("errora", errors)
 
 
   const token = useSelector((state: RootStateOrAny) => state?.admin?.token)
@@ -53,7 +53,6 @@ const Home: NextPage = () => {
   });
 
 
-  console.log("section", section)
 
 
 
@@ -66,7 +65,6 @@ const Home: NextPage = () => {
       try {
         setLoading(true)
         let res = await AxInstance.get(`api//admin/courses/curriculum/get/${courseId}`)
-        console.log("rea", res)
         if (res.data.success === true) {
           setLoading(false)
           setSection(res.data.response.sections)
@@ -129,7 +127,7 @@ const Home: NextPage = () => {
 
   const handleChangeLectureFile = async (index: number, i: number, evnt: React.ChangeEvent<HTMLInputElement>) => {
     const file: any = evnt.target.files[0]
-    if (!file.name.match(/.(mp4|pdf)$/i)) {
+    if (!file.name.match(/.(mp4|pdf|mov|wmv|avi|avchd|flv|mkv|mpeg-2)$/i)) {
       SweetAlert({ icon: "error", text: 'please select only video or pdf files ' })
     }
     else
@@ -234,7 +232,7 @@ const Home: NextPage = () => {
     for (let i = 0; i < lists.length; i++) {
       if (i === index) {
         const element = lists[i];
-        element?.lectures.push({ title: "", file_type: '', file_url: '', file_size: '' , uuid :'' })
+        element?.lectures.push({ title: "", file_type: '', file_url: '', file_size: '', uuid: '' })
       }
 
     }
@@ -242,7 +240,6 @@ const Home: NextPage = () => {
 
   }
 
-  console.log("courseId" , courseId ) 
   const SaveCriculum = async () => {
 
     let saveCri = {
@@ -255,6 +252,7 @@ const Home: NextPage = () => {
       let res = await AxInstance.post('api//admin/courses/curriculum/section/update', saveCri)
       if (res.data.success === true) {
         setLoader(false);
+        setErrors({})
 
         SweetAlert({ icon: "success", text: 'Criculum are Successfully updated' })
       }
@@ -279,6 +277,9 @@ const Home: NextPage = () => {
         const element = lists[j];
         element.lectures[i].thumbnail = ""
         element.lectures[i].object_key = ""
+        element.lectures[i].file_size = ""
+        element.lectures[i].progressbar = 0
+        
         if (network === true) {
           element.lectures[i].progressbar = 0
         }
@@ -332,119 +333,127 @@ const Home: NextPage = () => {
                 <div className="hdsf0s-sadmsa">
 
                   <div className="back-btn">
-                    <Link href="/en/admin/courses" >
+                    {/* <Link href="/en/admin/courses" >
                       <h3 className="back-arrow">
                         <i className="fa fa-arrow-left"></i>
                         Back</h3>
                     </Link>
-                    <h3>Manage Curriculum
+                    <h3>Manage Curriculum */}
 
-                    </h3>
-                  </div>
-                  <div className=" jidfjsd-asjreid">
-                  </div>
+                    <Breadcrumb>
+                      <Breadcrumb.Item linkAs={Link} href="/en/admin/dashboard">Dashboard</Breadcrumb.Item>
+                      <Breadcrumb.Item linkAs={Link} href="/en/admin/courses" >
+                        Courses
+                      </Breadcrumb.Item>
+                      <Breadcrumb.Item active>Manage Criculum </Breadcrumb.Item>
+                    </Breadcrumb>
+
+                  {/* </h3> */}
                 </div>
-                <div className="complete-web-1 ">
-                  <div className="umpire w-100">
-                    <div className="umpire-1 umpire-1-cst ">
-                      <div className="d-flex mb-3 idfadsf-sads">
+                <div className=" jidfjsd-asjreid">
+                </div>
+              </div>
+              <div className="complete-web-1 ">
+                <div className="umpire w-100">
+                  <div className="umpire-1 umpire-1-cst ">
+                    <div className="d-flex mb-3 idfadsf-sads">
 
-                        <button className="upload-1 sdisad-dsdactive"
-                          disabled={red ? true : false}
-                          style={red ? { opacity: '0.5' } : { opacity: 1 }}
-                          onClick={() => AddmoreSection()}
-                        >
-                          + add more sections </button>
-                        <button className="upload-1 sdisad-dsdactive"
-                          disabled={red ? true : false}
-                          style={red ? { opacity: '0.5' } : { opacity: 1 }}
-                          onClick={() => SaveCriculum()}
-                        >
-                          <i className="fa fa-save" style={{ marginRight: '10px' }}></i>
-                          {loader ? <Spinner animation="border" />
-                            :
-                            "Save"
-                          }
-                        </button>
-
-                      </div>
+                      <button className="upload-1 sdisad-dsdactive"
+                        disabled={red ? true : false}
+                        style={red ? { opacity: '0.5' } : { opacity: 1 }}
+                        onClick={() => AddmoreSection()}
+                      >
+                        + Add more sections </button>
+                      <button className="upload-1 sdisad-dsdactive"
+                        disabled={red ? true : false}
+                        style={red ? { opacity: '0.5' } : { opacity: 1 }}
+                        onClick={() => SaveCriculum()}
+                      >
+                        <i className="fa fa-save" style={{ marginRight: '10px' }}></i>
+                        {loader ? <Spinner animation="border" />
+                          :
+                          "Save"
+                        }
+                      </button>
 
                     </div>
+
                   </div>
                 </div>
-                <div className="complete-web-1 mb-3">
-                  <div className="criculum-container">
-                    {section ? section?.map((sec: any, index: number) => (
-                      <div className="drop-box" style={{ marginLeft: '10px', maxWidth: '100%' }}>
-                        <div className="kvjadsd-j43rm">
-                          <div className="jodsa-wnedas">
-                            <h6>Section title</h6>
+              </div>
+              <div className="complete-web-1 mb-3">
+                <div className="criculum-container">
+                  {section ? section?.map((sec: any, index: number) => (
+                    <div className="drop-box" style={{ marginLeft: '10px', maxWidth: '100%' }}>
+                      <div className="kvjadsd-j43rm">
+                        <div className="jodsa-wnedas">
+                          <h6>Section title</h6>
+                        </div>
+                        {sec?.length !== -1 && <div onClick={() => removeInputField(index)} style={{ cursor: 'pointer' }}><i className="fa fa-trash"></i></div>}
+                      </div>
+                      <div >
+                        <input
+                          type="text"
+                          name="title"
+                          className="input_criculum"
+                          style={errors && errors?.sections && errors?.sections[index]?.title && { border: '1pt solid red' }}
+                          // style={{border: '1pt solid red'}}
+                          value={sec.title}
+                          onChange={(e) => handleChangeSection(index, e)}
+                          placeholder="Write here..." />
+                        {errors && errors?.sections ? <div className="invalid mt-1">{errors?.sections[index]?.title}</div> : null}
+
+                      </div>
+                      {sec.lectures.map((lec: any, i: number) => (
+                        <div className="drop-box " style={{ marginTop: '10px' }}>
+                          <div className="kvjadsd-j43rm">
+                            <div className="jodsa-wnedas">
+                              <h6>Lectures</h6>
+                            </div>
+                            {
+                              lec?.length !== -1 && <div style={lec?.progressbar > 0 && lec?.progressbar < 100 ? { cursor: 'not-allowed' } : { cursor: 'pointer' }} onClick={lec?.progressbar > 0 && lec?.progressbar < 100 ? null : () => removeInputFields(index, i)} ><i className="fa fa-trash"></i></div>
+
+                            }
+
                           </div>
-                          {sec?.length !== -1 && <div onClick={() => removeInputField(index)} style={{ cursor: 'pointer' }}><i className="fa fa-trash"></i></div>}
-                        </div>
-                        <div >
-                          <input
-                            type="text"
-                            name="title"
-                            className="input_criculum"
-                            style={errors && errors?.sections && errors?.sections[index]?.title && { border: '1pt solid red' }}
-                            // style={{border: '1pt solid red'}}
-                            value={sec.title}
-                            onChange={(e) => handleChangeSection(index, e)}
-                            placeholder="Write here..." />
-                          {errors && errors?.sections ? <div className="invalid mt-1">{errors?.sections[index]?.title}</div> : null}
 
-                        </div>
-                        {sec.lectures.map((lec: any, i: number) => (
-                          <div className="drop-box " style={{ marginTop: '10px' }}>
-                            <div className="kvjadsd-j43rm">
-                              <div className="jodsa-wnedas">
-                                <h6>Lectures</h6>
+                          <div >
+                            <div className="d-flex">
+                              <Icons name="i24" />
+                              <label>Title</label>
+                            </div>
+                            <input
+                              type="text"
+                              name="title"
+                              className="input_criculum"
+
+                              style={errors && errors?.sections && errors?.sections[index]?.lectures[i]?.title && { border: '1pt solid red' }}
+                              value={lec.title}
+                              onChange={(e) => handleChangeLecture(index, i, e)}
+                              placeholder="Write here..." />
+                            {errors && errors?.sections ? <div className="invalid mt-1">{errors?.sections[index]?.lectures[i]?.title}</div> : null}
+
+                          </div>
+
+                          <div className={lec.thumbnail && lec.id || lec.progressbar === 100 ? "image-container" : ""}>
+                            <label>Video / PDF file for this Lecture</label>
+                            <div className="drop-box img-box"
+                              style={errors && errors?.sections && errors?.sections[index]?.lectures[i]?.object_key && { border: '1pt solid red' }}
+
+                            >
+                              <div className="kvjadsd-j43rm iasdufhvs-ernd" >
+                                <Icons name="i29" />
+                                {lec?.id && !lec?.uuid && lec?.thumbnail !== '' ? <img src={lec.thumbnail} alt="course_img" className="thum_img" /> : lec?.object_key}
+                                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                  {lec?.file_size > 0 && <p className="mt-2">File Size : {bytesToSize(lec?.file_size)}</p>}
+                                  {lec?.progressbar === 100 && <p className="mt-2">File Uploaded <i style={{ color: 'green' }} className="fa fa-check-circle"></i></p>}
+                                </div>
                               </div>
-                              {
-                                lec?.length !== -1 && <div style={lec?.progressbar > 0 && lec?.progressbar < 100 ? { cursor: 'not-allowed' } : { cursor: 'pointer' }} onClick={lec?.progressbar > 0 && lec?.progressbar < 100 ? null : () => removeInputFields(index, i)} ><i className="fa fa-trash"></i></div>
-
+                              {lec.thumbnail ? "" :
+                                <input type="file" accept="pdf/*" onChange={(e) => handleChangeLectureFile(index, i, e)} className="custom-file-input" />
                               }
 
-                            </div>
-
-                            <div >
-                              <div className="d-flex">
-                                <Icons name="i24" />
-                                <label>Title</label>
-                              </div>
-                              <input
-                                type="text"
-                                name="title"
-                                className="input_criculum"
-
-                                style={errors && errors?.sections && errors?.sections[index]?.lectures[i]?.title && { border: '1pt solid red' }}
-                                value={lec.title}
-                                onChange={(e) => handleChangeLecture(index, i, e)}
-                                placeholder="Write here..." />
-                              {errors && errors?.sections ? <div className="invalid mt-1">{errors?.sections[index]?.lectures[i]?.title}</div> : null}
-
-                            </div>
-
-                            <div className={lec.thumbnail && lec.id || lec.progressbar === 100 ? "image-container" : ""}>
-                              <label>Video / PDF file for this Lecture</label>
-                              <div className="drop-box img-box"
-                                style={errors && errors?.sections && errors?.sections[index]?.lectures[i]?.object_key && { border: '1pt solid red' }}
-
-                              >
-                                <div className="kvjadsd-j43rm iasdufhvs-ernd" >
-                                  <Icons name="i29" />
-                                  {lec?.id && !lec?.uuid && lec?.thumbnail !== '' ? <img src={lec.thumbnail} alt="course_img" className="thum_img" /> : lec?.object_key}
-                                  <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                    {lec?.file_size > 0 && <p className="mt-2">File Size : {bytesToSize(lec?.file_size)}</p>}
-                                    {lec?.progressbar === 100 && <p className="mt-2">File Uploaded <i style={{ color: 'green' }} className="fa fa-check-circle"></i></p>}
-                                  </div>
-                                </div>
-                                {lec.thumbnail ? "" :
-                                  <input type="file" accept="pdf/*" onChange={(e) => handleChangeLectureFile(index, i, e)} className="custom-file-input" />
-                                }
-
-                                {/* <div className="kvjadsd-j43rm iasdufhvs-ernd" >
+                              {/* <div className="kvjadsd-j43rm iasdufhvs-ernd" >
                                   <Icons name="i29" />
                                  
                                   {lec?.id ? <img src={lec.thumbnail} alt="course_img" className="thum_img" /> : lec?.object_key}
@@ -456,44 +465,44 @@ const Home: NextPage = () => {
                                 {lec?.object_key ? "" :
                                   <input type="file" accept="pdf/*" onChange={(e) => handleChangeLectureFile(index, i, e)} className="custom-file-input" />
                                 } */}
-                                {errors && errors?.sections ? <div className="invalid mt-1">{errors?.sections[index]?.lectures[i]?.object_key}</div> : null}
+                              {errors && errors?.sections ? <div className="invalid mt-1">{errors?.sections[index]?.lectures[i]?.object_key}</div> : null}
 
 
-                              </div>
-                              <div className="mt-2">
-                                {lec.progressbar === 100 ? " "
-                                  :
-                                  lec.progressbar && <ProgressBar animated now={lec.progressbar} />}
-                              </div>
-                              {lec?.object_key || lec?.thumbnail && lec.progressbar === 100 ?
-                                <>
-                                  <div className="overlay"></div>
-                                  <div id="icon" onClick={() => delThumnail(index , i )}>
-                                    <i className="fa fa-close" ></i>
-                                  </div>
-                                </>
-                                : null
-                              }
                             </div>
-
+                            <div className="mt-2">
+                              {lec.progressbar === 100 ? " "
+                                :
+                                lec.progressbar && <ProgressBar animated now={lec.progressbar} />}
+                            </div>
+                            {lec?.object_key || lec?.thumbnail && lec.progressbar === 100 ?
+                              <>
+                                <div className="overlay"></div>
+                                <div id="icon" onClick={() => delThumnail(index, i)}>
+                                  <i className="fa fa-close" ></i>
+                                </div>
+                              </>
+                              : null
+                            }
                           </div>
-                        ))}
-                        <span className="add-mores"
-                          style={sec.lectures.some((s: any) => s.progressbar > 0 && s.progressbar < 100) ? { cursor: 'not-allowed' } : { cursor: 'pointer' }}
-                          onClick={sec.lectures.some((s: any) => s.progressbar > 0 && s.progressbar < 100) ? null : () => AddmoreLecture(index)} >+ Add more lectures </span>
+
+                        </div>
+                      ))}
+                      <span className="add-mores"
+                        style={sec.lectures.some((s: any) => s.progressbar > 0 && s.progressbar < 100) ? { cursor: 'not-allowed' } : { cursor: 'pointer' }}
+                        onClick={sec.lectures.some((s: any) => s.progressbar > 0 && s.progressbar < 100) ? null : () => AddmoreLecture(index)} >+ Add more lectures </span>
 
 
-                      </div>
-                    ))
-                      : <div>Record not found </div>
-                    }
-                  </div>
-
-
-
+                    </div>
+                  ))
+                    : <div>Record not found </div>
+                  }
                 </div>
+
+
+
               </div>
             </div>
+          </div>
           </div>
         }
       </section >
@@ -501,4 +510,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default AdminAuth( Home );

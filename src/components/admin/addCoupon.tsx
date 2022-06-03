@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { Modal, Button, Spinner, Form } from 'react-bootstrap'
-import { IoTrophySharp } from "react-icons/io5";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import { SweetAlert } from "../../function/hooks";
 import { updateStuIns } from "../../redux/actions/admin";
@@ -10,6 +9,7 @@ import DatePicker from "react-datepicker";
 import moment from "moment";
 import { format, parse } from 'date-fns'
 import "react-datepicker/dist/react-datepicker.css";
+import coupon from "../../../pages/[language]/admin/coupon";
 
 const AddCoupon = ({ Toggle, permition, User }: any) => {
 
@@ -18,6 +18,7 @@ const AddCoupon = ({ Toggle, permition, User }: any) => {
 
     const [show, setShow] = useState(permition);
     const [loading, setLoading] = useState(false);
+    const [updateValue, setUpdateValue] = useState(false);
     const [error, setErrors] = useState({});
     const [state, setState] = useState({
         coupon_code: User?.coupon_code || '',
@@ -36,7 +37,7 @@ const AddCoupon = ({ Toggle, permition, User }: any) => {
     });
 
     const handleClose = () => {
-        Toggle(false)
+        Toggle({type: "close" })
     }
 
 
@@ -46,6 +47,7 @@ const AddCoupon = ({ Toggle, permition, User }: any) => {
             [event.target.name]: event.target.value
         });
     };
+
 
 
 
@@ -75,7 +77,7 @@ const AddCoupon = ({ Toggle, permition, User }: any) => {
             if (res.data.success === true) {
                 setLoading(false)
                 SweetAlert({ icon: 'success', text: res.data.message })
-                Toggle(false)
+                Toggle({ type : "load"})
             }
             else {
                 setErrors(res.data.errors)
@@ -93,7 +95,6 @@ const AddCoupon = ({ Toggle, permition, User }: any) => {
 
     // let selectImage = User?.image || state.image
 
-    console.log("loading", User)
     return (
 
         <div className="hasiw0eskdwd">
@@ -123,7 +124,7 @@ const AddCoupon = ({ Toggle, permition, User }: any) => {
                                             style={{ display: "flex", flexDirection: "column" }}
                                         >
 
-                                            <label>Code </label>
+                                            <label>Coupon Code </label>
                                             <div className="">
                                                 <input type="text"  placeholder="Write here...." name="coupon_code" value={state.coupon_code} onChange={(e) => handleChange(e)} />
                                                 {error && error?.coupon_code ? <div className="invalid mt-1">{error?.coupon_code[0]}</div> : null}
@@ -137,7 +138,7 @@ const AddCoupon = ({ Toggle, permition, User }: any) => {
                                             style={{ display: "flex", flexDirection: "column" }}
                                         >
 
-                                            <label>Discount </label>
+                                            <label>Discount (%)</label>
                                             <div className="">
                                                 <input type="number" placeholder="Write here...." name="discount" value={state.discount} onChange={(e) => handleChange(e)} />
                                                 {error && error?.discount ? <div className="invalid mt-1">{error?.discount[0]}</div> : null}
@@ -179,7 +180,7 @@ const AddCoupon = ({ Toggle, permition, User }: any) => {
                 </Modal.Body>
                 <Modal.Footer>
                     <div className="idfadsf-sads kajfds-sdfe">
-                        <button onClick={() => SaveProfile()} className="upload-1 sdisad-dsdactive">
+                        <button onClick={() => handleClose()} className="upload-1 sdisad-dsdactive">
 
                             Close
                         </button>

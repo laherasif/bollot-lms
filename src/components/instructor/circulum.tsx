@@ -31,15 +31,10 @@ import {
   networkFail
 } from '../../redux/actions/instructor/criculum'
 export default ({ onStepChange, onPrevStep, step }: any) => {
-  const [progress, setProgress] = useState(0);
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [thumb, setTumb] = useState();
-  const [videos, setVideos] = useState();
-  const [aswVideoSrc, setAwsVideoSrc] = useState([]);
+  
   const [type, setType] = useState(0);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState([]);
-  const [err, setErr] = useState();
   const [section, setSection] = useState([{
     title: "",
     lectures: [
@@ -114,7 +109,7 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
     evnt: React.ChangeEvent<HTMLInputElement>
   ) => {
     const file: any = evnt.target.files[0];
-    if (!file.name.match(/.(mp4|pdf)$/i)) {
+    if (!file.name.match(/.(mp4|pdf | mov | wmv | avi | avchd | flv| mkv| mpeg-2)$/i)) {
       SweetAlert({
         icon: "error",
         text: "please select only video or pdf files ",

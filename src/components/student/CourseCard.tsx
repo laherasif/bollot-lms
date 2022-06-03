@@ -4,7 +4,6 @@ import { Dropdown } from "react-bootstrap";
 import Icons from "../../icons";
 import blackIcon from '../../assets/images/apple.svg'
 export default ({ course, key , courseId }: any) => {
-  console.log("course", course)
 
   const [review , setReview] = useState(false)
 

@@ -51,7 +51,6 @@ const Home: NextPage = () => {
     let fetchPayment = async () => {
       try {
         let res = await AxInstance.get(`api//my-devices`)
-        console.log("Res", res)
         setDevice(res.data.response.devices)
       }
       catch (err) {

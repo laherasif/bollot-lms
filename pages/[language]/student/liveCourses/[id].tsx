@@ -36,7 +36,6 @@ const Home: NextPage = () => {
     let fetchCourse = async () => {
       setLoading(true)
       let res = await AxInstance.get('api//student/my-live-courses')
-      console.log("Res", res)
       if (res.data.success === true) {
         setLoading(false)
         setCourse(res.data.response.courses)

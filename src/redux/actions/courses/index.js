@@ -18,6 +18,7 @@ import {
     ADD_COURSE_INPUTS_MORE,
     GET_SORTED_COURSE_SEARCH,
     GET_MEMERSHIP,
+    GET_FILTER_LIVE_COURSE,
 
 } from '../../types/types'
 import instance from '../../../confiq/axios/instance'
@@ -95,6 +96,7 @@ export const GetCourse = () => async (dispatch) => {
         let liveCourse = {
             page_no: 1,
             rows_per_page: 10,
+            course_type: "live"
             
         }
 
@@ -110,19 +112,19 @@ export const GetCourse = () => async (dispatch) => {
             type: GET_CATAGORY,
             payload: res.data.response.categories
         })
-        let featurs = await instance.get('api//courses')
+        let featurs = await instance.post('api//courses' , feature)
 
         dispatch({
             type: GET_FETAURE,
             payload: featurs.data.response.courses
         })
-        let latests = await instance.get('api//courses')
+        let latests = await instance.post('api//courses' , latest)
 
         dispatch({
             type: GET_LATEST,
             payload: latests.data.response.courses
         })
-        let live = await instance.get('api//courses')
+        let live = await instance.post('api//courses' ,liveCourse)
         dispatch({
             type: LIVE_COURSE,
             payload: live.data.response.courses
@@ -221,7 +223,7 @@ export const priceFilter = (data) => async dispatch => {
 
 export const GetSortedSearch = (name , search) => async dispatch => {
     try {
-
+   debugger
         let filterPrice = {
             page_no: 1,
             rows_per_page: 10,
@@ -309,6 +311,32 @@ export const GetMembership = () => async dispatch => {
 
 
 }
+
+
+export const GetLiveCourse = () => async dispatch => {
+    try {
+
+        let liveCourse = {
+            page_no: 1,
+            rows_per_page: 10,
+            course_type: "live"
+            
+        }
+
+        let live = await instance.post('api//courses' ,liveCourse)
+        dispatch({
+            type: GET_FILTER_LIVE_COURSE,
+            payload: live.data.response.courses
+        })
+       
+    } catch (error) {
+
+    }
+
+
+}
+
+
 
 
 

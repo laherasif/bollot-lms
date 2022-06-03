@@ -36,9 +36,9 @@ export default ({ course, key }: any) => {
           </Dropdown.Toggle>
 
           <Dropdown.Menu>
-            <Dropdown.Item as={Link} href={`/en/instructor/managePreview/liveCourse?=${course?.id}`}>Manage preview </Dropdown.Item>
-            <Dropdown.Item as={Link} href={`/en/instructor/manageLiveClasses/${course?.id}`}>Manage  Live Classes </Dropdown.Item>
-            <Dropdown.Item as={Link} href={`/en/instructor/manageEnrolledStudent/${course?.id}`}>Manage Enrolled Student</Dropdown.Item>
+            <Dropdown.Item as={Link} href={`/en/instructor/managePreview/liveCourse?=${course?.id}`}>Manage Preview </Dropdown.Item>
+            <Dropdown.Item as={Link} href={`/en/instructor/manageLiveClasses/${course?.id}`}>Manage Schedule  </Dropdown.Item>
+            <Dropdown.Item as={Link} href={`/en/instructor/manageEnrolledStudent/${course?.id}`}>Enrolled Student</Dropdown.Item>
             <Dropdown.Item as={Link} href={ course?.quiz?.length === 0  ? `/en/instructor/quiz` : `/en/instructor/manageQuiz/${course?.id}`}>Manage Quiz</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>

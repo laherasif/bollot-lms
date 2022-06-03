@@ -3,7 +3,6 @@ import Link from "next/link";
 import { RootStateOrAny, useSelector } from "react-redux";
 import { add3Dots } from "../../function/hooks";
 export default ({ message }: any) => {
-  console.log("topnavabr" , message)
     const { User } = useSelector((state: RootStateOrAny) => state?.userReducer)
 
 

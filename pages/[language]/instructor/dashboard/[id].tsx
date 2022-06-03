@@ -16,6 +16,8 @@ import Link from "next/link";
 import { useEffect } from "react";
 import axios from "axios";
 import { getDashbaordStatic , getTransactionStatic , getTransactions } from "../../../../src/redux/actions/instructor/courses";
+import { SweetAlert } from "../../../../src/function/hooks";
+import withAuth from "../../../../src/components/Hoc/authRoute";
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
@@ -44,11 +46,12 @@ useEffect(()=>{
         dispatch(getTransactionStatic(transaction.data.response.data))
         dispatch(getTransactions(Alltransaction.data.response.transactions))
       }
-      // console.log("REs trns" , res )
     }
     fetchStatic()
   }
-  catch(err){}
+  catch(err){
+    SweetAlert({icon:'error' , text : err })
+  }
 },[])
 
 
@@ -156,4 +159,4 @@ useEffect(()=>{
   );
 };
 
-export default Home;
+export default withAuth( Home );

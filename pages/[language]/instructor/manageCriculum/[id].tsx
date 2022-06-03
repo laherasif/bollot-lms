@@ -1,28 +1,30 @@
 import type { NextPage } from "next";
-import Dropdown from "../../../../src/components/instructor/dropdown";
-import { useIntl } from "react-intl";
+// import Dropdown from "../../../../src/components/instructor/dropdown";
+// import { useIntl } from "react-intl";
 import Sidebar from "../../../../src/components/instructor/sidebar2";
-import { FiSearch } from "react-icons/fi";
-import { BiBell } from "react-icons/bi";
-import { IoMailOutline } from "react-icons/io5";
+// import { FiSearch } fr"react-icons/bi";
+// import { IoMailOutline } from "react-icons/io5";om "react-icons/fi";
+// import { BiBell } from 
 import Icons from "../../../../src/icons";
-import TopNavbar from "../../../../src/components/instructor/TopNavbar";
+// import TopNavbar from "../../../../src/components/instructor/TopNavbar";
 import NavigationBar1 from "../../../../src/components/instructor/NavigationBar3";
-import Chart from "../../../../src/components/instructor/chart";
-import Chart1 from "../../../../src/components/instructor/chart1";
-import BarChart from "../../../../src/components/instructor/barchart";
+// import Chart from "../../../../src/components/instructor/chart";
+// import Chart1 from "../../../../src/components/instructor/chart1";
+// import BarChart from "../../../../src/components/instructor/barchart";
 import Link from "next/link";
-import CourseCard from "../../../../src/components/instructor/CourseCard1";
-import NewCourse from "../../../../src/components/instructor/newCourse";
-import { useEffect, useState, useRef } from "react";
+// import CourseCard from "../../../../src/components/instructor/CourseCard1";
+// import NewCourse from "../../../../src/components/instructor/newCourse";
+import { useEffect, useState } from "react";
+
 import { RootStateOrAny, useSelector } from "react-redux";
 import axios from "axios";
 import { useRouter } from 'next/router'
 import { Small } from "../../../../src/components/instructor/loader";
-import { bytesToSize, convertToBase64, generateVideoThumbnail, getBase64Image, SweetAlert } from "../../../../src/function/hooks";
+import { bytesToSize, generateVideoThumbnail, getBase64Image, SweetAlert } from "../../../../src/function/hooks";
 import { myBucket, S3_BUCKET } from "../../../../src/confiq/aws/aws";
-import { ProgressBar, Spinner } from "react-bootstrap";
-import instance from "../../../../src/confiq/axios/instance";
+import { ProgressBar, Spinner , Breadcrumb } from "react-bootstrap";
+import withAuth from "../../../../src/components/Hoc/authRoute";
+// import instance from "../../../../src/confiq/axios/instance";
 const options = ["one", "two", "three"];
 
 
@@ -39,7 +41,6 @@ const Home: NextPage = () => {
 
   ])
 
-  console.log("errora", errors)
 
 
   const token = useSelector((state: RootStateOrAny) => state?.userReducer?.token)
@@ -53,7 +54,6 @@ const Home: NextPage = () => {
   });
 
 
-  console.log("section", section)
 
 
 
@@ -66,7 +66,6 @@ const Home: NextPage = () => {
       try {
         setLoading(true)
         let res = await AxInstance.get(`api//instructor/courses/curriculum/get/${courseId}`)
-        console.log("rea", res)
         if (res.data.success === true) {
           setLoading(false)
           setSection(res.data.response.sections)
@@ -129,7 +128,7 @@ const Home: NextPage = () => {
 
   const handleChangeLectureFile = async (index: number, i: number, evnt: React.ChangeEvent<HTMLInputElement>) => {
     const file: any = evnt.target.files[0]
-    if (!file.name.match(/.(mp4|pdf)$/i)) {
+    if (!file.name.match(/.(mp4|pdf|mov|wmv|avi|avchd|flv|mkv|mpeg-2)$/i)) {
       SweetAlert({ icon: "error", text: 'please select only video or pdf files ' })
     }
     else
@@ -234,7 +233,7 @@ const Home: NextPage = () => {
     for (let i = 0; i < lists.length; i++) {
       if (i === index) {
         const element = lists[i];
-        element?.lectures.push({ title: "", file_type: '', file_url: '', file_size: '' , uuid :'' })
+        element?.lectures.push({ title: "", file_type: '', file_url: '', file_size: '', uuid: '' })
       }
 
     }
@@ -282,6 +281,10 @@ const Home: NextPage = () => {
         const element = lists[j];
         element.lectures[i].thumbnail = ""
         element.lectures[i].object_key = ""
+        element.lectures[i].progressbar = 0
+        element.lectures[i].file_size = 0
+
+
         if (network === true) {
           element.lectures[i].progressbar = 0
         }
@@ -335,14 +338,21 @@ const Home: NextPage = () => {
                 <div className="hdsf0s-sadmsa">
 
                   <div className="back-btn">
-                    <Link href="/en/instructor/courses" >
-                      <h3>
+                    <Breadcrumb>
+                      <Breadcrumb.Item linkAs={Link} href="/en/instructor/">Dashboard</Breadcrumb.Item>
+                      <Breadcrumb.Item linkAs={Link} href="/en/instructor/courses" >
+                        Courses
+                      </Breadcrumb.Item>
+                      <Breadcrumb.Item active>Manage Criculum </Breadcrumb.Item>
+                    </Breadcrumb>
+                    {/* <Link href="/en/instructor/courses" >
+                    n  <h3>
                         <i className="fa fa-arrow-left"></i>
                         Back</h3>
                     </Link>
-                    <h3>Manage Curriculum
+                    <h3>Maage Curriculum
 
-                    </h3>
+                    </h3> */}
                   </div>
                   <div className=" jidfjsd-asjreid">
                   </div>
@@ -357,7 +367,7 @@ const Home: NextPage = () => {
                           style={red ? { opacity: '0.5' } : { opacity: 1 }}
                           onClick={() => AddmoreSection()}
                         >
-                          + add more sections </button>
+                          + Add more sections </button>
                         <button className="upload-1 sdisad-dsdactive"
                           disabled={red ? true : false}
                           style={red ? { opacity: '0.5' } : { opacity: 1 }}
@@ -471,7 +481,7 @@ const Home: NextPage = () => {
                               {lec?.object_key || lec?.thumbnail && lec.progressbar === 100 ?
                                 <>
                                   <div className="overlay"></div>
-                                  <div id="icon" onClick={() => delThumnail(index , i )}>
+                                  <div id="icon" onClick={() => delThumnail(index, i)}>
                                     <i className="fa fa-close" ></i>
                                   </div>
                                 </>
@@ -504,4 +514,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default withAuth(Home);

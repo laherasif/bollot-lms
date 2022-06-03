@@ -98,7 +98,6 @@ const Home: NextPage = () => {
   const signInGog = async () => {
     const { user } = await signInWithPopup(firebaseAuth, provider);
     const { refreshToken, providerData }: any = user;
-    console.log(refreshToken, providerData);
     dispatch(SocialRegMedia(providerData, permistion === 0 ? "student" : "instructor"))
 
   };
@@ -108,7 +107,6 @@ const Home: NextPage = () => {
 
     const { user } = await signInWithPopup(firebaseAuth, Fbprovider);
     const { refreshToken, providerData }: any = user;
-    console.log(refreshToken, providerData);
     dispatch(SocialRegMedia(providerData, permistion === 0 ? "student" : "instructor"))
   };
 
@@ -126,7 +124,6 @@ const Home: NextPage = () => {
 
   const handleClick = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    debugger
     setLoader(true)
     try {
 
@@ -171,7 +168,6 @@ const Home: NextPage = () => {
 
     } catch (err) {
       setLoader(false)
-      console.log("err", err)
     }
   };
 

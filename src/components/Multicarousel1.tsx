@@ -36,7 +36,7 @@ export default () => {
   const { LiveCouse } = useSelector((state: RootStateOrAny) => state.course)
   return (
     <>
-      <Carousel responsive={responsive}>
+      <Carousel responsive={responsive} autoPlay={true} transitionDuration={200}>
         {LiveCouse ? LiveCouse.map((li:any , i:number ) => (
           <CourseCard1 live={li} key={i} />
         ))

@@ -29,28 +29,30 @@ export default () => {
             About Us
 
           </Link>
-          <Link href="/en/contact">
+          {/* <Link href="/en/contact">
             Contact Us
           </Link>
           <Link href="/en/profile">
             Profile
-          </Link>
+          </Link> */}
         </div>
         <div className="d-flex flex-column">
           <h4>QuickLinks</h4>
 
           <Link href="/en/affiliate">
-            Affiliate System
+            Affiliate 
+          </Link>
+          <Link href="/en/blogs">
+            Blog
           </Link>
           <Link href="/en/news">
             News and Event
-
           </Link>
 
           <Link href="/en/faq">
             FAQ
           </Link>
-          <Link href="/en/privacy">
+          {/* <Link href="/en/privacy">
             Privacy Policy
 
           </Link>
@@ -65,7 +67,7 @@ export default () => {
           <Link href="/en/help">
             Help and Support
 
-          </Link>
+          </Link> */}
         </div>
         <div>
           <Dropdown className="cst-drp">
@@ -96,25 +98,6 @@ export default () => {
                 <Icons name="c26" />
               </div>
             </Dropdown.Toggle>
-
-            <Dropdown.Menu>
-              <Dropdown.Item href="#/action-1">
-                <div className='d-flex align-item-center'>
-                  <Icons name="c25" />
-                  <span>USD</span>
-                  <div className="cstsihdfs">
-                    <span className="mx-2">$</span>
-                  </div>
-                </div>
-
-              </Dropdown.Item>
-              {/* <Dropdown.Item href="#/action-2">
-               English
-              </Dropdown.Item>
-              <Dropdown.Item href="#/action-3">
-                Urdu
-              </Dropdown.Item> */}
-            </Dropdown.Menu>
           </Dropdown>
         </div>
       </div>

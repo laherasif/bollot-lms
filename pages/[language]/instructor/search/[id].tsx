@@ -21,6 +21,7 @@ import { Small } from "../../../../src/components/instructor/loader";
 import Invitation from "../../../../src/components/instructor/invitationForm";
 import { useRouter } from "next/router";
 import Search from "../../../../src/components/instructor/search";
+import withAuth from "../../../../src/components/Hoc/authRoute";
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
@@ -144,4 +145,4 @@ const courseSlug = router.query.id
   );
 };
 
-export default Home;
+export default withAuth( Home );

@@ -51,13 +51,10 @@ export default ()=>{
       setVisible(false);
     };
     const onUpload = (data) => {
-      console.log("Upload files", data);
     };
     const onSelect = (data) => {
-      console.log("Select files", data);
     };
     const onRemove = (id) => {
-      console.log("Remove image id", id);
     };
     return <div >
     <button onClick={handleSetVisible}>Show Me</button>

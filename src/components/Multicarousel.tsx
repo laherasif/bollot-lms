@@ -37,7 +37,7 @@ export default ({ cata }: any) => {
   const { Feature, Latest } = useSelector((state: RootStateOrAny) => state.course)
 
   return (<div>
-    <Carousel responsive={responsive}>
+    <Carousel responsive={responsive} autoPlay={true} transitionDuration={200}>
       {cata === "feature" ? (
         Feature && Feature?.length ? Feature?.map((fet: any) => (
           <CourseCard f={fet} key={fet.id} />

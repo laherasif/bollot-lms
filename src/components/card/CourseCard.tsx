@@ -27,7 +27,7 @@ export default ({ f, key }: any) => {
             <h5 className="text-decoration-line">${f?.discounted_price}</h5>
           </div>
         </div>
-      
+
         <div className="bosan" >
           <img src={f?.instructor?.image} alt="instructor_image" />
           {/* {f?.instructor?.image.length > 0 && (
@@ -41,11 +41,12 @@ export default ({ f, key }: any) => {
           )} */}
 
           <div className="b-name">
+            {/* <h4>{f?.short_desc}</h4> */}
             <h5>{f?.instructor?.fullname}</h5>
-            <p>{f?.instructor?.tagline  || "Digital Marketing Expert At Bollot"}</p>
+            <p>{f?.instructor?.tagline || "Digital Marketing Expert At Bollot"}</p>
           </div>
         </div>
-        
+
       </div>
     </Link >
   )

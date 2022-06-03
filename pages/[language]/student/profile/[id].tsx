@@ -42,7 +42,6 @@ const Home: NextPage = () => {
     }
   });
 
-  console.log("errors", errors)
 
 
   const BrowsImg = () => {
@@ -88,10 +87,9 @@ const Home: NextPage = () => {
     try {
       setLoading(true)
       let res = await AxInstance.post('api//edit-profile', state)
-      console.log("Res", res)
-      if (res.data.response.length) {
+      if (res.data.success === true) {
         setLoading(false)
-        SweetAlert({ icon: 'success', text: "Profile are updated " })
+        SweetAlert({ icon: 'success', text: res.data.message })
         dispatch(updateUser(res.data))
 
       }
@@ -103,8 +101,8 @@ const Home: NextPage = () => {
     }
     catch (err) {
       setLoading(false)
+      SweetAlert({ icon: 'error', text: err })
 
-      console.log("err", err)
     }
 
   }
@@ -130,18 +128,20 @@ const Home: NextPage = () => {
                         <img src={url || state.image || "/assets/images/umpire-1.svg"} alt="" />
                       </div>
                       <div className="maxima">
-                        <button className="upload-1" onClick={BrowsImg}>Upload New</button>
-                        <input name="fullname" type="file" id="image" ref={myref} onChange={(e) => handleChangeFile(e)} name="image" style={{ display: 'none' }} />
-                        <button className="upload-1" onClick={() => SaveProfile()}>
-                          {
-                            loading ?
+                        <div className="d-flex">
+                          <button className="upload-1" onClick={BrowsImg}>Upload New</button>
+                          <input name="fullname" type="file" id="image" ref={myref} onChange={(e) => handleChangeFile(e)} name="image" style={{ display: 'none' }} />
+                          <button className="upload-1" onClick={() => SaveProfile()}>
+                            {
+                              loading ?
 
-                              <Spinner animation="border" />
-                              :
+                                <Spinner animation="border" />
+                                :
 
-                              "Update Profile"
-                          }
-                        </button>
+                                "Update Profile"
+                            }
+                          </button>
+                        </div>
                         <p>Maximum size of 1MB. JPG, GIF, or PNG.</p>
                       </div>
                     </div>
@@ -154,6 +154,7 @@ const Home: NextPage = () => {
                       <input id={`${errors.fullname && 'input_filed_error'}`} value={state.fullname}
                         onChange={handleChange}
                         name="fullname"
+                        className="form-control"
                         type="text"
                         placeholder="Write Here...." />
                       {errors?.fullname && <div className="invalid mt-1">{errors?.fullname[0]}</div>}
@@ -163,7 +164,7 @@ const Home: NextPage = () => {
                       <label className="mb-5cst"  >
                         Email
                       </label>
-                      <input id={`${errors.email && 'input_filed_error'}`} value={state.email} onChange={handleChange} name="email" type="text" placeholder="Write Here...." />
+                      <input className="form-control" id={`${errors.email && 'input_filed_error'}`} value={state.email} onChange={handleChange} name="email" type="text" placeholder="Write Here...." />
                       {errors?.email && <div className="invalid mt-1">{errors?.email[0]}</div>}
 
                     </div>
@@ -179,7 +180,7 @@ const Home: NextPage = () => {
                       <label className="mb-5cst"  >
                         Password
                       </label>
-                      <input id={`${errors.password && 'input_filed_error'}`} value={state.password} onChange={handleChange} name="password" type="password" placeholder="new password" />
+                      <input className="form-control" id={`${errors.password && 'input_filed_error'}`} value={state.password} onChange={handleChange} name="password" type="password" placeholder="new password" />
 
                       {errors?.password && <div className="invalid mt-1">{errors?.password[0]}</div>}
                     </div>
@@ -187,7 +188,7 @@ const Home: NextPage = () => {
                       <label className="mb-5cst"  >
                         Old Password
                       </label>
-                      <input id={`${errors.old_password && 'input_filed_error'}`} value={state.old_password} onChange={handleChange} name="old_password" type="password" placeholder="old password" />
+                      <input className="form-control" id={`${errors.old_password && 'input_filed_error'}`} value={state.old_password} onChange={handleChange} name="old_password" type="password" placeholder="old password" />
                       {errors?.old_password && <div className="invalid mt-1">{errors?.old_password[0]}</div>}
 
                     </div>
@@ -199,6 +200,7 @@ const Home: NextPage = () => {
                       </label>
                       <input id={`${errors.tagline && 'input_filed_error'}`} value={state.tagline} onChange={handleChange} name="tagline"
                         placeholder="Write Here...."
+                        className="form-control"
                         type="text"
                       />
                       {errors?.tagline && <div className="invalid mt-1">{errors?.tagline[0]}</div>}
@@ -219,6 +221,7 @@ const Home: NextPage = () => {
                       <textarea
                         rows={10}
                         placeholder="Write here...."
+                        className="form-control"
                         value={state.about}
                         onChange={handleChange}
                         name="about"

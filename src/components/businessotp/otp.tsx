@@ -228,7 +228,6 @@ export function OTPInputComponent(props: OTPInputProps) {
       }
 
     } catch (error) {
-      console.log('err', error)
     }
 
   }

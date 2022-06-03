@@ -59,7 +59,6 @@ const Home: NextPage = () => {
     fetchPayment()
   }, [courseId])
 
-  console.log("tr", transtion)
 
   return (
     <>

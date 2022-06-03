@@ -35,7 +35,6 @@ import { useRouter } from "next/router";
 const Home: NextPage = ({ Course, invite }: any) => {
   // const intl = useIntl();
 
-  console.log("course", invite)
   const [message, setMessage] = useState(false)
   const [loading, setLoading] = useState(false)
   const [Info, setInfo] = useState(false)

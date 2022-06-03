@@ -292,7 +292,7 @@ export default ({ changeState, onPrevStep, step }: any) => {
             <div className="drop-box" style={{ marginLeft: '40px', maxWidth: '80%', marginTop: '30px' }}>
               <div className="kvjadsd-j43rm">
                 <div className="jodsa-wnedas">
-                  <h6>Lectures</h6>
+                  <h6>Preview</h6>
                 </div>
                 {lec?.length !== -1 && <div onClick={() => removeInputField(index)} style={{ cursor: 'pointer' }}><i className="fa fa-trash"></i></div>}
 

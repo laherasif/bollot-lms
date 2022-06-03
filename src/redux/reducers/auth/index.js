@@ -14,7 +14,7 @@ const initialState = {
   token: null,
   isAuth: false,
   varified: false,
-  USER: {},
+  User: {},
   error: {},
   pageNo: 0,
   forgotEmail: ''
@@ -44,7 +44,7 @@ const userReducer = (state = initialState, action) => {
     }
 
     case LOGIN_USER: {
-
+  debugger
       return {
         ...state,
         User: action.payload.response.student || action.payload.response.user,
@@ -82,7 +82,7 @@ const userReducer = (state = initialState, action) => {
     case LOGOUT_INST: {
       return {
         ...state,
-        User: null,
+        User: {},
         token: null
       }
     }

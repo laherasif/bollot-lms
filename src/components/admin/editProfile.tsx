@@ -115,7 +115,6 @@ const EditUser = ({ Toggle, permition }: any) => {
 
     // let selectImage = User?.image || state.image
 
-    console.log("loading", loading)
     return (
 
         <div className="hasiw0eskdwd">

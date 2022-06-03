@@ -1,20 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Container,
   Form,
   Nav,
   Navbar,
-  NavDropdown,
+  // NavDropdown,
   Offcanvas,
   Spinner,
 
 } from "react-bootstrap";
-import Circulum from './circulum'
+// import Circulum from './circulum'
 import Icons from "../../icons";
-import FieldDropdown from "./Fields/FieldDropdown";
+// import FieldDropdown from "./Fields/FieldDropdown";
 // import ImagesUploader from "./ImagesUploader";
-import instance from "../../confiq/axios/instance";
-import { IoCloudCircleSharp } from "react-icons/io5";
+// import instance from "../../confiq/axios/instance";
+// import { IoCloudCircleSharp } from "react-icons/io5";
 import { RootStateOrAny, useSelector } from "react-redux";
 import axios from "axios";
 import { SweetAlert } from "../../function/hooks";
@@ -53,11 +53,11 @@ const initialState = {
 };
 
 export default () => {
-  const [item, setItem] = useState<Outcomes[]>([''])
-  const [request, setRequest] = useState<Requirements[]>([''])
-  const [course, setCourse] = useState<Courses[]>([''])
+  // const [item, setItem] = useState<Outcomes[]>([''])
+  // const [request, setRequest] = useState<Requirements[]>([''])
+  // const [course, setCourse] = useState<Courses[]>([''])
   const [state, setState] = useState<Course>(initialState)
-  const [Courses, setCourses] = useState([])
+  // const [Courses, setCourses] = useState([])
   const [errors, setErrors] = useState({})
   const [loading, setLoading] = useState(false)
 
@@ -88,7 +88,6 @@ export default () => {
   };
 
 
-  console.log("role", state.role)
   const SaveCourse = async () => {
 
     let data = {
@@ -133,7 +132,7 @@ export default () => {
       }
       else {
         setLoading(false)
-        SweetAlert({ icon: "error", text: "Role is required"})
+        SweetAlert({ icon: "error", text: "Role is required" })
 
 
       }
@@ -147,101 +146,102 @@ export default () => {
     }
   }
 
-  console.log("rol", state)
 
 
   return (
     <Navbar expand={false} className="jds0sas0w-eawne">
       <Container fluid>
         <Navbar.Toggle aria-controls="offcanvasNavbar">
-          <button className="upload-active ">
-            <Icons name="i9" />
-            Add New Employe
+          <button className="upload-1 ">
+            Add New User
           </button>
-        </Navbar.Toggle>
-        <Navbar.Offcanvas
-          id="offcanvasNavbar"
-          aria-labelledby="offcanvasNavbarLabel"
-          placement="end"
-        >
-          <Offcanvas.Header closeButton>
-            <Offcanvas.Title id="offcanvasNavbarLabel">
-              Add New Employe
-            </Offcanvas.Title>
-          </Offcanvas.Header>
+          {/* <button className="upload-1 sdisad-dsdactive" >
+            Add New User
+             </button> */}
+      </Navbar.Toggle>
+      <Navbar.Offcanvas
+        id="offcanvasNavbar"
+        aria-labelledby="offcanvasNavbarLabel"
+        placement="end"
+      >
+        <Offcanvas.Header closeButton>
+          <Offcanvas.Title id="offcanvasNavbarLabel">
+            Add New User
+          </Offcanvas.Title>
+        </Offcanvas.Header>
 
-          <Offcanvas.Body>
+        <Offcanvas.Body>
 
-            <div className="p-field">
-              <label>Role </label>
-              <div className="kns-sanweso02e">
-                <Form.Select name="role" value={state?.role} onChange={(e) => hendleFields(e)}>
-                  <option defaultChecked>Select User</option>
-                  <option value="Instructor" >Instructor</option>
-                  <option value="student" >Student</option>
-                </Form.Select>
-                {errors?.role && <div className="invalid mt-1">{errors.role}</div>}
+          <div className="p-field">
+            <label>Role </label>
+            <div className="kns-sanweso02e">
+              <Form.Select name="role" value={state?.role} onChange={(e) => hendleFields(e)}>
+                <option defaultChecked>Select User</option>
+                <option value="Instructor" >Instructor</option>
+                <option value="student" >Student</option>
+              </Form.Select>
+              {errors?.role && <div className="invalid mt-1">{errors.role}</div>}
 
-              </div>
+            </div>
+
+          </div>
+
+          <div className="p-field mt-2">
+            <div>
+              <label>Fullname</label>
+              <input type="text"
+                name="fullname"
+                value={state.fullname}
+                onChange={(e) => hendleFields(e)}
+                placeholder="Write here..." />
+              {errors?.fullname && <div className="invalid mt-1">{errors?.fullname[0]}</div>}
+
+            </div>
+            <div>
+              <label>Email Address</label>
+              <input type="text"
+                name="email"
+                value={state.email}
+                onChange={(e) => hendleFields(e)}
+                placeholder="Write here..." />
+              {errors?.email && <div className="invalid mt-1">{errors?.email[0]}</div>}
 
             </div>
 
-            <div className="p-field mt-2">
-              <div>
-                <label>Fullname</label>
-                <input type="text"
-                  name="fullname"
-                  value={state.fullname}
-                  onChange={(e) => hendleFields(e)}
-                  placeholder="Write here..." />
-                {errors?.fullname && <div className="invalid mt-1">{errors?.fullname[0]}</div>}
-
-              </div>
-              <div>
-                <label>Email Address</label>
-                <input type="email"
-                  name="email"
-                  value={state.email}
-                  onChange={(e) => hendleFields(e)}
-                  placeholder="Write here..." />
-                {errors?.email && <div className="invalid mt-1">{errors?.email[0]}</div>}
-
-              </div>
-
-              <div>
-                <label>Password</label>
-                <input type="password"
-                  name="password"
-                  value={state.password}
-                  onChange={(e) => hendleFields(e)}
-                  placeholder="Write here..." />
-                {errors?.password && <div className="invalid mt-1">{errors?.password[0]}</div>}
-
-              </div>
-
-
-
-
+            <div>
+              <label>Password</label>
+              <input type="password"
+                name="password"
+                value={state.password}
+                onChange={(e) => hendleFields(e)}
+                placeholder="Write here..." />
+              {errors?.password && <div className="invalid mt-1">{errors?.password[0]}</div>}
 
             </div>
-            <div style={{ marginTop: '20px', width: '100%', textAlign: 'center' }}>
-              <div className="active_color w-100">
-                <button onClick={() => SaveCourse()} className="upload-active-save ">
-                  {loading ?
-                    <Spinner animation="border" />
-                    :
-                    "Save"
-                  }
-                </button>
-              </div>
+
+
+
+
+
+          </div>
+          <div style={{ marginTop: '20px', width: '100%', textAlign: 'center' }}>
+            <div className="active_color w-100">
+              <button onClick={() => SaveCourse()} className="upload-active-save ">
+                {loading ?
+                  <Spinner animation="border" />
+                  :
+                  "Save"
+                }
+              </button>
             </div>
-          </Offcanvas.Body>
+          </div>
+        </Offcanvas.Body>
 
 
 
-        </Navbar.Offcanvas>
-      </Container>
-    </Navbar>
+      </Navbar.Offcanvas>
+    </Container>
+    </Navbar >
   );
 };
 

@@ -32,7 +32,7 @@ const PreviewModel = ({ Toggle, previews }: any) => {
     const [value, setValue] = useState('');
     const [prvId, setprevId] = useState({});
 
-    console.log("previews", previews)
+   console.log("previews" , previews)
 
     const handleClose = () => {
         setShow(false)
@@ -90,10 +90,10 @@ const PreviewModel = ({ Toggle, previews }: any) => {
                 <Modal.Header closeButton>
                     <div>
                         <span>Course Preview</span>
-                        <h3>{prvId?.title} </h3>
+                        <h3 style={{fontSize:'18px'}}>{prvId?.title} </h3>
                     </div>
                 </Modal.Header>
-                <Modal.Body>
+                <Modal.Body >
                     <div className="">
                         <ReactPlayer
                             controls 

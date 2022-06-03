@@ -67,7 +67,6 @@ export default () => {
 
 
 
-  // console.log("notifications" , notifications)
 
 
   const handleClickOutside = (event: any) => {

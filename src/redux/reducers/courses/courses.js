@@ -11,10 +11,11 @@ import {
   GET_ALL_COURSES,
   LIVE_COURSE,
   GET_FILTER_PRICE,
-  GET_MEMERSHIP, 
+  GET_MEMERSHIP,
 
   GET_COURSE_CRICULUM,
   GET_SORTED_COURSE_SEARCH,
+  GET_FILTER_LIVE_COURSE,
 } from "../../types/types";
 
 
@@ -24,7 +25,7 @@ const initialState = {
   Feature: [],
   AllCourse: [],
   Criculum: [],
-  MemberShip : [],
+  MemberShip: [],
   loaders: false,
 };
 
@@ -109,7 +110,7 @@ const CourseReducer = (state = initialState, action) => {
       };
 
     case GET_SORTED_COURSE_SEARCH:
-  debugger
+      debugger
       return {
         ...state,
         AllCourse: action.payload,
@@ -147,12 +148,18 @@ const CourseReducer = (state = initialState, action) => {
         ...state,
         LiveCouse: action.payload
       }
+    case GET_FILTER_LIVE_COURSE:
+      return {
+        ...state,
+        AllCourse: action.payload,
 
-      case GET_MEMERSHIP:
-        return{
-          ...state ,
-          MemberShip : action.payload 
-        }
+      }
+
+    case GET_MEMERSHIP:
+      return {
+        ...state,
+        MemberShip: action.payload
+      }
 
     // case INCREMENT:
     //   state.localD[state.localD.findIndex((item) => item._id === action.id)]

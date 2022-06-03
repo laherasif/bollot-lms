@@ -1,7 +1,6 @@
 import React from "react";
 import { Accordion } from "react-bootstrap";
 const CourseItem = ({ lecture, key }: any) => {
-  console.log("lec" , lecture)
   return <div className="lasjdsad-dsdsadwe" key={key}>
     <p style={{ alignItems: 'center' }}>
       {lecture?.file_type === "Video" ?

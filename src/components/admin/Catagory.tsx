@@ -1,49 +1,78 @@
 
 import axios from 'axios'
-import { useEffect, useState } from 'react'
+import {  useState } from 'react'
 import DataTable from 'react-data-table-component'
 import { FiSearch } from 'react-icons/fi'
 import { RootStateOrAny, useDispatch, useSelector } from 'react-redux'
-import { getCatagories } from '../../redux/actions/admin'
+import Swal from 'sweetalert2'
+import { AdddelUpdateCatagories } from '../../redux/actions/admin'
 import AddCatagory from './addCatagory'
 export default () => {
   const [catagory, setCatagory] = useState([])
   const [loading, setLoading] = useState(false)
   const [edit, setEdit] = useState({})
   const [show, setShow] = useState(false)
+  const [loader, setLoder] = useState(false)
   const [filterText, setFilterText] = useState('');
 
-  const { token, Catagories } = useSelector((state: RootStateOrAny) => state?.admin)
 
-  // const dispatch = useDispatch()
+  
 
-  // const AxInstance = axios.create({
-  //   // .. where we make our configurations
-  //   baseURL: 'https://dev.thetechub.us/bolloot/',
-  //   headers: {
-  //     token: token
-  //   }
-  // });
-  // useEffect(() => {
-  //   let fetchCourse = async () => {
-  //     try {
-  //       setLoading(true)
-  //       let res = await AxInstance.get('api//admin/categories')
-  //       if (res.data.success === true) {
-  //         setLoading(false)
-  //         // setCatagory(res.data.response.categories)
-  //         dispatch(getCatagories(res.data.response.categories))
+  const dispatch = useDispatch()
+  
+  const { token } = useSelector((state: RootStateOrAny) => state?.admin)
+  
+  const AxInstance = axios.create({
+      // .. where we make our configurations
+      baseURL: 'https://dev.thetechub.us/bolloot/',
+      headers: {
+          token: token
+        }
+      
+      });
 
-  //       }
-  //     }
-  //     catch (err) {
 
-  //     }
-  //   }
-  //   fetchCourse()
-  // }, [])
+  const {  Catagories } = useSelector((state: RootStateOrAny) => state?.admin)
 
-  const filteredItems = Catagories?.filter(item => item.name && item.name.toLowerCase().includes(filterText.toLowerCase()));
+
+  const filteredItems = Catagories?.filter(item => item?.name && item?.name.toLowerCase().includes(filterText.toLowerCase()));
+
+
+  
+
+  const delCata = (data: Object) => {
+
+    Swal.fire({
+      title: 'Are your sure?',
+      text: "You want to delete this user ?",
+      icon: "warning",
+      showDenyButton: true,
+      confirmButtonText: 'Yes',
+
+
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        AxInstance.post(`api//admin/categories/delete`, { id : data.id })
+          .then(res => {
+            Swal.fire({
+              title: "Done!",
+              text: res.data.message,
+              icon: "success",
+              // timer: 2000,
+              // button: false
+            })
+
+            dispatch(AdddelUpdateCatagories({ data : data , type:"del" }))
+
+          });
+      } else if (result.isDenied) {
+        Swal.fire('Changes are not saved', '', 'info')
+      }
+    })
+
+  }
+
 
 
   const columns: any = [
@@ -70,8 +99,8 @@ export default () => {
           <div onClick={() => { setEdit(d), setShow(true) }}>
             <i className='fa fa-edit'></i>
           </div>
-          <div style={{ marginLeft: '20px' }}>
-            <i className='fa fa-trash'></i>
+          <div style={{ marginLeft: '20px' }} onClick={()=> delCata(d)}>
+            <i className='fa fa-trash' ></i>
           </div>
 
         </div>
@@ -98,10 +127,7 @@ export default () => {
           data={filteredItems}
           sortIcon={<i className='fa fa-arrow-down'></i>}
           pagination
-          selectableRows
-          defaultSortAsc={true}
           highlightOnHover
-          dense
 
         />
       </div>

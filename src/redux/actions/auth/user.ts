@@ -231,7 +231,6 @@ export const updateUser = (data: any) => {
 
         }
         catch (err) {
-            console.log("error in token ")
         }
     }
 }

@@ -66,12 +66,15 @@ const Home: NextPage = () => {
 
   return (
     <>
-      <div className="navBar-cst">
+      <div className="navBar-cst" >
         <div className="container-nav">
           <Navbar />
         </div>
       </div>
+      <div >
       <Carousel />
+
+      </div>
       {loader ? <div style={{ margin: '50px' }}> <Catagories /> </div>
         :
         <div className="">
@@ -113,7 +116,7 @@ const Home: NextPage = () => {
             </section>
           </div>
           <section className="container-3">
-            <h3 className="future text-center">Top Category</h3>
+            <h3 className="future text-center">Top Categories</h3>
             <div className="container-3">
               <div className="all-category">
                 {Catagory && Catagory.length ? Catagory?.map((cat: any) => (
@@ -158,7 +161,7 @@ const Home: NextPage = () => {
           </section>
           <section className="how container-3  mt-100">
             <h3 className="future brown text-center">How it Works</h3>
-            <p className="text-center">
+            <p className="text-center" >
               Lorem ipsum dolor sit amet,consectetur sadipiscing elit, sed diam{" "}
               <br />
               nonumy eirmod tempor invidunt ut labore at dolore.
@@ -284,7 +287,7 @@ const Home: NextPage = () => {
                       <div className="w-100">
                         <input
                           type="email"
-                          placeholder="email"
+                          placeholder="Enter your email address here"
                           className={error?.email ? "email-1-error" : "email-1"}
                           value={state}
                           name="state"

@@ -170,7 +170,7 @@ export default () => {
                     <Dropdown.Menu >
                       <Dropdown.Item as={Link} href="/" >Go to website</Dropdown.Item>
                       <Dropdown.Item as={Link} href="/en/admin/profile" >My Profile </Dropdown.Item>
-                      <Dropdown.Item ><span onClick={() => Logout()}>Logout</span></Dropdown.Item>
+                      <Dropdown.Item onClick={() => Logout()}><span >Logout</span></Dropdown.Item>
 
                     </Dropdown.Menu>
                   </Dropdown>

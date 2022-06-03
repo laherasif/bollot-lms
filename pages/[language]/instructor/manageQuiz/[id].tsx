@@ -13,7 +13,8 @@ import { RootStateOrAny, useSelector } from "react-redux";
 import axios from "axios";
 import { Small } from "../../../../src/components/instructor/loader";
 import { SweetAlert } from "../../../../src/function/hooks";
-import { Spinner } from "react-bootstrap";
+import { Breadcrumb, Spinner } from "react-bootstrap";
+import withAuth from "../../../../src/components/Hoc/authRoute";
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
 
@@ -47,19 +48,22 @@ const Home: NextPage = () => {
 
   ])
 
-  console.log("allquiz", allQuiz)
 
 
   const Questions = () => {
     setAllQuiz([
+      ...allQuiz,
       {
         question: '',
         options: [
           { option: "", correct: false, },
+          { option: "", correct: false, },
+          { option: "", correct: false, },
+          { option: "", correct: false, },
+          
 
         ]
       },
-      ...allQuiz,
 
 
     ])
@@ -72,7 +76,6 @@ const Home: NextPage = () => {
       try {
         setLoading(true)
         let res = await AxInstance.get(`api//instructor/courses/quiz/${courseId}`)
-        console.log("red", res)
         if (res.data.response) {
           setAllQuiz(res.data.response.course_with_quiz.quiz)
           setLoading(false)
@@ -84,6 +87,7 @@ const Home: NextPage = () => {
 
       } catch (error) {
         setLoading(false)
+
 
       }
     }
@@ -97,7 +101,7 @@ const Home: NextPage = () => {
     for (let i = 0; i < list.length; i++) {
       if (i === index) {
         const element = list[i];
-        element?.options.push({ name: "", correct: false, })
+        element?.options.push({ name: "", correct: false, } )
       }
 
     }
@@ -191,7 +195,6 @@ const Home: NextPage = () => {
     try {
       setSaveQuiz(true)
       let res = await AxInstance.post('api//instructor/courses/quiz/edit/question', value)
-      console.log("res", res)
       if (res.data.success === true) {
         setSaveQuiz(false)
         SweetAlert({ icon: "success", text: "Quiz are successfully updated" })
@@ -231,16 +234,21 @@ const Home: NextPage = () => {
                 <div className="hdsf0s-sadmsa">
 
                   <div className="back-btn">
-                    <Link href={"/en/instructor/courses"} >
+                    <Breadcrumb>
+                      <Breadcrumb.Item linkAs={Link} href="/en/instructor/">Dashboard</Breadcrumb.Item>
+                      <Breadcrumb.Item linkAs={Link} href="/en/instructor/courses" >
+                        Courses
+                      </Breadcrumb.Item>
+                      <Breadcrumb.Item active>Manage Quiz </Breadcrumb.Item>
+                    </Breadcrumb>
+                    {/* <Link href={"/en/instructor/courses"} >
                       <h3>
                         <i className="fa fa-arrow-left"></i>
                         Back</h3>
                     </Link>
-                    <h3>My Courses</h3>
+                    <h3>My Courses</h3> */}
                   </div>
-                  <div className=" jidfjsd-asjreid">
-
-                  </div>
+                
                 </div>
 
                 <div className="complete-web-1 ">
@@ -248,7 +256,7 @@ const Home: NextPage = () => {
                     <div className="umpire-1 umpire-1-cst ">
                       <div className="d-flex mb-3 idfadsf-sads">
                         <button className="upload-1 sdisad-dsdactive" onClick={() => Questions()}>
-                          + Add more quiz </button>
+                          + Add more question </button>
                         <button className="upload-1 sdisad-dsdactive" onClick={() => UpdateQuiz()}>
 
                           <i className="fa fa-save" style={{ marginRight: '10px' }}></i>
@@ -350,4 +358,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default withAuth( Home );

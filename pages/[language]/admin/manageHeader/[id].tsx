@@ -12,6 +12,7 @@ import Invitation from "../../../../src/components/instructor/invitationForm";
 import Search from "../../../../src/components/instructor/search";
 import DataTable from "react-data-table-component";
 import AddHeader from '../../../../src/components/admin/addHeader'
+import AdminAuth from "../../../../src/components/Hoc/adminRoute";
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
@@ -156,4 +157,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default AdminAuth( Home );

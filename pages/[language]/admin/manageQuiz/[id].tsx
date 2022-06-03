@@ -13,7 +13,8 @@ import { RootStateOrAny, useSelector } from "react-redux";
 import axios from "axios";
 import { Small } from "../../../../src/components/admin/loader";
 import { SweetAlert } from "../../../../src/function/hooks";
-import { Spinner } from "react-bootstrap";
+import { Breadcrumb, Spinner } from "react-bootstrap";
+import AdminAuth from "../../../../src/components/Hoc/adminRoute";
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
 
@@ -47,11 +48,11 @@ const Home: NextPage = () => {
 
   ])
 
-  console.log("allquiz", allQuiz)
 
 
   const Questions = () => {
     setAllQuiz([
+      ...allQuiz,
       {
         question: '',
         options: [
@@ -59,7 +60,6 @@ const Home: NextPage = () => {
 
         ]
       },
-      ...allQuiz,
 
 
     ])
@@ -72,7 +72,6 @@ const Home: NextPage = () => {
       try {
         setLoading(true)
         let res = await AxInstance.get(`api//admin/courses/quiz/${courseId}`)
-        console.log("red", res)
         if (res.data.response) {
           setAllQuiz(res.data.response.course_with_quiz.quiz)
           setLoading(false)
@@ -191,7 +190,6 @@ const Home: NextPage = () => {
     try {
       setSaveQuiz(true)
       let res = await AxInstance.post('api//admin/courses/quiz/edit/question', value)
-      console.log("res", res)
       if (res.data.success === true) {
         setSaveQuiz(false)
         SweetAlert({ icon: "success", text: "Quiz are successfully updated" })
@@ -231,12 +229,21 @@ const Home: NextPage = () => {
                 <div className="hdsf0s-sadmsa">
 
                   <div className="back-btn">
-                    <Link href={"/en/admin/courses"} >
+
+                    <Breadcrumb>
+                      <Breadcrumb.Item linkAs={Link} href="/en/admin/dashboard">Dashboard</Breadcrumb.Item>
+                      <Breadcrumb.Item linkAs={Link} href="/en/admin/courses" >
+                        Courses
+                      </Breadcrumb.Item>
+                      <Breadcrumb.Item active>Manage Quiz </Breadcrumb.Item>
+                    </Breadcrumb>
+
+                    {/* <Link href={"/en/admin/courses"} >
                       <h3 className="back-arrow">
                         <i className="fa fa-arrow-left"></i>
                         Back</h3>
                     </Link>
-                    <h3>My Courses</h3>
+                    <h3>Manage Quiz</h3> */}
                   </div>
                   <div className=" jidfjsd-asjreid">
 
@@ -248,7 +255,7 @@ const Home: NextPage = () => {
                     <div className="umpire-1 umpire-1-cst ">
                       <div className="d-flex mb-3 idfadsf-sads">
                         <button className="upload-1 sdisad-dsdactive" onClick={() => Questions()}>
-                          + Add more quiz </button>
+                          + Add more questions </button>
                         <button className="upload-1 sdisad-dsdactive" onClick={() => UpdateQuiz()}>
 
                           <i className="fa fa-save" style={{ marginRight: '10px' }}></i>
@@ -350,4 +357,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default AdminAuth( Home );

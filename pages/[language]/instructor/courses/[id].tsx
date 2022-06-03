@@ -1,25 +1,28 @@
 import type { NextPage } from "next";
-import Dropdown from "../../../../src/components/instructor/dropdown";
-import { useIntl } from "react-intl";
+// import Dropdown from "../../../../src/components/instructor/dropdown";
+// import { useIntl } from "react-intl";
 import Sidebar from "../../../../src/components/instructor/sidebar2";
-import { FiSearch } from "react-icons/fi";
-import { BiBell } from "react-icons/bi";
-import { IoMailOutline } from "react-icons/io5";
-import Icons from "../../../../src/icons";
-import TopNavbar from "../../../../src/components/instructor/TopNavbar";
+// import { FiSearch } from "react-icons/fi";
+// import { BiBell } from "react-icons/bi";
+// import { IoMailOutline } from "react-icons/io5";
+// import Icons from "../../../../src/icons";
+// import TopNavbar from "../../../../src/components/instructor/TopNavbar";
 import NavigationBar1 from "../../../../src/components/instructor/NavigationBar3";
-import Chart from "../../../../src/components/instructor/chart";
-import Chart1 from "../../../../src/components/instructor/chart1";
-import BarChart from "../../../../src/components/instructor/barchart";
+// import Chart from "../../../../src/components/instructor/chart";
+// import Chart1 from "../../../../src/components/instructor/chart1";
+// import BarChart from "../../../../src/components/instructor/barchart";
 import Link from "next/link";
 import CourseCard from "../../../../src/components/instructor/CourseCard1";
-import NewCourse from "../../../../src/components/instructor/newCourse";
+// import NewCourse from "../../../../src/components/instructor/newCourse";
 import { useEffect, useState } from "react";
 import { RootStateOrAny, useSelector } from "react-redux";
 import axios from "axios";
 import { Small } from "../../../../src/components/instructor/loader";
 import Invitation from "../../../../src/components/instructor/invitationForm";
 import Search from "../../../../src/components/instructor/search";
+import { Breadcrumb } from "react-bootstrap";
+import { SweetAlert } from "../../../../src/function/hooks";
+import withAuth from "../../../../src/components/Hoc/authRoute";
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
@@ -46,6 +49,7 @@ const Home: NextPage = () => {
         }
       }
       catch (err) {
+        SweetAlert({icon:'error' , text : err })
 
       }
     }
@@ -69,12 +73,16 @@ const Home: NextPage = () => {
                 <div className="hdsf0s-sadmsa">
 
                   <div className="back-btn">
-                    <Link href="/en/instructor/" >
+                    {/* <Link href="/en/instructor/" >
                       <h3 className="back-arrow">
                         <i className="fa fa-arrow-left"></i>
                         Back</h3>
                     </Link>
-                    <h3>My Courses</h3>
+                    <h3>My Courses</h3> */}
+                    <Breadcrumb>
+                      <Breadcrumb.Item linkAs={Link} href="/en/instructor">Dashboard</Breadcrumb.Item>
+                      <Breadcrumb.Item active>Courses</Breadcrumb.Item>
+                    </Breadcrumb>
                   </div>
                   <div className=" jidfjsd-asjreid">
                     <Search />
@@ -149,4 +157,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default withAuth( Home ) ;

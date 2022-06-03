@@ -6,15 +6,19 @@ import DataTable from 'react-data-table-component'
 import { RootStateOrAny, useSelector } from 'react-redux'
 import Link from 'next/link'
 import { FiSearch } from 'react-icons/fi'
+import Swal from 'sweetalert2'
+import { SweetAlert } from '../../function/hooks'
 export default () => {
   const [course, setCourses] = useState([])
   const [loading, setLoading] = useState(false)
   const [edit, setEdit] = useState({})
   const [show, setShow] = useState(false)
+  const [del, setDel] = useState(false)
   const [filterText, setFilterText] = useState('');
 
+
   const { token } = useSelector((state: RootStateOrAny) => state?.admin)
- 
+
 
   const AxInstance = axios.create({
     // .. where we make our configurations
@@ -23,6 +27,39 @@ export default () => {
       token: token
     }
   });
+
+
+  const DelCourse = (id: number,) => {
+    Swal.fire({
+      title: 'Are your sure?',
+      text: "You want to delete this Course ?",
+      icon: "warning",
+      showDenyButton: true,
+      confirmButtonText: 'Yes',
+
+
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        AxInstance.post(`api//admin/courses/delete`, { id: id })
+          .then(res => {
+            Swal.fire({
+              title: "Done!",
+              text: res.data.message,
+              icon: "success",
+              // timer: 2000,
+              // button: false
+            })
+            setDel(true )
+
+          });
+      } else if (result.isDenied) {
+        Swal.fire('Changes are not saved', '', 'info')
+      }
+    })
+
+  }
+
   useEffect(() => {
     let fetchCourse = async () => {
       try {
@@ -35,11 +72,13 @@ export default () => {
         }
       }
       catch (err) {
-
+        SweetAlert({ icon: 'error', text: err })
       }
     }
     fetchCourse()
-  }, [])
+  }, [del === true ])
+
+ 
 
   const filteredItems = course?.filter(item => item.title && item.title.toLowerCase().includes(filterText.toLowerCase()));
 
@@ -67,7 +106,7 @@ export default () => {
       )
     },
     {
-      name: "Total Student ",
+      name: "Total Students ",
       selector: "students_enrolled",
       sortable: true,
 
@@ -92,7 +131,7 @@ export default () => {
               <i className='fa fa-edit'></i>
             </div>
           </Link>
-          <div style={{ marginLeft: '20px' }}>
+          <div style={{ marginLeft: '20px' }} onClick={() => DelCourse(d?.id)}>
             <i className='fa fa-trash'></i>
           </div>
 
@@ -100,7 +139,7 @@ export default () => {
       )
     },
     {
-      name: "Manages",
+      name: "Manage",
       selector: "id",
       sortable: true,
       cell: (d: any) => (
@@ -110,12 +149,12 @@ export default () => {
               <i className="fa fa-ellipsis-h" style={{ fontSize: '20px', color: 'black' }}></i>
             </Dropdown.Toggle>
 
-            <Dropdown.Menu >
+            <Dropdown.Menu className="drop_down_ins" >
               <Dropdown.Item as={Link} href={`/en/admin/managePreview/${d?.id}`}> Previews </Dropdown.Item>
               <Dropdown.Item as={Link} href={`/en/admin/manageCriculum/${d?.id}`}> Curriculum</Dropdown.Item>
               <Dropdown.Item as={Link} href={`/en/admin/manageQuiz/${d?.id}`}> Quiz</Dropdown.Item>
               <Dropdown.Item as={Link} href={`/en/admin/manageEnrolledStudent/${d?.id}`}> Enrolled Student</Dropdown.Item>
-              <Dropdown.Item as={Link} href={`/en/admin/manageProgressStudent/${d?.id}`}>Student Progress</Dropdown.Item>
+              {/* <Dropdown.Item as={Link} href={`/en/admin/manageProgressStudent/${d?.id}`}>Student Progress</Dropdown.Item> */}
 
             </Dropdown.Menu>
           </Dropdown>
@@ -146,7 +185,7 @@ export default () => {
           data={filteredItems}
           sortIcon={<i className='fa fa-arrow-down'></i>}
           pagination
-          selectableRows
+          // selectableRows
           defaultSortAsc={true}
           highlightOnHover
 

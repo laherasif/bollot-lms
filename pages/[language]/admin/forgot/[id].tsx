@@ -9,6 +9,7 @@ import instance from "../../../../src/confiq/axios/instance";
 // import { loginAdmin } from '../../../../src/redux/actions/auth/user'
 import { useRouter } from "next/router";
 import { useDispatch} from "react-redux";
+import { loginAdmin } from "../../../../src/redux/actions/admin";
 const Home: NextPage = () => {
   // const intl = useIntl();
 
@@ -64,12 +65,12 @@ const Home: NextPage = () => {
 
   const handleClick = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    debugger
     setLoader(true)
     try {
       let res = await instance.post("api//admin/login", authValue)
       if (res.data.success === true ) {
         setLoader(false)
+          dispatch(loginAdmin(res))
           router.push("/en/admin/login");
       
       }
@@ -128,4 +129,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default  AdminAuth( Home );

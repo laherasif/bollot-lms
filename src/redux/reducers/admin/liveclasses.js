@@ -17,7 +17,6 @@ const initialState = {
 };
 
 const ClassesReducer = (state = initialState, action) => {
-    console.log("state ,", state)
     switch (action.type) {
 
         case ADD_LIVECLASS_MORE:

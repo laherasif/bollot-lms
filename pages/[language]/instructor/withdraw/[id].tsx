@@ -1,29 +1,20 @@
 import type { NextPage } from "next";
-import { Form, Spinner } from "react-bootstrap";
-
-import { useIntl } from "react-intl";
-// import OrderDetailCard from "../../../src/components/card/OrderDetailCard";
+import { Spinner } from "react-bootstrap";
 import React, { useState, useEffect } from "react";
-import Footer from "../../../src/components/footer";
-import Navbar from "../../../src/components/header/Navbar";
-import Icons from "../../../src/icons";
+import Footer from "../../../../src/components/footer";
+import Navbar from "../../../../src/components/header/Navbar";
 import { useSelector, RootStateOrAny, useDispatch } from "react-redux";
-// import cart from "../cart";
-import { ResetCart, SaveCard } from "../../../src/redux/actions/course/course";
+import { ResetCart, SaveCard } from "../../../../src/redux/actions/course/course";
 import axios from "axios";
-import instance from "../../../src/confiq/axios/instance";
 import {
   formatCreditCardNumber,
   formatCVC,
   formatMonth,
-} from "../../../src/components/util";
-import StripeContainer from "../../../src/components/payment/stripContainer";
-import withAuth from '../../../src/components/Hoc/authRoute'
-import SucessCheckout from '../../../src/components/sucessCheckout'
+} from "../../../../src/components/util";
+import withAuth from '../../../../src/components/Hoc/authRoute'
 import { useRouter } from 'next/router'
-import { SweetAlert } from "../../../src/function/hooks";
-import { Small } from "../../../src/components/student/loader";
-import CartCard from "../../../src/components/card/cartsCard";
+import { SweetAlert } from "../../../../src/function/hooks";
+import { Small } from "../../../../src/components/student/loader";
 const Home: NextPage = () => {
   // const intl = useIntl();
   const [acoountDetail, setAcoountDetail] = useState({
@@ -44,6 +35,7 @@ const Home: NextPage = () => {
   const [cardDetail, setCardDetail] = useState([]);
   const [payments, setPayments] = useState(false);
   const [complPay, setComplPay] = useState(false);
+  const [state, setState] = useState('');
   const [buynow, setBuyNow] = useState([])
   const [cards, setCards] = useState([
     '/assets/images/card-amex.svg',
@@ -55,9 +47,8 @@ const Home: NextPage = () => {
 
 
   const dispatch = useDispatch()
-
   const router = useRouter()
-  let buyNowId = router.query.id
+
 
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -75,12 +66,9 @@ const Home: NextPage = () => {
   };
 
 
-  const { AddCart , discount } = useSelector(
-    (state: RootStateOrAny) => state.cartReducer
-  );
 
 
-  const { token, User } = useSelector((state: RootStateOrAny) => state?.userReducer)
+  const { token,  } = useSelector((state: RootStateOrAny) => state?.userReducer)
 
   const AxInstance = axios.create({
     // .. where we make our configurations
@@ -91,28 +79,9 @@ const Home: NextPage = () => {
   });
 
 
-  useEffect(() => {
-    if (buyNowId) {
-      let fetchBuyNow = async () => {
-        try {
-          // let res = await AxInstance.get('api//stripe/card/all')
-          let res = await AxInstance.get(`api//courses/${buyNowId}`)
-          if (res.data.success === true) {
-            setBuyNow(res.data.response.course)
-          }
-        }
-        catch (err) {
-        }
-      }
-      fetchBuyNow()
-    }
-  }, [buyNowId])
 
-  useEffect(() => {
-    if (!User) {
-      router.push('/en/login?checkout=true')
-    }
-  }, [])
+
+
 
 
   useEffect(() => {
@@ -153,9 +122,10 @@ const Home: NextPage = () => {
         exp_year: year,
         cvc: SecourtyCode
       }
-      let res = await AxInstance.post("api//stripe/card/store", detail)
+      let res = await AxInstance.post("api//stripe/withdraw/card/store", detail)
       if (res.data.success === true) {
         dispatch(SaveCard(res.data.response.card.id))
+        router.push('/en/instructor')
         setAcoountDetail('')
         setLoader(false)
         setPayments(false)
@@ -192,27 +162,14 @@ const Home: NextPage = () => {
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     // debugger
     e.preventDefault();
-    let courses = []
-    if (!buyNowId) {
-      for (let index = 0; index < AddCart.length; index++) {
-        const id = AddCart[index].id;
-        const price = AddCart[index].id;
-        courses.push({ id: id, price: price })
-      }
-    }
-    else {
-      courses.push({ id: buynow?.id, price: parseInt(buynow?.price) })
-
-    }
     try {
 
       setComplPay(true)
-      let res = await AxInstance.post('api//checkout', { courses: courses, payment_method: cardType })
+      let res = await AxInstance.post('api//instructor/withdraw', { amount: state, payment_method: cardType })
       if (res.data.success === true) {
         setComplPay(false)
         dispatch(ResetCart())
         SweetAlert({ icon: "success", text: res.data.message })
-        router.push('/en/student/courses')
       }
       else {
         setLoader(false)
@@ -228,23 +185,8 @@ const Home: NextPage = () => {
   };
 
 
-  // let totalamount = AddCart ?
-  //   .reduce(
-  //   (total: number, product: string) =>
-  //     total + product.price * product.Quantity,
-  //   0
-  // )
-  //     .toFixed(2);
-  // let discount = 120;
 
-  const totalamount = AddCart.reduce(function (currentTotal: any, obj: any) {
-    let str = obj.price.replace(",", "");
-    var price = parseFloat(str);
-    if (!isNaN(price)) return currentTotal + price * obj.Quantity;
-    return currentTotal;
-  }, 0).toFixed(2)
 
-  let discountAmount = totalamount - discount?.discount  ;
 
 
 
@@ -269,7 +211,7 @@ const Home: NextPage = () => {
 
           <div className="container-3">
             <div className="shipping-2">
-              <h3>Checkout</h3>
+              <h3>Withdraw</h3>
               <p className="msakdo-sda">Billing Address:</p>
             </div>
             <div className="d-flex justify-content-between hdsafjf-dsa ">
@@ -358,48 +300,18 @@ const Home: NextPage = () => {
                   </>
                   : null}
 
-                <div className="mt-3">
-                  <h3 style={{ fontSize: '18px', fontWeight: '600' }}>Order Summary</h3>
-                  {
-                    Object.keys(buynow).length > 0 ?
-                      <CartCard item={buynow}  />
-                      :
-                      AddCart && AddCart.map((item: any, i: number) => (
-                        <CartCard item={item} key={i} />
-
-                      ))}
-
-                </div>
-
-
               </div>
               <div className="photo-maker-2">
 
-                <h4>Summary</h4>
+                <h3>Withdraw Ammount</h3>
                 <div className="hdsafj-dsae1">
-                  <div className="d-flex justify-content-between w-100">
-                    <h6>Total:</h6>
-                    <h6>${Object.keys(buynow).length > 0 ? buynow?.price : totalamount}</h6>
-                    {/* <h6>${totalamount !== "0.00" ? totalamount : buynow?.price}</h6> */}
-                  </div>
-                  <div className="d-flex justify-content-between w-100">
-                    <h6>Coupon discount:</h6>
-                    <h6>-$ {discount?.discount}</h6>
+                  <div className="p-field w-100">
+                    <input type="number" placeholder="Ammount" value={state} onChange={(e) => setState(e.target.value)} />
+                    {/* {errors?.password && <div className="invalid mb-1">{errors?.password[0]}</div>} */}
+
                   </div>
                 </div>
-                <div className="d-flex justify-content-between hdsafj-dsae">
-                  <h6>Total:</h6>
-                  <h6>${Object.keys(buynow).length > 0 ? buynow?.price : discountAmount}</h6>
-                  {/* <h6>${discountAmount !== "0.00" ? discountAmount : buynow?.price}</h6> */}
-                </div>
-                {/* <h6 className="mb-0">
-                    <Icons name="c34" />
-                    MARCH-T22122 is applied
-                  </h6>
-                  <h6 className="mb-0">
-                    <Icons name="c34" />
-                    ST11MT22122 is applied
-                  </h6> */}
+
                 <button
                   className="btn-2s w-100 mt-3"
                   onClick={(e) => handleSubmit(e)}
@@ -410,7 +322,7 @@ const Home: NextPage = () => {
                     <div className="spinner-border text-light" style={{ marginBottom: '-5px', fontSize: '20px', width: '25px', height: '25px' }} role="status">
                     </div>
                     :
-                    "Checkout"
+                    "Withdraw"
                   }
 
                 </button>
@@ -427,4 +339,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default (Home);
+export default  withAuth(Home);

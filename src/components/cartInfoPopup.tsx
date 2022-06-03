@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import Icons from "../icons";
 import { Modal, Button } from 'react-bootstrap'
 const InfoCart = ({ Course }: any) => {
-    console.log("Course", Course)
     const [show, setShow] = useState(true);
     const [value, setValue] = useState(0);
 

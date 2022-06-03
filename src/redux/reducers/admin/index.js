@@ -8,16 +8,32 @@ import {
   UPDATE_STU, UPDATE_INS,
   GET_COURSE_CATAGORIES,
   GET_ADMIN_TRANSACTION_STATICS,
+  ADD_CATAGORY,
+  DEL_CATEGORY,
+  UPDATE_CATEGORY,
+  ADD_MEMBERSHIP,
+  GET_MEMBERSHIP,
+  DEL_MEMBERSHIP,
+  UPDATE_MEMBERSHIP,
+  UPDATE_ADMIN,
 } from "../../types/types";
 
 const initialState = {
   Admin: {},
   token: "",
   Statistic: {},
-  Transaction:{},
+  Transaction: {},
   Students: [],
   Instructor: [],
-  Catagories: []
+  Catagories: [],
+  AllCourses: [],
+  LiveCourses: [],
+  Coupons: [],
+  Blogs: [],
+  News: [],
+  MemberShips: [],
+
+
 
 };
 
@@ -27,21 +43,29 @@ const AdminReducer = (state = initialState, action) => {
       debugger
       return {
         ...state,
-        Admin: action.payload.response.admin,
+        Admin: action.payload.response.user || action.payload.response.admin,
         token: action.payload.response.token.token,
         isAuth: true,
       };
+
+    case UPDATE_ADMIN: {
+      debugger
+      return {
+        ...state,
+        Admin: action.payload.response.user,
+      };
+    }
 
     case GET_ADMIN_DASHBOARD_STAT:
       return {
         ...state,
         Statistic: action.payload
       }
-      case GET_ADMIN_TRANSACTION_STATICS:
-        return{
-          ...state,
-          Transaction : action.payload
-        }
+    case GET_ADMIN_TRANSACTION_STATICS:
+      return {
+        ...state,
+        Transaction: action.payload
+      }
 
     case GET_ALL_INSTRUCTOR:
 
@@ -56,11 +80,68 @@ const AdminReducer = (state = initialState, action) => {
         ...state,
         Students: action.payload,
       };
+    case ADD_CATAGORY:
+      debugger
+      return {
+        ...state,
+        Catagories: [...state.Catagories, action.payload]
+      }
     case GET_COURSE_CATAGORIES:
       return {
         ...state,
         Catagories: action.payload
       }
+
+    case DEL_CATEGORY:
+      let findCategory = state.Catagories.filter((cata) => cata.id !== action.payload)
+      return {
+        ...state,
+        Catagories: findCategory
+      }
+    case UPDATE_CATEGORY:
+      return {
+        ...state,
+        Catagories: state.Catagories.map(
+          (content, i) => i === action.payload.id ? { ...content, content: action.payload }
+            : content
+        ),
+      }
+
+
+    case GET_MEMBERSHIP:
+      debugger
+      return {
+        ...state,
+        MemberShips: action.payload
+      }
+    case ADD_MEMBERSHIP:
+      debugger
+      return {
+        ...state,
+        MemberShips: [action.payload]
+      }
+    case DEL_MEMBERSHIP:
+      debugger
+      let findMember = state.MemberShips.filter((cata) => cata.id !== action.payload)
+
+      return {
+        ...state,
+        MemberShips: findMember
+      }
+    case UPDATE_MEMBERSHIP:
+      debugger
+
+      return {
+        ...state,
+        MemberShips: state.MemberShips.map((item) => item.id === action.payload.id ? { ...item, item: action.payload } : item),
+      }
+    // return {
+    //   ...state,
+    //   MemberShips: state.MemberShips.map(
+    //     (content) => content.id === 10 ? { ...content, content: action.payload }
+    //       : content
+    //   ),
+    // }
 
     case DELETE_STU:
       let find = state.Students.filter((f) => f.id !== action.payload)
@@ -79,48 +160,30 @@ const AdminReducer = (state = initialState, action) => {
         Instructor: findIns,
       };
     case UPDATE_STU:
-      debugger
-
-      // let NewData = state.Students.filter(item => {
-      //   if (item.id === action.payload.id);
-      //   NewData.unshift(action.payload)
-
-      // })
-
-
       return {
         ...state,
         Students: state.Students.map(
-          (content, i) => i === action.payload.id ? { ...content, content: action.payload }
+          (content, i) => content.id === action.payload.id ? { ...content, content: action.payload }
             : content
         ),
 
       };
     case UPDATE_INS:
-      debugger
 
-      // let NewDatas = state.Instructor.filter(item => {
-      //   if (item.id === action.payload.id) {
-      //     item = action.payload
-      //   }
-      //   return item
-      //   // NewData.unshift(action.payload)
-
-      // })
       return {
         ...state,
         Instructor: state.Instructor.map(
-          (content, i) => i === action.payload.id ? { ...content, content: action.payload }
+          (content, i) => content.id === action.payload.id ? { ...content, content: action.payload }
             : content
         ),
 
       };
 
     case LOGOUT_ADMIN:
-      debugger
+
       return {
         ...state,
-        Admin: null,
+        Admin: {},
         token: null
       }
 

@@ -1,19 +1,19 @@
 import type { NextPage } from "next";
-import Dropdown from "../../../../src/components/instructor/dropdown";
-import { useIntl } from "react-intl";
+// import Dropdown from "../../../../src/components/instructor/dropdown";
+// import { useIntl } from "react-intl";
 import Sidebar from "../../../../src/components/instructor/sidebar2";
-import { FiSearch } from "react-icons/fi";
-import { BiBell } from "react-icons/bi";
-import { IoMailOutline } from "react-icons/io5";
-import Icons from "../../../../src/icons";
-import TopNavbar from "../../../../src/components/instructor/TopNavbar";
+// import { FiSearch } from "react-icons/fi";
+// import { BiBell } from "react-icons/bi";
+// import { IoMailOutline } from "react-icons/io5";
+// import Icons from "../../../../src/icons";
+// import TopNavbar from "../../../../src/components/instructor/TopNavbar";
 import NavigationBar1 from "../../../../src/components/instructor/NavigationBar3";
-import Chart from "../../../../src/components/instructor/chart";
-import Chart1 from "../../../../src/components/instructor/chart1";
-import BarChart from "../../../../src/components/instructor/barchart";
+// import Chart from "../../../../src/components/instructor/chart";
+// import Chart1 from "../../../../src/components/instructor/chart1";
+// import BarChart from "../../../../src/components/instructor/barchart";
 import Link from "next/link";
-import CourseCard from "../../../../src/components/instructor/CourseCard1";
-import NewCourse from "../../../../src/components/instructor/newCourse";
+// import CourseCard from "../../../../src/components/instructor/CourseCard1";
+// import NewCourse from "../../../../src/components/instructor/newCourse";
 import { useEffect, useState } from "react";
 import { RootStateOrAny, useSelector } from "react-redux";
 import axios from "axios";
@@ -21,6 +21,8 @@ import { Small } from "../../../../src/components/instructor/loader";
 import EnrolledStudent from "../../../../src/components/instructor/EnrolledStudent";
 import moment from "moment";
 import { useRouter } from "next/router";
+import { Breadcrumb } from "react-bootstrap";
+import withAuth from "../../../../src/components/Hoc/authRoute";
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
@@ -65,7 +67,6 @@ const Home: NextPage = () => {
     fetchCourse()
   }, [])
 
-  console.log("qiz", quiz)
 
   return (
     <div className="inst">
@@ -84,12 +85,19 @@ const Home: NextPage = () => {
                 <div className="hdsf0s-sadmsa">
 
                   <div className="back-btn">
-                    <Link href="/en/instructor/" >
+                    <Breadcrumb>
+                      <Breadcrumb.Item linkAs={Link} href="/en/instructor/">Dashboard</Breadcrumb.Item>
+                      <Breadcrumb.Item linkAs={Link} href="/en/instructor/courses" >
+                        Courses
+                      </Breadcrumb.Item>
+                      <Breadcrumb.Item active>Enrolled Students </Breadcrumb.Item>
+                    </Breadcrumb>
+                    {/* <Link href="/en/instructor/" >
                       <h3>
                         <i className="fa fa-arrow-left"></i>
                         Back</h3>
                     </Link>
-                    <h3>Enrolled Student  </h3>
+                    <h3>Enrolled Student  </h3> */}
                   </div>
                   {/* <div className=" jidfjsd-asjreid">
                     <div className="dsnodi-sdjsad">
@@ -145,7 +153,7 @@ const Home: NextPage = () => {
 
                             </div>
                             <div className="d-flex justify-content-between " style={{ alignItems: 'center' }}>
-                              <h3>Attempted Time</h3> {moment(q?.createdAt).format("ll") || 0}
+                              <h3>Attempted On</h3> {moment(q?.createdAt).format("ll") || 0}
                               {/* <p>Attempted Time : {moment(q?.createdAt).format("ll") || 0}</p> */}
                             </div>
                           </div>
@@ -168,4 +176,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default withAuth( Home ) ;

@@ -2,7 +2,6 @@
 
 export default ({ notifications }: any) => {
 
-console.log("notifications" , notifications)
     return (
         <>
             <main>

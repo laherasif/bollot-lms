@@ -6,6 +6,7 @@ import instance from "../confiq/axios/instance";
 import { SweetAlert } from "../function/hooks";
 import { useRouter } from "next/router";
 import { forgotPageNo, loginUser } from "../redux/actions/auth/user";
+import { loginAdmin } from "../redux/actions/admin";
 
 // export interface OTPInputProps {
 //   onStepChange?: () => any;
@@ -41,9 +42,7 @@ const Home: NextPage = () => {
       }
 
       let res = await instance.post("api//forgot-password/step-3", value)
-
       if (res.data.success === true && res.data.response.user.is_email_verified === "1" && res.data.response.user.role === "student") {
-        // dispatch(forgotPageNo(0))
         setLoader(false)
         dispatch(loginUser(res.data))
         SweetAlert({ icon: 'success', text: res.data.message })
@@ -51,12 +50,21 @@ const Home: NextPage = () => {
       }
       else if (res.data.success === true && res.data.response.user.is_email_verified === "1" && res.data.response.user.role === "instructor") {
         setLoader(false)
-        // dispatch(forgotPageNo(0))
         SweetAlert({ icon: 'success', text: res.data.message })
         dispatch(loginUser(res.data))
         router.push("/en/instructor");
 
       }
+      else if (res.data.success === true  && res.data.response.user.role === "admin") {
+        setLoader(false)
+        SweetAlert({ icon: 'success', text: res.data.message })
+        debugger
+        dispatch(loginAdmin(res))
+        router.push("/en/admin/dashboard");
+
+      }
+      
+
 
 
       else {

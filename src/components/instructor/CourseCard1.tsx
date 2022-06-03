@@ -3,7 +3,6 @@ import React from "react";
 import { Dropdown } from "react-bootstrap";
 // import Icons from "../../icons";
 export default ({ course, key }: any) => {
-  console.log("course" , course)
   return (
     <div className="cm-web" key={key}>
       {/* <Link href={`/en/instructor/details/${course.slug}`}> */}
@@ -41,7 +40,7 @@ export default ({ course, key }: any) => {
             <Dropdown.Item as={Link} href={ `/en/instructor/manageCriculum/${course?.id}`}>Manage Curriculum</Dropdown.Item>
             <Dropdown.Item as={Link} href={ `/en/instructor/manageQuiz/${course?.id}`}>Manage Quiz</Dropdown.Item>
             <Dropdown.Item as={Link} href={`/en/instructor/manageEnrolledStudent/${course?.id}`}> Enrolled Student</Dropdown.Item>
-            <Dropdown.Item as={Link} href={`/en/instructor/manageProgressStudent/${course?.id}`}>Student Progress</Dropdown.Item>
+            {/* <Dropdown.Item as={Link} href={`/en/instructor/manageProgressStudent/${course?.id}`}>Student Progress</Dropdown.Item> */}
 
           </Dropdown.Menu>
         </Dropdown>

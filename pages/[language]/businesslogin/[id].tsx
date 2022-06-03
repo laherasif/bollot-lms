@@ -49,7 +49,6 @@ const Home: NextPage = () => {
   const Fbprovider = new FacebookAuthProvider();
   const router = useRouter();
 
-  console.log("routyer", router)
 
   let checkRouter = router.query.checkout
 
@@ -90,7 +89,6 @@ const Home: NextPage = () => {
   const signInGog = async () => {
     const { user } = await signInWithPopup(firebaseAuth, provider);
     const { refreshToken, providerData } = user;
-    console.log(refreshToken, providerData);
     dispatch(SocialRegComp(providerData, "company"))
 
   };
@@ -100,7 +98,6 @@ const Home: NextPage = () => {
 
     const { user } = await signInWithPopup(firebaseAuth, Fbprovider);
     const { refreshToken, providerData } = user;
-    console.log(refreshToken, providerData);
     dispatch(SocialRegComp(providerData, "company"))
   };
 
@@ -150,7 +147,6 @@ const Home: NextPage = () => {
 
     } catch (err) {
       setLoader(false)
-      console.log("err", err)
     }
   };
 

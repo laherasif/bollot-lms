@@ -24,7 +24,6 @@ export default () => {
       let fetchLive = async () => {
         try {
           let res = await AxInstance.get('api//instructor/courses/schedule/upcoming-classes')
-          console.log("Res", res)
           setClasses(res.data.response.upcoming)
         }
         catch (err) { }

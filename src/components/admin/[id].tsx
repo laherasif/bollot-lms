@@ -65,7 +65,6 @@ const Home: NextPage = () => {
     fetchCourse()
   }, [])
 
-  console.log("qiz", quiz)
 
   return (
     <div className="inst">

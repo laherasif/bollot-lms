@@ -14,6 +14,7 @@ import Notification from '../../components/instructor/notification'
 import Messages from '../../components/instructor/messages'
 import axios from "axios";
 import { clearStates } from "../../redux/actions/instructor/preview";
+import { SweetAlert } from "../../function/hooks";
 export default () => {
   const isTab = useMediaQuery({
     query: "(max-width: 991px)",
@@ -51,19 +52,26 @@ export default () => {
       page_no: 1,
       rows_per_page: 5
     }
-    let fetchNotif = async () => {
-      let res = await AxInstance.get('api//notifications')
-      // let count = await AxInstance.get('api//unread-notifications-count')
-      let message = await AxInstance.post('api//get-conversations', value)
-      setNotifications(res.data.response.notifs)
-      // setUnRead(count.data.response.unread_notifs)
-      setMessagess(message.data.response.conversations)
+    try {
+      let fetchNotif = async () => {
+        let res = await AxInstance.get('api//notifications')
+        // let count = await AxInstance.get('api//unread-notifications-count')
+        let message = await AxInstance.post('api//get-conversations', value)
+        if (res.data.success === true) {
+          setNotifications(res.data.response.notifs)
+          // setUnRead(count.data.response.unread_notifs)
+          setMessagess(message.data.response.conversations)
+        }
+
+      }
+      fetchNotif()
+    }
+    catch (err) {
+      SweetAlert({ icon: 'error', text: err })
 
     }
-    fetchNotif()
   }, [])
 
-  console.log("noto", notifications)
 
   const handleClickOutside = (event: any) => {
 
@@ -91,7 +99,7 @@ export default () => {
     // setLoading(true)
     dispatch(LogoutIns())
     dispatch(clearStates())
-    
+
     // setTimeout(() => {
     //   setLoading(false)
     if (User?.role === "company") {
@@ -118,7 +126,13 @@ export default () => {
       setMesg(false)
     }
     setNotif(true)
-    await AxInstance.get('api//notifications-read')
+    try {
+      await AxInstance.get('api//notifications-read')
+    }
+    catch (err) {
+      SweetAlert({ icon: 'error', text: err })
+
+    }
   }
 
   return (
@@ -146,7 +160,7 @@ export default () => {
                 <div className="idsafs-aadmsd " >
                   <div className="" ref={notify} style={{ cursor: 'pointer' }}>
                     <div onClick={() => notification()}>
-                      <BiBell size={20} color="#ffff"/>
+                      <BiBell size={20} color="#ffff" />
                       {/* <p></p> */}
                       {notifications?.some((s: any) => s?.is_read === "0") ? <p></p> : ""}
                     </div>
@@ -155,7 +169,7 @@ export default () => {
 
 
                   </div>
-                  <div style={{marginLeft:'10px' , marginTop:'10px'}} ref={messanger} >
+                  <div style={messagess?.some((s: any) => s?.last_message_obj.is_read === "0") ? { marginLeft: '10px', marginTop: '10px' } : { marginLeft: '10px' }} ref={messanger} >
                     <div onClick={() => messages()} style={{ cursor: 'pointer' }}>
                       <IoMailOutline color="#ffff" size={20} />
                       {/* <p></p> */}

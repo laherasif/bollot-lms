@@ -13,14 +13,22 @@ import AddBlog from "../../../../src/components/admin/addBlog";
 import { useRouter } from "next/router";
 import { FiSearch } from "react-icons/fi";
 import AddCoupon from "../../../../src/components/admin/addCoupon";
+import { SweetAlert } from "../../../../src/function/hooks";
+import moment from "moment";
+import { Breadcrumb } from "react-bootstrap";
+import Swal from "sweetalert2";
+import AdminAuth from "../../../../src/components/Hoc/adminRoute";
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
   const [blog, setBlog] = useState([])
   const [showblog, setShowBlog] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [loader, setLoader] = useState(false)
+  const [del, setDel] = useState(false)
   const [filterText, setFilterText] = useState('');
   const [coupon, setCoupon] = useState({})
+
   const { token } = useSelector((state: RootStateOrAny) => state?.admin)
 
   const AxInstance = axios.create({
@@ -31,6 +39,55 @@ const Home: NextPage = () => {
     }
   });
 
+  const handleChange = (value: any) => {
+    if (value.type === "close") {
+      setShowBlog(false)
+      setCoupon('')
+
+    }
+    else if (value.type === "load") {
+      setShowBlog(false)
+      setCoupon('')
+      setLoader(true)
+      setTimeout(() => {
+        setLoader(false)
+      }, 1000);
+
+    }
+  }
+
+  const DelCoupon = (id: number,) => {
+    setDel(false)
+    Swal.fire({
+      title: 'Are your sure?',
+      text: "You want to delete this Coupon ?",
+      icon: "warning",
+      showDenyButton: true,
+      confirmButtonText: 'Yes',
+
+
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        AxInstance.post(`api//admin/coupons/delete`, { id: id })
+          .then(res => {
+            Swal.fire({
+              title: "Done!",
+              text: res.data.message,
+              icon: "success",
+              // timer: 2000,
+              // button: false
+            })
+            setDel(true)
+
+          });
+      } else if (result.isDenied) {
+        Swal.fire('Changes are not saved', '', 'info')
+      }
+    })
+  }
+
+
 
 
 
@@ -39,22 +96,21 @@ const Home: NextPage = () => {
       try {
         setLoading(true)
         let res = await AxInstance.get('api//admin/coupons')
-        console.log("Res", res)
         if (res.data.success === true) {
           setLoading(false)
           setBlog(res.data.response.coupons)
         }
       }
       catch (err) {
-
+        SweetAlert({ icon: 'error', text: err })
       }
     }
     fetchCourse()
-  }, [showblog])
+  }, [loader === true || del === true])
 
   const columns: any = [
     {
-      name: "Creator Image",
+      name: "Created By",
       selector: "image",
       sortable: true,
       cell: (d: any) => (
@@ -62,7 +118,7 @@ const Home: NextPage = () => {
       )
     },
     {
-      name: "Creator",
+      name: "",
       selector: "creator",
       sortable: true,
       cell: (d: any) => (
@@ -70,7 +126,7 @@ const Home: NextPage = () => {
       )
     },
     {
-      name: "Coupon No",
+      name: "Coupon Code",
       selector: "coupon_code",
       sortable: true,
 
@@ -81,7 +137,9 @@ const Home: NextPage = () => {
       name: "Validate",
       selector: "valid_till",
       sortable: true,
-
+      cell: (d: any) => (
+        <span style={{ margin: '0px 3px' }} >{moment(d?.valid_till).format('ll')}</span>
+      )
     },
     {
       name: "Action",
@@ -94,7 +152,7 @@ const Home: NextPage = () => {
             <i className='fa fa-edit'></i>
           </div>
 
-          <div style={{ marginLeft: '20px' }}>
+          <div style={{ marginLeft: '20px' }} onClick={() => DelCoupon(d?.id)}>
             <i className='fa fa-trash'></i>
           </div>
 
@@ -122,18 +180,45 @@ const Home: NextPage = () => {
                 <div className="hdsf0s-sadmsa">
 
                   <div className="back-btn">
-                    <Link href="/en/admin/website" >
+                    <Breadcrumb>
+                      <Breadcrumb.Item linkAs={Link} href="/en/admin/dashboard">Dashboard</Breadcrumb.Item>
+                      <Breadcrumb.Item active>Coupon</Breadcrumb.Item>
+                    </Breadcrumb>
+                    {/* <Link href="/en/admin/website" >
                       <h3 className="back-arrow">
                         <i className="fa fa-arrow-left"></i>
                         Back</h3>
-                    </Link>
-                    <h3> Course Discount </h3>
+                    </Link> */}
                   </div>
                   <div className=" jidfjsd-asjreid">
                     {/* <Search /> */}
                     <div className="d-flex idfadsf-sads">
                       <button className="upload-1 sdisad-dsdactive" onClick={() => setShowBlog(true)} >
-                        + Add New Blog </button>
+                        + Add New Coupon </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="complete-web-1 mt-2">
+                  <div className="umpire w-100">
+                    <div className="umpire-1 umpire-1-cst ">
+                      <div className="d-flex mb-3 course">
+                        <Link href="/en/admin/courses">
+                          <button className="upload-1 ">
+                            All Courses
+                          </button>
+                        </Link>
+                        <button className="upload-1 sdisad-dsdactive" >Coupons</button>
+                        <Link href="/en/admin/liveCourses">
+                          <button className="upload-1" >Live Courses</button>
+                        </Link>
+                        <Link href="/en/admin/catagories">
+                          <button className="upload-1" >Course Categories</button>
+                        </Link>
+
+
+                      </div>
+
                     </div>
                   </div>
                 </div>
@@ -158,7 +243,6 @@ const Home: NextPage = () => {
                       data={filteredItems}
                       sortIcon={<i className='fa fa-arrow-down'></i>}
                       pagination
-                      selectableRows
                       highlightOnHover
                     />
                   </div>
@@ -171,12 +255,12 @@ const Home: NextPage = () => {
 
 
 
-        {showblog && <AddCoupon permition={showblog} User={coupon} Toggle={(value: any) => setShowBlog(value)} />}
+        {showblog && <AddCoupon permition={showblog} User={coupon} Toggle={(value: any) => handleChange(value)} />}
       </section >
     </div >
   );
 };
 
-export default Home;
+export default AdminAuth( Home );
 
 

@@ -76,17 +76,12 @@ const Home: NextPage = () => {
     setLoader(true)
     try {
       let res = await instance.post("api//admin/login", authValue)
-      console.log("RE", res )
       if (res.data.success === true) {
+        debugger
         setLoader(false)
         dispatch(loginAdmin(res))
         router.push("/en/admin/dashboard");
-        // if (router.query.checkout === "true") {
-        //   router.push("/en/checkout");
-
-        // }
-        // else {
-        // }
+        
 
       }
 

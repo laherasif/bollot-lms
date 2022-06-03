@@ -47,6 +47,9 @@ export const addMoreQuiz = () => dispatch => {
         question: '',
         options: [
             { option: "", correct: false, },
+            { option: "", correct: false, },
+            { option: "", correct: false, },
+            { option: "", correct: false, },
 
         ]
     }

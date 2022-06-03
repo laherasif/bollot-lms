@@ -21,6 +21,8 @@ import { Small } from "../../../../src/components/admin/loader";
 import EnrolledStudent from "../../../../src/components/admin/EnrolledStudent";
 import moment from "moment";
 import { useRouter } from "next/router";
+import { Breadcrumb } from "react-bootstrap";
+import AdminAuth from "../../../../src/components/Hoc/adminRoute";
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
@@ -65,7 +67,6 @@ const Home: NextPage = () => {
     fetchCourse()
   }, [courseId])
 
-  console.log("qiz", quiz)
 
   return (
     <div className="inst">
@@ -84,20 +85,29 @@ const Home: NextPage = () => {
                 <div className="hdsf0s-sadmsa">
 
                   <div className="back-btn">
-                    <Link href="/en/admin/" >
+
+                    <Breadcrumb>
+                      <Breadcrumb.Item linkAs={Link} href="/en/admin/dashboard">Dashboard</Breadcrumb.Item>
+                      <Breadcrumb.Item linkAs={Link} href="/en/admin/courses" >
+                        Courses
+                      </Breadcrumb.Item>
+                      <Breadcrumb.Item active>Enrolled Students </Breadcrumb.Item>
+                    </Breadcrumb>
+
+                    {/* <Link href="/en/admin/" >
                       <h3 className="back-arrow">
                         <i className="fa fa-arrow-left"></i>
                         Back</h3>
                     </Link>
-                    <h3>Enrolled Student  </h3>
+                    <h3>Enrolled Student  </h3> */}
                   </div>
-                  
+
                 </div>
 
                 <div className="complete-web-1 ">
                   <div className="umpire w-100">
                     <div className="umpire-1 umpire-1-cst ">
-                      
+
 
                     </div>
                   </div>
@@ -128,7 +138,7 @@ const Home: NextPage = () => {
 
                             </div>
                             <div className="d-flex justify-content-between " style={{ alignItems: 'center' }}>
-                              <h3>Attempted Time</h3> {moment(q?.createdAt).format("ll") || 0}
+                              <h3>Attempted On</h3> {moment(q?.createdAt).format("ll") || 0}
                               {/* <p>Attempted Time : {moment(q?.createdAt).format("ll") || 0}</p> */}
                             </div>
                           </div>
@@ -151,4 +161,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default AdminAuth( Home );

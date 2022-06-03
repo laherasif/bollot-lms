@@ -19,6 +19,8 @@ import { RootStateOrAny, useSelector } from "react-redux";
 import axios from "axios";
 import { Small } from "../../../../src/components/instructor/loader";
 import Search from "../../../../src/components/instructor/search";
+import { Breadcrumb } from "react-bootstrap";
+import withAuth from "../../../../src/components/Hoc/authRoute";
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
@@ -66,12 +68,17 @@ const Home: NextPage = () => {
               <div className="my-course">
                 <div className="hdsf0s-sadmsa">
                   <div>
-                    <Link href="/en/instructor/courses" >
-                      <h3 className="back-arrow">
+
+                    <Breadcrumb>
+                      <Breadcrumb.Item linkAs={Link} href="/en/instructor">Dashboard</Breadcrumb.Item>
+                      <Breadcrumb.Item active>Live Courses</Breadcrumb.Item>
+                    </Breadcrumb>
+                    {/* <Link href="/en/instructor/courses" > */}
+                    {/* <h3 className="back-arrow">
                         <i className="fa fa-arrow-left"></i>
                         Back</h3>
                     </Link>
-                    <h3>My Live Courses</h3>
+                    <h3>My Live Courses</h3> */}
                   </div>
                   <div className=" jidfjsd-asjreid">
                     <Search />
@@ -106,4 +113,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default withAuth( Home );

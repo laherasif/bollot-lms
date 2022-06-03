@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 
 const TagsInput = (props: any) => {
-  console.log("props", props)
   const [tags, setTags] = useState([]);
 
   useEffect(()=>{

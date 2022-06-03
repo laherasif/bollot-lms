@@ -1,19 +1,22 @@
 import type { NextPage } from "next";
-import { useIntl } from "react-intl";
+// import { useIntl } from "react-intl";
 import Sidebar from "../../../../src/components/admin/sidebar2";
 import NavigationBar1 from "../../../../src/components/admin/NavigationBar3";
 import Link from "next/link";
-import CourseCard from "../../../../src/components/admin/CourseCard";
+// import CourseCard from "../../../../src/components/admin/CourseCard";
 import { useEffect, useState } from "react";
 import { RootStateOrAny, useSelector } from "react-redux";
 import axios from "axios";
 import { Small } from "../../../../src/components/instructor/loader";
-import Invitation from "../../../../src/components/instructor/invitationForm";
-import Search from "../../../../src/components/instructor/search";
+// import Invitation from "../../../../src/components/instructor/invitationForm";
+// import Search from "../../../../src/components/instructor/search";
 import DataTable from "react-data-table-component";
 import Swal from 'sweetalert2'
 import moment from "moment";
 import { FiSearch } from "react-icons/fi";
+import { SweetAlert } from "../../../../src/function/hooks";
+import { Breadcrumb } from "react-bootstrap";
+import AdminAuth from "../../../../src/components/Hoc/adminRoute";
 
 // import AddBanner from '../../../../src/components/admin/addBanner'
 const options = ["one", "two", "three"];
@@ -45,6 +48,7 @@ const Home: NextPage = () => {
         }
       }
       catch (err) {
+        SweetAlert({ icon: 'error', text: err })
 
       }
     }
@@ -157,13 +161,10 @@ const Home: NextPage = () => {
                 <div className="hdsf0s-sadmsa">
 
                   <div className="back-btn">
-                    <Link href="/en/admin/website" >
-                      <h3>
-                        <i className="fa fa-arrow-left"></i>
-                        Back</h3>
-                    </Link>
-
-                    <h3>Website Contact Form Email </h3>
+                    <Breadcrumb>
+                      <Breadcrumb.Item linkAs={Link} href="/en/admin/dashboard">Dashboard</Breadcrumb.Item>
+                      <Breadcrumb.Item active>Contact Us Forms</Breadcrumb.Item>
+                    </Breadcrumb>
                   </div>
                   <div className=" jidfjsd-asjreid">
                     {/* <Search /> */}
@@ -171,19 +172,32 @@ const Home: NextPage = () => {
                   </div>
                 </div>
 
-                <div className="complete-web-1 mt-2">
+                <div className="complete-web-1">
                   <div className="umpire w-100">
                     <div className="umpire-1 umpire-1-cst ">
-                      <div className="d-flex mb-3 idfadsf-sads">
-                        <button className="upload-1 sdisad-dsdactive">
-                          Contact us Emails
-                        </button>
+                      <div className="d-flex mb-3 course w-100">
+                        <Link href="/en/admin/website">
+                          <button className="upload-1 ">
+                            Blogs
+                          </button>
+                        </Link>
+                        <Link href="/en/admin/newsEvent">
+                          <button className="upload-1" >News and Event</button>
+                        </Link>
+                        {/* <Link href="/en/admin/manageHeader">
+                          <button className="upload-1" > Header Menu</button>
+                        </Link> */}
+                        <Link href="/en/admin/banner">
+                          <button className="upload-1 " > Banners</button>
+                        </Link>
+                        <button className="upload-1 sdisad-dsdactive" >Contact Us Forms</button>
 
                       </div>
 
                     </div>
                   </div>
                 </div>
+
                 <div className="complete-web-1">
                   <div style={{ display: 'flex', justifyContent: 'center', width: '100%', marginBottom: '20px' }}>
                     <div className="dsnodi-sdjsad">
@@ -202,7 +216,6 @@ const Home: NextPage = () => {
                       data={filteredItems}
                       sortIcon={<i className='fa fa-arrow-down'></i>}
                       pagination
-                      selectableRows
                       defaultSortAsc={true}
                       highlightOnHover
 
@@ -224,4 +237,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default  AdminAuth( Home ) ;

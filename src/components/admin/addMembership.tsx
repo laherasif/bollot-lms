@@ -4,7 +4,7 @@ import { Modal, Button, Spinner, Form } from 'react-bootstrap'
 import { IoTrophySharp } from "react-icons/io5";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import { SweetAlert } from "../../function/hooks";
-import { updateStuIns } from "../../redux/actions/admin";
+import { AdddelUpdateMembership, updateStuIns } from "../../redux/actions/admin";
 // import { updateUser } from '../../redux/actions/auth/user'
 import DatePicker from "react-datepicker";
 import moment from "moment";
@@ -12,9 +12,10 @@ import { format, parse } from 'date-fns'
 import "react-datepicker/dist/react-datepicker.css";
 
 const MemberShip = ({ Toggle, permition, User }: any) => {
+    console.log("User", User)
 
     const { token } = useSelector((state: RootStateOrAny) => state?.admin)
-
+    const dispatch = useDispatch()
 
     const [show, setShow] = useState(permition);
     const [loading, setLoading] = useState(false);
@@ -38,7 +39,7 @@ const MemberShip = ({ Toggle, permition, User }: any) => {
     });
 
     const handleClose = () => {
-        Toggle()
+        Toggle({ type: "close"})
     }
 
 
@@ -61,37 +62,39 @@ const MemberShip = ({ Toggle, permition, User }: any) => {
 
             let value = {
                 id: User?.id,
-                title: state.title ,
-                price_per_month: state.price_per_month ,
-                courses_allowed: state.courses_allowed ,
-                users_per_course_allowed: state.users_per_course_allowed ,
-                free_trial_days: state.free_trial_days ,
+                title: state.title,
+                price_per_month: state.price_per_month,
+                courses_allowed: state.courses_allowed,
+                users_per_course_allowed: state.users_per_course_allowed,
+                free_trial_days: state.free_trial_days,
 
             }
 
             let value2 = {
-                title: state.title ,
-                price_per_month: state.price_per_month ,
-                courses_allowed: state.courses_allowed ,
-                users_per_course_allowed: state.users_per_course_allowed ,
-                free_trial_days: state.free_trial_days ,
+                title: state.title,
+                price_per_month: state.price_per_month,
+                courses_allowed: state.courses_allowed,
+                users_per_course_allowed: state.users_per_course_allowed,
+                free_trial_days: state.free_trial_days,
             }
 
             let res = await AxInstance.post('api//admin/memberships/store', Object.keys(User).length ? value : value2)
             if (res.data.success === true) {
                 setLoading(false)
+                // dispatch(AdddelUpdateMembership({ data: res.data.response.membership,  type: Object.keys(User).length ? "update" :"add" }))
                 setErrors('')
                 setState({
-                    title:   '',
-                    price_per_month:  '',
-                    courses_allowed:  '',
-                    users_per_course_allowed:  '',
-                    free_trial_days:  '',
-                    
+                    title: '',
+                    price_per_month: '',
+                    courses_allowed: '',
+                    users_per_course_allowed: '',
+                    free_trial_days: '',
+
                 })
-                Toggle()
+                Toggle({ type: "load" })
+
                 SweetAlert({ icon: 'success', text: res.data.message })
-                
+
                 // Toggle(false)
             }
             else {
@@ -218,7 +221,7 @@ const MemberShip = ({ Toggle, permition, User }: any) => {
                 </Modal.Body>
                 <Modal.Footer>
                     <div className="idfadsf-sads kajfds-sdfe">
-                        <button onClick={() => SaveProfile()} className="upload-1 sdisad-dsdactive">
+                        <button onClick={() => handleClose()} className="upload-1 sdisad-dsdactive">
 
                             Close
                         </button>

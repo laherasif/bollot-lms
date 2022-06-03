@@ -1,40 +1,42 @@
 import type { NextPage } from "next";
-import Dropdown from "../../../../src/components/instructor/dropdown";
-import { useIntl } from "react-intl";
+// import Dropdown from "../../../../src/components/instructor/dropdown";
+// import { useIntl } from "react-intl";
 import Sidebar from "../../../../src/components/instructor/sidebar2";
 import { FiSearch } from "react-icons/fi";
-import { BiBell } from "react-icons/bi";
-import { IoMailOutline } from "react-icons/io5";
-import Icons from "../../../../src/icons";
-import TopNavbar from "../../../../src/components/instructor/TopNavbar";
+// import { BiBell } from "react-icons/bi";
+// import { IoMailOutline } from "react-icons/io5";
+// import Icons from "../../../../src/icons";
+// import TopNavbar from "../../../../src/components/instructor/TopNavbar";
 import NavigationBar1 from "../../../../src/components/instructor/NavigationBar3";
-import Chart from "../../../../src/components/instructor/chart";
-import Chart1 from "../../../../src/components/instructor/chart1";
-import BarChart from "../../../../src/components/instructor/barchart";
+// import Chart from "../../../../src/components/instructor/chart";
+// import Chart1 from "../../../../src/components/instructor/chart1";
+// import BarChart from "../../../../src/components/instructor/barchart";
 import Link from "next/link";
-import CourseCard from "../../../../src/components/instructor/CourseCard1";
-import NewCourse from "../../../../src/components/instructor/newCourse";
+// import CourseCard from "../../../../src/components/instructor/CourseCard1";
+// import NewCourse from "../../../../src/components/instructor/newCourse";
 import { useEffect, useState } from "react";
 import { RootStateOrAny, useSelector } from "react-redux";
 import axios from "axios";
 import { Small } from "../../../../src/components/instructor/loader";
-import Invitation from "../../../../src/components/instructor/invitationForm";
+// import Invitation from "../../../../src/components/instructor/invitationForm";
 import InvitationStudent from "../../../../src/components/instructor/Invitation";
+import { Breadcrumb } from "react-bootstrap";
+import withAuth from "../../../../src/components/Hoc/authRoute";
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
   const [course, setCourse] = useState([])
   const [loading, setLoading] = useState(false)
   const [email, setemail] = useState(false)
-  const token = useSelector((state: RootStateOrAny) => state?.userReducer?.token)
+  // const token = useSelector((state: RootStateOrAny) => state?.userReducer?.token)
 
-  const AxInstance = axios.create({
-    // .. where we make our configurations
-    baseURL: 'https://dev.thetechub.us/bolloot/',
-    headers: {
-      token: token
-    }
-  });
+  // const AxInstance = axios.create({
+  //   // .. where we make our configurations
+  //   baseURL: 'https://dev.thetechub.us/bolloot/',
+  //   headers: {
+  //     token: token
+  //   }
+  // });
   // useEffect(() => {
   //   let fetchCourse = async () => {
   //     try {
@@ -69,12 +71,16 @@ const Home: NextPage = () => {
                 <div className="hdsf0s-sadmsa">
 
                   <div className="back-btn">
-                    <Link href="/en/instructor/" >
+                    {/* <Link href="/en/instructor/" >
                       <h3>
                         <i className="fa fa-arrow-left"></i>
                         Back</h3>
                     </Link>
-                    <h3>My Courses</h3>
+                    <h3>My Courses</h3> */}
+                    <Breadcrumb>
+                      <Breadcrumb.Item linkAs={Link} href="/en/instructor">Dashboard</Breadcrumb.Item>
+                      <Breadcrumb.Item active>Invitation</Breadcrumb.Item>
+                    </Breadcrumb>
                   </div>
                   <div className=" jidfjsd-asjreid">
                     <div className="dsnodi-sdjsad">
@@ -82,8 +88,8 @@ const Home: NextPage = () => {
                       <input type="text" placeholder="Search" />
                     </div>
                     <div className="d-flex idfadsf-sads">
-                        <button className="upload-1 sdisad-dsdactive" onClick={() => setemail(true)}>
-                          + Add Invitation </button>
+                      <button className="upload-1 sdisad-dsdactive" onClick={() => setemail(true)}>
+                        + Add Invitation </button>
                     </div>
                   </div>
                 </div>
@@ -92,9 +98,9 @@ const Home: NextPage = () => {
                   <div className="umpire w-100">
                     <div className="umpire-1 umpire-1-cst ">
                       <div className="d-flex mb-3 idfadsf-sads">
-                        
+
                       </div>
-                    
+
                     </div>
                   </div>
                 </div>
@@ -117,10 +123,10 @@ const Home: NextPage = () => {
           </div>
         }
 
-       
+
       </section >
     </div >
   );
 };
 
-export default Home;
+export default withAuth( Home );

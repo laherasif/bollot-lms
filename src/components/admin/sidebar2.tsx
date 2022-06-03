@@ -41,7 +41,7 @@ export default () => {
           <Link href="/en/admin/employe">
             <div className={`dash-ch-2 sdisad-dsd ${router.asPath === "/en/admin/employe" ? "dash-ch-2 sdisad-dsdactive" : ""}`}>
               <Icons name="i2" />
-              <h3> Employes</h3>
+              <h3> Users</h3>
             </div>
           </Link>
           <Link href="/en/admin/website">
@@ -51,7 +51,7 @@ export default () => {
             </div>
           </Link>
           <Link href="/en/admin/transaction">
-            <div className={`dash-ch-2 sdisad-dsd ${router.asPath === "/en/admin/website" ? "dash-ch-2 sdisad-dsdactive" : ""}`}>
+            <div className={`dash-ch-2 sdisad-dsd ${router.asPath === "/en/admin/transaction" ? "dash-ch-2 sdisad-dsdactive" : ""}`}>
               <Icons name="i3" />
               <h3> Transaction</h3>
             </div>

@@ -1,18 +1,15 @@
 import type { NextPage } from "next";
 import { useIntl } from "react-intl";
 import Sidebar from "../../../../src/components/admin/sidebar2";
-
 import NavigationBar1 from "../../../../src/components/admin/NavigationBar3";
-
 import { RootStateOrAny, useSelector } from "react-redux";
 import DataTable from "react-data-table-component";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FiSearch } from "react-icons/fi";
 import Link from "next/link";
-
-
-
-
+import { Small } from "../../../../src/components/admin/loader";
+import { Breadcrumb } from "react-bootstrap";
+import AdminAuth from "../../../../src/components/Hoc/adminRoute";
 
 const columns: any = [
   {
@@ -21,7 +18,7 @@ const columns: any = [
     sortable: true,
 
   },
- 
+
   {
     name: "Perticular",
     selector: "particular",
@@ -59,11 +56,16 @@ const columns: any = [
 const Home: NextPage = () => {
   // const intl = useIntl();
   const [filterText, setFilterText] = useState('');
+  const [loading, setLoading] = useState(false)
+  useEffect(() => {
+    setLoading(true)
+    setTimeout(() => {
+      setLoading(false)
+    }, 1000);
+  }, [])
 
   const { Transaction } = useSelector((state: RootStateOrAny) => state?.admin)
-
   const filteredItems = Transaction.transactions?.filter(item => item?.particular && item?.particular.toLowerCase().includes(filterText.toLowerCase()));
-  console.log("Transaction", Transaction)
   return (
     <div className="inst">
       <NavigationBar1 />
@@ -73,55 +75,57 @@ const Home: NextPage = () => {
             <Sidebar />
           </div>
         </div>
-        <div className="dash-board-1">
-          <div className="dash-2 ">
-            <div className="my-course kadjsfs3e0we-112x">
-              <div className="hdsf0s-sadmsa">
-                <div>
-                  <Link href="/en/admin/dashboard">
-                    <h3 className="back-arrow">
-                      <i className="fa fa-arrow-left"> </i>
-                      Back</h3>
-                  </Link>
-                  <h3>Transtion Report </h3>
-                </div>
-              </div>
-              <div className="">
-                <div className="">
-                  <div className="kjdaf-sadasnqeow-samd w-100">
-
-                    <div style={{ display: 'flex', justifyContent: 'center', width: '100%', marginBottom: '20px' }}>
-                      <div className="dsnodi-sdjsad">
-                        <div className="searchbar-icon">
-                          <FiSearch color="#8A8A8A" size={17} />
-
-                        </div>
-                        <input type="text" placeholder="Search" onChange={(e) => setFilterText(e.target.value)} value={filterText} />
-                      </div>
-
-                    </div>
-                    <div className="w-100">
-                      <DataTable
-                        columns={columns}
-                        data={filteredItems}
-                        sortIcon={<i className='fa fa-arrow-down'></i>}
-                        pagination
-                        selectableRows
-                        highlightOnHover
-                      />
+        {
+          loading ? Small()
+            :
+            <div className="dash-board-1">
+              <div className="dash-2 ">
+                <div className="my-course kadjsfs3e0we-112x">
+                  <div className="hdsf0s-sadmsa">
+                    <div>
+                      <Breadcrumb>
+                        <Breadcrumb.Item linkAs={Link} href="/en/admin/dashboard">Dashboard</Breadcrumb.Item>
+                        <Breadcrumb.Item active>Transaction </Breadcrumb.Item>
+                      </Breadcrumb>
                     </div>
                   </div>
+                  <div className="">
+                    <div className="">
+                      <div className="kjdaf-sadasnqeow-samd w-100">
+
+                        <div style={{ display: 'flex', justifyContent: 'center', width: '100%', marginBottom: '20px' }}>
+                          <div className="dsnodi-sdjsad">
+                            <div className="searchbar-icon">
+                              <FiSearch color="#8A8A8A" size={17} />
+
+                            </div>
+                            <input type="text" placeholder="Search" onChange={(e) => setFilterText(e.target.value)} value={filterText} />
+                          </div>
+
+                        </div>
+                        <div className="w-100">
+                          <DataTable
+                            columns={columns}
+                            data={filteredItems}
+                            sortIcon={<i className='fa fa-arrow-down'></i>}
+                            pagination
+                            // selectableRows
+                            highlightOnHover
+                          />
+                        </div>
+                      </div>
 
 
+                    </div>
+
+                  </div>
                 </div>
-
               </div>
             </div>
-          </div>
-        </div>
+        }
       </section>
     </div>
   );
 };
 
-export default Home;
+export default AdminAuth( Home );

@@ -24,7 +24,7 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
 
 
 
-  const token = useSelector((state: RootStateOrAny) => state?.admin?.token)
+  const {token} = useSelector((state: RootStateOrAny) => state?.admin)
   const { Quiz } = useSelector((state: RootStateOrAny) => state?.quiz)
   const { courseId } = useSelector((state: RootStateOrAny) => state?.addCourse)
 
@@ -33,7 +33,7 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
     // .. where we make our configurations
     baseURL: 'https://dev.thetechub.us/bolloot/',
     headers: {
-      token: "$2y$10$ekdz.jeHgiqPD4t2SfA8xepsqgYfAzi2zQ/2l/85R4vYRVgZB04YG"
+      token: token
     }
   });
 

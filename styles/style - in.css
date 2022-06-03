@@ -312,9 +312,15 @@
   color: white !important;
 }
 
-.dash-ch-2:hover,
 .sdisad-dsdactive {
   background: #d0565c !important;
+  border-radius: 29px;
+  cursor: pointer;
+  color: white !important;
+}
+
+.course button:hover {
+  background: #00778f !important;
   border-radius: 29px;
   cursor: pointer;
   color: white !important;
@@ -503,7 +509,7 @@
 .dsaofjosd-ajeir button:hover,
 .dsaofjosd-ajeir button:active,
 .dsaofjosd-ajeir button:focus {
-  background-color: transparent ;
+  background-color: transparent;
   border: none !important;
   box-shadow: none !important;
 }
@@ -2577,7 +2583,7 @@
 
   .active_color {
     margin-bottom: 20px;
-    
+
   }
 
   .card-daskfj-e {
@@ -3130,7 +3136,7 @@
 
 .active_color button {
   margin-bottom: 0px;
-  background-color: #0753b0 ;
+  background-color: #0753b0;
   border: none;
   display: flex;
   align-items: center;
@@ -3156,11 +3162,10 @@
 
 }
 
-.upload-active:hover
-{
-  background-color: #0753b0 ;
+.upload-active:hover {
+  background-color: #0753b0;
   color: white;
-  
+
 }
 
 .upload-active-save {
@@ -3824,7 +3829,7 @@
 .kns-sanweso02e button:active,
 .kns-sanweso02e button:focus,
 .kns-sanweso02e button:hover {
-  border: 0.5px solid #c4c4c4 ;
+  border: 0.5px solid #c4c4c4;
   box-sizing: border-box;
   box-shadow: 0px 12px 20px rgba(152, 152, 152, 0.118);
   border-radius: 100px;
@@ -4120,13 +4125,16 @@ input[type=number] {
 /* dropdown */
 
 /* .dropdown-menu.show {
-  display: flex;
-  flex-direction: column;
-  border-radius: 10px;
-  width: max-content;
-  padding: 5px;
+  position: static !important;
+  height: 100%;
+  top: 60% !important;
+  left: 92% !important;
+  transform: translate(-92%, -50%) !important;
 
 } */
+
+
+
 
 
 .dropdown-menu a {
@@ -4959,15 +4967,18 @@ textarea::placeholder {
   font-size: 14px;
   padding: 4px 0 0 0;
 }
+
 .tags-input input:focus {
   outline: transparent;
 }
+
 #tags {
   display: flex;
   flex-wrap: wrap;
   padding: 0;
   margin: 8px 0 0 0;
 }
+
 .tag {
   width: auto;
   height: 32px;
@@ -4982,9 +4993,11 @@ textarea::placeholder {
   margin: 0 8px 8px 0;
   background: #0052cc;
 }
+
 .tag .tag-title {
   margin-top: 3px;
 }
+
 .tag .tag-close-icon {
   display: block;
   width: 16px;
@@ -4998,15 +5011,16 @@ textarea::placeholder {
   background: #fff;
   cursor: pointer;
 }
+
 @media screen and (max-width: 567px) {
   .tags-input {
     width: calc(100vw - 32px);
- }
+  }
 }
 
 /* blog */
 
-.blog{
+.blog {
   max-width: 70%;
   border: 1pt solid lightgray;
   border-radius: 20px;
@@ -5017,12 +5031,39 @@ textarea::placeholder {
 /* ck edi */
 
 .ck-editor__editable_inline {
- height: 250px;
+  height: 250px;
 }
 
-.back-arrow{
+.back-arrow {
   cursor: pointer;
 }
+
+.p-field input[type="password"]::placeholder {
+  color: lightgray;
+}
+
+.blogs img {
+  width: 100%;
+  height: 100%
+}
+
+.blogs p {
+  font-size: 16px;
+
+}
+
+.tags {
+  margin-left: 10px;
+  border: 1pt solid lightgray;
+  padding: 0px 10px;
+  border-radius: 20px;
+}
+
+.tag-head {
+  font-size: 16px;
+  font-weight: 500;
+}
+
 
 
 /* .criculum_field input{
@@ -5030,3 +5071,12 @@ textarea::placeholder {
   width: 100%;
   outline: none;
 } */
+
+
+.drop_down_ins {
+  position: sticky !important;
+  top: 50% !important;
+  left: 92% !important;
+  height: 100%;
+  transform: translate(-92%, -50%) !important;
+}

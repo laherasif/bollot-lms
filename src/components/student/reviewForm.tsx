@@ -29,7 +29,6 @@ const ReviewForm = ({ Toggle, permition, reviewss }: any) => {
   });
 
   const ratingChanged = (newRating: any) => {
-    console.log(newRating);
     setState(newRating)
   };
 

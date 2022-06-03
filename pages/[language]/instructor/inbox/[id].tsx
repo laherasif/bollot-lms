@@ -3,7 +3,7 @@ import type { NextPage } from "next";
 import Sidebar from "../../../../src/components/instructor/sidebar2";
 import { FiSearch } from "react-icons/fi";
 // import { BiBell } from "react-icons/bi";
-import { Spinner, Dropdown } from "react-bootstrap";
+import { Breadcrumb, Spinner } from "react-bootstrap";
 // import { IoMailOutline } from "react-icons/io5";
 // import Icons from "../../../../src/icons";
 // import TopNavbar from "../../../../src/components/instructor/TopNavbar";
@@ -20,13 +20,15 @@ import moment from "moment";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { pusher } from '../../../../src/confiq/pusher/pusher'
 import { useRouter } from "next/router";
+import { SweetAlert } from "../../../../src/function/hooks";
+import withAuth from "../../../../src/components/Hoc/authRoute";
 // const options = ["one", "two", "three"];
 
 const Home: NextPage = () => {
   // const intl = useIntl();
 
   const [messages, setMessages] = useState([])
-  const [messagess, setMessagess] = useState([])
+  // const [messagess, setMessagess] = useState([])
   const [conversation, setConversation] = useState([])
   const [user, setUser] = useState('')
   const [convId, setConvId] = useState(0)
@@ -37,7 +39,7 @@ const Home: NextPage = () => {
   const [page, setPages] = useState(1)
   const [filterText, setFilterText] = useState('');
 
-  const ScrollRef = useRef<HTMLDivElement>(null);
+  // const ScrollRef = useRef<HTMLDivElement>(null);
   const { token, User } = useSelector(
     (state: RootStateOrAny) => state?.userReducer
   );
@@ -107,7 +109,6 @@ const Home: NextPage = () => {
         }
       }
       catch (err) {
-        console.log("err", err)
       }
     }
     fetchMesg()
@@ -123,7 +124,6 @@ const Home: NextPage = () => {
 
 
   const getMessages = async (data: any, id: number) => {
-    console.log("Data", data)
     setUser(data)
     setConvId(id)
     setPages(1)
@@ -142,6 +142,7 @@ const Home: NextPage = () => {
 
     }
     catch (err) {
+      SweetAlert({icon:'error' , text : err })
 
     }
   }
@@ -167,11 +168,11 @@ const Home: NextPage = () => {
 
       setMessages([userData, ...messages])
       setState('')
-      let res = await AxInstance.post('api//send-message', value)
+       await AxInstance.post('api//send-message', value)
       // setLoading(false)
     }
     catch (err) {
-
+     SweetAlert({icon :'error' , text : err })
     }
   }
 
@@ -192,7 +193,6 @@ const Home: NextPage = () => {
 
       setLoading(true)
       let res = await AxInstance.post('api//get-messages', value)
-      console.log(res)
       if (res.data.success === true) {
         setMessages([...messages, ...res.data.response.messages])
         setLoading(false)
@@ -205,6 +205,7 @@ const Home: NextPage = () => {
 
     }
     catch (err) {
+      SweetAlert({icon:'error' , text : err })
 
     }
   };
@@ -226,42 +227,22 @@ const Home: NextPage = () => {
             <div className="my-course">
               <div className="hdsf0s-sadmsa">
                 <div>
-                  <Link href="/en/instructor/courses">
+                  {/* <Link href="/en/instructor/courses">
                     <h3 style={{ cursor: 'pointer' }}>
                       <i className="fa fa-arrow-left"></i>
                       Back</h3>
                   </Link>
-                  <h3>Inbox</h3>
+                  <h3>Inbox</h3> */}
+                  <Breadcrumb>
+                    <Breadcrumb.Item linkAs={Link} href="/en/instructor">Dashboard</Breadcrumb.Item>
+                    <Breadcrumb.Item active>Inbox</Breadcrumb.Item>
+                  </Breadcrumb>
                 </div>
 
 
               </div>
 
-              <div className="complete-web-1 ">
-                <div className="umpire w-100">
-                  <div className="umpire-1 umpire-1-cst ">
-                    <div className="maxima ">
-                      <div className="idfadsf-sads">
-                        <button className="upload-1 sdisad-dsdactive">
-                          Messages
-                        </button>
-                      </div>
-
-
-                      {/* <div>
-                        <Link href="/en/payments">
-                          <button className="upload-1">Assignments</button>
-                        </Link>
-                      </div>
-                      <div>
-                        <Link href="/en/payments">
-                          <button className="upload-1">Announcements</button>
-                        </Link>
-                      </div> */}
-                    </div>
-                  </div>
-                </div>
-              </div>
+              
               <div className="d-flex justify-content-between align-items-center">
                 <div className="card-daskfj-e dskfajs-asjds" style={{ position: 'relative' }}>
                   <div className="dsnodi-sdjsad">
@@ -450,4 +431,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default withAuth( Home );

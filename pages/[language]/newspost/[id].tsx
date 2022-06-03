@@ -42,13 +42,11 @@ const Home: NextPage = () => {
         let resCom = await instance.get(`api//news/comments/${blogId}`)
         setBlogs(res.data.response.news)
         setComents(resCom.data.response.news_comments)
-        console.log("res", resCom)
       }
       fetch()
     }
     catch (err) { }
   }, [blogId , loading === false ])
-  console.log("comments", comments)
 
 
 
@@ -106,7 +104,6 @@ const Home: NextPage = () => {
      }
   }
 
-
   return (
     <>
       <div>
@@ -131,31 +128,30 @@ const Home: NextPage = () => {
           </section>
           <section className="container-3s">
             <div className="music-text">
-              <p className="mb-59">
+              <p className="mb-59 blogs"  >
                 <div dangerouslySetInnerHTML={{ __html: blogs?.full_content }} />
-
               </p>
             </div>
             <div className="music-text">
               <div className="d-flex justify-content-between">
-                <div>
+                <div >
                   {blogs?.tags ?
                     <h3 style={{display:'flex'}}>
-                      Tags : 
+                      <span className="tag-head">Tags : </span> 
                       {blogs?.tags && blogs?.tags.map((t: any, i: number) => (
-                        <div key={i} style={{paddingLeft:'10px'}}>
+                        <div key={i} className="tags">
                            {t}
                         </div>
                       ))}
                     </h3>
                     : null}
                 </div>
-                <div className="jaskdf-sdda">
+                {/* <div className="jaskdf-sdda">
                   <h3>Share with</h3>
                   <img src="/s1.png" alt="" />
                   <img src="/s2.png" alt="" />
                   <img src="/s3.png" alt="" />
-                </div>
+                </div> */}
               </div>
             </div>
             <div className="music-text">
@@ -211,10 +207,10 @@ const Home: NextPage = () => {
           <div className="form-blog-box-p">
             {User || Admin ? " " :
               <div className="form-blog-box">
-                <div className="form-blog-box-input mx-2">
+                <div className="form-blog-box-input ">
                   <input placeholder="Name" type="text" name="username" value={state?.username} onChange={(e) => handleChange(e)} />
                 </div>
-                <div className="form-blog-box-input mx-2">
+                <div className="form-blog-box-input ">
                   <span>Image (Optional ) </span>
                   <input style={{ display: 'none' }} type="file" name="email" value={state?.email} onChange={(e) => handleChange(e)} />
                 </div>

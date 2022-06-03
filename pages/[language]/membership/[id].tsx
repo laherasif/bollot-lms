@@ -44,7 +44,6 @@ const Home: NextPage = () => {
   }, [])
 
   const handleChange = async (data: number) => {
-    console.log("data", data)
     setmemberships({
       ...membership,
       auto_renew: data ? 1 : 0
@@ -81,7 +80,6 @@ const Home: NextPage = () => {
   }
 
 
-  console.log("member", member)
 
   return (
     <>

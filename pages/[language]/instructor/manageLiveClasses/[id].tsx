@@ -1,19 +1,19 @@
 import type { NextPage } from "next";
-import Dropdown from "../../../../src/components/instructor/dropdown";
-import { useIntl } from "react-intl";
+// import Dropdown from "../../../../src/components/instructor/dropdown";
+// import { useIntl } from "react-intl";
 import Sidebar from "../../../../src/components/instructor/sidebar2";
-import { FiSearch } from "react-icons/fi";
-import { BiBell } from "react-icons/bi";
-import { IoMailOutline } from "react-icons/io5";
-import Icons from "../../../../src/icons";
-import TopNavbar from "../../../../src/components/instructor/TopNavbar";
+// import { FiSearch } from "react-icons/fi";
+// import { BiBell } from "react-icons/bi";
+// import { IoMailOutline } from "react-icons/io5";
+// import Icons from "../../../../src/icons";
+// import TopNavbar from "../../../../src/components/instructor/TopNavbar";
 import NavigationBar1 from "../../../../src/components/instructor/NavigationBar3";
-import Chart from "../../../../src/components/instructor/chart";
-import Chart1 from "../../../../src/components/instructor/chart1";
-import BarChart from "../../../../src/components/instructor/barchart";
+// import Chart from "../../../../src/components/instructor/chart";
+// import Chart1 from "../../../../src/components/instructor/chart1";
+// import BarChart from "../../../../src/components/instructor/barchart";
 import Link from "next/link";
-import CourseCard from "../../../../src/components/instructor/CourseCard1";
-import NewCourse from "../../../../src/components/instructor/newCourse";
+// import CourseCard from "../../../../src/components/instructor/CourseCard1";
+// import NewCourse from "../../../../src/components/instructor/newCourse";
 import { useEffect, useState, useRef } from "react";
 import { RootStateOrAny, useSelector } from "react-redux";
 import axios from "axios";
@@ -24,8 +24,9 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment'
 const options = ["one", "two", "three"];
-import { format, parse } from 'date-fns'
-import { Spinner } from "react-bootstrap";
+import { parse } from 'date-fns'
+import { Breadcrumb, Spinner } from "react-bootstrap";
+import withAuth from "../../../../src/components/Hoc/authRoute";
 const Home: NextPage = () => {
   // const intl = useIntl();
   let router = useRouter()
@@ -90,13 +91,13 @@ const Home: NextPage = () => {
   const addFormFields = () => {
 
     setDateTime([
-
+      ...dateTime,
       {
         date: '',
         from_time: '',
         to_time: '',
 
-      }, ...dateTime,])
+      },])
 
   }
 
@@ -158,12 +159,17 @@ const Home: NextPage = () => {
                 <div className="hdsf0s-sadmsa">
 
                   <div className="back-btn">
-                    <Link href={`/en/instructor/liveCourses`} >
+                    <Breadcrumb>
+                      <Breadcrumb.Item linkAs={Link} href="/en/instructor">Dashboard</Breadcrumb.Item>
+                      <Breadcrumb.Item linkAs={Link} href="/en/instructor/liveCourses">Live Courses</Breadcrumb.Item>
+                      <Breadcrumb.Item active>Manage Schedule</Breadcrumb.Item>
+                    </Breadcrumb>
+                    {/* <Link href={`/en/instructor/liveCourses`} >
                       <h3>
                         <i className="fa fa-arrow-left"></i>
                         Back</h3>
                     </Link>
-                    <h3>Manage Live Classes Secdule </h3>
+                    <h3>Manage Live Classes Secdule </h3> */}
                   </div>
                   <div className=" jidfjsd-asjreid ">
 
@@ -179,7 +185,7 @@ const Home: NextPage = () => {
                           onClick={() => addFormFields()}
 
                         >
-                          + Add more secdule </button>
+                          +  Add more classes </button>
                         <button className="upload-1 sdisad-dsdactive"
                           onClick={() => SaveLiveClasses()}
                         >
@@ -204,7 +210,7 @@ const Home: NextPage = () => {
                       return (
                         <div className="datepicker_container" key={i}>
                           <div className="p-field mt-2 ">
-                            <p>Sedule no </p>
+                            <p>Schedule cards</p>
                             <div className="d-flex" style={{ justifyContent: 'space-between' }}>
                               <div>
                                 {/* <Icons name="i24" /> */}
@@ -221,10 +227,13 @@ const Home: NextPage = () => {
                               onKeyDown={(e) => {
                                 e.preventDefault();
                               }}
-                              placeholderText={'YYYY-MM-DD'} 
+                              placeholderText={'YYYY-MM-DD'}
 
                               selected={dat?.id || dat.date !== '' ? parse(dat.date, "yyyy-MM-dd", new Date()) : null}
                               // selected={dat.date}
+                              locale="en-GB"
+                              placeholderText={'YYYY-MM-DD'}
+                              showWeekNumbers
                               onChange={(date) => handleDateChange("date", i, date)}
                               dateFormat="yyyy-MM-dd"
                             />
@@ -246,10 +255,10 @@ const Home: NextPage = () => {
                               // selected={dat.from_time}
                               onChange={(date) => handleDateChange("from_time", i, date)}
                               showTimeSelect
-                              placeholderText={'HH-MM'} 
+                              placeholderText={'HH-MM'}
 
                               showTimeSelectOnly
-                              // timeIntervals={24}
+                              timeIntervals={30}
                               timeCaption="Time"
                               dateFormat="h:mm "
                             />
@@ -271,9 +280,8 @@ const Home: NextPage = () => {
                               onChange={(date) => handleDateChange("to_time", i, date)}
                               showTimeSelect
                               showTimeSelectOnly
-                              placeholderText={'HH-MM'} 
-
-                              // timeIntervals={24}
+                              placeholderText={'HH-MM'}
+                              timeIntervals={30}
                               timeCaption="Time"
                               dateFormat="h:mm"
                             />
@@ -304,4 +312,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default withAuth( Home );

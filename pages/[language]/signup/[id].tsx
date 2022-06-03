@@ -161,7 +161,6 @@ const Home: NextPage = () => {
 
       }
     } catch (err) {
-      console.log("err", err)
     }
   };
 

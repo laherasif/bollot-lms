@@ -55,7 +55,6 @@ const Home: NextPage = () => {
     fetchCourse()
   }, [courseTitle])
 
-console.log("Section" , section )
 
   return (
     <>
@@ -74,7 +73,6 @@ console.log("Section" , section )
                 <h2 className="ksdfhd-active">Content</h2>
                 <div className="content-section">
                   {section && section?.sections?.map((sec: any, i: number) => {
-                    console.log("sectionid" , sec.id)
                       return (
                         <div className="ksajdfds-sads" onClick={() => { setLectures(sec?.lectures), setCourseId(sec?.id) }} key={i}>
                           {sec.id === courseId || sec?.is_completed === 1 ? (

@@ -1,7 +1,7 @@
 import React from 'react';
-import Image from "next/image";
+// import Image from "next/image";
 import moment from 'moment';
-const CardImage=require('../../images/blog1.png');
+// const CardImage=require('../../images/blog1.png');
 export default ({comment}:any)=>{
     return  <div className='blogcomment'>
       <img src={comment?.image}/>

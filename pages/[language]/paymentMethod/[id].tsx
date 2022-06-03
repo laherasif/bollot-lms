@@ -105,7 +105,6 @@ const Home: NextPage = () => {
         }
       }
       catch (err) {
-        console.log("ee", err)
       }
     }
 
@@ -202,7 +201,6 @@ const Home: NextPage = () => {
 
 
 
-console.log("renew" , renew)
 
 
   const {

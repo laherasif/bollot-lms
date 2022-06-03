@@ -31,14 +31,12 @@ const Home: NextPage = () => {
       token: token
     }
   });
-  console.log("MemberShip", MemberShip)
 
   useEffect(() => {
     dispatch(GetMembership())
     try {
       let fetchMembership = async () => {
         let res = await AxInstance.get('api//company/current-status')
-        console.log("Res", res)
         setMember(res.data.response.status)
       }
       fetchMembership()

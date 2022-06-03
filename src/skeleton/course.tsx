@@ -10,7 +10,7 @@ export const Course: any = () => (
             </div>
 
             <div className="bosan px-2" >
-                <Skeleton height={70} width={50} borderRadius={50} />
+                <Skeleton height={50} width={50} borderRadius={50} />
                 <div className="b-name px-1">
                     <Skeleton height={20} width={50} />
                     <Skeleton width={150} />

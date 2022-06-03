@@ -36,7 +36,7 @@ const AddCoupon = ({ Toggle, permition, User }: any) => {
     });
 
     const handleClose = () => {
-        Toggle(false)
+        Toggle({type: "close"})
     }
 
 
@@ -75,7 +75,8 @@ const AddCoupon = ({ Toggle, permition, User }: any) => {
             if (res.data.success === true) {
                 setLoading(false)
                 SweetAlert({ icon: 'success', text: res.data.message })
-                Toggle(false)
+                Toggle({type: "load"})
+
             }
             else {
                 setErrors(res.data.errors)
@@ -93,7 +94,6 @@ const AddCoupon = ({ Toggle, permition, User }: any) => {
 
     // let selectImage = User?.image || state.image
 
-    console.log("loading", User)
     return (
 
         <div className="hasiw0eskdwd">

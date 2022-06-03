@@ -22,7 +22,6 @@ const Secdule = ({  onStepChange, onPrevStep, step }: any) => {
     const { Classes } = useSelector((state: RootStateOrAny) => state?.live)
     const { courseId } = useSelector((state: RootStateOrAny) => state?.addCourse)
 
-    console.log("class", Classes)
 
     const dispatch = useDispatch()
 
@@ -152,7 +151,7 @@ const Secdule = ({  onStepChange, onPrevStep, step }: any) => {
                                     onChange={(date) => handleDateChange("from_time", index, date)}
                                     showTimeSelect
                                     showTimeSelectOnly
-                                    timeIntervals={24}
+                                    timeIntervals={30}
                                     timeCaption="Time"
                                     dateFormat="h:mm "
                                 />
@@ -175,7 +174,7 @@ const Secdule = ({  onStepChange, onPrevStep, step }: any) => {
                                     onChange={(date) => handleDateChange("to_time", index, date)}
                                     showTimeSelect
                                     showTimeSelectOnly
-                                    timeIntervals={24}
+                                    timeIntervals={30}
                                     timeCaption="Time"
                                     dateFormat="h:mm"
                                 />

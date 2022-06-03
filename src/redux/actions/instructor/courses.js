@@ -65,31 +65,31 @@ export const GetCouses = (type) => dispatch => {
 export const EditCourse = (data) => async dispatch => {
     debugger
     try {
-        dispatch({
-            type: EDIT_ADD_COURSE,
-            payload: data
-        })
+            dispatch({
+                type: EDIT_ADD_COURSE,
+                payload: data
+            })
 
 
-        dispatch({
-            type: EDIT_CRICCULUM,
-            payload: data.sections
-        })
+            dispatch({
+                type: EDIT_CRICCULUM,
+                payload: data.sections
+            })
 
-        dispatch({
-            type: EDIT_QUIZ,
-            payload: data.quiz
-        })
+            dispatch({
+                type: EDIT_QUIZ,
+                payload: data.quiz
+            })
 
-        dispatch({
-            type: EDIT_PREVIEW,
-            payload: data.previews
-        })
+            dispatch({
+                type: EDIT_PREVIEW,
+                payload: data.previews
+            })
 
-        dispatch({
-            type: EDIT_LIVE_CLASSES,
-            payload: data.schedule
-        })
+            dispatch({
+                type: EDIT_LIVE_CLASSES,
+                payload: data.schedule
+            })
 
 
     }

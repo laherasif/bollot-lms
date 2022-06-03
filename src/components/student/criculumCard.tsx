@@ -59,7 +59,6 @@ export default ({ lectures, CourseId }: any) => {
       }, 60000);
       setInterID(letintervalID); // took letintervalID and stored it in useState intervalID
     } else if (errors === true) {
-      console.log("clearInterval stop!");
       clearInterval(intervalID);
     }
   }, [errors]);

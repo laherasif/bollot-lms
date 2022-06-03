@@ -1,27 +1,28 @@
 import type { NextPage } from "next";
-import Dropdown from "../../../../src/components/instructor/dropdown";
-import { useIntl } from "react-intl";
+// import Dropdown from "../../../../src/components/instructor/dropdown";
+// import { useIntl } from "react-intl";
 import Sidebar from "../../../../src/components/instructor/sidebar2";
-import { FiSearch } from "react-icons/fi";
-import { BiBell } from "react-icons/bi";
-import { IoMailOutline } from "react-icons/io5";
+// import { FiSearch } from "react-icons/fi";
+// import { BiBell } from "react-icons/bi";
+// import { IoMailOutline } from "react-icons/io5";
 import Icons from "../../../../src/icons";
-import TopNavbar from "../../../../src/components/instructor/TopNavbar";
+// import TopNavbar from "../../../../src/components/instructor/TopNavbar";
 import NavigationBar1 from "../../../../src/components/instructor/NavigationBar3";
-import Chart from "../../../../src/components/instructor/chart";
-import Chart1 from "../../../../src/components/instructor/chart1";
-import BarChart from "../../../../src/components/instructor/barchart";
+// import Chart from "../../../../src/components/instructor/chart";
+// import Chart1 from "../../../../src/components/instructor/chart1";
+// import BarChart from "../../../../src/components/instructor/barchart";
 import Link from "next/link";
-import CourseCard from "../../../../src/components/instructor/CourseCard1";
-import NewCourse from "../../../../src/components/instructor/newCourse";
-import { useEffect, useRef, useState } from "react";
+// import CourseCard from "../../../../src/components/instructor/CourseCard1";
+// import NewCourse from "../../../../src/components/instructor/newCourse";
+import { useEffect, useState } from "react";
 import { RootStateOrAny, useSelector } from "react-redux";
 import axios from "axios";
 import { Small } from "../../../../src/components/instructor/loader";
 import { useRouter } from "next/router";
-import { ProgressBar, Spinner } from "react-bootstrap";
+import { Breadcrumb, ProgressBar, Spinner } from "react-bootstrap";
 import { bytesToSize, generateVideoThumbnail, SweetAlert } from "../../../../src/function/hooks";
 import { S3_BUCKET, myBucket } from '../../../../src/confiq/aws/aws'
+import withAuth from "../../../../src/components/Hoc/authRoute";
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
@@ -30,7 +31,7 @@ const Home: NextPage = () => {
   const [loading, setLoading] = useState(false)
   const [loader, setLoader] = useState(false)
   const [network, setNetwork] = useState(false)
-  const [errors, setErrors] = useState()
+  const [errors, setErrors] = useState({})
 
   const token = useSelector((state: RootStateOrAny) => state?.userReducer?.token)
 
@@ -55,7 +56,6 @@ const Home: NextPage = () => {
       try {
         setLoading(true)
         let res = await AxInstance.get(`api//instructor/courses/previews/get/${courseId}`)
-        console.log("res", res)
         if (res.data.success === true) {
           setLoading(false)
           setSection(res.data.response.course_previews)
@@ -74,7 +74,7 @@ const Home: NextPage = () => {
   const AddmoreSection = () => {
     setSection([
       ...section,
-      { title: "", file_type: '', object_key: '', thumbnail: '', progressbar: '', file_size: '' , uuid:'' },
+      { title: "", file_type: '', object_key: '', thumbnail: '', progressbar: '', file_size: '', uuid: '' },
     ])
 
   }
@@ -94,7 +94,7 @@ const Home: NextPage = () => {
 
   const handleChangeLectureFile = async (index: number, evnt: React.ChangeEvent<HTMLInputElement>) => {
     const file: any = evnt.target.files[0]
-    if (!file.name.match(/.(mp4)$/i)) {
+    if (!file.name.match(/.(mp4|mov|wmv|avi|avchd|flv|mkv|mpeg-2)$/i)) {
       SweetAlert({ icon: "error", text: 'please select only video files ' })
     }
 
@@ -157,10 +157,6 @@ const Home: NextPage = () => {
 
 
   const SaveCriculum = async () => {
-    let arr = []
-
-
-
 
     try {
 
@@ -171,9 +167,9 @@ const Home: NextPage = () => {
       setLoader(true)
       let res = await AxInstance.post('api//instructor/courses/previews/update', saveCri)
       if (res.data.success === true) {
+        setErrors({})
         setLoader(false)
         SweetAlert({ icon: "success", text: res.data.message })
-
       }
       else {
         setLoader(false)
@@ -187,27 +183,26 @@ const Home: NextPage = () => {
     }
   }
 
-  console.log("sec" , section)
 
   const delThumnail = (index: number,) => {
-    debugger
+    
     const lists: any = [...section];
     for (let j = 0; j < lists.length; j++) {
       if (j === index) {
         const element = lists[j];
         element.thumbnail = ""
         element.object_key = ""
+        element.file_size = ""
+        element.progressbar = 0
         if (network === true) {
           element.progressbar = 0
         }
       }
 
     }
-    console.log("sec" , lists)
     setSection(lists)
   }
 
-  console.log("errors", errors)
 
 
   let red = section.some((ac) => ac.progressbar < 100 && ac.progressbar > 0)
@@ -230,14 +225,15 @@ const Home: NextPage = () => {
                 <div className="hdsf0s-sadmsa">
 
                   <div className="back-btn">
-                    <Link href="/en/instructor/courses" >
-                      <h3>
-                        <i className="fa fa-arrow-left"></i>
-                        Back</h3>
-                    </Link>
-                    <h3>Manage Preview Video
 
-                    </h3>
+                    <Breadcrumb>
+                      <Breadcrumb.Item linkAs={Link} href="/en/instructor/">Dashboard</Breadcrumb.Item>
+                      <Breadcrumb.Item linkAs={Link} href="/en/instructor/courses" >
+                        Courses
+                      </Breadcrumb.Item>
+                      <Breadcrumb.Item active>Manage Previews </Breadcrumb.Item>
+                    </Breadcrumb>
+                    {/* <h3>Manage Preview Video</h3> */}
                   </div>
                   <div className=" jidfjsd-asjreid">
 
@@ -277,12 +273,11 @@ const Home: NextPage = () => {
                 </div>
                 <div className="complete-web-1">
                   {section ? section?.map((lec: any, index: number) => (
-                    console.log("section", lec?.progressbar > 0 && lec?.progressbar < 100),
 
                     < div className="drop-box" style={{ marginLeft: '10px', maxWidth: '30%' }}>
                       <div className="kvjadsd-j43rm">
                         <div className="jodsa-wnedas">
-                          <h6>Lectures</h6>
+                          <h6>Peview</h6>
                         </div>
                         {
 
@@ -312,20 +307,20 @@ const Home: NextPage = () => {
                       <div className={lec.thumbnail && lec.id || lec.progressbar === 100 || network ? "image-container" : ""}
 
                       >
-                        <label>Video / PDF file for this Lecture</label>
+                        <label>Video file for this Lecture</label>
                         <div className="drop-box img-box w-100"
                           style={errors && errors[index]?.object_key && { border: '1pt solid red' }}
 
                         >
                           <div className="kvjadsd-j43rm iasdufhvs-ernd" >
                             <Icons name="i29" />
-                            {  lec?.id && !lec?.uuid && lec?.thumbnail !== '' ? <img src={lec.thumbnail  } alt="course_img" className="thum_img" /> : lec?.object_key}
+                            {lec?.id && !lec?.uuid && lec?.thumbnail !== '' ? <img src={lec.thumbnail} alt="course_img" className="thum_img" /> : lec?.object_key}
                             <div style={{ display: 'flex', flexDirection: 'column' }}>
                               {lec?.file_size > 0 && <p className="mt-2">File Size : {bytesToSize(lec?.file_size)}</p>}
                               {lec?.progressbar === 100 && <p className="mt-2">File Uploaded <i style={{ color: 'green' }} className="fa fa-check-circle"></i></p>}
                             </div>
                           </div>
-                          {lec.thumbnail  ? "" :
+                          {lec.thumbnail ? "" :
                             <input type="file" accept="pdf/*" onChange={(e) => handleChangeLectureFile(index, e)} className="custom-file-input" />
                           }
                           {errors && errors[index]?.object_key ? <div className="invalid mt-1">{errors[index]?.object_key}</div> : null}
@@ -337,7 +332,7 @@ const Home: NextPage = () => {
                             :
                             lec?.progressbar && <ProgressBar animated now={lec.progressbar} />}
                         </div>
-                        {lec?.object_key ||  lec?.thumbnail && lec.progressbar === 100 ?
+                        {lec?.object_key || lec?.thumbnail && lec.progressbar === 100 ?
                           <>
                             <div className="overlay"></div>
                             <div id="icon" onClick={() => delThumnail(index)}>
@@ -366,4 +361,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default withAuth( Home );

@@ -8,11 +8,12 @@ import { RootStateOrAny, useSelector } from "react-redux";
 import axios from "axios";
 import { Small } from "../../../../src/components/instructor/loader";
 import { SweetAlert } from "../../../../src/function/hooks";
-import TagsInput from '../../../../src/components/admin/tagInput'
-import Editor from "../../../../src/components/admin/Editor";
-import { Spinner } from "react-bootstrap";
+// import TagsInput from '../../../../src/components/admin/tagInput'
+// import Editor from "../../../../src/components/admin/Editor";
+import { Breadcrumb, Spinner } from "react-bootstrap";
 import { useRouter } from "next/router";
-import { MdOutlineBrandingWatermark } from "react-icons/md";
+import AdminAuth from "../../../../src/components/Hoc/adminRoute";
+// import { MdOutlineBrandingWatermark } from "react-icons/md";
 const options = ["one", "two", "three"];
 
 
@@ -34,7 +35,7 @@ const Home: NextPage = () => {
   const [url, setUrl] = useState('');
   const [error, setError] = useState()
   const [editorLoaded, setEditorLoaded] = useState(false);
- 
+
 
   useEffect(() => {
     setEditorLoaded(true);
@@ -82,7 +83,7 @@ const Home: NextPage = () => {
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     let files: any = event.target.files;
-    if (!files[0].name.match(/.(jpg|jpeg|png|gif)$/i)) {
+    if (!files[0]?.name.match(/.(jpg|jpeg|png|gif)$/i)) {
       SweetAlert({ icon: "error", text: 'please select only image' })
     }
     else {
@@ -160,8 +161,7 @@ const Home: NextPage = () => {
     }
   }
 
- 
-  console.log("state ", values)
+
 
   return (
     <div className="inst">
@@ -174,37 +174,31 @@ const Home: NextPage = () => {
         </div>
         {loading ? Small()
           :
-          <div className="dash-board-1">
+          <div className="dash-board-1 mt-2">
             <div className="dash-2 ">
               <div className="my-course">
                 <div className="hdsf0s-sadmsa">
 
                   <div className="back-btn">
-                    <Link href="/en/admin/banner" >
+                    {/* <Link href="/en/admin/banner" >
                       <h3 className="back-arrow">
                         <i className="fa fa-arrow-left"></i>
                         Back</h3>
-                    </Link>
+                    </Link> */}
+                    <Breadcrumb>
+                      <Breadcrumb.Item linkAs={Link} href="/en/admin/dashboard">Dashboard</Breadcrumb.Item>
+                      <Breadcrumb.Item linkAs={Link} href="/en/admin/banner">
+                        Banner
+                      </Breadcrumb.Item>
+                      <Breadcrumb.Item active>Manage Banner </Breadcrumb.Item>
+                    </Breadcrumb>
 
-                    <h3> Manage Website Banner</h3>
                   </div>
 
                 </div>
 
-                <div className="complete-web-1 mt-2">
-                  <div className="umpire w-100">
-                    <div className="umpire-1 umpire-1-cst ">
-                      <div className="d-flex mb-3 idfadsf-sads">
-                        <button className="upload-1 sdisad-dsdactive">
-                          Banner
-                        </button>
 
-                      </div>
-
-                    </div>
-                  </div>
-                </div>
-                <div className="complete-web-1">
+                <div className="complete-web-1 ">
                   <div className="blog w-100" >
                     <div className="mb-3"   >
                       <div style={{ display: 'flex', flexDirection: 'column', }} >
@@ -271,11 +265,12 @@ const Home: NextPage = () => {
 
 
                         <div style={{ display: 'flex', flexDirection: 'column', paddingTop: '10px' }}>
-                          <span >Catagory Image</span>
+                          <label >Banner Image</label>
+                          <span style={{ color: 'lightgray' }}>Use an image with 3:1 ratio dimensions</span>
                           <label className="drop-box" htmlFor="img" style={{ cursor: 'pointer' }}>
                             <div className="kvjadsd-j43rm iasdufhvs-ernd" >
-                              {url || values?.banner_image ? <img src={url || values?.banner_image} alt="course_img" style={{ width: '30%', height: ' 50%', objectFit: 'cover' }} /> : ""}
-                              {url || values?.banner_image ? "" : <p>Drag your photos here</p>}
+                              {url || values?.banner_image ? <img src={url || values?.banner_image} alt="course_img" style={{ width: '30%', height: '50%', objectFit: 'cover' }} /> : ""}
+                              {url || values?.banner_image ? "" : <p>Select Image </p>}
                             </div>
                             <input type="file" accept="image/png, image/gif, image/jpeg" name="banner_image"
                               onChange={(e) => handleInputChange(e)}
@@ -320,4 +315,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default AdminAuth( Home );

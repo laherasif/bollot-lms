@@ -9,6 +9,8 @@ import DataTable from "react-data-table-component";
 import { useState } from "react";
 import { FiSearch } from "react-icons/fi";
 import Link from "next/link";
+import { Breadcrumb } from "react-bootstrap";
+import withAuth from "../../../../src/components/Hoc/authRoute";
 
 
 
@@ -21,7 +23,7 @@ const columns: any = [
     sortable: true,
 
   },
- 
+
   {
     name: "Perticular",
     selector: "particular",
@@ -76,12 +78,16 @@ const Home: NextPage = () => {
             <div className="my-course kadjsfs3e0we-112x">
               <div className="hdsf0s-sadmsa">
                 <div>
-                  <Link href="/en/instructor">
+                  <Breadcrumb>
+                    <Breadcrumb.Item linkAs={Link} href="/en/instructor">Dashboard</Breadcrumb.Item>
+                    <Breadcrumb.Item active>Transaction</Breadcrumb.Item>
+                  </Breadcrumb>
+                  {/* <Link href="/en/instructor">
                     <h3 className="back-arrow">
                       <i className="fa fa-arrow-left"> </i>
                       Back</h3>
                   </Link>
-                  <h3>Transtion Report </h3>
+                  <h3>Transtion Report </h3> */}
                 </div>
               </div>
               <div className="">
@@ -122,4 +128,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default withAuth( Home );

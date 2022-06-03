@@ -3,7 +3,6 @@ import React from "react";
 import Icons from "../icons";
 import Rating from "./ratingStar";
 export default ({ item, key }: any) => {
-  console.log("Rev" , item )
   return (
     <div className="arewosjerer">
       <div className="f-reviews-sie">

@@ -1,39 +1,25 @@
 import type { NextPage } from "next";
-import { useIntl } from "react-intl";
+// import { useIntl } from "react-intl";
 import Sidebar from "../../../../src/components/instructor/sidebar2";
-import { FiSearch } from "react-icons/fi";
-import { BiBell } from "react-icons/bi";
-import { Dropdown } from "react-bootstrap";
-import { IoMailOutline } from "react-icons/io5";
+// import { FiSearch } from "react-icons/fi";
+// import { BiBell } from "react-icons/bi";
+// import { Dropdown } from "react-bootstrap";
+// import { IoMailOutline } from "react-icons/io5";
 import Icons from "../../../../src/icons";
-import TopNavbar from "../../../../src/components/instructor/TopNavbar";
+// import TopNavbar from "../../../../src/components/instructor/TopNavbar";
 import NavigationBar1 from "../../../../src/components/instructor/NavigationBar3";
-import Chart from "../../../../src/components/instructor/chart";
-import Chart1 from "../../../../src/components/instructor/chart1";
+// import Chart from "../../../../src/components/instructor/chart";
+// import Chart1 from "../../../../src/components/instructor/chart1";
 import BarChart from "../../../../src/components/instructor/barchart3";
-import BarChart1 from "../../../../src/components/instructor/barchart1";
+// import BarChart1 from "../../../../src/components/instructor/barchart1";
 import Link from "next/link";
-import CourseCard from "../../../../src/components/instructor/CourseCard1";
+// import CourseCard from "../../../../src/components/instructor/CourseCard1";
 import PieChart from '../../../../src/components/instructor/pieChart';
 import { RootStateOrAny, useSelector } from "react-redux";
+import { Breadcrumb } from "react-bootstrap";
+import withAuth from "../../../../src/components/Hoc/authRoute";
 const options = ["one", "two", "three"];
 
-const UserChatCard = () => {
-  return (
-    <div className="user-card-inbox">
-      <div className="user-card-inbox-inner">
-        <img src="/assets/images/umpire-1.svg" />
-        <div>
-          <h3>John Doe</h3>
-          <p>Me: What is difficulty...</p>
-        </div>
-      </div>
-      <div>
-        <p>12 Jun</p>
-      </div>
-    </div>
-  );
-};
 const Home: NextPage = () => {
   // const intl = useIntl();
 
@@ -54,7 +40,11 @@ const Home: NextPage = () => {
             <div className="my-course kadjsfs3e0we-112x">
               <div className="hdsf0s-sadmsa">
                 <div>
-                  <h3>Earnings Report</h3>
+                  <Breadcrumb>
+                    <Breadcrumb.Item linkAs={Link} href="/en/instructor">Dashboard</Breadcrumb.Item>
+                    <Breadcrumb.Item active>Earning Report</Breadcrumb.Item>
+                  </Breadcrumb>
+                  {/* <h3>Earnings Report</h3/> */}
                 </div>
 
                 <div className="idfadsf-sads adsjkfdsao-sadsk">
@@ -171,4 +161,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default withAuth( Home );

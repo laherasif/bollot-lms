@@ -12,12 +12,17 @@ import DataTable from "react-data-table-component";
 import { useRouter } from "next/router";
 import { FiSearch } from "react-icons/fi";
 import AddCoupon from "../../../../src/components/instructor/addCoupon";
+import { Breadcrumb } from "react-bootstrap";
+import moment from "moment";
+import { SweetAlert } from "../../../../src/function/hooks";
+import withAuth from "../../../../src/components/Hoc/authRoute";
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
   const [blog, setBlog] = useState([])
   const [showblog, setShowBlog] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [loader, setLoader] = useState(false)
   const [filterText, setFilterText] = useState('');
   const [coupon, setCoupon] = useState({})
   const { token } = useSelector((state: RootStateOrAny) => state?.userReducer)
@@ -31,6 +36,23 @@ const Home: NextPage = () => {
   });
 
 
+  const handleChange = (value: any) => {
+    if (value.type === "close") {
+      setShowBlog(false)
+      setCoupon('')
+
+    }
+    else if (value.type === "load") {
+      setShowBlog(false)
+      setCoupon('')
+      setLoader(true)
+      setTimeout(() => {
+        setLoader(false)
+      }, 1000);
+
+    }
+  }
+
 
 
   useEffect(() => {
@@ -38,22 +60,22 @@ const Home: NextPage = () => {
       try {
         setLoading(true)
         let res = await AxInstance.get('api//instructor/coupons')
-        console.log("Res", res)
         if (res.data.success === true) {
           setLoading(false)
           setBlog(res.data.response.coupons)
         }
       }
       catch (err) {
+        SweetAlert({icon:'error' , text : err })
 
       }
     }
     fetchCourse()
-  }, [showblog])
+  }, [loader === true])
 
   const columns: any = [
     {
-      name: "Creator Image",
+      name: "Created by",
       selector: "image",
       sortable: true,
       cell: (d: any) => (
@@ -61,7 +83,7 @@ const Home: NextPage = () => {
       )
     },
     {
-      name: "Creator",
+      name: "",
       selector: "creator",
       sortable: true,
       cell: (d: any) => (
@@ -69,7 +91,7 @@ const Home: NextPage = () => {
       )
     },
     {
-      name: "Coupon No",
+      name: "Coupon Code",
       selector: "coupon_code",
       sortable: true,
 
@@ -80,7 +102,9 @@ const Home: NextPage = () => {
       name: "Validate",
       selector: "valid_till",
       sortable: true,
-
+      cell: (d: any) => (
+        <span>{moment(d?.valid_till).format('ll')}</span>
+      )
     },
     {
       name: "Action",
@@ -121,18 +145,25 @@ const Home: NextPage = () => {
                 <div className="hdsf0s-sadmsa">
 
                   <div className="back-btn">
-                    <Link href="/en/instructor/courses" >
+                    <Breadcrumb>
+                      <Breadcrumb.Item linkAs={Link} href="/en/instructor">Dashboard</Breadcrumb.Item>
+                      <Breadcrumb.Item linkAs={Link } href="/en/instructor/courses">
+                        Courses
+                      </Breadcrumb.Item>
+                      <Breadcrumb.Item active>Coupon</Breadcrumb.Item>
+                    </Breadcrumb>
+                    {/* <Link href="/en/instructor/courses" >
                       <h3 className="back-arrow">
                         <i className="fa fa-arrow-left"></i>
                         Back</h3>
                     </Link>
-                    <h3> Course Discount </h3>
+                    <h3> Course Discount </h3> */}
                   </div>
                   <div className=" jidfjsd-asjreid">
                     {/* <Search /> */}
                     <div className="d-flex idfadsf-sads">
                       <button className="upload-1 sdisad-dsdactive" onClick={() => setShowBlog(true)} >
-                        + Add New Blog </button>
+                        + Add New Coupon </button>
                     </div>
                   </div>
                 </div>
@@ -157,7 +188,6 @@ const Home: NextPage = () => {
                       data={filteredItems}
                       sortIcon={<i className='fa fa-arrow-down'></i>}
                       pagination
-                      selectableRows
                       highlightOnHover
                     />
                   </div>
@@ -170,12 +200,12 @@ const Home: NextPage = () => {
 
 
 
-        {showblog && <AddCoupon permition={showblog} User={coupon} Toggle={(value: any) => setShowBlog(value)} />}
+        {showblog && <AddCoupon permition={showblog} User={coupon} Toggle={(value: any) => handleChange(value)} />}
       </section >
     </div >
   );
 };
 
-export default Home;
+export default withAuth( Home );
 
 
