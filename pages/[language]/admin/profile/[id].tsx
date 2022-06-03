@@ -11,6 +11,7 @@ import Sidebar from "../../../../src/components/admin/sidebar2";
 import axios from "axios";
 import { SweetAlert } from "../../../../src/function/hooks";
 import { updateAdmin } from "../../../../src/redux/actions/admin";
+import AdminAuth from "../../../../src/components/Hoc/adminRoute";
 const options = ["one", "two", "three"];
 
 
