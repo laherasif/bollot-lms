@@ -58,14 +58,10 @@ const Home: NextPage = () => {
                   <div className="umpire w-100">
                     <div className="umpire-1 umpire-1-cst ">
                       <div className="d-flex mb-3 course w-100">
-                        <button className="upload-1 sdisad-dsdactive">
+                        <button className={ins === false ? "upload-1 sdisad-dsdactive" : "upload-1"} onClick={() => setIns(false)} > 
                           Students
                         </button>
-                        <button className="upload-1" > Instructors</button>
-
-
-
-
+                        <button className={ins ? "upload-1 sdisad-dsdactive" : "upload-1"} onClick={() => setIns(true)} > Instructors</button>
 
                       </div>
 

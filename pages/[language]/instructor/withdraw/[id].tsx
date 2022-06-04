@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import { Spinner } from "react-bootstrap";
 import React, { useState, useEffect } from "react";
 import Footer from "../../../../src/components/footer";
-import Navbar from "../../../../src/components/header/Navbar";
+import Navbar from "../../../../src/components/instructor/NavigationBar3";
 import { useSelector, RootStateOrAny, useDispatch } from "react-redux";
 import { ResetCart, SaveCard } from "../../../../src/redux/actions/course/course";
 import axios from "axios";
@@ -68,7 +68,7 @@ const Home: NextPage = () => {
 
 
 
-  const { token,  } = useSelector((state: RootStateOrAny) => state?.userReducer)
+  const { token, } = useSelector((state: RootStateOrAny) => state?.userReducer)
 
   const AxInstance = axios.create({
     // .. where we make our configurations
@@ -88,7 +88,7 @@ const Home: NextPage = () => {
 
     let fetchCart = async () => {
       try {
-        let res = await AxInstance.get('api//stripe/card/all')
+        let res = await AxInstance.get('api//stripe/withdraw/card/all')
         if (res.data.success === true) {
           setCardDetail(res.data.response.cards)
         }
@@ -125,7 +125,6 @@ const Home: NextPage = () => {
       let res = await AxInstance.post("api//stripe/withdraw/card/store", detail)
       if (res.data.success === true) {
         dispatch(SaveCard(res.data.response.card.id))
-        router.push('/en/instructor')
         setAcoountDetail('')
         setLoader(false)
         setPayments(false)
@@ -170,6 +169,8 @@ const Home: NextPage = () => {
         setComplPay(false)
         dispatch(ResetCart())
         SweetAlert({ icon: "success", text: res.data.message })
+        router.push('/en/instructor')
+
       }
       else {
         setLoader(false)
@@ -198,12 +199,8 @@ const Home: NextPage = () => {
   } = acoountDetail;
   return (
     <>
-      <div>
-        <div className="navBar-cst">
-          <div className="container-nav">
-            <Navbar />
-          </div>
-        </div>{" "}
+      <div className="inst">
+        <Navbar />
         {loading ? <div style={{ textAlign: 'center', margin: '10rem' }}>
           <Spinner animation="border" />
         </div>
@@ -339,4 +336,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default  withAuth(Home);
+export default withAuth(Home);

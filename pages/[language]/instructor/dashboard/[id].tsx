@@ -15,15 +15,15 @@ import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
 import { useEffect } from "react";
 import axios from "axios";
-import { getDashbaordStatic , getTransactionStatic , getTransactions } from "../../../../src/redux/actions/instructor/courses";
+import { getDashbaordStatic, getTransactionStatic, getTransactions } from "../../../../src/redux/actions/instructor/courses";
 import { SweetAlert } from "../../../../src/function/hooks";
 import withAuth from "../../../../src/components/Hoc/authRoute";
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
 
-  const { User , token  } = useSelector((state: RootStateOrAny) => state?.userReducer)
-  const { Statistic  } = useSelector((state: RootStateOrAny) => state?.InsDash)
+  const { User, token } = useSelector((state: RootStateOrAny) => state?.userReducer)
+  const { Statistic } = useSelector((state: RootStateOrAny) => state?.InsDash)
 
   const dispatch = useDispatch()
 
@@ -35,24 +35,24 @@ const Home: NextPage = () => {
     },
   });
 
-useEffect(()=>{
-  try{
-    let fetchStatic = async() => {
-      let res = await AxInstance.get('api//instructor/dashboard-stats')
-      let transaction = await AxInstance.get('api//instructor/transaction-stats')
-      let Alltransaction = await AxInstance.get('api//instructor/transactions')
-      if(res.data.success === true ){
-        dispatch(getDashbaordStatic(res.data.response.data))
-        dispatch(getTransactionStatic(transaction.data.response.data))
-        dispatch(getTransactions(Alltransaction.data.response.transactions))
+  useEffect(() => {
+    try {
+      let fetchStatic = async () => {
+        let res = await AxInstance.get('api//instructor/dashboard-stats')
+        let transaction = await AxInstance.get('api//instructor/transaction-stats')
+        let Alltransaction = await AxInstance.get('api//instructor/transactions')
+        if (res.data.success === true) {
+          dispatch(getDashbaordStatic(res.data.response.data))
+          dispatch(getTransactionStatic(transaction.data.response.data))
+          dispatch(getTransactions(Alltransaction.data.response.transactions))
+        }
       }
+      fetchStatic()
     }
-    fetchStatic()
-  }
-  catch(err){
-    SweetAlert({icon:'error' , text : err })
-  }
-},[])
+    catch (err) {
+      SweetAlert({ icon: 'error', text: err })
+    }
+  }, [])
 
 
   return (
@@ -110,7 +110,10 @@ useEffect(()=>{
                       </div>
                       <div className="aisdad-j3n2eidaw">
                         <h2>${Statistic?.wallet_balance}</h2>
-                        <button className="withdraw lkadsjfkadsf-sad">Withdraw</button>
+                        <Link href="/en/instructor/withdraw">
+                          <button className="withdraw lkadsjfkadsf-sad">Withdraw</button>
+
+                        </Link>
                       </div>
                     </div>
                   </div>
@@ -159,4 +162,4 @@ useEffect(()=>{
   );
 };
 
-export default withAuth( Home );
+export default withAuth(Home);
