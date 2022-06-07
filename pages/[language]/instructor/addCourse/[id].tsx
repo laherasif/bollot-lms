@@ -208,10 +208,10 @@ const Home: NextPage = () => {
                   <div className="container-fluid">
                     <div className="row justify-content-center">
                       <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12  p-0 mt-3 mb-2" >
-                        <div className="card px-0 pt-4 pb-0 mt-3 mb-3" style={{ maxWidth: '70%', margin: 'auto' }}>
+                        <div className="card px-0 pt-4 pb-0 mt-3 form_card" >
                           <div id="msform">
                             {/* progressbar */}
-                            <ul id="progressbar" style={{ padding: '0px 10%' }}>
+                            <ul id="progressbar" >
                               <li className="active" id="account">
                                 <strong>Add Course</strong>
                               </li>
@@ -228,7 +228,7 @@ const Home: NextPage = () => {
 
                             <br /> {/* fieldsets */}
                             <fieldset>
-                              <div style={{ textAlign: 'left', padding: '0px 30px' }}>
+                              <div className="course_padding">
                                 {/* {stepPages[step]} */}
                                 {step === 0 && <AddCourse
                                   // handleCourseId={(value: any) => setCourseId(value)}

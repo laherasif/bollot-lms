@@ -5,32 +5,27 @@ import {
   Navbar,
   Container,
   Nav,
-  NavDropdown,
   Dropdown,
-  Form,
-  FormControl,
-  Button,
 } from "react-bootstrap";
 import Link from "next/link";
 const LogoImage = require("../../images/logo.png");
 import { useRouter } from 'next/router'
-import { useIntl } from "react-intl";
 import { useSelector, RootStateOrAny, useDispatch } from "react-redux";
 import { LogoutIns } from '../../redux/actions/auth/user';
-import { loginAdmin, logoutAdmin } from "../../redux/actions/admin";
+import {  logoutAdmin } from "../../redux/actions/admin";
 import { clearStates } from "../../redux/actions/instructor/preview";
 const App = () => {
-  // const intl = useIntl();
-  const router = useRouter()
+
   const [search, setSearch] = useState('')
   const carts = useSelector((state: RootStateOrAny) => state.cartReducer.AddCart)
   const { User } = useSelector((state: RootStateOrAny) => state.userReducer)
   const { Admin } = useSelector((state: RootStateOrAny) => state.admin)
-
+  
+  const router = useRouter()
 
   const dispatch = useDispatch()
 
-  const searchCourse = (e) => {
+  const searchCourse = (e:any ) => {
     e.preventDefault()
     // let removeSpace = search.split(" ").join("");
     router.push(`/en/courses/?search=${search}`)
@@ -137,7 +132,7 @@ const App = () => {
               </button>
             </Link>
 
-            {Object.keys(Admin || User).length ?
+            {Object.keys(Admin).length || Object.keys(User).length ?
               <div className="kjdshfi-serjh">
                 <Dropdown>
                   <Dropdown.Toggle id="dropdown-basic">

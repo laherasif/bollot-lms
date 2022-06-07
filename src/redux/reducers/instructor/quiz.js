@@ -17,6 +17,9 @@ const initialState = {
         question: '',
         options: [
             { option: "", correct: false, },
+            { option: "", correct: false, },
+            { option: "", correct: false, },
+            { option: "", correct: false, },
 
         ]
 
@@ -107,6 +110,9 @@ const QuizReducer = (state = initialState, action) => {
                 Quiz: [{
                     question: '',
                     options: [
+                        { option: "", correct: false, },
+                        { option: "", correct: false, },
+                        { option: "", correct: false, },
                         { option: "", correct: false, },
             
                     ]

@@ -154,56 +154,56 @@ export default () => {
 
             </div>
             <Navbar.Collapse id="responsive-navbar-nav">
-              <Nav className="me-auto ajisdf-adfser">
+              <Nav className="ajisdf-adfser">
+                <div className="top-nav">
+
+                  <div className="idsafs-aadmsd " >
+                    <div className="" ref={notify} style={{ cursor: 'pointer' }}>
+                      <div onClick={() => notification()}>
+                        <BiBell size={20} color="#ffff" />
+                        {/* <p></p> */}
+                        {notifications?.some((s: any) => s?.is_read === "0") ? <p></p> : ""}
+                      </div>
+                      {notif && <Notification notifications={notifications} />}
 
 
-                <div className="idsafs-aadmsd " >
-                  <div className="" ref={notify} style={{ cursor: 'pointer' }}>
-                    <div onClick={() => notification()}>
-                      <BiBell size={20} color="#ffff" />
-                      {/* <p></p> */}
-                      {notifications?.some((s: any) => s?.is_read === "0") ? <p></p> : ""}
-                    </div>
-                    {notif && <Notification notifications={notifications} />}
-
-
-
-                  </div>
-                  <div style={messagess?.some((s: any) => s?.last_message_obj.is_read === "0") ? { marginLeft: '10px', marginTop: '10px' } : { marginLeft: '10px' }} ref={messanger} >
-                    <div onClick={() => messages()} style={{ cursor: 'pointer' }}>
-                      <IoMailOutline color="#ffff" size={20} />
-                      {/* <p></p> */}
-                      {messagess?.some((s: any) => s?.last_message_obj.is_read === "0") ? <p></p> : ""}
 
                     </div>
-                    {mesg && <Messages message={messagess} />}
+                    <div style={messagess?.some((s: any) => s?.last_message_obj.is_read === "0") ? { marginLeft: '10px', marginTop: '10px' } : { marginLeft: '10px' }} ref={messanger} >
+                      <div onClick={() => messages()} style={{ cursor: 'pointer' }}>
+                        <IoMailOutline color="#ffff" size={20} />
+                        {/* <p></p> */}
+                        {messagess?.some((s: any) => s?.last_message_obj.is_read === "0") ? <p></p> : ""}
+
+                      </div>
+                      {mesg && <Messages message={messagess} />}
 
 
-                  </div>
-                  {/* <p className="mt-3">{User.fullname || "instructor "}</p>
+                    </div>
+                    {/* <p className="mt-3">{User.fullname || "instructor "}</p>
                   <img src={User.image || "/assets/images/umpire-1.svg"} /> */}
 
-                </div>
+                  </div>
 
-                <div className="kjdshfi-serjh">
-                  <Dropdown>
-                    <Dropdown.Toggle id="dropdown-basic">
-                      <div className="kjdshfi-serjh">
-                        {User?.fullname}
-                        <img style={{ borderRadius: '50%' }} src={User?.image || "/assets/images/umpire-1.svg"} alt="profile_img" />
-                        <Icons name="i8" />
-                      </div>
-                    </Dropdown.Toggle>
+                  <div id="profile_dropdown">
+                    <Dropdown>
+                      <Dropdown.Toggle id="dropdown-basic">
+                        <div className="kjdshfi-serjh">
+                          {User?.fullname}
+                          <img style={{ borderRadius: '50%' }} src={User?.image || "/assets/images/umpire-1.svg"} alt="profile_img" />
+                          <Icons name="i8" />
+                        </div>
+                      </Dropdown.Toggle>
 
-                    <Dropdown.Menu >
-                      <Dropdown.Item as={Link} href="/" >Go to website</Dropdown.Item>
-                      <Dropdown.Item as={Link} href="/en/instructor/courses" >My Courses</Dropdown.Item>
-                      <Dropdown.Item as={Link} href="/en/instructor/profile" >My Profile </Dropdown.Item>
-                      <Dropdown.Item ><span onClick={() => Logout()}>Logout</span></Dropdown.Item>
+                      <Dropdown.Menu >
+                        <Dropdown.Item as={Link} href="/" >Go to website</Dropdown.Item>
+                        <Dropdown.Item as={Link} href="/en/instructor/courses" >My Courses</Dropdown.Item>
+                        <Dropdown.Item as={Link} href="/en/instructor/profile" >My Profile </Dropdown.Item>
+                        <Dropdown.Item ><span onClick={() => Logout()}>Logout</span></Dropdown.Item>
 
-                    </Dropdown.Menu>
-                  </Dropdown>
-                  {/* <Dropdown>
+                      </Dropdown.Menu>
+                    </Dropdown>
+                    {/* <Dropdown>
                     <Dropdown.Toggle variant="success" id="dropdown-basic">
                       <div className="kjdshfi-serjh">
                         {User?.fullname}
@@ -221,8 +221,8 @@ export default () => {
 
                     </Dropdown.Menu>
                   </Dropdown> */}
+                  </div>
                 </div>
-
               </Nav>
 
             </Navbar.Collapse>

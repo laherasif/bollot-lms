@@ -1,5 +1,6 @@
 import React from "react";
 import { Accordion } from "react-bootstrap";
+import { add3Dots } from "../function/hooks";
 const CourseItem = ({ lecture, key }: any) => {
   return <div className="lasjdsad-dsdsadwe" key={key}>
     <p style={{ alignItems: 'center' }}>
@@ -10,7 +11,7 @@ const CourseItem = ({ lecture, key }: any) => {
 
 }
       <span style={{ marginLeft: '10px' }}>
-        {lecture?.title}
+        { add3Dots(lecture?.title , 50)}
       </span>
     </p>
     <h5>

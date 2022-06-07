@@ -98,7 +98,7 @@ const Home: NextPage = () => {
                 <div className="complete-web-1 ">
                   <div className="umpire w-100">
                     <div className="umpire-1 umpire-1-cst ">
-                      <div className="d-flex mb-3 idfadsf-sads">
+                      <div className="d-flex mb-3 idfadsf-sads" id="course_btns">
                         <button className="upload-1 sdisad-dsdactive">
                           My Courses
                         </button>

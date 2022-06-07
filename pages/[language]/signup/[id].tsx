@@ -91,7 +91,6 @@ const Home: NextPage = () => {
   const signInGog = async () => {
     const { user } = await signInWithPopup(firebaseAuth, provider);
     const { providerData }: any = user;
-
     dispatch(SocialRegMedia(providerData, role === 1 ? "student" : "instructor"))
 
   };
@@ -146,6 +145,7 @@ const Home: NextPage = () => {
       }
 
 
+      setProviderEmail(email)
       let res = await instance.post("api//signup", value)
 
       if (res.data.success === true) {
@@ -332,7 +332,7 @@ const Home: NextPage = () => {
       <Footer />
 
 
-      {message && <Otp openToggle={(e: any) => setMessage(e)} providerEmail={"laherasif@gmail.com"} role={authValue.role} />}
+      {message && <Otp openToggle={(e: any) => setMessage(e)} providerEmail={providerEmail} role={authValue.role} />}
     </div>
   );
 };

@@ -11,7 +11,7 @@ import {
   FORGOT_PASSWORD_EMAIL,
 } from "../../types/types";
 const initialState = {
-  token: null,
+  token: '',
   isAuth: false,
   varified: false,
   User: {},

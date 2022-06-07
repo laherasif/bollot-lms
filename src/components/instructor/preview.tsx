@@ -91,7 +91,7 @@ export default ({ changeState, onPrevStep, step }: any) => {
 
   const handleChangeLectureFile = async (index: number, evnt: React.ChangeEvent<HTMLInputElement>) => {
     const file: any = evnt.target.files[0]
-    if (!file.name.match(/.(mp4 | mov | wmv | avi | avchd | flv| mkv| mpeg-2 )$/i)) {
+    if (!file.name.match(/.(mp4|mov|wmv|avi|avchd|flv|mkv|mpeg-2 )$/i)) {
       SweetAlert({ icon: "error", text: 'please select only video files ' })
     }
 
@@ -195,14 +195,8 @@ export default ({ changeState, onPrevStep, step }: any) => {
 
 
 
-
-
-
-
   return (
     <>
-
-
 
       <div className="p-fields">
         <div className="complete-web-1 ">
@@ -318,7 +312,7 @@ export default ({ changeState, onPrevStep, step }: any) => {
 
 
               <div className={lec.thumbnail && lec.id || lec.progressbar === 100 ? "image-container" : ""}>
-                <label>Video file for this Lecture</label>
+                <label>Video file for this preview</label>
                 <div className="drop-box img-box"
                   style={errors[index]?.object_key && { border: '1pt solid red ' }}
                 >

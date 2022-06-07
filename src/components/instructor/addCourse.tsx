@@ -174,7 +174,7 @@ export default ({ onStepChange }: any) => {
 
 
   return (
-    <div className="inst" style={{ padding: '0px 35px' }}>
+    <div className="inst" id="add_course">
       {/* <h3>Add Course </h3> */}
       <div className="p-field" >
         <div style={{ display: 'flex', flexDirection: 'column' , margin:'0px 10px' }}>

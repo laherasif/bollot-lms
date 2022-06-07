@@ -7,7 +7,7 @@ function withAuth<T>(Component: NextComponentType<T>) {
 
     const Auth = (props: T) => {
         const router = useRouter();
-        const { User } = useSelector((state: RootStateOrAny) => state.userReducer)
+        const { User , } = useSelector((state: RootStateOrAny) => state.userReducer)
         
         if (!User) {
             router.push('/en/login')

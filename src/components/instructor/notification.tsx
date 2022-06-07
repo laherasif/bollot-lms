@@ -4,7 +4,7 @@ export default ({notifications}:any) => {
     return (
         <>
             <main>
-                <div className="notification-container" > 
+                <div className="notification-container"   > 
                     <h3>
                         Notifications
                     </h3>

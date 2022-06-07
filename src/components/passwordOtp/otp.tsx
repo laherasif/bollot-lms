@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable prefer-destructuring */
 /* eslint-disable react/no-array-index-key */
-import React, { memo, useState, useCallback, CSSProperties } from 'react';
+import React, { memo, useState, useCallback, CSSProperties, useEffect } from 'react';
 import SingleInput from './single';
 import { useSelector, RootStateOrAny } from 'react-redux'
 import Router, { useRouter } from "next/router";
@@ -49,13 +49,60 @@ export function OTPInputComponent(props: OTPInputProps) {
   } = props;
 
   const [activeInput, setActiveInput] = useState(0);
+  let [countDown, setcountDown] = useState(60);
   const [otpValues, setOTPValues] = useState(Array<string>(length).fill(''));
   const [otp, setOtp] = useState('');
   const [errors, setErros] = useState('');
   const [loading, setLoading] = useState(false);
+  const [intervalID, setInterID] = useState(); // created a useState for intervalID
 
 
   const { forgotEmail } = useSelector((state: RootStateOrAny) => state?.userReducer)
+
+  const [seconds, setSeconds] = useState(0);
+
+  // useEffect(() => {
+  //   let myInterval = setInterval(() => {
+  //     if (seconds > 0) {
+  //       setSeconds(seconds - 1);
+  //     }
+  //     if (seconds === 0) {
+  //       clearInterval(myInterval)
+  //     }
+
+  //   }, 1000)
+  //   return () => {
+  //     clearInterval(myInterval);
+  //   };
+  // });
+
+  const resendEmail = async () => {
+    debugger
+    try {
+      setSeconds(60)
+      await instance.post("api//forgot-password/step-1", { email: "guru@gmail.com" })
+
+    } catch (error) {
+      SweetAlert({ icon: 'error', text: error })
+    }
+  }
+
+
+
+  useEffect(() => {
+    let myInterval = setInterval(() => {
+      if (seconds > 0) {
+        setSeconds(seconds - 1);
+      }
+    }, 1000)
+    return () => {
+      clearInterval(myInterval);
+    };
+  }, [seconds]);
+
+
+
+  console.log("second", seconds)
 
 
 
@@ -218,7 +265,7 @@ export function OTPInputComponent(props: OTPInputProps) {
       let res = await instance.post('api//forgot-password/step-2', value)
       if (res.data?.success === true) {
         setLoading(false)
-        SweetAlert({icon :"success" , text :res.data.message })
+        SweetAlert({ icon: "success", text: res.data.message })
         onStepChange()
       }
       else {
@@ -228,8 +275,7 @@ export function OTPInputComponent(props: OTPInputProps) {
       }
 
     } catch (error) {
-      console.log('err', error)
-      SweetAlert({icon :"error" , text : error })
+      SweetAlert({ icon: "error", text: error })
 
     }
 
@@ -254,32 +300,42 @@ export function OTPInputComponent(props: OTPInputProps) {
                 .fill('')
                 .map((_, index) => (
                   <SingleInput
-                  key={`SingleInput-${index}`}
-                  type={"number"}
-                  focus={activeInput === index}
-                  value={otpValues && otpValues[index]}
-                  autoFocus={autoFocus}
+                    key={`SingleInput-${index}`}
+                    type={"number"}
+                    focus={activeInput === index}
+                    value={otpValues && otpValues[index]}
+                    autoFocus={autoFocus}
                     onFocus={handleOnFocus(index)}
                     onChange={handleOnChange}
                     onKeyDown={handleOnKeyDown}
                     onBlur={onBlur}
                     onPaste={handleOnPaste}
-                    style={errors ? {border:"1pt solid red "} :  inputStyle}
+                    style={errors ? { border: "1pt solid red " } : inputStyle}
                     className={inputClassName}
                     disabled={disabled}
-                    />
-                    ))}
+                  />
+                ))}
 
             </div>
-                    {errors && <div className="invalid mb-1">{errors}</div>}
+            {errors && <div className="invalid mb-1">{errors}</div>}
           </div>
-
-          <div className="logo-2 d-flex" style={{ textAlign: 'center' }}>
-            <h3 style={{ fontSize: '16px' }}>Didn’t get the code?  </h3>
-            <p style={{ fontSize: '16px' }}>Resend</p>
+          <div className='d-flex justify-content-between'>
+            <div className="logo-2 d-flex" style={{ textAlign: 'center' }}>
+              <h3 style={{ fontSize: '16px' }}>Didn’t get the code?  </h3>
+              <p style={seconds > 0 ? { display: 'none' } : { display: 'inline', fontSize: '16px', cursor: 'pointer' }} onClick={() => resendEmail()}>Resend</p>
+            </div>
+            {
+              seconds > 0 ?
+                <p>{seconds}</p>
+                : null
+            }
           </div>
           <div className="hasdfkj" style={{ textAlign: 'center', margin: 'auto' }}>
-            <button className="btn-9" onClick={() => handelSubmit()}>
+            <button
+              className="btn-9"
+              onClick={() => handelSubmit()}
+              style={seconds > 0 ? { opacity: '0.5' } : { opacity: '1' }}
+              disabled={seconds > 0 ? true : false}>
               {loading ?
                 <Spinner animation="border" />
                 :

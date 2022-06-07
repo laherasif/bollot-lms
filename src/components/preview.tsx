@@ -5,6 +5,7 @@ import { Modal, Button } from 'react-bootstrap'
 import ReactPlayer from 'react-player'
 
 import AWS from 'aws-sdk'
+import { add3Dots } from "../function/hooks";
 
 const S3_BUCKET = 'bolloot';
 const REGION = 'us-east-1';
@@ -90,7 +91,7 @@ const PreviewModel = ({ Toggle, previews }: any) => {
                 <Modal.Header closeButton>
                     <div>
                         <span>Course Preview</span>
-                        <h3 style={{fontSize:'18px'}}>{prvId?.title} </h3>
+                        <h3 style={{fontSize:'18px'}}> { add3Dots(prvId?.title , 50)} </h3>
                     </div>
                 </Modal.Header>
                 <Modal.Body >
@@ -98,7 +99,6 @@ const PreviewModel = ({ Toggle, previews }: any) => {
                         <ReactPlayer
                             controls 
                             width="100%"
-                            height="100%"
                             playing={true }
                             volume={1}	
                             url={value} />
@@ -121,12 +121,12 @@ const PreviewModel = ({ Toggle, previews }: any) => {
                                             <img src={p?.thumbnail} alt="thumb" />
                                             <div className="title_icon">
                                                 <i className="fa fa-play-circle"></i>
-                                                <span>{p?.title} </span>
+                                                <span>{add3Dots( p?.title  , 50)} </span>
                                             </div>
                                         </div>
-                                        <div className="video_time">
+                                        {/* <div className="video_time">
                                             03:53
-                                        </div>
+                                        </div> */}
                                     </div>
                                 </li>
                             )})}

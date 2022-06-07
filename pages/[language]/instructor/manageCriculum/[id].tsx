@@ -388,7 +388,7 @@ const Home: NextPage = () => {
                 <div className="complete-web-1 mb-3">
                   <div className="criculum-container">
                     {section ? section?.map((sec: any, index: number) => (
-                      <div className="drop-box" style={{ marginLeft: '10px', maxWidth: '100%' }}>
+                      <div className="drop-box" id="criculum-drop-box">
                         <div className="kvjadsd-j43rm">
                           <div className="jodsa-wnedas">
                             <h6>Section title</h6>

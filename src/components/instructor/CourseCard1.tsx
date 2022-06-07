@@ -29,7 +29,7 @@ export default ({ course, key }: any) => {
           </div>
         </div>
       {/* </Link> */}
-      <div className="assahdwe0-ass ">
+      <div className="assahdwe0-ass " id="courses">
         <Dropdown>
           <Dropdown.Toggle  id="dropdown-basic">
             <i className="fa fa-ellipsis-h" style={{fontSize:'20px' , color:'black'}}></i>

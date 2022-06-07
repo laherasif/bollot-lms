@@ -61,13 +61,16 @@ const Home: NextPage = () => {
       <NavigationBar1 />
       <div className="kjfads0-asdi3">
         <Sidebar />
+
         <DashboardRightBar />
 
       </div>
       <section className="dash-board jadsifd-asdasid">
         <div className="ksadsa-w4a3k4">
           <div className="jcoiasd03-eakw3e1">
-            <Sidebar />
+            <div id="show-above">
+              <Sidebar />
+            </div>
           </div>
         </div>
         <div className="dash-board-1">
@@ -120,7 +123,7 @@ const Home: NextPage = () => {
                 </div>
               </div>
               <div className="d-flex flex-wrap my-5">
-                <div className="njadfskdfns-dsfsad">
+                <div className="njadfskdfns-dsfsad" id="char-card">
                   <Chart1
                     label="Courses"
                     value={Statistic?.total_courses}

@@ -143,6 +143,9 @@ console.log("addCourse" , AddCourse)
 
   const SaveCourse = async () => {
 
+    let removeComma = parseFloat(AddCourse.price.replace(/,/g, ""))
+    let convertToNumber = Number(removeComma)
+
     let data = {
       course_id: courseId ? courseId : "",
       instructor_id: AddCourse.instructor_id,
@@ -150,7 +153,7 @@ console.log("addCourse" , AddCourse)
       category_id: AddCourse.category_id,
       short_desc: AddCourse.short_desc,
       long_desc: AddCourse.long_desc,
-      price: parseFloat(AddCourse.price.replace(/,/g, "")),
+      price: convertToNumber ,
       discounted_price: AddCourse.dprice || AddCourse.discounted_price,
       cover_image: AddCourse.cover_image,
       outcomes: outcomes,
@@ -163,10 +166,10 @@ console.log("addCourse" , AddCourse)
 
     try {
       setLoading(true)
-      onStepChange()
       let res = await AxInstance.post('api//admin/courses/store', data)
       if (res.data.success === true) {
         setLoading(false)
+        onStepChange()
         SweetAlert({ icon: 'success', text: res.data.message })
         dispatch(coursesId(res.data.response.course.id))
 

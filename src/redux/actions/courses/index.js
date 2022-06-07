@@ -249,6 +249,7 @@ export const GetSortedSearch = (name , search) => async dispatch => {
 
 
 export const GetSorted = (name) => async dispatch => {
+    debugger
     try {
 
         let filterPrice = {
@@ -256,7 +257,7 @@ export const GetSorted = (name) => async dispatch => {
             rows_per_page: 10,
             sorting: {
                 sort_by: name === "low" ? "price" : name === "high" ? "price" : name === "recent" ? "id" : "rating",
-                sort_direction: name === "low" ? "asc" : name === "desc" ? "asc" : name === "recent" ? "desc" : "desc"
+                sort_direction: name === "low" ? "asc" : name === "high" ? "desc" : name === "recent" ? "desc" : "desc"
             },
 
         }

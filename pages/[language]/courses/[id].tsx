@@ -54,10 +54,17 @@ const Home: NextPage = () => {
 
 
   const getLiveCourse = () => {
-    console.log("liveCourse", liveCourse)
     if (liveCourse === true) {
       setMainLoading(true)
       dispatch(GetLiveCourse())
+      setTimeout(() => {
+        setMainLoading(false)
+      }, 2000);
+    }
+    else{
+      setMainLoading(true)
+    dispatch(GetAllCatagory())
+
       setTimeout(() => {
         setMainLoading(false)
       }, 2000);
@@ -95,6 +102,7 @@ const Home: NextPage = () => {
 
 
   const getSorted = (e: React.ChangeEvent<HTMLInputElement>) => {
+    debugger
     setSorting(e.target.value);
     setMainLoading(true)
 
@@ -279,8 +287,8 @@ const Home: NextPage = () => {
                   <div className="mx-2 sortdrp">
                     <Form.Select name="sorting" value={sorting} onChange={(e) => getSorted(e)}>
                       <option disabled>Sort By </option>
-                      <option value="high">Sort by Price - Low to High</option>
-                      <option value="low">Sort by Price - High to Low</option>
+                      <option value="low">Sort by Price - Low to High</option>
+                      <option value="high">Sort by Price - High to Low</option>
                       <option value="rating">Sort by Top Rated</option>
                       <option value="recent">Sort by most recent</option>
                     </Form.Select>
@@ -300,7 +308,7 @@ const Home: NextPage = () => {
                       </Link>
                     ))}
                     {/* <h3>Live Courses</h3> */}
-                    <div style={{ marginBottom: '10px' }}>
+                    <div style={{ marginBottom: '10px' }} className="forms-switch">
                       <Form.Check
                         type="switch"
                         id="custom-switch"
@@ -341,7 +349,7 @@ const Home: NextPage = () => {
                 ) : (
                   <></>
                 )}
-                <div className={`all-of ${view ? "asdjfi-dasd" : ""}`}>
+                <div className={`all-of ${view ? "asdjfi-dasd" : ""}`} >
                   {currentItems && currentItems?.length > 0 ? currentItems.map((cours: any) =>
                     view == false ? <CourseCard f={cours} key={cours.id} /> : <CourseCardBig cours={cours} key={cours.id} />
                   )

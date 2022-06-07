@@ -274,7 +274,7 @@ const Home: NextPage = () => {
                 <div className="complete-web-1">
                   {section ? section?.map((lec: any, index: number) => (
 
-                    < div className="drop-box" style={{ marginLeft: '10px', maxWidth: '30%' }}>
+                    < div className="drop-box" id="preview-drop-box" >
                       <div className="kvjadsd-j43rm">
                         <div className="jodsa-wnedas">
                           <h6>Peview</h6>

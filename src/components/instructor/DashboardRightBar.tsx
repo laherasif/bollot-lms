@@ -70,7 +70,7 @@ export default () => {
       <RightBarContent />
     </div>
     <div className='nakdsfosda-sdme'>
-      <Navbar bg="light" className="hdhafs-dawej" expand={false}>
+      <Navbar  className="hdhafs-dawej" expand={false}>
         <Container fluid>
           <Navbar.Toggle aria-controls="offcanvasNavbar" />
           <Navbar.Offcanvas

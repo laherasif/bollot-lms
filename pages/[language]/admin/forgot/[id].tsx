@@ -10,7 +10,6 @@ import instance from "../../../../src/confiq/axios/instance";
 import { useRouter } from "next/router";
 import { useDispatch} from "react-redux";
 import { loginAdmin } from "../../../../src/redux/actions/admin";
-import AdminAuth from "../../../../src/components/Hoc/adminRoute";
 const Home: NextPage = () => {
   // const intl = useIntl();
 

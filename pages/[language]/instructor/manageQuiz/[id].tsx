@@ -271,10 +271,10 @@ const Home: NextPage = () => {
                 </div>
                 <div className="complete-web-1">
 
-                  <div className="complete-web-1 mb-3" style={{ marginBottom: '60px' }} >
+                  <div className="complete-web-1 mb-3" id="quiz-container">
 
                     {allQuiz.length ? allQuiz?.map((q, index) => (
-                      <div className="p-3 quiz" key={index} style={{ maxWidth: '30%', marginLeft: '20px' }}>
+                      <div className="p-3 quiz" key={index} id="quiz-box">
                         <div className="">
                           <div className="d-flex " style={{ justifyContent: 'space-between' }}>
                             <label>Question : {index + 1}</label>

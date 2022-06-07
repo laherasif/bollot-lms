@@ -46,7 +46,7 @@ const Home: NextPage = () => {
                       <Breadcrumb.Item linkAs={Link} href="/en/admin/dashboard">Dashboard</Breadcrumb.Item>
                       <Breadcrumb.Item active>Users</Breadcrumb.Item>
                     </Breadcrumb>
-                    
+
                   </div>
 
                   <div className="my-2">
@@ -58,10 +58,14 @@ const Home: NextPage = () => {
                   <div className="umpire w-100">
                     <div className="umpire-1 umpire-1-cst ">
                       <div className="d-flex mb-3 course w-100">
-                        <button className={ins === false ? "upload-1 sdisad-dsdactive" : "upload-1"} onClick={() => setIns(false)} > 
-                          Students
+                        <button className={ins === false ? "upload-1 sdisad-dsdactive" : "upload-1"} onClick={() => setIns(false)}>
+                          Manage Students
                         </button>
-                        <button className={ins ? "upload-1 sdisad-dsdactive" : "upload-1"} onClick={() => setIns(true)} > Instructors</button>
+                        <button className={ins ? "upload-1 sdisad-dsdactive" : "upload-1"} onClick={() => setIns(true)} >Manage Instructor</button>
+
+
+
+
 
                       </div>
 
@@ -100,4 +104,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default AdminAuth( Home );
+export default AdminAuth(Home);
