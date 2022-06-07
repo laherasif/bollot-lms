@@ -240,7 +240,7 @@ export function OTPInputComponent(props: OTPInputProps) {
 
       }
 
-    } catch (err {
+    } catch (err){
       // console.log('err', error)
       SweetAlert({icon :'error' , text: err})
 
