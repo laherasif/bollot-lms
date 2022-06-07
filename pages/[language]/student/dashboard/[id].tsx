@@ -21,6 +21,7 @@ import {
   getTransactions
 } from "../../../../src/redux/actions/student/courses";
 import axios from "axios";
+import { SweetAlert } from "../../../../src/function/hooks";
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
@@ -54,7 +55,9 @@ const Home: NextPage = () => {
       }
       fetchStat()
     }
-    catch (err) { }
+    catch (error) {
+      SweetAlert({ icon: "error", text: error })
+     }
   }, [])
 
   useEffect(() => {

@@ -78,7 +78,7 @@ console.log("addCourse" , AddCourse)
       try {
 
         let res = await AxInstance.get(`api//admin/courses/${courseSlug}`)
-        debugger
+        
         if (res.data.success === true) {
           dispatch(coursesId(res.data.response.course?.id))
           dispatch(EditCourse(res.data.response.course))
@@ -86,6 +86,8 @@ console.log("addCourse" , AddCourse)
 
       }
       catch (err) {
+      SweetAlert({ icon: "error", text: err })
+
       }
     }
     if (courseSlug) {

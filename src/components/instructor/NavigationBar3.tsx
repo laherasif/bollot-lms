@@ -95,7 +95,7 @@ export default () => {
 
 
   const Logout = () => {
-    debugger
+    
     // setLoading(true)
     dispatch(LogoutIns())
     dispatch(clearStates())

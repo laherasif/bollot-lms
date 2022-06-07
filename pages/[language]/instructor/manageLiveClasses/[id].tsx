@@ -131,6 +131,7 @@ const Home: NextPage = () => {
       }
     } catch (error) {
       setLoader(false)
+      SweetAlert({ icon: "error", text: error })
 
     }
   }

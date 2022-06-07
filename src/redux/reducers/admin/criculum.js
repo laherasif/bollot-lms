@@ -75,7 +75,7 @@ const CriculumReducer = (state = initialState, action) => {
 
 
         case ADD_CRICULUM_THUMNAILS:
-            debugger
+            
             return {
                 ...state,
                 ...state.Criculums.map((item, ind) => {

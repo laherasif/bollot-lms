@@ -22,6 +22,7 @@ import Invitation from "../../../../src/components/instructor/invitationForm";
 import { useRouter } from "next/router";
 import Search from "../../../../src/components/instructor/search";
 import withAuth from "../../../../src/components/Hoc/authRoute";
+import { SweetAlert } from "../../../../src/function/hooks";
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
@@ -61,6 +62,7 @@ const courseSlug = router.query.id
         }
       }
       catch (err) {
+        SweetAlert({ icon: "error", text: err })
 
       }
     }

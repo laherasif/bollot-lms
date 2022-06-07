@@ -14,6 +14,7 @@ import Link from "next/link";
 import { Small } from "../../../../src/components/student/loader";
 import Swal from 'sweetalert2'
 import DataTable from "react-data-table-component";
+import { SweetAlert } from "../../../../src/function/hooks";
 
 const Home: NextPage = () => {
   // const intl = useIntl();
@@ -44,7 +45,8 @@ const Home: NextPage = () => {
         setLoading(false)
         setNotification(res.data.response.notifs)
       }
-      catch (err) {
+      catch (error) {
+        SweetAlert({ icon: "error", text: error })
 
       }
 

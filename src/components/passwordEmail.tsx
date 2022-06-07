@@ -29,7 +29,7 @@ const [errors, setErrors] = useState<Errors>({})
 
 
 const handleClick = async () => {
-  debugger
+  
   setLoader(true)
   try {
 
@@ -53,6 +53,8 @@ const handleClick = async () => {
     }
   } catch (err) {
     setLoader(false)
+    SweetAlert({icon :'error' , text: err})
+
   }
 };
 

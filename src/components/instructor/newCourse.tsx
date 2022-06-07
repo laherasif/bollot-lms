@@ -17,6 +17,7 @@ import { IoCloudCircleSharp } from "react-icons/io5";
 // import { google } from 'googleapis'
 import axios from 'axios'
 import { useSelector, RootStateOrAny } from "react-redux";
+import { SweetAlert } from "../../function/hooks";
 
 interface Course {
   title: string,
@@ -79,7 +80,9 @@ export default (catagory: any) => {
         setCourses(res.data.response.categories)
       }
       catch (err) {
-        console.log("err", err)
+        // console.log("err", err)
+        SweetAlert({icon :'error' , text : err })
+
       }
     }
     fetchData()
@@ -192,7 +195,9 @@ export default (catagory: any) => {
         setErrors(res.data.error)
         setLoading(false)
       }
-    } catch (error) {
+    } catch (err) {
+      SweetAlert({icon :'error' , text : err })
+
     }
   }
 

@@ -45,7 +45,6 @@ const Home: NextPage = () => {
 
   });
 
-  console.log("full_content", data)
 
   useEffect(() => {
     setEditorLoaded(true);

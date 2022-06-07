@@ -13,7 +13,7 @@ import {
 
 
 export const coursesId = (id) => dispatch => {
-    debugger
+    
     dispatch({
         type: COURSE_ID,
         payload: id
@@ -22,7 +22,7 @@ export const coursesId = (id) => dispatch => {
 }
 
 export const pageNo = (no) => dispatch => {
-    debugger
+    
     dispatch({
         type: PAGE_NO,
         payload: id
@@ -33,7 +33,6 @@ export const pageNo = (no) => dispatch => {
 
 
 export const addCourseInput = ({ name, value }) => dispatch => {
-    debugger
     dispatch({
         type: ADD_COURSE_INPUTS,
         payload: { name, value }
@@ -42,7 +41,7 @@ export const addCourseInput = ({ name, value }) => dispatch => {
 }
 
 export const addCourseContentMore = (field) => dispatch => {
-    debugger
+    
     dispatch({
         type: ADD_COURSE_CONTENT_MORE,
         payload: field
@@ -53,7 +52,6 @@ export const addCourseContentMore = (field) => dispatch => {
 
 
 export const addCourseContentInput = ({ field, index, value }) => dispatch => {
-    debugger
     dispatch({
         type: ADD_COURSE_CONTENT,
         payload: { field, index, value }
@@ -62,7 +60,7 @@ export const addCourseContentInput = ({ field, index, value }) => dispatch => {
 }
 
 export const delCourseContent = ({ field, index }) => dispatch => {
-    debugger
+    
     dispatch({
         type: DEL_COURSE_CONTENT,
         payload: { field, index }

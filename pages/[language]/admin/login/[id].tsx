@@ -72,12 +72,11 @@ const Home: NextPage = () => {
 
   const handleClick = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    debugger
     setLoader(true)
     try {
       let res = await instance.post("api//admin/login", authValue)
       if (res.data.success === true) {
-        debugger
+        
         setLoader(false)
         dispatch(loginAdmin(res))
         router.push("/en/admin/dashboard");

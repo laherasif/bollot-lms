@@ -14,6 +14,7 @@ import instance from '../../../src/confiq/axios/instance'
 import { GetMembership } from "../../../src/redux/actions/courses";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import { SweetAlert } from "../../../src/function/hooks";
 const Home: NextPage = () => {
   // const intl = useIntl();
 
@@ -41,21 +42,24 @@ const Home: NextPage = () => {
       }
       fetchMembership()
     }
-    catch (err) { }
+    catch (err) { 
+      SweetAlert({ icon: "error", text: err })
+
+    }
   }, [])
 
 
-  const UpgradePlan = async () => {
-    let value = {
-      membership_id: find?.id,
-      payment_method: cardType,
-      auto_renew: true
-    }
-    try {
-      let res = await AxInstance.post('')
-    }
-    catch (err) { }
-  }
+  // const UpgradePlan = async () => {
+  //   let value = {
+  //     membership_id: find?.id,
+  //     payment_method: cardType,
+  //     auto_renew: true
+  //   }
+  //   try {
+  //     let res = await AxInstance.post('')
+  //   }
+  //   catch (err) { }
+  // }
 
 
   return (

@@ -28,7 +28,6 @@ const Home: NextPage = () => {
   const [edit, setEdit] = useState(false)
 
 
-  console.log(User)
 
 
   return (

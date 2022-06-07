@@ -65,7 +65,7 @@ export default ({ changeState, onPrevStep, step }: any) => {
 
       }
       catch (err) {
-        // SweetAlert({ icon: "error", text: err })
+        SweetAlert({ icon: "error", text: err })
 
       }
     }

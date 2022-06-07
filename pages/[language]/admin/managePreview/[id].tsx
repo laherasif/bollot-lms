@@ -189,7 +189,6 @@ const Home: NextPage = () => {
 
 
   const delThumnail = (index: number,) => {
-    debugger
     const lists: any = [...section];
     for (let j = 0; j < lists.length; j++) {
       if (j === index) {

@@ -12,7 +12,6 @@ import { format, parse } from 'date-fns'
 import "react-datepicker/dist/react-datepicker.css";
 
 const MemberShip = ({ Toggle, permition, User }: any) => {
-    console.log("User", User)
 
     const { token } = useSelector((state: RootStateOrAny) => state?.admin)
     const dispatch = useDispatch()

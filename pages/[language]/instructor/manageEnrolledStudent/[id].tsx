@@ -23,6 +23,7 @@ import moment from "moment";
 import { useRouter } from "next/router";
 import { Breadcrumb } from "react-bootstrap";
 import withAuth from "../../../../src/components/Hoc/authRoute";
+import { SweetAlert } from "../../../../src/function/hooks";
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
@@ -61,6 +62,7 @@ const Home: NextPage = () => {
       }
       catch (err) {
         setLoading(false)
+        SweetAlert({ icon: "error", text: err })
 
       }
     }

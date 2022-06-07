@@ -39,6 +39,7 @@ const AddBlog = ({ Toggle, permition, Data }: any) => {
                 }
             }
             catch (err) {
+                SweetAlert({ icon: "error", text: err })
 
             }
         }
@@ -99,7 +100,10 @@ const AddBlog = ({ Toggle, permition, Data }: any) => {
 
             }
         }
-        catch (err) { }
+        catch (err) {
+            SweetAlert({ icon: "error", text: err })
+
+        }
     }
 
 
@@ -125,11 +129,14 @@ const AddBlog = ({ Toggle, permition, Data }: any) => {
 
             }
         }
-        catch (err) { }
+        catch (err) {
+            SweetAlert({ icon: "error", text: err })
+
+        }
     }
 
 
-    
+
 
     return (
 

@@ -19,6 +19,7 @@ import { useRouter } from 'next/router'
 import Rating from '../../../../src/components/ratingStar'
 import moment from 'moment'
 import Link from "next/link";
+import { SweetAlert } from "../../../../src/function/hooks";
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
@@ -48,7 +49,8 @@ const Home: NextPage = () => {
           setReviews(res.data.response.review)
         }
       }
-      catch (err) {
+      catch (error) {
+        SweetAlert({ icon: "error", text: error })
 
       }
     }

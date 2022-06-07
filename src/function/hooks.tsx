@@ -29,7 +29,6 @@ export function usePrevious<T>(value?: T) {
 }
 
 export const SweetAlert = ({icon ,  text }: any ) => {
-  debugger
   Swal.fire({
     icon: icon,
     text: text,

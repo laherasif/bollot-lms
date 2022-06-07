@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Icons from "../icons";
 import { Modal, Button } from 'react-bootstrap'
 import AWS from 'aws-sdk'
+import { SweetAlert } from "../../function/hooks";
 
 const S3_BUCKET = 'bolloot';
 const REGION = 'us-east-1';
@@ -49,7 +50,9 @@ const Role = ({ Toggle, permition, link }: any) => {
             const url = myBucket.getSignedUrl('getObject', paramss);
             setValue(url)
         }
-        catch (err) { }
+        catch (err) {
+            SweetAlert({icon :'error' , text: err})
+         }
     }, [link])
 
     return (

@@ -4,16 +4,23 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import React, { useEffect, useState } from 'react';
 import instance from '../confiq/axios/instance';
 import { Banners } from '../skeleton/course';
+import { SweetAlert } from '../function/hooks';
 export default () => {
   const [banner, setBanners] = useState([])
 
   useEffect(() => {
     try {
-      let fetchMembership = async () => {
-        let res = await instance.get('api//get-banners')
-        setBanners(res.data.response.banners)
+      try {
+        let fetchMembership = async () => {
+          let res = await instance.get('api//get-banners')
+          setBanners(res.data.response.banners)
+        }
+        fetchMembership()
       }
-      fetchMembership()
+      catch (err) {
+        SweetAlert({ icon: 'error', text: err })
+
+      }
     }
     catch (err) {
 
@@ -24,7 +31,7 @@ export default () => {
     <>
       <div className='kdsfdpd-dsfasdnf'>
         {banner && banner.length > 0 ?
-          <Carousel showStatus={false} showThumbs={false} showArrows={false} transitionTime={200}  infiniteLoop={true} autoPlay={true}>
+          <Carousel showStatus={false} showThumbs={false} showArrows={false} transitionTime={200} infiniteLoop={true} autoPlay={true}>
             {banner && banner?.map((b: any) => (
               <div>
                 <section className="flex">
@@ -47,7 +54,7 @@ export default () => {
 
           </Carousel>
           :
-            <Banners />
+          <Banners />
         }
       </div>
     </>

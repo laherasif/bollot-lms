@@ -63,7 +63,6 @@ export const GetCouses = (type) => dispatch => {
 }
 
 export const EditCourse = (data) => async dispatch => {
-    debugger
     try {
             dispatch({
                 type: EDIT_ADD_COURSE,

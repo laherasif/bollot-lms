@@ -40,7 +40,7 @@ const initialState = {
 const AdminReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOGIN_ADMIN:
-      debugger
+      
       return {
         ...state,
         Admin: action.payload.response.user || action.payload.response.admin,
@@ -49,7 +49,7 @@ const AdminReducer = (state = initialState, action) => {
       };
 
     case UPDATE_ADMIN: {
-      debugger
+      
       return {
         ...state,
         Admin: action.payload.response.user,
@@ -81,7 +81,7 @@ const AdminReducer = (state = initialState, action) => {
         Students: action.payload,
       };
     case ADD_CATAGORY:
-      debugger
+      
       return {
         ...state,
         Catagories: [...state.Catagories, action.payload]
@@ -109,19 +109,19 @@ const AdminReducer = (state = initialState, action) => {
 
 
     case GET_MEMBERSHIP:
-      debugger
+      
       return {
         ...state,
         MemberShips: action.payload
       }
     case ADD_MEMBERSHIP:
-      debugger
+      
       return {
         ...state,
         MemberShips: [action.payload]
       }
     case DEL_MEMBERSHIP:
-      debugger
+      
       let findMember = state.MemberShips.filter((cata) => cata.id !== action.payload)
 
       return {
@@ -129,7 +129,7 @@ const AdminReducer = (state = initialState, action) => {
         MemberShips: findMember
       }
     case UPDATE_MEMBERSHIP:
-      debugger
+      
 
       return {
         ...state,

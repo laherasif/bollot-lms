@@ -13,7 +13,7 @@ import {
 } from '../../types/types'
 
 export const addCriculumInput = ({ name, value, index }) => dispatch => {
-    debugger
+    
     dispatch({
         type: ADD_CRICULUM,
         payload: { name, value, index }
@@ -22,7 +22,7 @@ export const addCriculumInput = ({ name, value, index }) => dispatch => {
 }
 
 export const delCriculumSection = (index) => dispatch => {
-    debugger
+    
     dispatch({
         type: DEL_CRICULUM,
         payload:  index
@@ -31,7 +31,6 @@ export const delCriculumSection = (index) => dispatch => {
 }
 
 export const addLectureInput = ({ name, value, index, i }) => dispatch => {
-    debugger
     dispatch({
         type: ADD_CRICULUM_LECTURE,
         payload: { name, value, index, i }
@@ -40,7 +39,7 @@ export const addLectureInput = ({ name, value, index, i }) => dispatch => {
 }
 
 export const addLectureThumanil = ({ data, index, i }) => dispatch => {
-    debugger
+    
     dispatch({
         type: ADD_CRICULUM_THUMNAILS,
         payload: { data, index, i }
@@ -51,7 +50,6 @@ export const addLectureThumanil = ({ data, index, i }) => dispatch => {
 
 
 export const delLectureThumanil = ({ index, i }) => dispatch => {
-    debugger
     dispatch({
         type: DEL_CRICULUM_THUMNAIL,
         payload: {index, i }
@@ -61,7 +59,6 @@ export const delLectureThumanil = ({ index, i }) => dispatch => {
 
 
 export const networkFail = () => dispatch => {
-    debugger
     dispatch({
         type: NETWORK_FAIL,
     })
@@ -70,7 +67,7 @@ export const networkFail = () => dispatch => {
 
 
 export const delLecture = ({  index, i }) => dispatch => {
-    debugger
+    
     dispatch({
         type: DEL_CRICULUM_LECTURE,
         payload: { index, i }
@@ -79,7 +76,6 @@ export const delLecture = ({  index, i }) => dispatch => {
 }
 
 export const addMoreCriculum = () => dispatch => {
-    debugger
     let data = {
         title: "",
         lectures: [
@@ -103,7 +99,6 @@ export const addMoreCriculum = () => dispatch => {
 
 
 export const addMoreLect = (index) => dispatch => {
-    debugger
     let data = {
                 title: "",
                 file_type: "",

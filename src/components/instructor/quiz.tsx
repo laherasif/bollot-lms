@@ -38,7 +38,6 @@ export default () => {
         setQues(rows);
     }
     const handleChange = (index: number, evnt: React.ChangeEvent<HTMLInputElement>) => {
-        debugger
         const { name, value } = evnt.target;
         const list: any = [...ques];
         list[index][name] = value;

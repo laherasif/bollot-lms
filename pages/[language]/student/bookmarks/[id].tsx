@@ -16,6 +16,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Small } from "../../../../src/components/student/loader";
+import { SweetAlert } from "../../../../src/function/hooks";
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
@@ -34,12 +35,18 @@ const Home: NextPage = () => {
   });
   useEffect(() => {
     let fetchCourse = async () => {
+      try{
       setLoading(true)
       let res = await AxInstance.get('api//student/my-courses')
       if (res.data.success === true) {
         setLoading(false)
         setBookMark(res.data.response.courses)
       }
+    }
+    catch(error){
+      SweetAlert({ icon: "error", text: error })
+
+    }
     }
     fetchCourse()
   }, [])

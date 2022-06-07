@@ -160,8 +160,8 @@ const AddCourseReducer = (state = initialState, action) => {
             }
 
         case EDIT_ADD_COURSE:
-            console.log("action" , action.payload)
-            debugger
+            // console.log("action" , action.payload)
+            
                 return {
                     ...state,
                     AddCourse: {...action.payload} ,

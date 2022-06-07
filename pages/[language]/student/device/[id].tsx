@@ -22,6 +22,7 @@ import { Small } from "../../../../src/components/student/loader";
 const options = ["one", "two", "three"];
 import Swal from 'sweetalert2'
 import DataTable from "react-data-table-component";
+import { SweetAlert } from "../../../../src/function/hooks";
 
 const Home: NextPage = () => {
   // const intl = useIntl();
@@ -53,7 +54,8 @@ const Home: NextPage = () => {
         let res = await AxInstance.get(`api//my-devices`)
         setDevice(res.data.response.devices)
       }
-      catch (err) {
+      catch (error) {
+        SweetAlert({ icon: "error", text: error })
 
       }
 

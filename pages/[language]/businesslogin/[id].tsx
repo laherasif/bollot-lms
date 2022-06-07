@@ -15,6 +15,7 @@ import Platform from 'react-platform-js'
 import { Firebaseapp } from "../../../src/confiq/firebase/firebase";
 import { getAuth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider } from "firebase/auth";
 import { useDispatch, useSelector, RootStateOrAny } from "react-redux";
+import { SweetAlert } from "../../../src/function/hooks";
 const Home: NextPage = () => {
   // const intl = useIntl();
 
@@ -107,7 +108,7 @@ const Home: NextPage = () => {
 
   const handleClick = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    debugger
+    
     setLoader(true)
     try {
 
@@ -147,6 +148,8 @@ const Home: NextPage = () => {
 
     } catch (err) {
       setLoader(false)
+      SweetAlert({ icon: "error", text: err })
+
     }
   };
 

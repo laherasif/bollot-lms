@@ -102,6 +102,8 @@ const Home: NextPage = () => {
           }
         }
         catch (err) {
+        SweetAlert({ icon: "error", text: err })
+
         }
       }
       fetchBuyNow()
@@ -182,6 +184,8 @@ const Home: NextPage = () => {
 
     } catch (err) {
       setLoader(false)
+      SweetAlert({ icon: "error", text: err })
+
 
     }
   };
@@ -190,7 +194,6 @@ const Home: NextPage = () => {
 
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
-    // debugger
     e.preventDefault();
     let courses = []
     if (!buyNowId) {

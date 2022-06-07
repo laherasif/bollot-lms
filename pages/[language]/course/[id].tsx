@@ -24,6 +24,7 @@ import InfoCart from "../../../src/components/cartInfoPopup";
 import PreviewModel from "../../../src/components/preview";
 import { useRouter } from "next/router";
 import axios from "axios";
+import { SweetAlert } from "../../../src/function/hooks";
 
 
 const Home: NextPage = ({ Course }: any) => {
@@ -108,6 +109,7 @@ const Home: NextPage = ({ Course }: any) => {
         dispatch(SaveBookmark(newObj))
         setLoader(false)
       } catch (error) {
+        SweetAlert({ icon: "error", text: error })
 
       }
 

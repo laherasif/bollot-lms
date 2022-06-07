@@ -100,7 +100,7 @@ const Home: NextPage = () => {
           setLoaders(false)
           setConversation(res.data.response.conversations)
           if (CovId) {
-            debugger
+            
           let finds = res.data.response.conversations?.find((f: any) => f.id == CovId)
           getMessages(finds?.user_id == User?.id ? finds.user_two_details : finds?.user_details, CovId)
         }
@@ -109,6 +109,8 @@ const Home: NextPage = () => {
         }
       }
       catch (err) {
+        SweetAlert({ icon: "error", text: err })
+
       }
     }
     fetchMesg()
