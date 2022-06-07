@@ -88,7 +88,7 @@ const Home: NextPage = () => {
 
     let fetchCart = async () => {
       try {
-        let res = await AxInstance.get('api//stripe/withdraw/card/all')
+        let res = await AxInstance.get('api//stripe/card/all')
         if (res.data.success === true) {
           setCardDetail(res.data.response.cards)
         }
@@ -122,7 +122,7 @@ const Home: NextPage = () => {
         exp_year: year,
         cvc: SecourtyCode
       }
-      let res = await AxInstance.post("api//stripe/withdraw/card/store", detail)
+      let res = await AxInstance.post("api//stripe/card/store", detail)
       if (res.data.success === true) {
         dispatch(SaveCard(res.data.response.card.id))
         setAcoountDetail('')
