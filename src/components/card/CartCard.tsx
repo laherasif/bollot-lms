@@ -56,7 +56,7 @@ export default ({ item, key }: any) => {
                   </h5>
                 </div>
                 <h6 className="mb-2">
-                  {numberofLect} Lectures <span>{time} total hours</span>
+                  {numberofLect} Lectures {time && <span>{time} total hours</span> }
                 </h6>
               </div>
               <div className="">
@@ -66,7 +66,7 @@ export default ({ item, key }: any) => {
           </Link>
           <div className="d-flex justify-content-end jdsafd-dsad">
             <a className='c-p' onClick={() => DeletCart()}>Remove</a>
-            <a className='c-p'>Save for Later</a>
+            {/* <a className='c-p'>Save for Later</a> */}
           </div>
         </div>
       </div>

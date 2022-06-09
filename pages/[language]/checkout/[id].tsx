@@ -75,7 +75,7 @@ const Home: NextPage = () => {
   };
 
 
-  const { AddCart , discount } = useSelector(
+  const { AddCart, discount } = useSelector(
     (state: RootStateOrAny) => state.cartReducer
   );
 
@@ -102,7 +102,7 @@ const Home: NextPage = () => {
           }
         }
         catch (err) {
-        SweetAlert({ icon: "error", text: err })
+          SweetAlert({ icon: "error", text: err })
 
         }
       }
@@ -247,7 +247,7 @@ const Home: NextPage = () => {
     return currentTotal;
   }, 0).toFixed(2)
 
-  let discountAmount = totalamount - discount?.discount  ;
+  let discountAmount = totalamount - discount?.discount;
 
 
 
@@ -365,7 +365,7 @@ const Home: NextPage = () => {
                   <h3 style={{ fontSize: '18px', fontWeight: '600' }}>Order Summary</h3>
                   {
                     Object.keys(buynow).length > 0 ?
-                      <CartCard item={buynow}  />
+                      <CartCard item={buynow} />
                       :
                       AddCart && AddCart.map((item: any, i: number) => (
                         <CartCard item={item} key={i} />
@@ -385,14 +385,16 @@ const Home: NextPage = () => {
                     <h6>${Object.keys(buynow).length > 0 ? buynow?.price : totalamount}</h6>
                     {/* <h6>${totalamount !== "0.00" ? totalamount : buynow?.price}</h6> */}
                   </div>
-                  <div className="d-flex justify-content-between w-100">
-                    <h6>Coupon discount:</h6>
-                    <h6>-$ {discount?.discount}</h6>
-                  </div>
+                  {discount?.discount > 0 ?
+                    <div className="d-flex justify-content-between w-100">
+                      <h6>Coupon discount:</h6>
+                      <h6>-$ {discount?.discount}</h6>
+                    </div>
+                    : null}
                 </div>
                 <div className="d-flex justify-content-between hdsafj-dsae">
                   <h6>Total:</h6>
-                  <h6>${Object.keys(buynow).length > 0 ? buynow?.price : discountAmount}</h6>
+                  <h6>${Object.keys(buynow).length > 0 ? buynow?.price : discountAmount > 0 ? discountAmount : totalamount}</h6>
                   {/* <h6>${discountAmount !== "0.00" ? discountAmount : buynow?.price}</h6> */}
                 </div>
                 {/* <h6 className="mb-0">

@@ -12,7 +12,7 @@ import {
 
 const initialState = {
   AddCart: [],
-  discount : {},
+  discount: {},
   BookMark: [],
   CheckOuts: [],
   isAuth: false,
@@ -23,10 +23,16 @@ const CartReducer = (state = initialState, action) => {
   switch (action.type) {
     case REG_CART:
 
-      return {
-        ...state,
-        AddCart: [...state.AddCart, action.payload],
-      };
+      if (!state.AddCart.find(item => item.id === action.payload.id))
+        state.AddCart.push({
+          ...action.payload
+        })
+      return { ...state, AddCart: [...state.AddCart] }
+
+      // return {
+      //   ...state,
+      //   AddCart: [...state.AddCart, action.payload],
+      // };
     case REG_BOOK_MARK:
       const titles = new Set(state.BookMark?.map(item => item.id));
       if (titles.has(action.payload.id)) {
@@ -59,11 +65,11 @@ const CartReducer = (state = initialState, action) => {
         isAuth: true
 
       };
-       case UPDATE_CART:
-         return{
-           ...state , 
-           discount : action.payload
-         }
+    case UPDATE_CART:
+      return {
+        ...state,
+        discount: action.payload
+      }
 
     case RESET_CART:
 
@@ -89,8 +95,8 @@ const CartReducer = (state = initialState, action) => {
         ...state,
         payment_method: action.payload,
       };
-   
-    
+
+
     default:
       return state;
   }
