@@ -5925,7 +5925,14 @@ textarea::placeholder {
 /* Media Query  */
 
 /* Extra small devices (portrait phones, less than 576px) */
-@media (max-width: 575px) {}
+@media (max-width: 575px) {
+  .text-learning .data h2{
+    font-size: 22px;
+  }
+  .data-par{
+    font-size: 16px;
+  }
+}
 
 /* Small devices (landscape phones, 576px and up) */
 @media (min-width: 576px) and (max-width: 767px) {}
