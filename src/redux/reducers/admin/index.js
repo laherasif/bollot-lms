@@ -16,6 +16,8 @@ import {
   DEL_MEMBERSHIP,
   UPDATE_MEMBERSHIP,
   UPDATE_ADMIN,
+  ADD_STUDENT,
+  ADD_INSTRUCTOR,
 } from "../../types/types";
 
 const initialState = {
@@ -40,7 +42,7 @@ const initialState = {
 const AdminReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOGIN_ADMIN:
-      
+
       return {
         ...state,
         Admin: action.payload.response.user || action.payload.response.admin,
@@ -49,7 +51,7 @@ const AdminReducer = (state = initialState, action) => {
       };
 
     case UPDATE_ADMIN: {
-      
+
       return {
         ...state,
         Admin: action.payload.response.user,
@@ -67,12 +69,25 @@ const AdminReducer = (state = initialState, action) => {
         Transaction: action.payload
       }
 
+    case ADD_INSTRUCTOR:
+      return {
+        ...state,
+        Instructor: [...state.Instructor, action.payload]
+      }
+
     case GET_ALL_INSTRUCTOR:
 
       return {
         ...state,
         Instructor: action.payload,
       };
+
+    case ADD_STUDENT:
+      return {
+        ...state,
+        Students: [...state.Students, action.payload]
+      }
+
 
     case GET_ALL_STUDENT:
 
@@ -81,7 +96,7 @@ const AdminReducer = (state = initialState, action) => {
         Students: action.payload,
       };
     case ADD_CATAGORY:
-      
+
       return {
         ...state,
         Catagories: [...state.Catagories, action.payload]
@@ -109,19 +124,19 @@ const AdminReducer = (state = initialState, action) => {
 
 
     case GET_MEMBERSHIP:
-      
+
       return {
         ...state,
         MemberShips: action.payload
       }
     case ADD_MEMBERSHIP:
-      
+
       return {
         ...state,
         MemberShips: [action.payload]
       }
     case DEL_MEMBERSHIP:
-      
+
       let findMember = state.MemberShips.filter((cata) => cata.id !== action.payload)
 
       return {
@@ -129,7 +144,7 @@ const AdminReducer = (state = initialState, action) => {
         MemberShips: findMember
       }
     case UPDATE_MEMBERSHIP:
-      
+
 
       return {
         ...state,

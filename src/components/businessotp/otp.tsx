@@ -3,7 +3,7 @@
 /* eslint-disable react/no-array-index-key */
 import React, { memo, useState, useCallback, CSSProperties } from 'react';
 import SingleInput from './single';
-import { useSelector, RootStateOrAny } from 'react-redux'
+import { useSelector, RootStateOrAny, useDispatch } from 'react-redux'
 import Router, { useRouter } from "next/router";
 import axios from 'axios';
 import { Spinner } from 'react-bootstrap';
@@ -61,6 +61,8 @@ export function OTPInputComponent(props: OTPInputProps) {
       token: token
     }
   });
+
+  const dispatch = useDispatch()
 
 
   // Helper to return OTP from inputs
@@ -211,14 +213,9 @@ export function OTPInputComponent(props: OTPInputProps) {
     try {
       setLoading(true)
       let res = await AxInstance.post('api//company/authenticate-otp', { code: otp })
+      debugger
       if (res.data?.success === true) {
-        if (User?.role === "student" || res?.data?.response?.student?.role === "student") {
-            router.push("/en/student/dashboard"); 
-        }
-        else {
-          router.push("/en/instructor");
-
-        }
+        router.push("/en/membership");
         setLoading(false)
       }
       else {
@@ -228,7 +225,7 @@ export function OTPInputComponent(props: OTPInputProps) {
       }
 
     } catch (err) {
-      SweetAlert({icon :'error' , text: err})
+      SweetAlert({ icon: 'error', text: err })
 
     }
 

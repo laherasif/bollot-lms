@@ -84,7 +84,7 @@ export const CleanState = () => async (dispatch: any) => {
     try {
         dispatch({
             type: CLEAN_STATE,
-            payload: ""
+            
         })
     } catch (error) {
 

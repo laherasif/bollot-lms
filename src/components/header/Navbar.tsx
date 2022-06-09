@@ -32,8 +32,10 @@ const App = () => {
   }
 
   const Logout = () => {
-    if (User) {
+    if (Object.keys(User).length) {
       dispatch(LogoutIns())
+      dispatch(clearStates())
+
     }
     else {
       dispatch(clearStates())

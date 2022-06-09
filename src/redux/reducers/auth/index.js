@@ -23,9 +23,10 @@ const initialState = {
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
     case SIGNUP_USER: {
+      debugger
       return {
         ...state,
-        User: action.payload.response.student  ,
+        User: action.payload.response.student,
         token: action.payload.response.token.token,
         isAuth: true,
       };
@@ -38,7 +39,7 @@ const userReducer = (state = initialState, action) => {
     }
     case CLEAN_STATE: {
       return {
-        User: null,
+        User: {},
         token: null,
       };
     }

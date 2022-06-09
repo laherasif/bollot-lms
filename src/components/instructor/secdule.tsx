@@ -8,7 +8,9 @@ import { useRouter } from 'next/router';
 import { Spinner } from 'react-bootstrap';
 import { addMoreLive, addLiveInput, delPreview } from '../../redux/actions/instructor/live'
 import { SweetAlert } from '../../function/hooks';
-const Secdule = ({  onStepChange, onPrevStep, step }: any) => {
+import { format, parse } from 'date-fns'
+
+const Secdule = ({ onStepChange, onPrevStep, step }: any) => {
     // const [date, setdate] = useState(new Date());
     // const [from_time, setfrom_time] = useState(new Date());
 
@@ -38,7 +40,7 @@ const Secdule = ({  onStepChange, onPrevStep, step }: any) => {
 
 
     const handleDateChange = (name: string, i: number, date: any) => {
-        
+
         dispatch(addLiveInput({ name, i, date }))
 
 
@@ -93,7 +95,7 @@ const Secdule = ({  onStepChange, onPrevStep, step }: any) => {
 
     const DelSedule = (i: number) => {
         dispatch(delPreview(i))
-       
+
     }
 
 
@@ -127,9 +129,9 @@ const Secdule = ({  onStepChange, onPrevStep, step }: any) => {
                                     onKeyDown={(e) => {
                                         e.preventDefault();
                                     }}
-                                    placeholderText={'YYYY-MM-DD'} 
-
-                                    selected={dat.date}
+                                    placeholderText={'YYYY-MM-DD'}
+                                    selected={dat?.id || dat.date !== '' ? parse(dat.date, "yyyy-MM-dd", new Date()) : dat.date}
+                                    // selected={dat.date}
                                     onChange={(date) => handleDateChange("date", index, date)}
                                     dateFormat="yyyy-MM-dd"
                                 />
@@ -146,8 +148,10 @@ const Secdule = ({  onStepChange, onPrevStep, step }: any) => {
                                     onKeyDown={(e) => {
                                         e.preventDefault();
                                     }}
-                                    placeholderText={'HH-MM'} 
-                                    selected={dat.from_time}
+                                    placeholderText={'HH-MM'}
+                                    // selected={dat.from_time}
+                                    selected={dat?.id || dat.from_time !== '' ? parse(dat.from_time, "HH:mm:ss", new Date()) : dat.from_time}
+
                                     onChange={(date) => handleDateChange("from_time", index, date)}
                                     showTimeSelect
                                     showTimeSelectOnly
@@ -168,9 +172,11 @@ const Secdule = ({  onStepChange, onPrevStep, step }: any) => {
                                         e.preventDefault();
                                     }}
                                     name="to_time"
-                                    placeholderText={'HH-MM'} 
-                                
-                                    selected={dat.to_time}
+                                    placeholderText={'HH-MM'}
+
+                                    // selected={dat.to_time}
+                                    selected={dat?.id || dat.to_time !== '' ? parse(dat.to_time, "HH:mm:ss", new Date()) : dat.to_time}
+
                                     onChange={(date) => handleDateChange("to_time", index, date)}
                                     showTimeSelect
                                     showTimeSelectOnly

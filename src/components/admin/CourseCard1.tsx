@@ -16,8 +16,8 @@ export default ({ role, Student, Instructor }: any) => {
   const [view, setView] = useState(false)
   const [edit, setEdit] = useState({})
   const [filterText, setFilterText] = useState('');
-  const filteredItems = Student?.filter(item => item.fullname && item.fullname.toLowerCase().includes(filterText.toLowerCase()));
-  const filteredIns = Instructor?.filter(item => item.fullname && item.fullname.toLowerCase().includes(filterText.toLowerCase()));
+  const filteredItems = Student?.filter(item => item?.fullname && item?.fullname.toLowerCase().includes(filterText.toLowerCase()));
+  const filteredIns = Instructor?.filter(item => item?.fullname && item?.fullname.toLowerCase().includes(filterText.toLowerCase()));
   const dispatch = useDispatch()
   const { token } = useSelector((state: RootStateOrAny) => state?.admin)
 
@@ -72,7 +72,7 @@ export default ({ role, Student, Instructor }: any) => {
       selector: "image",
       sortable: true,
       cell: (d: any) => (
-        <img src={d?.image} className="dlink" width="20%" height="90%" style={{ objectFit: 'contain' }} />
+        <img src={d?.image || '/assets/images/user.png'} className="dlink" width="20%" height="90%" style={{ objectFit: 'contain' }} />
       )
     },
     {
@@ -150,9 +150,11 @@ export default ({ role, Student, Instructor }: any) => {
               columns={columns}
               data={filteredIns}
               sortIcon={<i className='fa fa-arrow-down'></i>}
-              // pagination
-              selectableRows
+              pagination
+              // selectableRows
               highlightOnHover
+              responsive={true}
+
 
             />
           </div>

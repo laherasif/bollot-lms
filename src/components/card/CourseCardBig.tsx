@@ -5,6 +5,7 @@ import { SaveCart } from '../../redux/actions/course/course'
 import Rating from '../ratingStar';
 import Link from 'next/link'
 import InfoCart from '../cartInfoPopup';
+import { add3Dots } from '../../function/hooks';
 export default ({ cours }: any) => {
   const [toglecart, setTogalcart] = useState({})
   const [loading, setLoading] = useState(false)
@@ -56,7 +57,7 @@ export default ({ cours }: any) => {
               <div className="sajkdf-dasas">
                 <div className="f-col">
                   <h3>
-                    {cours?.title}
+                    { add3Dots(cours?.title , 22)}
 
                   </h3>
                   <span>{cours?.short_desc}</span>

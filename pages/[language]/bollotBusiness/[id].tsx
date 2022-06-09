@@ -148,7 +148,7 @@ const Home: NextPage = () => {
                             </button>
                           </Link>
                           :
-                          <Link href={User ? "/en/membership" : "/en/businessSignup"}>
+                          <Link href={Object.keys(User).length ? "/en/membership" : "/en/businessSignup"}>
                             <button className="btn-2s">
                               Subscribe
                             </button>

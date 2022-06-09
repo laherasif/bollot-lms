@@ -28,6 +28,8 @@ const Home: NextPage = () => {
     }
   });
 
+  console.log("member", member)
+
   useEffect(() => {
     try {
       let fetchMembership = async () => {
@@ -59,7 +61,7 @@ const Home: NextPage = () => {
         SweetAlert({ icon: "success", text: res.data.message })
       }
     }
-    catch (err) { 
+    catch (err) {
       SweetAlert({ icon: "error", text: err })
 
     }
@@ -99,7 +101,7 @@ const Home: NextPage = () => {
             <p>Current Membership</p>
           </div>
 
-          {member ?
+          {member && Object.keys(member).length ?
 
             <div className="table-responsive">
               <table className="table ">
@@ -189,28 +191,29 @@ const Home: NextPage = () => {
                   {/* <Link href={`/en/paymentMethod/?id=${m?.id}`}>
                     <button className="btn-2s" >Get Upgrade now</button>
                   </Link> */}
+
                   {User && member?.membership?.id === m?.id ?
                     <button className="btn-1s" >
                       Subscribed
                     </button>
 
-                    : User && member ?
+                    : User || Object.keys(member).length ?
                       <Link href={`/en/paymentMethod/${m?.id}`}>
                         <button className="btn-2s" >
-                          Get Upgrade now
+                          {User && member ? "Get Upgrade now" : "Subscribe"}
                         </button>
                       </Link>
                       :
-                      User && member?.length > 0
-                        ?
-                        <Link href={User ? "/en/membership" : "/en/businessSignup"}>
+                      // User && member?.length > 0
+                      //   ?
+                      //   <Link href={"/en/membership"}>
+                      //     <button className="btn-2s">
+                      //       Subscribe
+                      //     </button>
+                      //   </Link>
+                      //   :
+                        <Link href={`/en/businessSignup`}>
                           <button className="btn-2s">
-                            Subscribe
-                          </button>
-                        </Link>
-                        :
-                        <Link href={`/en/paymentMethod/${m?.id}`}>
-                          <button className="btn-2s" >
                             Subscribe
                           </button>
                         </Link>

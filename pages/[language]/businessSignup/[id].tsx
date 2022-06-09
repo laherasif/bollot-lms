@@ -9,7 +9,7 @@ import instance from '../../../src/confiq/axios/instance'
 import { SocialRegComp } from "../../../src/redux/actions/auth/user";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector, RootStateOrAny } from "react-redux";
-import Otp from '../../../src/components/otpverfication'
+import Otp from '../../../src/components/businessotp'
 import { SignUp, CleanState } from '../../../src/redux/actions/auth/user'
 import { Firebaseapp } from "../../../src/confiq/firebase/firebase";
 import insImg from '../../../src/assets/images/instructor.png'
@@ -152,9 +152,9 @@ const Home: NextPage = () => {
 
 
       let res = await instance.post("api//company/signup", value)
+      debugger
       if (res.data.success === true) {
         dispatch(SignUp(res.data))
-
         setMessage(true)
         setLoader(false)
 

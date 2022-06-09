@@ -20,6 +20,8 @@ import {
     ADD_MEMBERSHIP,
     UPDATE_MEMBERSHIP,
     GET_MEMBERSHIP,
+    ADD_INSTRUCTOR,
+    ADD_STUDENT,
 
 } from '../../types/types'
 
@@ -57,6 +59,20 @@ export const updateAdmin = (data ) => async dispatch => {
 }
 
 
+export const addStudent = (data) => async dispatch => {
+
+    try {
+        dispatch({
+            type: ADD_STUDENT,
+            payload: data 
+        })
+    }
+    catch (err) {
+
+    }
+}
+
+
 
 // Register User 
 export const getAllStudent = (data) => async dispatch => {
@@ -65,6 +81,20 @@ export const getAllStudent = (data) => async dispatch => {
         dispatch({
             type: GET_ALL_STUDENT,
             payload: data.response.students
+        })
+    }
+    catch (err) {
+
+    }
+}
+
+
+export const addInstructor = (data) => async dispatch => {
+
+    try {
+        dispatch({
+            type: ADD_INSTRUCTOR,
+            payload: data 
         })
     }
     catch (err) {

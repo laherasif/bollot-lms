@@ -15,14 +15,13 @@ const Home: NextPage = () => {
   const [ins, setIns] = useState(false)
   const [loading, setLoading] = useState(false)
   const { Students, Instructor } = useSelector((state: RootStateOrAny) => state?.admin)
-
+  const [loader , setLoader ] = useState(false )
   useEffect(() => {
     setLoading(true)
-
     setTimeout(() => {
       setLoading(false)
     }, 1000);
-  }, [ins])
+  }, [ins || loader ])
 
 
   return (
@@ -50,7 +49,7 @@ const Home: NextPage = () => {
                   </div>
 
                   <div className="my-2">
-                    <NewCourse />
+                    <NewCourse loader={(value:any)=> setLoader(value)}/>
                   </div>
                 </div>
 
