@@ -19,6 +19,7 @@ import moment from "moment";
 import RefundReason from '../../../../src/components/student/refundReason'
 import Link from "next/link";
 import { Small } from "../../../../src/components/student/loader";
+import { SweetAlert } from "../../../../src/function/hooks";
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
@@ -52,6 +53,7 @@ const Home: NextPage = () => {
 
       }
       catch (err) {
+        SweetAlert({ icon: "error", text: err })
 
       }
 

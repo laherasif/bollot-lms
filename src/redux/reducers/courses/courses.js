@@ -92,7 +92,7 @@ const CourseReducer = (state = initialState, action) => {
       };
 
     case GET_BY_CATAGORY_FEATURE:
-      // debugger
+      // 
       return {
         ...state,
         Feature: action.payload,
@@ -110,7 +110,7 @@ const CourseReducer = (state = initialState, action) => {
       };
 
     case GET_SORTED_COURSE_SEARCH:
-      debugger
+      
       return {
         ...state,
         AllCourse: action.payload,
@@ -135,7 +135,7 @@ const CourseReducer = (state = initialState, action) => {
       };
 
     case GET_SORTED_COURSE:
-      debugger
+      
       return {
         ...state,
         AllCourse: action.payload,
@@ -143,7 +143,7 @@ const CourseReducer = (state = initialState, action) => {
 
       };
     case LIVE_COURSE:
-      debugger
+      
       return {
         ...state,
         LiveCouse: action.payload

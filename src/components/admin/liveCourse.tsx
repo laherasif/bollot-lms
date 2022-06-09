@@ -7,6 +7,7 @@ import { RootStateOrAny, useDispatch, useSelector } from 'react-redux'
 import Link from 'next/link'
 import { FiSearch } from 'react-icons/fi'
 import Swal from 'sweetalert2'
+import { SweetAlert } from '../../function/hooks'
 export default () => {
   const [edit, setEdit] = useState({})
   const [courses, setCourse] = useState([])
@@ -76,7 +77,8 @@ export default () => {
         }
       }
 
-      catch (err) {
+      catch (error) {
+        SweetAlert({ icon: "error", text: error })
 
       }
     }

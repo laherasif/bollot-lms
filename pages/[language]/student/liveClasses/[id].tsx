@@ -9,6 +9,7 @@ import axios from 'axios'
 import moment from "moment";
 import { Small } from '../../../../src/components/student/loader'
 import Link from "next/link";
+import { SweetAlert } from "../../../../src/function/hooks";
 const Home: NextPage = () => {
   // const intl = useIntl();
 
@@ -39,6 +40,7 @@ const Home: NextPage = () => {
         }
 
       } catch (error) {
+        SweetAlert({ icon: "error", text: error })
 
       }
 

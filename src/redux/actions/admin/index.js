@@ -151,7 +151,6 @@ export const getCourses = ({ data, type }) => async dispatch => {
 
 
 export const AdddelUpdateCatagories = ({ data, type }) => dispatch => {
-    debugger
     try {
         if (type === "del") {
             dispatch({
@@ -228,7 +227,6 @@ export const getTransaction = (data) => dispatch => {
 }
 
 export const AdddelUpdateMembership = ({ data, type }) => dispatch => {
-    debugger
     try {
         if (type === "del") {
             dispatch({

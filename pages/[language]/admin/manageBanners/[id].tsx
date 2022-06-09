@@ -133,7 +133,6 @@ const Home: NextPage = () => {
     }
 
     try {
-      debugger
       setLoader(true)
       let res = await AxInstance.post('api//admin/banners/store', BannerId ? valuesWithId : valueWithoutId)
       if (res.data.success === true) {

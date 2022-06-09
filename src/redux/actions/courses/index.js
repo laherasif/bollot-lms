@@ -22,6 +22,7 @@ import {
 
 } from '../../types/types'
 import instance from '../../../confiq/axios/instance'
+import { SweetAlert } from '../../../function/hooks'
 
 
 
@@ -133,6 +134,7 @@ export const GetCourse = () => async (dispatch) => {
 
 
     } catch (error) {
+        SweetAlert({ icon: "error", text: error })
 
     }
 
@@ -153,6 +155,7 @@ export const GetAllCatagory = () => async dispatch => {
             payload: res.data.response.courses
         })
     } catch (error) {
+        SweetAlert({ icon: "error", text: error })
 
     }
 }
@@ -190,6 +193,7 @@ export const GetCatagory = (id, name) => async dispatch => {
         }
 
     } catch (error) {
+        SweetAlert({ icon: "error", text: error })
 
     }
 
@@ -214,6 +218,7 @@ export const priceFilter = (data) => async dispatch => {
             payload: res.data.response.courses
         })
     } catch (error) {
+        SweetAlert({ icon: "error", text: error })
 
     }
 
@@ -223,7 +228,6 @@ export const priceFilter = (data) => async dispatch => {
 
 export const GetSortedSearch = (name , search) => async dispatch => {
     try {
-   debugger
         let filterPrice = {
             page_no: 1,
             rows_per_page: 10,
@@ -241,6 +245,7 @@ export const GetSortedSearch = (name , search) => async dispatch => {
             payload: res.data.response.courses
         })
     } catch (error) {
+        SweetAlert({ icon: "error", text: error })
 
     }
 
@@ -249,7 +254,7 @@ export const GetSortedSearch = (name , search) => async dispatch => {
 
 
 export const GetSorted = (name) => async dispatch => {
-    debugger
+    
     try {
 
         let filterPrice = {
@@ -268,6 +273,7 @@ export const GetSorted = (name) => async dispatch => {
             payload: res.data.response.courses
         })
     } catch (error) {
+        SweetAlert({ icon: "error", text: error })
 
     }
 
@@ -291,6 +297,7 @@ export const GetSearchCourse = (name) => async dispatch => {
             payload: res.data.response.courses
         })
     } catch (error) {
+        SweetAlert({ icon: "error", text: error })
 
     }
 
@@ -307,6 +314,7 @@ export const GetMembership = () => async dispatch => {
             payload: res.data.response.memberships
         })
     } catch (error) {
+        SweetAlert({ icon: "error", text: error })
 
     }
 
@@ -331,6 +339,7 @@ export const GetLiveCourse = () => async dispatch => {
         })
        
     } catch (error) {
+        SweetAlert({ icon: "error", text: error })
 
     }
 

@@ -13,6 +13,7 @@ import {
 import { Dispatch } from 'redux';
 import instance from '../../../confiq/axios/instance'
 import Platform from 'react-platform-js'
+import { SweetAlert } from '../../../function/hooks';
 
 // export enum ActionType {
 //     REGISTER_SOCIAL_MEDIA = 'REGISTER_SOCIAL_MEDIA',
@@ -52,7 +53,6 @@ export const OtpVarif = (data: boolean) => async (dispatch: any) => {
 }
 
 // export const forgotPageNo = (id: number) => async (dispatch: any) => {
-//     debugger
 //     try {
 //         dispatch({
 //             type: FORGOT_PASSWORD,
@@ -64,7 +64,7 @@ export const OtpVarif = (data: boolean) => async (dispatch: any) => {
 // }
 
 export const forgotEmail = (email: string) => async (dispatch: any) => {
-    debugger
+    
     try {
         dispatch({
             type: FORGOT_PASSWORD_EMAIL,
@@ -134,7 +134,6 @@ export const SocialRegComp = (providerData: [], role: string) => async (dispatch
 
 // Register User 
 export const SocialRegMedia = (providerData: [], role: string) => async (dispatch: any) => {
-    debugger
     try {
         let object = Object.assign({}, ...providerData)
 
@@ -204,7 +203,7 @@ export const loginUser = (data: []) => {
 
     return async (dispatch: Dispatch<actionSuccess>) => {
         try {
-            debugger
+            
             dispatch({
                 type: LOGIN_USER,
                 payload: data
@@ -212,7 +211,9 @@ export const loginUser = (data: []) => {
 
         }
         catch (err) {
-            console.log("error in token ")
+        SweetAlert({icon :'error' , text : err })
+
+            // console.log("error in token ")
         }
     }
 }
@@ -221,7 +222,7 @@ export const loginUser = (data: []) => {
 
 export const updateUser = (data: any) => {
     return async (dispatch: Dispatch<actionSuccess>) => {
-        debugger
+        
         try {
 
             dispatch({

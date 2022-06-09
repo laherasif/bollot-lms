@@ -19,14 +19,15 @@ import { Small } from "../../../../src/components/student/loader";
 import Link from "next/link";
 import Conversation from "../../../../src/components/student/messageForm";
 import ReviewForm from "../../../../src/components/student/reviewForm";
-import { getCourses} from '../../../../src/redux/actions/student/courses'
+import { getCourses } from '../../../../src/redux/actions/student/courses'
+import { SweetAlert } from "../../../../src/function/hooks";
 const Home: NextPage = () => {
   // const intl = useIntl();
   const [course, setCourse] = useState([])
   const [loading, setLoading] = useState(false)
   const [reviews, setReviews] = useState(true)
   const token = useSelector((state: RootStateOrAny) => state?.userReducer?.token)
-  const {Courses} = useSelector((state: RootStateOrAny) => state?.studentCourse)
+  const { Courses } = useSelector((state: RootStateOrAny) => state?.studentCourse)
 
 
   const dispatch = useDispatch()
@@ -40,19 +41,26 @@ const Home: NextPage = () => {
   });
   useEffect(() => {
     let fetchCourse = async () => {
-      setLoading(true)
-      let res = await AxInstance.get('api//student/my-courses')
-      if (res.data.success === true) {
+      try {
+        setLoading(true)
+        let res = await AxInstance.get('api//student/my-courses')
+        if (res.data.success === true) {
+          setLoading(false)
+          dispatch(getCourses(res.data.response.courses))
+          // setCourse(res.data.response.courses)
+        }
+      }
+      catch (error) {
         setLoading(false)
-        dispatch(getCourses(res.data.response.courses))
-        // setCourse(res.data.response.courses)
+        SweetAlert({ icon: "error", text: error })
+
       }
     }
     fetchCourse()
   }, [])
 
 
-  let check =  reviews !== true 
+  let check = reviews !== true
 
   return (
     <>
@@ -73,14 +81,14 @@ const Home: NextPage = () => {
 
                       <button className="upload-1" >My Live Courses</button>
                     </Link>
-                   
+
                   </div>
 
                   <div className="complete-web-1">
                     {Courses && Courses.length > 0 ? Courses.map((course: any) => {
                       if (!course?.schedule.length)
                         return (
-                          <CourseCard course={course} key={course.id} courseId={(value:any) =>  setReviews(value)} />
+                          <CourseCard course={course} key={course.id} courseId={(value: any) => setReviews(value)} />
                         )
                     })
                       : <div>Record not found </div>
@@ -95,7 +103,7 @@ const Home: NextPage = () => {
         </div>
 
 
-        { reviews &&  check  && <ReviewForm reviewss={reviews} Toggle={(value:any )=> setReviews(value ) }  />}
+        {reviews && check && <ReviewForm reviewss={reviews} Toggle={(value: any) => setReviews(value)} />}
 
       </section>
     </>

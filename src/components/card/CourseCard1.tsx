@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { add3Dots } from '../../function/hooks';
 // const CardImage = require('../../images/unsplash-2.jpeg');
 export default ({ live, i }: any) => {
-  console.log("live"  , live )
   return (
     <Link href={`/en/course/${live?.slug}`} passHref >
       <div className="card-course-1" key={i} style={{cursor:'pointer'}}>

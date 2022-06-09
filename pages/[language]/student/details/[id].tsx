@@ -17,6 +17,7 @@ import CourseSideBar from "../../../../src/components/student/courseSidebar";
 import CriculumCard from '../../../../src/components/student/criculumCard'
 import Link from "next/link";
 import Conversation from "../../../../src/components/student/messageForm";
+import { SweetAlert } from "../../../../src/function/hooks";
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
@@ -48,6 +49,7 @@ const Home: NextPage = () => {
         setSections(res.data.response.course)
         setCourseId(res.data.response.course.id)
       } catch (error) {
+        SweetAlert({ icon: "error", text: error })
 
       }
 

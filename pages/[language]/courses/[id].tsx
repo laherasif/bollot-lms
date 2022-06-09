@@ -102,7 +102,6 @@ const Home: NextPage = () => {
 
 
   const getSorted = (e: React.ChangeEvent<HTMLInputElement>) => {
-    debugger
     setSorting(e.target.value);
     setMainLoading(true)
 

@@ -12,7 +12,7 @@ import {
 } from '../../types/types'
 
 export const addQuestionInput = ({ name, value, index }) => dispatch => {
-    debugger
+    
     dispatch({
         type: ADD_QUIZ_QUESTION_INPUT,
         payload: { name, value, index }
@@ -22,7 +22,7 @@ export const addQuestionInput = ({ name, value, index }) => dispatch => {
 
 
 export const addOptionInput = ({ name, value, index , i }) => dispatch => {
-    debugger
+    
     dispatch({
         type: ADD_QUIZ_OPTION_INPUT,
         payload: { name, value, index  , i }
@@ -31,7 +31,7 @@ export const addOptionInput = ({ name, value, index , i }) => dispatch => {
 }
 
 export const addOptionRadio = ({ name ,  index , i }) => dispatch => {
-    debugger
+    
     dispatch({
         type: QUIZ_OPTION_RADIO,
         payload: {name ,  index  , i }
@@ -42,7 +42,7 @@ export const addOptionRadio = ({ name ,  index , i }) => dispatch => {
 
 
 export const addMoreQuiz = () => dispatch => {
-    debugger
+    
     let data = {
         question: '',
         options: [
@@ -63,7 +63,7 @@ export const addMoreQuiz = () => dispatch => {
 
 
 export const addMoreOption = (index) => dispatch => {
-    debugger
+    
     let data = { option: "", correct: false, }
 
     dispatch({
@@ -75,7 +75,7 @@ export const addMoreOption = (index) => dispatch => {
 
 
 export const delQuiz = (index) => dispatch => {
-    debugger
+    
     dispatch({
         type: DEL_QUESTION,
         payload: index
@@ -84,7 +84,7 @@ export const delQuiz = (index) => dispatch => {
 }
 
 export const delQuizOption = ({ index, i }) => dispatch => {
-    debugger
+    
     dispatch({
         type: DEL_OPTIONS,
         payload: { index, i }

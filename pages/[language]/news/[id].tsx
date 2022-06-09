@@ -13,6 +13,7 @@ import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { getNews } from "../../../src/redux/actions/blogNews/blogs";
 import ReactPaginate from "react-paginate";
+import { SweetAlert } from "../../../src/function/hooks";
 
 const Home: NextPage = () => {
   // const intl = useIntl();
@@ -35,7 +36,10 @@ const Home: NextPage = () => {
     try {
       dispatch(getNews())
     }
-    catch (err) { }
+    catch (err) {
+      SweetAlert({ icon: "error", text: err })
+
+     }
   }, [])
 
 

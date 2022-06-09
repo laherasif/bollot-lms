@@ -19,6 +19,7 @@ import Image from "next/image";
 import Platform from 'react-platform-js'
 
 import { Form } from "react-bootstrap";
+import { SweetAlert } from "../../../src/function/hooks";
 const Home: NextPage = () => {
   // const intl = useIntl();
 
@@ -164,6 +165,8 @@ const Home: NextPage = () => {
 
       }
     } catch (err) {
+
+      SweetAlert({ icon: "error", text: err })
     }
   };
 

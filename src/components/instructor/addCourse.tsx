@@ -75,7 +75,7 @@ export default ({ onStepChange }: any) => {
         setCourses(res.data.response.categories)
       }
       catch (err) {
-        console.log("err", err)
+        SweetAlert({icon :'error' , text : err })
       }
     }
     fetchData()

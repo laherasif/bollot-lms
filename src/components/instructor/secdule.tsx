@@ -38,7 +38,7 @@ const Secdule = ({  onStepChange, onPrevStep, step }: any) => {
 
 
     const handleDateChange = (name: string, i: number, date: any) => {
-        debugger
+        
         dispatch(addLiveInput({ name, i, date }))
 
 

@@ -28,7 +28,6 @@ const ClassesReducer = (state = initialState, action) => {
             }
 
         case ADD_LIVECLASS_INPUT:
-            debugger
 
             if (action.payload.name === "date") {
                 return {
@@ -62,7 +61,7 @@ const ClassesReducer = (state = initialState, action) => {
             }
 
         case EDIT_LIVE_CLASSES:
-            debugger
+            
             return {
                 ...state,
                 Classes: action.payload

@@ -39,6 +39,7 @@ const Home: NextPage = () => {
       }
       fetchMembership()
     } catch (error) {
+      SweetAlert({ icon: "error", text: error })
 
     }
   }, [])
@@ -58,26 +59,29 @@ const Home: NextPage = () => {
         SweetAlert({ icon: "success", text: res.data.message })
       }
     }
-    catch (err) { }
+    catch (err) { 
+      SweetAlert({ icon: "error", text: err })
+
+    }
 
   };
 
 
-  const EditMemberShip = async (id: number) => {
+  // const EditMemberShip = async (id: number) => {
 
-  }
+  // }
 
-  const UpgradePlan = async () => {
-    let value = {
-      // membership_id: find?.id,
-      // payment_method: cardType,
-      // auto_renew: true
-    }
-    try {
-      let res = await AxInstance.post('')
-    }
-    catch (err) { }
-  }
+  // const UpgradePlan = async () => {
+  //   let value = {
+  //     // membership_id: find?.id,
+  //     // payment_method: cardType,
+  //     // auto_renew: true
+  //   }
+  //   try {
+  //     let res = await AxInstance.post('')
+  //   }
+  //   catch (err) { }
+  // }
 
 
 

@@ -7,6 +7,7 @@ import { useSelector, RootStateOrAny } from 'react-redux'
 import Router, { useRouter } from "next/router";
 import axios from 'axios';
 import { Spinner } from 'react-bootstrap';
+import { SweetAlert } from '../../function/hooks';
 // import { OtpVarif } from '../../../../src/redux/actions/auth/user'
 export interface OTPInputProps {
   length: number;
@@ -208,7 +209,6 @@ export function OTPInputComponent(props: OTPInputProps) {
 
   const handelSubmit = async () => {
     try {
-      debugger
       setLoading(true)
       let res = await AxInstance.post('api//company/authenticate-otp', { code: otp })
       if (res.data?.success === true) {
@@ -227,7 +227,9 @@ export function OTPInputComponent(props: OTPInputProps) {
 
       }
 
-    } catch (error) {
+    } catch (err) {
+      SweetAlert({icon :'error' , text: err})
+
     }
 
   }

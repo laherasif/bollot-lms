@@ -9,6 +9,7 @@ import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import BlogCard from "../../../src/components/card/BlogCard";
 import Footer from "../../../src/components/footer";
 import Navbar from "../../../src/components/header/Navbar";
+import { SweetAlert } from "../../../src/function/hooks";
 import { getBlogs } from '../../../src/redux/actions/blogNews/blogs'
 
 const Home: NextPage = () => {
@@ -32,7 +33,10 @@ const Home: NextPage = () => {
     try {
       dispatch(getBlogs())
     }
-    catch (err) { }
+    catch (err) { 
+      SweetAlert({ icon: "error", text: err })
+
+    }
   }, [])
 
 

@@ -17,7 +17,7 @@ export const getBlogs = () => async  dispatch => {
 }
 
 export const getNews = () => async  dispatch => {
-    debugger
+    
     let res = await instance.get('api//news')
      dispatch({
          type: GET_NEWS,

@@ -77,7 +77,6 @@ const AddCatagory = ({ Toggle, permition, Data }: any) => {
             }
             setLoading(true)
             let res = await AxInstance.post('api//admin/categories/store', data)
-            console.log("Res" , res )
             if (res.data.success === true) {
                 dispatch(AdddelUpdateCatagories({ data : res.data.response.category  , type:'add'}))
                 SweetAlert({ icon: "success", text: res.data.message })
@@ -91,7 +90,10 @@ const AddCatagory = ({ Toggle, permition, Data }: any) => {
 
             }
         }
-        catch (err) { }
+        catch (err) {
+      SweetAlert({ icon: "error", text: err })
+
+         }
     }
 
 
@@ -118,7 +120,10 @@ const AddCatagory = ({ Toggle, permition, Data }: any) => {
 
             }
         }
-        catch (err) { }
+        catch (err) {
+      SweetAlert({ icon: "error", text: err })
+
+         }
     }
     return (
 

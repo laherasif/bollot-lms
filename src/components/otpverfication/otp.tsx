@@ -9,6 +9,7 @@ import Router, { useRouter } from "next/router";
 // import instance from '../../../../src/confiq/axios/instance';
 import axios from 'axios';
 import { Spinner } from 'react-bootstrap';
+import { SweetAlert } from '../../function/hooks';
 // import { OtpVarif } from '../../../../src/redux/actions/auth/user'
 export interface OTPInputProps {
   length: number;
@@ -216,7 +217,7 @@ export function OTPInputComponent(props: OTPInputProps) {
   );
   const handelSubmit = async () => {
     try {
-      debugger
+      
       setLoading(true)
       let res = await AxInstance.post('api//authenticate-otp', { code: otp  })
       if (res.data?.success === true) {
@@ -239,8 +240,10 @@ export function OTPInputComponent(props: OTPInputProps) {
 
       }
 
-    } catch (error) {
-      console.log('err', error)
+    } catch (err){
+      // console.log('err', error)
+      SweetAlert({icon :'error' , text: err})
+
     }
 
   }

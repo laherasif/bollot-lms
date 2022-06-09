@@ -163,7 +163,6 @@ const AddCourseReducer = (state = initialState, action) => {
             }
 
         case EDIT_ADD_COURSE:
-            debugger
 
             let courses = state.AddCourse
             return {

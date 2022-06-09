@@ -17,6 +17,7 @@ import { useSelector, RootStateOrAny } from "react-redux";
 import axios from 'axios'
 import { Small } from "../../../../src/components/student/loader";
 import Link from "next/link";
+import { SweetAlert } from "../../../../src/function/hooks";
 
 const Home: NextPage = () => {
   // const intl = useIntl();
@@ -24,7 +25,7 @@ const Home: NextPage = () => {
   const [loading, setLoading] = useState(false)
   const token = useSelector((state: RootStateOrAny) => state?.userReducer?.token)
 
-  
+
   const AxInstance = axios.create({
     // .. where we make our configurations
     baseURL: 'https://dev.thetechub.us/bolloot/',
@@ -34,11 +35,16 @@ const Home: NextPage = () => {
   });
   useEffect(() => {
     let fetchCourse = async () => {
-      setLoading(true)
-      let res = await AxInstance.get('api//student/my-live-courses')
-      if (res.data.success === true) {
-        setLoading(false)
-        setCourse(res.data.response.courses)
+      try {
+        setLoading(true)
+        let res = await AxInstance.get('api//student/my-live-courses')
+        if (res.data.success === true) {
+          setLoading(false)
+          setCourse(res.data.response.courses)
+        }
+      } catch (error) {
+        SweetAlert({ icon: "error", text: error })
+
       }
     }
     fetchCourse()

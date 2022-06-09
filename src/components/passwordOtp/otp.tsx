@@ -77,7 +77,6 @@ export function OTPInputComponent(props: OTPInputProps) {
   // });
 
   const resendEmail = async () => {
-    debugger
     try {
       setSeconds(60)
       await instance.post("api//forgot-password/step-1", { email: "guru@gmail.com" })
@@ -102,7 +101,7 @@ export function OTPInputComponent(props: OTPInputProps) {
 
 
 
-  console.log("second", seconds)
+  // console.log("second", seconds)
 
 
 
@@ -256,7 +255,6 @@ export function OTPInputComponent(props: OTPInputProps) {
   );
   const handelSubmit = async () => {
     try {
-      debugger
       let value = {
         email: forgotEmail,
         code: otp

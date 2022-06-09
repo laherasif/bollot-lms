@@ -21,6 +21,7 @@ import Conversation from "../../../../src/components/student/messageForm";
 import ReviewForm from "../../../../src/components/student/reviewForm";
 import { getSearchCourses } from '../../../../src/redux/actions/student/courses'
 import { useRouter } from "next/router";
+import { SweetAlert } from "../../../../src/function/hooks";
 const Home: NextPage = () => {
   // const intl = useIntl();
   const [course, setCourse] = useState([])
@@ -48,11 +49,16 @@ const Home: NextPage = () => {
         rows_per_page: 10,
         search: courseSlug
       }
+      try{
       setLoading(true)
       let res = await AxInstance.post('api//courses', value)
       if (res.data.success === true) {
         setLoading(false)
         dispatch(getSearchCourses(res.data.response.courses))
+      }
+      }catch(error){
+      SweetAlert({ icon: "error", text: error })
+
       }
     }
     fetchCourse()

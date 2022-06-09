@@ -44,7 +44,6 @@ const userReducer = (state = initialState, action) => {
     }
 
     case LOGIN_USER: {
-  debugger
       return {
         ...state,
         User: action.payload.response.student || action.payload.response.user,

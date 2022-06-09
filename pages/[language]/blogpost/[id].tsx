@@ -40,7 +40,10 @@ const Home: NextPage = () => {
       }
       fetch()
     }
-    catch (err) { }
+    catch (err) { 
+      SweetAlert({ icon: "error", text: err })
+
+    }
   }, [blogId, loading === false])
 
 
@@ -54,7 +57,7 @@ const Home: NextPage = () => {
 
 
   const saveComment = async () => {
-    debugger
+    
     try {
       let value = {
         blog_id: blogId,
@@ -96,7 +99,7 @@ const Home: NextPage = () => {
         }
         else{
           setError(res.data.errors)
-          console.log("res.data.er" , res.data)
+          // console.log("res.data.er" , res.data)
           setLoading(false)
 
         }

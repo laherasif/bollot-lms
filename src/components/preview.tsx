@@ -33,7 +33,7 @@ const PreviewModel = ({ Toggle, previews }: any) => {
     const [value, setValue] = useState('');
     const [prvId, setprevId] = useState({});
 
-   console.log("previews" , previews)
+//    console.log("previews" , previews)
 
     const handleClose = () => {
         setShow(false)

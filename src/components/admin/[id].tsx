@@ -21,6 +21,7 @@ import { Small } from "../../../../src/components/admin/loader";
 import EnrolledStudent from "../../../../src/components/admin/EnrolledStudent";
 import moment from "moment";
 import { useRouter } from "next/router";
+import { SweetAlert } from "../../function/hooks";
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
@@ -57,8 +58,9 @@ const Home: NextPage = () => {
 
         }
       }
-      catch (err) {
+      catch (error) {
         setLoading(false)
+        SweetAlert({ icon: "error", text: error })
 
       }
     }

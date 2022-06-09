@@ -52,6 +52,7 @@ const Home: NextPage = () => {
         setLoading(false)
       }
     } catch (error) {
+      SweetAlert({ icon: "error", text: error })
 
     }
   }

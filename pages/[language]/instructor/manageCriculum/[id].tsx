@@ -76,6 +76,8 @@ const Home: NextPage = () => {
       }
       catch (err) {
         setLoading(false)
+        SweetAlert({ icon: "error", text: err })
+
 
       }
     }
@@ -108,7 +110,6 @@ const Home: NextPage = () => {
 
 
   const handleChangeLecture = (index: number, i: number, evnt: React.ChangeEvent<HTMLInputElement>) => {
-    debugger
     const { name, value } = evnt.target;
 
 
@@ -274,7 +275,6 @@ const Home: NextPage = () => {
 
 
   const delThumnail = (index: number, i: number) => {
-    debugger
     const lists: any = [...section];
     for (let j = 0; j < lists.length; j++) {
       if (j === index) {

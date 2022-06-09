@@ -6,7 +6,6 @@ import Rating from '../ratingStar';
 import Link from 'next/link'
 import InfoCart from '../cartInfoPopup';
 export default ({ cours }: any) => {
-  console.log('course', cours)
   const [toglecart, setTogalcart] = useState({})
   const [loading, setLoading] = useState(false)
   const [showPopUp, setShowPopUp] = useState(false)
@@ -39,7 +38,6 @@ export default ({ cours }: any) => {
 
   }
 
-  console.log("price", (cours?.discounted_price), parseFloat(cours?.price))
 
   let str = cours.price.replace(",", "");
   let strds = cours.discounted_price.replace(",", "");

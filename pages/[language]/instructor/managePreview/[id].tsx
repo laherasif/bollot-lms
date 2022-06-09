@@ -61,8 +61,9 @@ const Home: NextPage = () => {
           setSection(res.data.response.course_previews)
         }
       }
-      catch (err) {
+      catch (error) {
         setLoading(false)
+        SweetAlert({ icon: "error", text: error })
 
       }
     }
@@ -180,6 +181,7 @@ const Home: NextPage = () => {
     catch (err) {
       setLoader(false)
       setNetwork(true)
+      SweetAlert({ icon: "error", text: err })
     }
   }
 

@@ -21,6 +21,7 @@ import { Small } from "../../../../src/components/instructor/loader";
 import Search from "../../../../src/components/instructor/search";
 import { Breadcrumb } from "react-bootstrap";
 import withAuth from "../../../../src/components/Hoc/authRoute";
+import { SweetAlert } from "../../../../src/function/hooks";
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
@@ -46,6 +47,7 @@ const Home: NextPage = () => {
         }
       }
       catch (err) {
+        SweetAlert({ icon: "error", text: err })
 
       }
     }

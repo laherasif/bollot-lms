@@ -87,6 +87,7 @@ const Home: NextPage = () => {
 
       } catch (error) {
         setLoading(false)
+        SweetAlert({ icon: "error", text: error })
 
 
       }
@@ -137,7 +138,7 @@ const Home: NextPage = () => {
 
 
   const handleChangeOptions = (index: number, i: number, evnt: React.ChangeEvent<HTMLInputElement>) => {
-    debugger
+    
     const { name, value } = evnt.target;
     const list: any = [...allQuiz];
     for (let j = 0; j < list.length; j++) {
@@ -152,7 +153,7 @@ const Home: NextPage = () => {
   }
 
   const handleChangeRadio = (index: number, i: number, evnt: React.ChangeEvent<HTMLInputElement>) => {
-    debugger
+    
     const { name, value } = evnt.target;
     const list: any = [...allQuiz];
     for (let j = 0; j < list.length; j++) {
@@ -174,7 +175,6 @@ const Home: NextPage = () => {
   }
 
   const handleChange = (index: number, evnt: React.ChangeEvent<HTMLInputElement>) => {
-    debugger
     const { name, value } = evnt.target;
     const list: any = [...allQuiz];
     list[index][name] = value;
@@ -207,6 +207,7 @@ const Home: NextPage = () => {
 
     } catch (error) {
       setSaveQuiz(false)
+      SweetAlert({ icon: "error", text: error })
 
     }
 

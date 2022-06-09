@@ -45,7 +45,10 @@ const Home: NextPage = () => {
       }
       fetch()
     }
-    catch (err) { }
+    catch (err) {
+      SweetAlert({ icon: "error", text: err })
+
+     }
   }, [blogId , loading === false ])
 
 
@@ -100,6 +103,7 @@ const Home: NextPage = () => {
     }
     catch (err) {
       setLoading(false)
+      SweetAlert({ icon: "error", text: err })
 
      }
   }

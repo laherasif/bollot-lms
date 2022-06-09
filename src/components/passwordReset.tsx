@@ -31,7 +31,6 @@ const Home: NextPage = () => {
   const { forgotEmail } = useSelector((state: RootStateOrAny) => state?.userReducer)
 
   const handleClick = async () => {
-    debugger
     setLoader(true)
     try {
 
@@ -58,7 +57,6 @@ const Home: NextPage = () => {
       else if (res.data.success === true  && res.data.response.user.role === "admin") {
         setLoader(false)
         SweetAlert({ icon: 'success', text: res.data.message })
-        debugger
         dispatch(loginAdmin(res))
         router.push("/en/admin/dashboard");
 
