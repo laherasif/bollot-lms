@@ -14,19 +14,27 @@ import { useMediaQuery } from "react-responsive";
 import Link from "next/link";
 // import BookmarkCard from "../../../../src/components/instructor/BookmarkCard";
 import { useSelector, RootStateOrAny } from "react-redux";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import EditProfile from '../../../../src/components/instructor/editProfile'
 import withAuth from "../../../../src/components/Hoc/authRoute";
+import { Small } from "../../../../src/components/instructor/loader";
 // const options = ["one", "two", "three"];
 
 
 const Home: NextPage = () => {
   // const intl = useIntl();
- 
+
 
   const { User } = useSelector((state: RootStateOrAny) => state?.userReducer)
   const [edit, setEdit] = useState(false)
+  const [loading, setLoading] = useState(false)
 
+  useEffect(() => {
+    setLoading(true)
+    setTimeout(() => {
+      setLoading(false)
+    }, 1000);
+  }, [])
 
 
 
@@ -34,31 +42,31 @@ const Home: NextPage = () => {
     <div className="inst idnasd0w3-edsad">
       <NavigationBar1 />
 
-
       <section className="dash-board kjasf-asdasd2 jadsifd-asdasi ">
-        <div className="dash-board-1">
-          <div className="dash-2 ">
-            <Link href="/en/instructor">
-              <div className="my-course jifas-saw3iesd9">
-                <h5>
-                  <i className="fa fa-arrow-left"></i>
-                  Go back
-                </h5>
-              </div>
-            </Link>
-            <div className="jdsfaf-sdfni3e-d">
-              <div>
-                <div className="jfoadsf-sadmad">
-                  <img src={User?.image || "/assets/images/umpire-1.svg"} />
-                  <div>
-                    <h5>{User?.fullname}</h5>
-                    <div className="idfadsf-sads adsjkfdsao-sadsk">
-                      <button className="upload-1 sdisad-dsdactive" onClick={() => setEdit(true)}>
-                        <i className="fa fa-edit"></i>
-                        Profile
+        {loading ? Small() :
+          <div className="dash-board-1">
+            <div className="dash-2 ">
+              <Link href="/en/instructor">
+                <div className="my-course jifas-saw3iesd9">
+                  <h5>
+                    <i className="fa fa-arrow-left"></i>
+                    Go back
+                  </h5>
+                </div>
+              </Link>
+              <div className="jdsfaf-sdfni3e-d">
+                <div>
+                  <div className="jfoadsf-sadmad">
+                    <img src={User?.image || "/assets/images/umpire-1.svg"} />
+                    <div>
+                      <h5>{User?.fullname}</h5>
+                      <div className="idfadsf-sads adsjkfdsao-sadsk">
+                        <button className="upload-1 sdisad-dsdactive" onClick={() => setEdit(true)}>
+                          <i className="fa fa-edit"></i>
+                          Profile
 
-                      </button>
-                      {/* <button className="upload-1 sdisad-dsdactive">
+                        </button>
+                        {/* <button className="upload-1 sdisad-dsdactive">
                         <Icons name="i21" />
                         Website
                       </button>
@@ -66,47 +74,48 @@ const Home: NextPage = () => {
                         <Icons name="i22" />
                         Youtube
                       </button> */}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div>
-                <p>{User?.tagline}</p>
-              </div>
-            </div>
-
-            <div className="djisajfs-3jeiasd">
-              <div className="dsfjaio3-ejsd">
-                <div className="fidaso-keosad">
-                  <p>Total students</p>
-                  <h3>0</h3>
-                </div>
-                <div className="fidaso-keosad">
-                  <p>Reviews</p>
-                  <h3>{User?.avg_instructor_reviews?.count}</h3>
+                <div>
+                  <p>{User?.tagline}</p>
                 </div>
               </div>
 
-              <h4 className="sijdas-w3edj">About Me</h4>
-              <div className="jdsfioas03kewsd">
-                <p>
-                  {User?.about}
-                </p>
+              <div className="djisajfs-3jeiasd">
+                <div className="dsfjaio3-ejsd">
+                  <div className="fidaso-keosad">
+                    <p>Total students</p>
+                    <h3>0</h3>
+                  </div>
+                  <div className="fidaso-keosad">
+                    <p>Reviews</p>
+                    <h3>{User?.avg_instructor_reviews?.count}</h3>
+                  </div>
+                </div>
 
-              </div>
-              {/* <div className="d-flex flex-wrap my-5">
+                <h4 className="sijdas-w3edj">About Me</h4>
+                <div className="jdsfioas03kewsd">
+                  <p>
+                    {User?.about}
+                  </p>
+
+                </div>
+                {/* <div className="d-flex flex-wrap my-5">
                 <BookmarkCard />
                 <BookmarkCard />
                 <BookmarkCard />
                 <BookmarkCard />
               </div> */}
+              </div>
             </div>
           </div>
-        </div>
+        }
       </section>
       {edit && <EditProfile User={User} permition={edit} Toggle={(value: any) => setEdit(value)} />}
     </div>
   );
 };
 
-export default withAuth( Home );
+export default withAuth(Home);

@@ -62,7 +62,7 @@ const Home: NextPage = () => {
   // const intl = useIntl();
   const [filterText, setFilterText] = useState('');
   const { Transactions } = useSelector((state: RootStateOrAny) => state.InsDash)
-  const filteredItems = Transactions &&  Transactions?.filter(item => item?.particular && item?.particular.toLowerCase().includes(filterText.toLowerCase())) ;
+  // const filteredItems = Transactions &&  Transactions?.filter(item => item?.particular && item?.particular.toLowerCase().includes(filterText.toLowerCase())) ;
   // const filteredItems = Transactions?.filter(item => item?.particular && item?.particular.toLowerCase().includes(filterText.toLowerCase()));
 
 
@@ -118,7 +118,7 @@ const Home: NextPage = () => {
                       <div className="w-100">
                         <DataTable
                           columns={columns}
-                          data={filteredItems}
+                          data={Transactions}
                           sortIcon={<i className='fa fa-arrow-down'></i>}
                           pagination
                           // selectableRows
