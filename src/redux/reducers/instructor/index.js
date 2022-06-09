@@ -9,7 +9,7 @@ import {
 const initialState = {
     Statistic: {},
     Transaction: {},
-    Transactions: {}
+    Transactions: []
 
 };
 

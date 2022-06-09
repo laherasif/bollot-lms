@@ -102,7 +102,7 @@ const Chart = ({chart}) => {
            {/* <ReferenceLine y={80} label={} stroke="red" strokeWidth={0}  /> */}
           <Bar radius={[5, 5, 5, 5]} className='ksldjafds-dsfads' dataKey="uv" barSize={18} fill="#8884d8" >
           {
-                       chart.map((entry, index) => (
+                       chart?.map((entry, index) => (
                             <Cell key={`cell-${index}`} fill={index%2!=0?"#9FF5FF":"#00778F"} />
                         ))
                     }

@@ -47,6 +47,10 @@ const Home: NextPage = () => {
           setLoading(false)
           setCourse(res.data.response.courses)
         }
+        else{
+          setLoading(false)
+
+        }
       }
       catch (err) {
         SweetAlert({icon:'error' , text : err })

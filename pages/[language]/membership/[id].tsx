@@ -7,6 +7,7 @@ import { Form } from "react-bootstrap";
 import { RootStateOrAny, useSelector } from "react-redux";
 import Footer from "../../../src/components/footer";
 import Navbar from "../../../src/components/header/Navbar";
+import { Small } from "../../../src/components/instructor/loader";
 import instance from "../../../src/confiq/axios/instance";
 import { SweetAlert } from "../../../src/function/hooks";
 
@@ -18,7 +19,7 @@ const Home: NextPage = () => {
   const [membership, setmemberships] = useState(null)
   const { token, User } = useSelector((state: RootStateOrAny) => state?.userReducer)
   const { MemberShip } = useSelector((state: RootStateOrAny) => state?.course)
-
+  const [loader, setLoader] = useState(false)
 
   const AxInstance = axios.create({
     // .. where we make our configurations
@@ -33,10 +34,17 @@ const Home: NextPage = () => {
   useEffect(() => {
     try {
       let fetchMembership = async () => {
+        setLoader(true)
         let res = await AxInstance.get('api//company/current-status')
         if (res.data.success === true) {
           setMember(res.data.response.status)
           setmemberships({ auto_renew: Number(res.data.response?.status?.auto_renew) })
+          setLoader(false)
+
+        }
+        else {
+          setLoader(false)
+
         }
       }
       fetchMembership()
@@ -94,46 +102,49 @@ const Home: NextPage = () => {
           <Navbar />
         </div>
       </div>
-      <div className="membership ">
-        <div className="container">
-          <div className="shipping-2">
-            <h3>Membership Info</h3>
-            <p>Current Membership</p>
-          </div>
+      <div style={{marginTop:'50px'}}>
 
-          {member && Object.keys(member).length ?
+      {loader ? Small() :
+        <div className="membership ">
+          <div className="container">
+            <div className="shipping-2">
+              <h3>Membership Info</h3>
+              <p>Current Membership</p>
+            </div>
 
-            <div className="table-responsive">
-              <table className="table ">
-                <thead>
-                  <tr>
-                    <th> Plan </th>
-                    <th>  </th>
-                    <th>  </th>
-                    <th> Price per month </th>
-                    <th> Validate Date </th>
-                    <th> Renew </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>{member?.membership?.title}</td>
-                    <td></td>
-                    <td></td>
-                    <td>${member?.membership?.price_per_month}</td>
-                    <td>{moment(member?.valid_till).format('ll')}</td>
-                    <td>
-                      <Form.Check
-                        type="switch"
-                        id="custom-switch"
-                        name="renew"
-                        onChange={(e) => handleChange(!membership.auto_renew)}
-                        checked={membership?.auto_renew === 1 ? true : false}
-                        label="Renew Plan"
-                      />
-                    </td>
-                  </tr>
-                  {/* {membership && membership.length > 0 ? membership.map((st, i) => (
+            {member && Object.keys(member).length ?
+
+              <div className="table-responsive">
+                <table className="table ">
+                  <thead>
+                    <tr>
+                      <th> Plan </th>
+                      <th>  </th>
+                      <th>  </th>
+                      <th> Price per month </th>
+                      <th> Validate Date </th>
+                      <th> Renew </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>{member?.membership?.title}</td>
+                      <td></td>
+                      <td></td>
+                      <td>${member?.membership?.price_per_month}</td>
+                      <td>{moment(member?.valid_till).format('ll')}</td>
+                      <td>
+                        <Form.Check
+                          type="switch"
+                          id="custom-switch"
+                          name="renew"
+                          onChange={(e) => handleChange(!membership.auto_renew)}
+                          checked={membership?.auto_renew === 1 ? true : false}
+                          label="Renew Plan"
+                        />
+                      </td>
+                    </tr>
+                    {/* {membership && membership.length > 0 ? membership.map((st, i) => (
                   <tr key={i}>
                     <td className="py-1">
                       <img
@@ -164,80 +175,83 @@ const Home: NextPage = () => {
                 } */}
 
 
-                </tbody>
-              </table>
-            </div>
-            :
-            <h3>You are not subscribed to any membership plan yet </h3>
-            // <div style={{fontSize:'2rem' , fontWeight:'500'}}>You are not subscribed to any membership plan yet </div>
-          }
+                  </tbody>
+                </table>
+              </div>
+              :
+              <h3>You are not subscribed to any membership plan yet </h3>
+              // <div style={{fontSize:'2rem' , fontWeight:'500'}}>You are not subscribed to any membership plan yet </div>
+            }
 
-        </div>
+          </div>
 
-        <div>
-          <section className="layer plans container">
-            <section>
-              {MemberShip && MemberShip.map((m: any) => (
-                <section
-                  className="third lift plan-tier callout"
-                  key={m?.id}
-                >
-                  <h4>{m?.title}</h4>
-                  <h5>
-                    <sup className="superscript">$</sup>
-                    <span className="plan-price">{m?.price_per_month}</span>
-                  </h5>
-                  <p className="early-adopter-price"> Per Month</p>
-                  {/* <Link href={`/en/paymentMethod/?id=${m?.id}`}>
+          <div>
+            <section className="layer plans container">
+              <section>
+                {MemberShip && MemberShip.map((m: any) => (
+                  <section
+                    className="third lift plan-tier callout"
+                    key={m?.id}
+                  >
+                    <h4>{m?.title}</h4>
+                    <h5>
+                      <sup className="superscript">$</sup>
+                      <span className="plan-price">{m?.price_per_month}</span>
+                    </h5>
+                    <p className="early-adopter-price"> Per Month</p>
+                    {/* <Link href={`/en/paymentMethod/?id=${m?.id}`}>
                     <button className="btn-2s" >Get Upgrade now</button>
                   </Link> */}
 
-                  {User && member?.membership?.id === m?.id ?
-                    <button className="btn-1s" >
-                      Subscribed
-                    </button>
+                    {User && member?.membership?.id === m?.id ?
+                      <button className="btn-1s" >
+                        Subscribed
+                      </button>
 
-                    : User || Object.keys(member).length ?
-                      <Link href={`/en/paymentMethod/${m?.id}`}>
-                        <button className="btn-2s" >
-                          {User && member ? "Get Upgrade now" : "Subscribe"}
-                        </button>
-                      </Link>
-                      :
-                      // User && member?.length > 0
-                      //   ?
-                      //   <Link href={"/en/membership"}>
-                      //     <button className="btn-2s">
-                      //       Subscribe
-                      //     </button>
-                      //   </Link>
-                      //   :
+                      : User || Object.keys(member).length ?
+                        <Link href={`/en/paymentMethod/${m?.id}`}>
+                          <button className="btn-2s" >
+                            {User && member ? "Get Upgrade now" : "Subscribe"}
+                          </button>
+                        </Link>
+                        :
+                        // User && member?.length > 0
+                        //   ?
+                        //   <Link href={"/en/membership"}>
+                        //     <button className="btn-2s">
+                        //       Subscribe
+                        //     </button>
+                        //   </Link>
+                        //   :
                         <Link href={`/en/businessSignup`}>
                           <button className="btn-2s">
                             Subscribe
                           </button>
                         </Link>
-                  }
-                  <ul>
-                    <li>
-                      <strong>{m?.courses_allowed}</strong> Course Allowed
-                    </li>
-                    <li>
-                      <strong>{m?.users_per_course_allowed}</strong> Users Allowed
-                    </li>
+                    }
+                    <ul>
+                      <li>
+                        <strong>{m?.courses_allowed}</strong> Course Allowed
+                      </li>
+                      <li>
+                        <strong>{m?.users_per_course_allowed}</strong> Users Allowed
+                      </li>
 
-                    <li>
-                      {m?.free_trial_days} day <strong>free trial</strong>
-                    </li>
-                  </ul>
-                </section>
-              ))}
+                      <li>
+                        {m?.free_trial_days} day <strong>free trial</strong>
+                      </li>
+                    </ul>
+                  </section>
+                ))}
+              </section>
             </section>
-          </section>
-        </div>
+          </div>
 
-        <Footer />
+          <Footer />
+        </div>
+      }
       </div>
+
     </>
   );
 };
