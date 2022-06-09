@@ -62,7 +62,7 @@ const Home: NextPage = () => {
   // const intl = useIntl();
   const [filterText, setFilterText] = useState('');
   const { Transactions } = useSelector((state: RootStateOrAny) => state.InsDash)
-  const filteredItems = Transactions && Transactions ? Transactions?.filter(item => item?.particular && item?.particular.toLowerCase().includes(filterText.toLowerCase())) : null;
+  const filteredItems = Transactions &&  Transactions?.filter(item => item?.particular && item?.particular.toLowerCase().includes(filterText.toLowerCase())) ;
   // const filteredItems = Transactions?.filter(item => item?.particular && item?.particular.toLowerCase().includes(filterText.toLowerCase()));
 
 
