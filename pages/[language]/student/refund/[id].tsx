@@ -26,7 +26,7 @@ const Home: NextPage = () => {
 
   const [transtion, setTransaction] = useState([])
   const [refund, setRefund] = useState(null)
-  const [loading , setLoading ] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const token = useSelector((state: RootStateOrAny) => state?.userReducer?.token)
 
@@ -46,10 +46,16 @@ const Home: NextPage = () => {
   useEffect(() => {
     let fetchPayment = async () => {
       try {
-        setLoading(true )
+        setLoading(true)
         let res = await AxInstance.get(`api//student/refunds`)
-        setTransaction(res.data.response.transactions)
-        setLoading(false)
+        if (res.data.success === true) {
+          setTransaction(res.data.response.transactions)
+          setLoading(false)
+        }
+        else {
+          setLoading(false)
+
+        }
 
       }
       catch (error) {
@@ -85,7 +91,6 @@ const Home: NextPage = () => {
                           <Link href="/en/instructor/refund">
                             <button className="upload-1  sdisad-dsdactive">Refund</button>
                           </Link>
-                          <button className="upload-1">Vouchers</button>
                         </div>
                       </div>
                     </div>
