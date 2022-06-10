@@ -10,6 +10,7 @@ import Router, { useRouter } from "next/router";
 import axios from 'axios';
 import { Spinner } from 'react-bootstrap';
 import { SweetAlert } from '../../function/hooks';
+import instance from '../../confiq/axios/instance';
 // import { OtpVarif } from '../../../../src/redux/actions/auth/user'
 export interface OTPInputProps {
   length: number;
@@ -53,18 +54,18 @@ export function OTPInputComponent(props: OTPInputProps) {
 
   const router = useRouter()
 
-  
+
 
   const { token, User } = useSelector((state: RootStateOrAny) => state?.userReducer)
 
 
-  const AxInstance = axios.create({
-    // .. where we make our configurations
-    baseURL: 'https://dev.thetechub.us/bolloot/',
-    headers: {
-      token: token
-    }
-  });
+  // const AxInstance = axios.create({
+  //   // .. where we make our configurations
+  //   baseURL: 'https://dev.thetechub.us/bolloot/',
+  //   headers: {
+  //     token: token
+  //   }
+  // });
 
 
   // Helper to return OTP from inputs
@@ -76,7 +77,7 @@ export function OTPInputComponent(props: OTPInputProps) {
     },
     [onChangeOTP],
   );
-  
+
 
   // Helper to return value with the right type: 'text' or 'number'
   const getRightValue = useCallback(
@@ -207,28 +208,37 @@ export function OTPInputComponent(props: OTPInputProps) {
           }
         });
         setOTPValues(updatedOTPValues);
-        const otpValue = otpValues.join('');
-        setOtp(otpValue)
-        
+
         setActiveInput(Math.min(nextFocusIndex + 1, length - 1));
+        // if (otpValue.length > 6) {
+        //   return null
+        // }
+        // else{
+        //   setOtp(otpValue + 0)
+
+        // }
       }
     },
+    
     [activeInput, getRightValue, length, otpValues],
   );
+
+  
+
   const handelSubmit = async () => {
     try {
-      
+      const otpValue = otpValues.join('');
       setLoading(true)
-      let res = await AxInstance.post('api//authenticate-otp', { code: otp  })
+      let res = await instance.post('api//authenticate-otp', { code: otpValue })
       if (res.data?.success === true) {
         if (User?.role === "student" || res?.data?.response?.student?.role === "student") {
-            router.push("/en/student/dashboard"); 
+          router.push("/en/student/dashboard");
         }
-        else if(User?.role === "instructor" || res?.data?.response?.student?.role === "instructor") {
+        else if (User?.role === "instructor" || res?.data?.response?.student?.role === "instructor") {
           router.push("/en/instructor");
 
         }
-        else{
+        else {
           router.push("/en/membership");
 
         }
@@ -240,9 +250,9 @@ export function OTPInputComponent(props: OTPInputProps) {
 
       }
 
-    } catch (err){
+    } catch (err) {
       // console.log('err', error)
-      SweetAlert({icon :'error' , text: err})
+      SweetAlert({ icon: 'error', text: err })
 
     }
 
