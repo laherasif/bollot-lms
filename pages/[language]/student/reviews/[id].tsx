@@ -20,11 +20,12 @@ import Rating from '../../../../src/components/ratingStar'
 import moment from 'moment'
 import Link from "next/link";
 import { SweetAlert } from "../../../../src/function/hooks";
+import { Small } from "../../../../src/components/student/loader";
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
 
-  const [reviews, setReviews] = useState({})
+  const [reviews, setReviews] = useState([])
   const [loading, setLoading] = useState(false)
   const router = useRouter()
   const courseId = router.query.id
@@ -42,7 +43,6 @@ const Home: NextPage = () => {
     let fetchCourse = async () => {
       try {
         setLoading(true)
-
         let res = await AxInstance.post('api//review/get-review', { course_id: courseId })
         if (res.data.success === true) {
           setLoading(false)
@@ -57,6 +57,7 @@ const Home: NextPage = () => {
     fetchCourse()
   }, [courseId])
 
+
   return (
     <>
       <NavigationBar1 />
@@ -66,18 +67,19 @@ const Home: NextPage = () => {
           <div className="dash-2">
             <div className="my-course">
               <TopNavbar />
-              <div className="hdsf0s-sadmsa">
-                <Link href="/en/student/courses" >
-                  <h3 style={{cursor:'pointer'}}>
-                    <i className="fa fa-arrow-left "></i>
-                    <span className="pl-2">Back</span>
-                  </h3>
-                </Link>
-                <h3>Your Reviews</h3>
-                <div className="complete-web-1">
-                  <div className="umpire w-100">
-                    <div className="umpire-1 umpire-1-cst">
-                      <div className="ratio-bar">
+              {loading ? Small() :
+                <div className="hdsf0s-sadmsa">
+                  <Link href="/en/student/courses" >
+                    <h3 style={{ cursor: 'pointer' }}>
+                      <i className="fa fa-arrow-left "></i>
+                      <span className="pl-2">Back</span>
+                    </h3>
+                  </Link>
+                  <h3>Your Reviews</h3>
+                  <div className="complete-web-1">
+                    <div className="umpire w-100">
+                      <div className="umpire-1 umpire-1-cst">
+                        {/* <div className="ratio-bar">
                         <h3>{reviews?.rating || 0}</h3>
                         <p>out of</p>
                         <h3 className="ml-9">5</h3>
@@ -89,32 +91,35 @@ const Home: NextPage = () => {
 
                           }
                         </div>
-                        {/* <h6>4.8(151)</h6> */}
+                      </div> */}
                       </div>
                     </div>
-                  </div>
-                  <div className="hjsaisa-sdnjassd jsdif-dsndawje">
-                    <div className="reviews-section">
-                      <div className="first-rev-sec">
-                        <div className="rev-img pb-41">
-                          <img src={User?.image || "/assets/images/first-sec.svg"} alt="" />
-                          <div className="you-rev">
-                            <h3>{User?.fullname || "Your Name"}</h3>
-                            <p>{moment(reviews?.createdAt).format("ll") || 0}</p>
+                    <div className="hjsaisa-sdnjassd jsdif-dsndawje">
+                      <div className="reviews-section">
+                        {reviews && reviews.length ? reviews.map((rev) => (
+                          <div className="first-rev-sec">
+                            <div className="rev-img pb-41">
+                              <img src={User?.image || "/assets/images/first-sec.svg"} alt="" />
+                              <div className="you-rev">
+                                <h3>{User?.fullname || "Your Name"}</h3>
+                                <p>{moment(rev?.createdAt).format("ll") || 0}</p>
+                              </div>
+                            </div>
+                            <div className="cm-webs-12">
+                              <p>
+                                {rev?.review || ""}
+                              </p>
+                              {/* <h6>Complete Web &amp; Mobile Designer in 2022...</h6> */}
+                            </div>
                           </div>
-                        </div>
-                        <div className="cm-webs-12">
-                          <p>
-                            {reviews?.review || ""}
-                          </p>
-                          {/* <h6>Complete Web &amp; Mobile Designer in 2022...</h6> */}
-                        </div>
-                      </div>
-                    </div>
+                        )) : null}
 
+                      </div>
+
+                    </div>
                   </div>
                 </div>
-              </div>
+              }
             </div>
           </div>
         </div>

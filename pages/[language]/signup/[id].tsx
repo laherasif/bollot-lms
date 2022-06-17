@@ -38,6 +38,7 @@ const Home: NextPage = () => {
   const [providerEmail, setProviderEmail] = useState<string>('')
   const [loader, setLoader] = useState<boolean>(false)
   const [errors, setErrors] = useState<Errors>({})
+  const [Users, setUsers] = useState([])
   const [authValue, setAuthValue] = useState<SignUp>({
     fullname: "",
     email: "",
@@ -45,7 +46,9 @@ const Home: NextPage = () => {
   })
 
 
-  const { varified, User } = useSelector((state: RootStateOrAny) => state.userReducer)
+  const { varified, User, token } = useSelector((state: RootStateOrAny) => state.userReducer)
+
+
 
   const firebaseAuth = getAuth(Firebaseapp);
   const provider = new GoogleAuthProvider();
@@ -66,7 +69,7 @@ const Home: NextPage = () => {
     if (register === "student") {
       setRole(1)
     }
-    else if(register === "instructor") {
+    else if (register === "instructor") {
       setRole(2)
     }
   }, [register])
@@ -74,11 +77,11 @@ const Home: NextPage = () => {
 
 
   useEffect(() => {
-    if (User && User?.role === "student") {
+    if (User && User && User.is_email_verified === "1" && User?.role === "student") {
       router.push('/en/student/dashboard')
 
     }
-    else if (User && User?.role === "instructor") {
+    else if (User && User && User.is_email_verified === "1" && User?.role === "instructor") {
       router.push('/en/instructor')
 
     }
@@ -145,11 +148,12 @@ const Home: NextPage = () => {
       }
 
 
-      setProviderEmail(email)
       let res = await instance.post("api//signup", value)
 
       if (res.data.success === true) {
-        dispatch(SignUp(res.data))
+        // dispatch(SignUp(res.data))
+        setProviderEmail(res?.data?.response?.token?.token)
+        setUsers(res.data)
         setMessage(true)
         setLoader(false)
 
@@ -163,6 +167,8 @@ const Home: NextPage = () => {
     } catch (err) {
     }
   };
+
+
 
 
 
@@ -332,7 +338,12 @@ const Home: NextPage = () => {
       <Footer />
 
 
-      {message && <Otp openToggle={(e: any) => setMessage(e)} providerEmail={providerEmail} role={authValue.role} />}
+      {message &&
+        <Otp openToggle={(e: any) => setMessage(e)}
+          providerEmail={providerEmail}
+          UserInfo={Users}
+          role={role === 1 ? "student" : "instructor"}
+          action="signUp" />}
     </div>
   );
 };

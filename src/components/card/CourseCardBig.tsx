@@ -57,7 +57,7 @@ export default ({ cours }: any) => {
               <div className="sajkdf-dasas">
                 <div className="f-col">
                   <h3>
-                    { add3Dots(cours?.title , 25)}
+                    { add3Dots(cours?.title , 22)}
 
                   </h3>
                   <span>{cours?.short_desc}</span>

@@ -84,7 +84,7 @@ const Home: NextPage = () => {
                 onChange={(e: any) => handleChange(e)}
                 placeholder="Full Name"
               />
-              {error?.name && <div className="invalid mb-1">{error?.name[0]}</div>}
+              {error?.name && <div className="invalid ">{error?.name[0]}</div>}
 
               <br />
               <input
@@ -95,7 +95,7 @@ const Home: NextPage = () => {
                 value={state.email}
                 onChange={(e: any) => handleChange(e)}
                 placeholder="Email" />
-              {error?.email && <div className="invalid mb-1">{error?.email[0]}</div>}
+              {error?.email && <div className="invalid ">{error?.email[0]}</div>}
 
               <br />
               <textarea
@@ -106,7 +106,7 @@ const Home: NextPage = () => {
                 onChange={(e: any) => handleChange(e)}
                 placeholder="Message"
               ></textarea>
-              {error?.message && <div className="invalid mb-1">{error?.message[0]}</div>}
+              {error?.message && <div className="invalid ">{error?.message[0]}</div>}
 
               <br />
 

@@ -4870,13 +4870,7 @@ body .multi-range-slider .bar-inner {
 
 @media (max-width: 539px) {
   .data {
-    max-width: 85vw;
-  }
-  .boost-ch-1 h3,.interest-ch h3{
-    font-size: 26px!important;
-  }
-  .boost-ch-1 p{
-    font-size: 16px!important;
+    max-width: 70vw;
   }
 }
 
@@ -6575,18 +6569,10 @@ strong {
   margin: 0 auto;
   display: block;
 }
-.plan-tier{
-  margin-bottom: 20px!important;
- }
-.layer>section, .layer>article{
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-}
+
 .third {
-  width: 100%;
-  max-width: 325px;
-  margin: 0 15px 0 15px;
+  width: 30%;
+  margin: 0 30px 0 0;
   display: inline-block;
 }
 

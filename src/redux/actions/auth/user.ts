@@ -8,7 +8,8 @@ import {
     SIGNUP_USER,
     OPT_VERIFY,
     CLEAN_STATE,
-    FORGOT_PASSWORD_EMAIL
+    FORGOT_PASSWORD_EMAIL,
+    ADD_SOCIAL_MEDIA
 } from '../../types/types'
 import { Dispatch } from 'redux';
 import instance from '../../../confiq/axios/instance'
@@ -133,7 +134,7 @@ export const SocialRegComp = (providerData: [], role: string) => async (dispatch
 
 
 // Register User 
-export const SocialRegMedia = (providerData: [], role: string) => async (dispatch: any) => {
+export const SocialRegMedia = (providerData: [], role: any) => async (dispatch: any) => {
     try {
         let object = Object.assign({}, ...providerData)
 
@@ -183,12 +184,73 @@ export const SocialRegMedia = (providerData: [], role: string) => async (dispatc
         })
     }
     catch (err) {
+        SweetAlert({icon:'error' , text : err })
+    }
+}
+
+
+export const AddSocialRegMedia = (providerData: [], user: any) => async (dispatch: any) => {
+   debugger
+    try {
+        let object = Object.assign({}, ...providerData)
+
+        // let fb = {
+        //     fullname : object.displayName,
+        //     email: object.email,
+        //     fb_user_id: object.uid,
+        //     image: object.photoURL,
+        //     role: role
+        // }
+        // let google = {
+        //     fullname : object.displayName,
+        //     email: object.email,
+        //     google_user_id: object.uid,
+        //     image: object.photoURL,
+        //     role: role
+        // }
+
+        let fb = {
+            user_id : user.id,
+            fullname: object.displayName,
+            email: object.email,
+            fb_user_id: object.uid,
+            image: object.photoURL,
+            device_name: Platform.Browser,
+            device_model: Platform.BrowserVersion,
+            operating_system: Platform.OS,
+            role: user?.role
+        }
+        let google = {
+            user_id : user.id,
+            fullname: object.displayName,
+            email: object.email,
+            google_user_id: object.uid,
+            image: object.photoURL,
+            device_name: Platform.Browser,
+            device_model: Platform.BrowserVersion,
+            operating_system: Platform.OS,
+            role: user?.role
+        }
+
+
+
+
+        let res = await instance.post('api//social-signin', object.providerId === "facebook.com" ? fb : google)
+       console.log("ERs" , res )
+        let provide = object.providerId === "facebook.com" ? "facebook" : "google" 
+        dispatch({
+            type: ADD_SOCIAL_MEDIA,
+            payload:{ data :  res.data.response.student , provided :  object} 
+        })
+    }
+    catch (err) {
         dispatch({
             type: ERROR,
             payload: err
         })
     }
 }
+
 
 
 // Login User 

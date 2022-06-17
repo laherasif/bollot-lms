@@ -41,6 +41,7 @@ const Home: NextPage = () => {
       }
 
       let res = await instance.post("api//forgot-password/step-3", value)
+      debugger
       if (res.data.success === true && res.data.response.user.is_email_verified === "1" && res.data.response.user.role === "student") {
         setLoader(false)
         dispatch(loginUser(res.data))

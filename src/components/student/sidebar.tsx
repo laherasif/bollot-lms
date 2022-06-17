@@ -22,7 +22,8 @@ export default () => {
       element1?.classList.add('sidebaropen-p')
     }
   }
-  return <div className="dash-1 mnsada-3ej" id='sidebar-cst' >
+  return(
+   <div className="dash-1 mnsada-3ej" id='sidebar-cst' >
     <div className="dash-ch-1">
       <img src="/assets/images/small-logo.svg" alt="" />
       <button className='jdsaif-dsnd' onClick={() => openPan()} >
@@ -108,7 +109,7 @@ export default () => {
       <div className={`dash-ch-2 ${router.asPath === '/en/student/purchase' && 'sdisad-dsdactive'}`}>
 
         <BsWallet2 color='#a2a2a2' size={22} />
-        <h3>purchase</h3>
+        <h3>Purchase</h3>
       </div>
     </Link>
 
@@ -117,4 +118,5 @@ export default () => {
       <Recommended />
     </div>
   </div>
+  )
 }

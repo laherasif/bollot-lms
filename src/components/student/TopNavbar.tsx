@@ -12,6 +12,7 @@ import { getSearchCourses } from '../../redux/actions/student/courses';
 import axios from 'axios';
 import Messages from './messages';
 import Notification from './notification';
+import { SweetAlert } from '../../function/hooks';
 export default () => {
   const { User, token } = useSelector((state: RootStateOrAny) => state?.userReducer)
 
@@ -46,12 +47,17 @@ export default () => {
       rows_per_page: 5
     }
     let fetchNotif = async () => {
+      try{
       let res = await AxInstance.get('api//notifications')
       let count = await AxInstance.get('api//unread-notifications-count')
       let message = await AxInstance.post('api//get-conversations', value)
       setNotifications(res.data.response.notifs)
       // setUnRead(count.data.response.unread_notifs)
       setMessagess(message.data.response.conversations)
+      }
+      catch(err){
+        SweetAlert({icon : "error" , text: err})
+      }
 
     }
     fetchNotif()
@@ -131,7 +137,7 @@ export default () => {
             <div className="kdsfsd-dsdd" ref={notify}>
               <div onClick={() => notification()}>
                 <BiBell size={20} color="#ffff" />
-                {notifications.some((s:any)=> s.is_read === "0")  ? <p></p> : ""}
+                {notifications?.some((s:any)=> s?.is_read === "0")  ? <p></p> : ""}
 
               </div>
 
@@ -144,7 +150,7 @@ export default () => {
                 {/* <IoMailOutline color="#ffff" size={20} /> */}
                 <IoMailOutline color="#A2A2A2" size={20} />
 
-                {messagess.some((s:any)=> s.last_message_obj.is_read === "0")  ? <p></p> : ""}
+                {messagess?.some((s:any)=> s?.last_message_obj.is_read === "0")  ? <p></p> : ""}
               </div>
               {mesg && <Messages message={messagess} />}
 

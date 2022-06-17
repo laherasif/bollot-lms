@@ -3,7 +3,7 @@ import { Modal , Button  } from 'react-bootstrap'
 import React,{useState } from "react";
 
 
-export default ({ openToggle , providerEmail , role } : any ) => {
+export default ({ openToggle , providerEmail , role , action ,  UserInfo  } : any ) => {
     const [show, setShow] = useState(true);
     const [otp, setOtp] = useState('');
 
@@ -32,6 +32,8 @@ export default ({ openToggle , providerEmail , role } : any ) => {
                     className="otpContainer"
                     inputClassName="otpInput"
                     onChangeOTP={(otp) => setOtp(otp)}
+                    action={action}
+                    UserInfo={UserInfo}
                 />
             </Modal.Body>
             

@@ -64,17 +64,19 @@ const ReviewForm = ({ Toggle, permition, reviewss }: any) => {
         <Modal.Header closeButton>
           <Modal.Title>Add Course Review</Modal.Title>
         </Modal.Header>
-        <Modal.Body style={{ height: "100%", textAlign: 'center' }}>
+        <Modal.Body style={{ height: "100%", padding: '0px 20px' }}>
           <div className="email-compose">
             <div
               className="p-field"
               style={{ display: "flex", flexDirection: "column" }}
             >
-              <div>
+              <label>Rating</label>
+              <div style={{ paddingLeft: '4rem' }}>
+
                 <ReactStars
                   count={5}
                   onChange={ratingChanged}
-                  size={80}
+                  size={60}
                   isHalf={true}
                   emptyIcon={<i className="far fa-star"></i>}
                   halfIcon={<i className="fa fa-star-half-alt"></i>}
@@ -82,7 +84,8 @@ const ReviewForm = ({ Toggle, permition, reviewss }: any) => {
                   activeColor="#d0565c"
                 />
               </div>
-              <div className="">
+              <div className="w-100">
+                <label>Comments</label>
                 <textarea
                   rows={4}
                   name="short_desc"
@@ -98,7 +101,7 @@ const ReviewForm = ({ Toggle, permition, reviewss }: any) => {
                   {loading ?
                     <Spinner animation="border" />
                     :
-                    "My Courses"
+                    "Add Review"
                   }
                 </button>
               </div>

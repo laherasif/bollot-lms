@@ -21,17 +21,17 @@ const Home: NextPage = () => {
  
   const dispatch = useDispatch()
 
-  useEffect(()=>{
+
+  const ClearData = () => {
+    dispatch(clearStates())
+  }
+
+  useEffect(()=> {
     setLoading(true)
     setTimeout(() => {
       setLoading(false )
     }, 1000);
   },[])
-
-
-  const ClearData = () => {
-    dispatch(clearStates())
-  }
 
   return (
     <div className="inst">

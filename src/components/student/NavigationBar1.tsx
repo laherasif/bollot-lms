@@ -223,25 +223,25 @@ export default () => {
                 </Offcanvas.Header>
                 <Offcanvas.Body>
                   <Nav className="justify-content-end flex-grow-1 pe-3">
-                    <Link href="/en/dashboard" >
+                    <Link href="/en/student/dashboard" >
                       <a className="nav-link" >Dashboard</a>
                     </Link>
-                    <Link href="/en/courses">
+                    <Link href="/en/student/courses">
                       <a className="nav-link" >Courses</a>
                     </Link>
-                    <Link href="/en/settings">
+                    <Link href="/en/student/settings">
                       <a className="nav-link" >Settings</a>
                     </Link>
-                    <Link href="/en/bookmarks">
+                    <Link href="/en/student/bookmarks">
                       <a className="nav-link" >Bookmarks</a>
                     </Link>
-                    <Link href="/en/accomplishment">
+                    <Link href="/en/student/accomplishment">
                       <a className="nav-link" >Accomplishment</a>
                     </Link>
-                    <Link href="/en/reviews">
+                    <Link href="/en/student/reviews">
                       <a className="nav-link" >Reviews</a>
                     </Link>
-                    <Link href="/en/purchase">
+                    <Link href="/en/student/purchase">
                       <a className="nav-link" >Purchase</a>
                     </Link>
                   </Nav>

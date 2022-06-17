@@ -129,6 +129,11 @@ const Home: NextPage = () => {
                   <h2>Quiz</h2>
                 </Link>
               </div>
+              <div>
+                <Link href={`/en/student/codeEditor`}>
+                  <h2>CodeEditor</h2>
+                </Link>
+              </div>
               {/* <div>
                 <h2>Review</h2>
               </div> */}

@@ -20,7 +20,7 @@ export default ({ f, key }: any) => {
           />
         )}
         <div className="digit">
-          <h4> {add3Dots(f?.title, 20)}</h4>
+          <h4> {add3Dots(f?.title, 25)}</h4>
           <span>{f?.category_tree[0]}</span>
           <div className="digit-price">
             <h3>${f?.price}</h3>

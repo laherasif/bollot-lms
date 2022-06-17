@@ -30,8 +30,16 @@ const Home: NextPage = () => {
 
   const dispatch = useDispatch()
 
-  const { User, } = useSelector((state: RootStateOrAny) => state.userReducer)
+  const { User } = useSelector((state: RootStateOrAny) => state.userReducer)
 
+
+  // const AxInstance = axios.create({
+  //   // .. where we make our configurations
+  //   baseURL: 'https://dev.thetechub.us/bolloot/',
+  //   headers: {
+  //     token: token
+  //   }
+  // });
 
 
   const [authValue, setAuthValue] = useState<SignIn>({
@@ -46,7 +54,9 @@ const Home: NextPage = () => {
     password: "",
   })
   const [otp, setOtp] = useState('')
+  const [roles, setRoles] = useState('')
   const [toggal, setToggal] = useState(false)
+  const [Users, setUsers] = useState([])
   const [permistion, setPermition] = useState()
   const [plateform, setPlateform] = useState('')
 
@@ -136,6 +146,7 @@ const Home: NextPage = () => {
       }
 
       let res = await instance.post("api//login", value)
+
       if (res.data.success === true && res.data.response.student.is_email_verified === "1" && res.data.response.student.role === "student") {
         setLoader(false)
         dispatch(loginUser(res.data))
@@ -160,7 +171,10 @@ const Home: NextPage = () => {
       }
 
       else {
-        setOtp(res.data.response.student.role)
+        // dispatch(loginUser(res.data))
+        setOtp(res?.data.response.token.token)
+        setUsers(res.data)
+        setRoles(res.data.response.student.role)
         setMessage(true)
         setLoader(false)
 
@@ -194,7 +208,7 @@ const Home: NextPage = () => {
               <br />
               <div className="hasdfkj">
                 <input
-                 className={`full-2 ${errors.email && 'full-2 input_filed_error'}`} name="email" value={email} onChange={handleChange} type="email" placeholder="Email" />
+                  className={`full-2 ${errors.email && 'full-2 input_filed_error'}`} name="email" value={email} onChange={handleChange} type="email" placeholder="Email" />
                 {errors?.email && <div className="invalid mb-1">{errors?.email[0]}</div>}
 
               </div>
@@ -237,7 +251,13 @@ const Home: NextPage = () => {
             </button>
           </div>
         </div>
-        {message && <Otp openToggle={(e: any) => setMessage(e)} providerEmail={"laherasif@gmail.com"} role={message} />}
+        {message &&
+          <Otp openToggle={(e: any) => setMessage(e)}
+            providerEmail={otp}
+            UserInfo={Users}
+            role={roles}
+            action="login" />
+        }
         {toggal && <Role permition={(e: any) => setPermition(e)} Toggle={(e: any) => setToggal(e)} />}
       </section>
       <Footer />

@@ -230,12 +230,12 @@ const Home: NextPage = () => {
                             <fieldset>
                               <div className="course_padding">
                                 {/* {stepPages[step]} */}
-                                {step === 0 && <AddCourse
+                                {step === 1 && <AddCourse
                                   // handleCourseId={(value: any) => setCourseId(value)}
                                   onStepChange={stepChangeHandler}
                                 // errors={errors}
                                 />}
-                                {step === 1 && <Criculum
+                                {step === 0 && <Criculum
                                   onStepChange={stepChangeHandler}
                                   onPrevStep={(step: any) => setStep(step)}
                                   step={1}

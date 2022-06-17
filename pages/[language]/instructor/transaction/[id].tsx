@@ -61,8 +61,8 @@ const columns: any = [
 const Home: NextPage = () => {
   // const intl = useIntl();
   const [filterText, setFilterText] = useState('');
-  const { Transactions } = useSelector((state: RootStateOrAny) => state.InsDash)
-  // const filteredItems = Transactions &&  Transactions?.filter(item => item?.particular && item?.particular.toLowerCase().includes(filterText.toLowerCase())) ;
+  const { transactions } = useSelector((state: RootStateOrAny) => state.InsDash)
+  // const filteredItems =  Transactions?.filter(item => item?.particular && item?.particular.toLowerCase().includes(filterText.toLowerCase())) ;
   // const filteredItems = Transactions?.filter(item => item?.particular && item?.particular.toLowerCase().includes(filterText.toLowerCase()));
 
 
@@ -105,7 +105,7 @@ const Home: NextPage = () => {
                   <div className="">
                     <div className="kjdaf-sadasnqeow-samd w-100">
 
-                      <div style={{ display: 'flex', justifyContent: 'center', width: '100%', marginBottom: '20px' }}>
+                      {/* <div style={{ display: 'flex', justifyContent: 'center', width: '100%', marginBottom: '20px' }}>
                         <div className="dsnodi-sdjsad">
                           <div className="searchbar-icon">
                             <FiSearch color="#8A8A8A" size={17} />
@@ -114,11 +114,11 @@ const Home: NextPage = () => {
                           <input type="text" placeholder="Search" onChange={(e) => setFilterText(e.target.value)} value={filterText} />
                         </div>
 
-                      </div>
+                      </div> */}
                       <div className="w-100">
                         <DataTable
                           columns={columns}
-                          data={Transactions}
+                          data={transactions}
                           sortIcon={<i className='fa fa-arrow-down'></i>}
                           pagination
                           // selectableRows

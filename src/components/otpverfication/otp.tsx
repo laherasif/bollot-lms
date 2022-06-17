@@ -3,7 +3,7 @@
 /* eslint-disable react/no-array-index-key */
 import React, { memo, useState, useCallback, CSSProperties } from 'react';
 import SingleInput from './single';
-import { useSelector, RootStateOrAny } from 'react-redux'
+import { useSelector, RootStateOrAny, useDispatch } from 'react-redux'
 import Router, { useRouter } from "next/router";
 // import { EmailHide } from '../../../../src/function/hooks'
 // import instance from '../../../../src/confiq/axios/instance';
@@ -11,6 +11,7 @@ import axios from 'axios';
 import { Spinner } from 'react-bootstrap';
 import { SweetAlert } from '../../function/hooks';
 import instance from '../../confiq/axios/instance';
+import { loginUser, SignUp } from '../../redux/actions/auth/user';
 // import { OtpVarif } from '../../../../src/redux/actions/auth/user'
 export interface OTPInputProps {
   length: number;
@@ -19,13 +20,14 @@ export interface OTPInputProps {
   autoFocus?: boolean;
   isNumberInput?: boolean;
   disabled?: boolean;
-
+  action?: string,
   style?: CSSProperties;
   className?: string;
   providerEmail?: string;
   role?: any;
   inputStyle?: CSSProperties;
   inputClassName?: string;
+  UserInfo?:any
 }
 
 
@@ -40,7 +42,9 @@ export function OTPInputComponent(props: OTPInputProps) {
     disabled,
     onChangeOTP,
     providerEmail,
+    UserInfo,
     role,
+    action,
     inputClassName,
     inputStyle,
     ...rest
@@ -59,14 +63,17 @@ export function OTPInputComponent(props: OTPInputProps) {
   const { token, User } = useSelector((state: RootStateOrAny) => state?.userReducer)
 
 
-  // const AxInstance = axios.create({
-  //   // .. where we make our configurations
-  //   baseURL: 'https://dev.thetechub.us/bolloot/',
-  //   headers: {
-  //     token: token
-  //   }
-  // });
+  const AxInstance = axios.create({
+    // .. where we make our configurations
+    baseURL: 'https://dev.thetechub.us/bolloot/',
+    headers: {
+      token: token ? token : providerEmail
+    }
+  });
 
+
+
+  const dispatch = useDispatch()
 
   // Helper to return OTP from inputs
   const handleOtpChange = useCallback(
@@ -219,29 +226,40 @@ export function OTPInputComponent(props: OTPInputProps) {
         // }
       }
     },
-    
+
     [activeInput, getRightValue, length, otpValues],
   );
 
-  
+
 
   const handelSubmit = async () => {
     try {
       const otpValue = otpValues.join('');
       setLoading(true)
-      let res = await instance.post('api//authenticate-otp', { code: otpValue })
+      let res = await AxInstance.post('api//authenticate-otp', { code: otpValue })
+      debugger
       if (res.data?.success === true) {
-        if (User?.role === "student" || res?.data?.response?.student?.role === "student") {
-          router.push("/en/student/dashboard");
-        }
-        else if (User?.role === "instructor" || res?.data?.response?.student?.role === "instructor") {
+          if (action === "signUp" && role === "student") {
+            dispatch(SignUp(UserInfo))
+            router.push("/en/student/dashboard");
+
+          }
+          else if(action === "login" && role === "student"){
+            dispatch(loginUser(UserInfo))
+            router.push("/en/student/dashboard");
+          }
+          if (action === "signUp" && role === "instructor") {
+            dispatch(SignUp(UserInfo))
           router.push("/en/instructor");
 
-        }
-        else {
-          router.push("/en/membership");
+          }
+          else if(action === "login" && role === "instructor"){
+            dispatch(loginUser(UserInfo))
+          router.push("/en/instructor");
 
-        }
+          }
+
+        
         setLoading(false)
       }
       else {
@@ -267,8 +285,8 @@ export function OTPInputComponent(props: OTPInputProps) {
               <img src="assets\images\ballot-1-logo.svg" alt="" />
             </div>
             <div className="logo-2">
-              <h3>Didn’t get the code?</h3>
-              <p>Resend</p>
+              {/* <h3>Didn’t get the code?</h3>
+              <p>Resend</p> */}
             </div>
           </div>
         </div>

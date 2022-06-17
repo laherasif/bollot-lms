@@ -7,15 +7,18 @@ import NavigationBar1 from "../../../../src/components/student/NavigationBar1";
 import Link from "next/link";
 import withAuth from "../../../../src/components/Hoc/authRoute";
 import Swal from "sweetalert2";
-import { LogoutIns } from '../../../../src/redux/actions/auth/user'
+import { AddSocialRegMedia, LogoutIns, SocialRegMedia } from '../../../../src/redux/actions/auth/user'
 import { RootStateOrAny, useSelector, useDispatch } from "react-redux";
 import { useRouter } from 'next/router'
 import axios from "axios";
+import { getAuth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider } from "firebase/auth";
+import { Firebaseapp } from "../../../../src/confiq/firebase/firebase";
+
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
 
-  const token = useSelector((state: RootStateOrAny) => state?.userReducer?.token)
+  const { token, User } = useSelector((state: RootStateOrAny) => state?.userReducer)
   const dispatch = useDispatch()
   const router = useRouter()
   const AxInstance = axios.create({
@@ -56,6 +59,29 @@ const Home: NextPage = () => {
   }
 
 
+  const firebaseAuth = getAuth(Firebaseapp);
+  const provider = new GoogleAuthProvider();
+  const Fbprovider = new FacebookAuthProvider();
+
+
+  const signInGog = async () => {
+    const { user } = await signInWithPopup(firebaseAuth, provider);
+    const { refreshToken, providerData }: any = user;
+    dispatch(AddSocialRegMedia(providerData, User))
+
+  };
+
+
+  const signInFb = async () => {
+
+    const { user } = await signInWithPopup(firebaseAuth, Fbprovider);
+    const { refreshToken, providerData }: any = user;
+    dispatch(AddSocialRegMedia(providerData, User?.role))
+
+  };
+
+
+
 
 
   return (
@@ -87,115 +113,32 @@ const Home: NextPage = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="sdkahfsndj-sadsd">
-                    <div className="label-bar-1">
-                      <label className="mb-5cst"  >
-                        Email
-                      </label>
-                      <div className="skdajfs-dsdhnsd">
-                        <input type="text" placeholder="johndoe@gmail.com" />
-                        <div className="sjs0dskd-dsfs">
-                          <button>
-                            <svg
-                              width={32}
-                              height={32}
-                              viewBox="0 0 32 32"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M17.6792 4.8L6.73248 16.3867C6.31915 16.8267 5.91915 17.6933 5.83915 18.2933L5.34582 22.6133C5.17248 24.1733 6.29248 25.24 7.83915 24.9733L12.1325 24.24C12.7325 24.1333 13.5725 23.6933 13.9858 23.24L24.9325 11.6533C26.8258 9.65334 27.6792 7.37334 24.7325 4.58667C21.7992 1.82667 19.5725 2.8 17.6792 4.8Z"
-                                stroke="white"
-                                strokeWidth="1.5"
-                                strokeMiterlimit={10}
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                              <path
-                                d="M15.8535 6.73334C16.4268 10.4133 19.4135 13.2267 23.1202 13.6"
-                                stroke="white"
-                                strokeWidth="1.5"
-                                strokeMiterlimit={10}
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                              <path
-                                d="M4 29.3333H28"
-                                stroke="white"
-                                strokeWidth="1.5"
-                                strokeMiterlimit={10}
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                            </svg>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="label-bar-1">
-                      <label className="mb-5cst"  >
-                        Password
-                      </label>
-                      <div className="skdajfs-dsdhnsd">
-                        <input type="text" placeholder="......" />
-                        <div className="sjs0dskd-dsfs">
-                          <button>
-                            <svg
-                              width={32}
-                              height={32}
-                              viewBox="0 0 32 32"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M17.6792 4.8L6.73248 16.3867C6.31915 16.8267 5.91915 17.6933 5.83915 18.2933L5.34582 22.6133C5.17248 24.1733 6.29248 25.24 7.83915 24.9733L12.1325 24.24C12.7325 24.1333 13.5725 23.6933 13.9858 23.24L24.9325 11.6533C26.8258 9.65334 27.6792 7.37334 24.7325 4.58667C21.7992 1.82667 19.5725 2.8 17.6792 4.8Z"
-                                stroke="white"
-                                strokeWidth="1.5"
-                                strokeMiterlimit={10}
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                              <path
-                                d="M15.8535 6.73334C16.4268 10.4133 19.4135 13.2267 23.1202 13.6"
-                                stroke="white"
-                                strokeWidth="1.5"
-                                strokeMiterlimit={10}
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                              <path
-                                d="M4 29.3333H28"
-                                stroke="white"
-                                strokeWidth="1.5"
-                                strokeMiterlimit={10}
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                            </svg>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="hjsaisa-sdnjassd">
+
+                  <div className="hjsaisa-sdnjassd" style={{ position: 'relative' }}>
                     <h5>Linked Accounts</h5>
                     <div className="logo-2 sadjasoad-sad">
-                      <button>
-                        <Icons name="c46" />
-                        <p>Link with Facebook</p>
-                      </button>
-                      <button>
-                        <Icons name="c45" />
 
+                      <button onClick={() => signInFb()}>
+                        <Icons name="c21" />
+                        <p>Link with Facebook</p>
+                        <div style={{ marginRight: '10px' }}>
+                          {User?.fb_user_id !== null && User?.fb_user_id ?
+                            <i className="fa fa-check-circle"></i>
+                            : null}
+
+                        </div>
+                      </button>
+                      <button onClick={() => signInGog()}>
+                        <Icons name="c22" />
                         <p>Link with Google</p>
+                        {User?.google_user_id !== null && User?.google_user_id ?
+                          <i className="fa fa-check-circle"></i>
+                          : null}
                       </button>
                     </div>
-                    <div className="logo-2 sadjasoad-sad1 ">
-                      <button>
-                        <Icons name="c44" />
-                        <p style={{ color: 'black' }}>Link with Apple</p>
-                      </button>
-                    </div>
+
+
+
                   </div>
                 </div>
               </div>
