@@ -5,7 +5,7 @@ import { FiSearch } from 'react-icons/fi';
 const EnrolledStudent = ({ course }: any) => {
   const [filterText, setFilterText] = useState('');
 
-  const filteredItems = course?.filter(item => item.fullname && item.fullname.toLowerCase().includes(filterText.toLowerCase()));
+  const filteredItems = course?.filter((item:any) => item.fullname && item.fullname.toLowerCase().includes(filterText.toLowerCase()));
 
   const columns: any = [
     {

@@ -92,7 +92,7 @@ const Home: NextPage = () => {
                   <div className=" jidfjsd-asjreid">
                     {/* <Search /> */}
                     <div className="d-flex idfadsf-sads" onClick={() => setAdd(true)}>
-                      <button className="upload-1 sdisad-dsdactive">
+                      <button className="upload-1 sdisad-dsdactive" id= "activetab">
                         + Add New Category </button>
                     </div>
                   </div>
@@ -112,7 +112,7 @@ const Home: NextPage = () => {
                         <Link href="/en/admin/liveCourses">
                           <button className="upload-1" >Live Courses</button>
                         </Link>
-                        <button className="upload-1 sdisad-dsdactive" >Course Categories</button>
+                        <button className="upload-1 sdisad-dsdactive" id="activetab">Course Categories</button>
 
 
                       </div>

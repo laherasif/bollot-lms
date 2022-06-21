@@ -297,6 +297,7 @@
   padding: 9px 0px 9px 26px;
   margin-bottom: 10px;
   width: 100%;
+  cursor: pointer;
 }
 
 .dash-ch-2 h3 {
@@ -307,16 +308,16 @@
   color: white;
 }
 
-.dash-ch-2:hover svg path {
-  stroke: white !important;
-  color: white !important;
-}
+/* .dash-ch-2:hover svg path {
+  stroke: white ;
+  color: white ;
+} */
 
 .sdisad-dsdactive {
   background: #d0565c !important;
   border-radius: 29px;
   cursor: pointer;
-  color: white !important;
+  color: white ;
 }
 
 .course button:hover {
@@ -326,17 +327,6 @@
   color: white !important;
 }
 
-.dash-ch-2 h3 {
-  font-family: "Roboto";
-  padding-left: 12px;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 18px;
-  line-height: 19px;
-  color: #a2a2a2;
-  white-space: nowrap;
-  /* margin-right: 10px; */
-}
 
 .client-img {
   background: #f9f9f9;

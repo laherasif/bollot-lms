@@ -5,13 +5,14 @@ import { Form, Spinner } from "react-bootstrap";
 import { SweetAlert } from "../../function/hooks";
 import React, { useState, useEffect, } from 'react';
 // import { addMoreField, getCourseAddMore, getCourseInput } from '../../redux/actions/courses';
-import {   
+import {
   coursesId,
-  addCourseInput, 
+  addCourseInput,
   addCourseContentMore,
-   addCourseContentInput, 
+  addCourseContentInput,
 
-  delCourseContent } from '../../redux/actions/instructor/addcourse'
+  delCourseContent
+} from '../../redux/actions/instructor/addcourse'
 interface Course {
   title: string,
   category_id: string,
@@ -75,7 +76,7 @@ export default ({ onStepChange }: any) => {
         setCourses(res.data.response.categories)
       }
       catch (err) {
-        SweetAlert({icon :'error' , text : err })
+        SweetAlert({ icon: 'error', text: err })
       }
     }
     fetchData()
@@ -118,21 +119,21 @@ export default ({ onStepChange }: any) => {
         let name = "cover_image"
         let value = e.target?.result
         // let imageUrl = URL.createObjectURL(event.target.files[0])
-        let names  = "url"
+        let names = "url"
         dispatch(addCourseInput({ name, value }))
-        
+
       }
       setUrl(URL.createObjectURL(event.target.files[0]))
       let name = "url"
       let value = URL.createObjectURL(event.target.files[0])
-      dispatch(addCourseInput({ name , value }))
+      dispatch(addCourseInput({ name, value }))
     }
   }
 
   const SaveCourse = async () => {
 
     let data = {
-      course_id : courseId ? courseId : "",
+      course_id: courseId ? courseId : "",
       title: AddCourse.title,
       category_id: AddCourse.category_id,
       short_desc: AddCourse.short_desc,
@@ -154,7 +155,7 @@ export default ({ onStepChange }: any) => {
       if (res.data.success === true) {
         setLoading(false)
         SweetAlert({ icon: 'success', text: res.data.message })
-        dispatch(coursesId(res.data.response.course.id ))
+        dispatch(coursesId(res.data.response.course.id))
         onStepChange()
 
       }
@@ -177,12 +178,12 @@ export default ({ onStepChange }: any) => {
     <div className="inst" id="add_course">
       {/* <h3>Add Course </h3> */}
       <div className="p-field" >
-        <div style={{ display: 'flex', flexDirection: 'column' , margin:'0px 10px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', margin: '0px 10px' }}>
           <label>Category</label>
           <span>Which category suites the best for this course</span>
 
         </div>
-        <div className="kns-sanweso02e" style={{padding:'0px 10px'}}>
+        <div className="kns-sanweso02e" style={{ padding: '0px 10px' }}>
           <Form.Select name="category_id"
             value={AddCourse?.category_id} onChange={(e) => hendleFields(e)}>
             <option defaultChecked>Select Catagory</option>
@@ -195,7 +196,7 @@ export default ({ onStepChange }: any) => {
 
         </div>
 
-        <div className="mt-2" style={{margin:'0px 10px'}}>
+        <div className="mt-2" style={{ margin: '0px 10px' }}>
           <label>Course title</label>
           <br />
           <span>The first information to user describing your course</span>
@@ -208,7 +209,7 @@ export default ({ onStepChange }: any) => {
 
         </div>
 
-        <div className="mt-2" style={{margin:'0px 10px'}}>
+        <div className="mt-2" style={{ margin: '0px 10px' }}>
           <label>Short Description</label>
           <br />
           <span>Complete details about your course</span>
@@ -225,7 +226,7 @@ export default ({ onStepChange }: any) => {
 
         </div>
 
-        <div className="mt-2" style={{margin:'0px 10px'}}>
+        <div className="mt-2" style={{ margin: '0px 10px' }}>
           <label>Description</label><br />
           <span>A prescribed informaiton about your course</span>
           <textarea
@@ -240,7 +241,7 @@ export default ({ onStepChange }: any) => {
 
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column' , margin:'0px 10px'}} >
+        <div style={{ display: 'flex', flexDirection: 'column', margin: '0px 10px' }} >
           <label>Course Image</label>
           <span>A cover photo show on website and landing page</span>
           <label className="drop-box" htmlFor="img" style={{ cursor: 'pointer' }}>
@@ -349,6 +350,7 @@ export default ({ onStepChange }: any) => {
 
                 <button
                   className="upload-1 sdisad-dsdactive"
+                  id="activetab"
                   onClick={() => SaveCourse()}
                 >
                   <i className="fa fa-save" style={{ marginRight: '10px' }}></i>

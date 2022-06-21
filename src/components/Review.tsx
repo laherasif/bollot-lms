@@ -2,13 +2,13 @@ import moment from "moment";
 import React from "react";
 import Icons from "../icons";
 import Rating from "./ratingStar";
-export default ({ item, key }: any) => {
+export default ({ item }: any) => {
   return (
-    <div className="arewosjerer">
+    <div className="arewosjerer" >
       <div className="f-reviews-sie">
         <div className="mdsafis-ejamd">
           <div>
-            <img src="/usr1.png" />
+            <img src={item?.user?.image ||"/usr1.png" } />
           </div>
           <div>
             <h6>Minaxi Shantaram H.</h6>

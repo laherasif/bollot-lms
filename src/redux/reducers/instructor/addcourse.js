@@ -84,14 +84,16 @@ const AddCourseReducer = (state = initialState, action) => {
 
 
 
-        case ADD_COURSE_INPUTS:
+        case ADD_COURSE_INPUTS: {
 
             let course = state.AddCourse
+            debugger
             return {
                 ...state,
-                AddCourse: { ...course, [action.payload.name]: action.payload.value }
+                AddCourse: { ...course, [action.payload.name]: action.payload.value },
 
             }
+        }
 
         // case ADD_IMAGE_URL:
         //     let courses = state.AddCourse
@@ -160,25 +162,27 @@ const AddCourseReducer = (state = initialState, action) => {
             }
 
         case EDIT_ADD_COURSE:
-            // console.log("action" , action.payload)
-            
-                return {
-                    ...state,
-                    AddCourse: {...action.payload} ,
-                    // AddCourse: {
-                    //     instructor_id: action.payload.instructor.id,
-                    //     category_id: action.payload.category_id,
-                    //     title: action.payload.title,
-                    //     short_desc: action.payload.short_desc,
-                    //     long_desc: action.payload.long_desc,
-                    //     price: action.payload.price,
-                    //     discounted_price: action.payload.discounted_price,
-                    //     cover_image: action.payload.cover_image,
-                    // },
-                    course_for: action.payload.course_for || [''],
-                    requirements: action.payload.requirements || [''],
-                    outcomes: action.payload.outcomes || [''],
-                }
+            debugger
+            let course = state.AddCourse
+            return {
+                ...state,
+                AddCourse: { ...action.payload },
+                AddCourse: { ...course, instructor_id: action.payload.instructor.id },
+
+                // AddCourse: {
+                //     instructor_id: action.payload.instructor.id,
+                //     category_id: action.payload.category_id,
+                //     title: action.payload.title,
+                //     short_desc: action.payload.short_desc,
+                //     long_desc: action.payload.long_desc,
+                //     price: action.payload.price,
+                //     discounted_price: action.payload.discounted_price,
+                //     cover_image: action.payload.cover_image,
+                // },
+                course_for: action.payload.course_for || [''],
+                requirements: action.payload.requirements || [''],
+                outcomes: action.payload.outcomes || [''],
+            }
 
         case CLEAR_STATE:
 

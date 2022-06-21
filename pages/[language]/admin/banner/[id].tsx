@@ -164,7 +164,7 @@ const Home: NextPage = () => {
                     {/* <Search /> */}
                     <Link href="/en/admin/manageBanners">
                       <div className="d-flex idfadsf-sads">
-                        <button className="upload-1 sdisad-dsdactive">
+                        <button className="upload-1 sdisad-dsdactive" id= "activetab">
                           + Add New Banner </button>
                       </div>
                     </Link>
@@ -186,7 +186,7 @@ const Home: NextPage = () => {
                         {/* <Link href="/en/admin/manageHeader">
                           <button className="upload-1" > Header Menu</button>
                         </Link> */}
-                        <button className="upload-1 sdisad-dsdactive" > Banners</button>
+                        <button className="upload-1 sdisad-dsdactive" id= "activetab" > Banners</button>
                         <Link href="/en/admin/contactForm">
                           <button className="upload-1" >Contact Us Forms</button>
                         </Link>

@@ -3,15 +3,18 @@ import {
   GET_COURSES_SEARCH,
   GET_DASHBOARD_STATE,
   GET_STUDENT_PAYMENT,
-GET_STUDENT_TRANSACTION
+  GET_STUDENT_TRANSACTION,
+  GET_COURSE_LECTURE,
+
 } from "../../types/types";
 
 
 const initialState = {
   Dashboard: {},
-  Payment :{} ,
-  Tranaction : [],
+  Payment: {},
+  Tranaction: [],
   Courses: [],
+  Lectures:{},
   SearchCourse: [],
 
 };
@@ -25,19 +28,18 @@ const CourseReducer = (state = initialState, action) => {
         Dashboard: action.payload
       }
 
-      case GET_STUDENT_PAYMENT:
-        return{
-          ...state,
-          Payment : action.payload
-        }
+    case GET_STUDENT_PAYMENT:
+      return {
+        ...state,
+        Payment: action.payload
+      }
 
-        case GET_STUDENT_TRANSACTION:
-          return{
-            ...state,
-            Tranaction: action.payload
+    case GET_STUDENT_TRANSACTION:
+      return {
+        ...state,
+        Tranaction: action.payload
 
-          }
-
+      }
 
     case GET_COURSES:
 
@@ -45,6 +47,12 @@ const CourseReducer = (state = initialState, action) => {
         ...state,
         Courses: action.payload,
       };
+
+    case GET_COURSE_LECTURE:
+      return {
+        ...state,
+        Lectures: action.payload
+      }
 
     case GET_COURSES_SEARCH:
       return {

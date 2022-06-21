@@ -33,7 +33,7 @@ const InfoCart = ({ Course }: any) => {
                         <div className="d-flex">
                             <i className="fa fa-check-circle" style={{ fontSize: '40px', color: 'green', }}></i>
                             {/* <i className="fa fa-check-circle" style={{fontSize:'48px' , color:'green'}}></i> */}
-                            <img src={Course?.cover_image} style={{ width: '30%', height: '100%', marginLeft: '10px' }} alt="image" />
+                            <img src={Course?.cover_image} style={{ width: '30%', height: '30%', marginLeft: '10px' }} alt="image" />
                             <div style={{ display: 'flex', flexDirection: 'column' , marginLeft:'10px' , width:'100%' }}>
                                 <p style={{ fontSize: '14px' }}>{Course?.title}</p>
                                 <span style={{ lineHeight: '0.2' }}>{Course?.instructor?.fullname }</span>

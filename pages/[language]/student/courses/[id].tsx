@@ -75,7 +75,7 @@ const Home: NextPage = () => {
                 :
                 <div className="hdsf0s-sadmsa">
                   <div className="d-flex mb-3">
-                    <button className="upload-1 sdisad-dsdactive">
+                    <button className="upload-1 sdisad-dsdactive" id="activetab">
                       My Courses </button>
                     <Link href="/en/student/liveCourses">
 

@@ -444,6 +444,7 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
                 <div className="d-flex mb-3 idfadsf-sads">
                   <button
                     className="upload-1 sdisad-dsdactive "
+                    id="activetab"
                     onClick={() => onPrevStep(1 - 1)}
                     disabled={Criculums.some((s) => s.lectures.some((l) => l.progressbar > 0 && l.progressbar < 100)) ? true : false}
                     style={Criculums.some((s) => s.lectures.some((l) => l.progressbar > 0 && l.progressbar < 100)) ? {opacity:'0.5'} : {opacity:'1'}}

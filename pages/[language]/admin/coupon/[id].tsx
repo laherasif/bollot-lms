@@ -208,7 +208,7 @@ const Home: NextPage = () => {
                             All Courses
                           </button>
                         </Link>
-                        <button className="upload-1 sdisad-dsdactive" >Coupons</button>
+                        <button className="upload-1 sdisad-dsdactive" id="activetab">Coupons</button>
                         <Link href="/en/admin/liveCourses">
                           <button className="upload-1" >Live Courses</button>
                         </Link>

@@ -398,6 +398,7 @@ console.log("addCourse" , AddCourse)
 
                 <button
                   className="upload-1 sdisad-dsdactive"
+                  id="activetab"
                   onClick={() => SaveCourse()}
                 >
                   <i className="fa fa-save" style={{ marginRight: '10px' }}></i>

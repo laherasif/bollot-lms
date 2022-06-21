@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import Editor from "@monaco-editor/react";
 
-const CodeEditorWindow = ({ onChange, language, code }:any ) => {
+const CodeEditorWindow = ({ onChange, language, theme , code }:any ) => {
   const [value, setValue] = useState(code || "");
 
   const handleEditorChange = (value:any) => {
@@ -16,6 +16,7 @@ const CodeEditorWindow = ({ onChange, language, code }:any ) => {
         height="85vh"
         language={language}
         value={value}
+        theme={theme}
         defaultValue="//Write Code here...."
         onChange={handleEditorChange}
       />

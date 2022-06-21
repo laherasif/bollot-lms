@@ -5971,6 +5971,20 @@ body .multi-range-slider .bar-inner {
   margin-bottom: 9px;
 }
 
+.play_icons{
+  position: absolute;
+  top: 40%;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.play_icons svg{
+  font-size: 4rem;
+  color: darkgray;
+
+}
+
 .num-flex-1 {
   display: flex;
   align-items: center;
@@ -6120,6 +6134,8 @@ body .multi-range-slider .bar-inner {
 
 .card-bar-sec-1 img {
   width: 100%;
+  height: 250px;
+  object-fit: cover;
 }
 
 .card-bar-sec-1 {

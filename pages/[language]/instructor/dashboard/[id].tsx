@@ -61,7 +61,7 @@ const Home: NextPage = () => {
 
   if (loading === true) {
     return (
-      <div className="inst">
+      <div className="inst" style={{paddingTop:'20rem'}}>
 
         {Small()}
       </div>

@@ -32,7 +32,7 @@ export default ({ item, key }: any) => {
    
     <div className="photo-maker w-100" key={key}>
       <div className="photo-maker-1">
-        <img src={cover_image} alt="cover_image" width="10%" height="10%" />
+        <img src={cover_image} alt="cover_image" width="10%" height="50px" style={{objectFit:'cover'}} />
         <div className="w-100">
           <Link href={`/en/course/${item?.slug}`} passHref>
             <div className="sajkdf-dasas" style={{cursor:'pointer'}}>

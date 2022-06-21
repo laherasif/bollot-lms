@@ -5,7 +5,6 @@ import Icons from "../../icons";
 import blackIcon from '../../assets/images/apple.svg'
 export default ({ course, key , courseId }: any) => {
 
-  const [review , setReview] = useState(false)
 
   return (
     <div className="cm-web" key={key}>
@@ -17,8 +16,7 @@ export default ({ course, key , courseId }: any) => {
               src={course?.cover_image}
               className="osaidjs-dsadjd"
               alt="course_img"
-              height="150px"
-              style={{ objectFit: 'contain' }}
+              style={{ objectFit: 'contain' , width:'100%'  }}
             />
           </div>
           <div className="dhafusd9we0sd">
@@ -42,7 +40,7 @@ export default ({ course, key , courseId }: any) => {
           </Dropdown.Toggle>
 
           <Dropdown.Menu >
-          <Dropdown.Item as={Link} href={`/en/student/details/${course?.slug}`}>Criculum</Dropdown.Item>
+          <Dropdown.Item as={Link} href={`/en/student/details/${course?.slug}`}>Cricculum</Dropdown.Item>
             <Dropdown.Item as={Link} href={`/en/student/quiz/${course?.id}`}>Quiz</Dropdown.Item>
             <Dropdown.Item as={Link} href={`/en/student/purchase/${course?.id}`}>Transactions Detail</Dropdown.Item>
             {

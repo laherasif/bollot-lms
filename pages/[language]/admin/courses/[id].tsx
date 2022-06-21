@@ -76,7 +76,7 @@ const Home: NextPage = () => {
                   <div className="umpire w-100">
                     <div className="umpire-1 umpire-1-cst ">
                       <div className="d-flex mb-3 course">
-                        <button className="upload-1 sdisad-dsdactive">
+                        <button className="upload-1 sdisad-dsdactive" id="activetab">
                           All Courses
                         </button>
                         <Link href="/en/admin/coupon">

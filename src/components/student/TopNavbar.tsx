@@ -47,16 +47,16 @@ export default () => {
       rows_per_page: 5
     }
     let fetchNotif = async () => {
-      try{
-      let res = await AxInstance.get('api//notifications')
-      let count = await AxInstance.get('api//unread-notifications-count')
-      let message = await AxInstance.post('api//get-conversations', value)
-      setNotifications(res.data.response.notifs)
-      // setUnRead(count.data.response.unread_notifs)
-      setMessagess(message.data.response.conversations)
+      try {
+        let res = await AxInstance.get('api//notifications')
+        // let count = await AxInstance.get('api//unread-notifications-count')
+        let message = await AxInstance.post('api//get-conversations', value)
+        setNotifications(res.data.response.notifs)
+        // setUnRead(count.data.response.unread_notifs)
+        setMessagess(message.data.response.conversations)
       }
-      catch(err){
-        SweetAlert({icon : "error" , text: err})
+      catch (err) {
+        SweetAlert({ icon: "error", text: err })
       }
 
     }
@@ -65,7 +65,7 @@ export default () => {
 
 
 
-// console.log("notifications" , notifications)
+  // console.log("notifications" , notifications)
 
 
   const handleClickOutside = (event: any) => {
@@ -116,8 +116,15 @@ export default () => {
     if (mesg === true) {
       setMesg(false)
     }
-    setNotif(true)
-    await AxInstance.get('api//notifications-read')
+    else {
+      setNotif(true)
+      try {
+        await AxInstance.get('api//notifications-read')
+      }
+      catch (err) {
+        SweetAlert({ icon: 'error', text: err })
+      }
+    }
   }
 
 
@@ -137,11 +144,11 @@ export default () => {
             <div className="kdsfsd-dsdd" ref={notify}>
               <div onClick={() => notification()}>
                 <BiBell size={20} color="#ffff" />
-                {notifications?.some((s:any)=> s?.is_read === "0")  ? <p></p> : ""}
+                {notifications?.some((s: any) => s?.is_read === "0") ? <p></p> : ""}
 
               </div>
 
-              {notif && <Notification notifications={notifications}/>}
+              {notif && <Notification notifications={notifications} />}
 
 
             </div>
@@ -150,7 +157,7 @@ export default () => {
                 {/* <IoMailOutline color="#ffff" size={20} /> */}
                 <IoMailOutline color="#A2A2A2" size={20} />
 
-                {messagess?.some((s:any)=> s?.last_message_obj.is_read === "0")  ? <p></p> : ""}
+                {messagess?.some((s: any) => s?.last_message_obj.is_read === "0") ? <p></p> : ""}
               </div>
               {mesg && <Messages message={messagess} />}
 

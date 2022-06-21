@@ -6,7 +6,7 @@ import TopNavbar from "../../../../src/components/student/TopNavbar";
 import NavigationBar1 from "../../../../src/components/student/NavigationBar1";
 import withAuth from "../../../../src/components/Hoc/authRoute";
 import { useEffect, useState } from "react";
-import { RootStateOrAny, useSelector } from "react-redux";
+import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { useRouter } from "next/router";
 import moment from "moment";
@@ -15,6 +15,7 @@ import { Small } from "../../../../src/components/student/loader";
 import Swal from 'sweetalert2'
 import DataTable from "react-data-table-component";
 import { SweetAlert } from "../../../../src/function/hooks";
+import { LogoutIns } from "../../../../src/redux/actions/auth/user";
 
 const Home: NextPage = () => {
   // const intl = useIntl();
@@ -23,7 +24,7 @@ const Home: NextPage = () => {
 
   const token = useSelector((state: RootStateOrAny) => state?.userReducer?.token)
   const [filterText, setFilterText] = useState('');
-  const [loading , setLoading] = useState(false )
+  const [loading, setLoading] = useState(false)
 
   const AxInstance = axios.create({
     // .. where we make our configurations
@@ -34,7 +35,7 @@ const Home: NextPage = () => {
   });
 
   const router = useRouter()
-
+  const dispatch = useDispatch()
 
 
   useEffect(() => {
@@ -54,22 +55,23 @@ const Home: NextPage = () => {
     fetchPayment()
   }, [])
 
-  // const filteredIns = device?.filter(item => item.operating_system && item.operating_system.toLowerCase().includes(filterText.toLowerCase()));
 
-  const DelEmp = (id: number,) => {
+  // RunTime Filter notification  
+  const filteredIns = notification?.filter((item:any) => item?.title && item?.title.toLowerCase().includes(filterText.toLowerCase()));
 
+  // User Account Delete Function 
+  const DelAccount = () => {
     Swal.fire({
       title: 'Are your sure?',
-      text: "You want to delete this user ?",
+      text: "You want to delete this account ?",
       icon: "warning",
+      confirmButtonText: 'Yes',
       showDenyButton: true,
-      showConfirmButton: true
-
 
     }).then((result) => {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
-        AxInstance.post(`api//my-devices/remove`, { id: id })
+        AxInstance.get('api//delete-my-account')
           .then(res => {
             Swal.fire({
               title: "Done!",
@@ -78,12 +80,11 @@ const Home: NextPage = () => {
               // timer: 2000,
               // button: false
             })
-
-            // dispatch(delStuIns({ id, role }))
-
+            dispatch(LogoutIns())
+            router.push('/en/login')
           });
       } else if (result.isDenied) {
-        Swal.fire('Changes are not saved', '', 'info')
+        Swal.fire('Account  are not deleted', '', 'info')
       }
     })
 
@@ -94,41 +95,19 @@ const Home: NextPage = () => {
   const columns: any = [
 
     {
-      name: "Device Name",
-      selector: "device_name",
+      name: "Title",
+      selector: "title",
       sortable: true,
 
     },
     {
-      name: "Operating System",
-      selector: "operating_system",
+      name: "Details",
+      selector: "details",
       sortable: true,
 
     },
-    {
-      name: "Model ",
-      selector: "device_model",
-      sortable: true,
-
-    },
-    {
-      name: "Action",
-      selector: "id",
-      sortable: true,
-      cell: (d: any) => (
-        <div className='d-flex pl-2'>
-
-          {/* <div style={{ marginLeft: '20px' }} onClick={() => { setEdit(d), setShow(true) }}>
-            <i className='fa fa-edit'></i>
-          </div> */}
-          <div style={{ marginLeft: '20px' }} onClick={() => DelEmp(d.id)}>
-            <i className='fa fa-trash'></i>
-          </div>
-
-
-        </div>
-      )
-    }
+    
+    
   ];
 
 
@@ -152,12 +131,21 @@ const Home: NextPage = () => {
                       Back
                     </h3>
                   </Link>
-                  <h3>My Devices</h3>
                   <div className="complete-web-1">
                     <div className="umpire w-100">
                       <div className="umpire-1 umpire-1-cst">
                         <div className="maxima">
-                          <button className="upload-1  sdisad-dsdactive">Devices</button>
+                          <Link href="/en/student/settings">
+                            <button className="upload-1 " >Account Security</button>
+                          </Link>
+                          <Link href="/en/student/payments">
+                            <button className="upload-1 " >Payment</button>
+                          </Link>
+                            <button className="upload-1 sdisad-dsdactive" id="activetab">Notification</button>
+                          <Link href="/en/student/device">
+                            <button className="upload-1">Manage Devices</button>
+                          </Link>
+                          <button className="upload-1" onClick={() => DelAccount()}>Close Account</button>
                         </div>
                       </div>
                     </div>
@@ -175,16 +163,15 @@ const Home: NextPage = () => {
 
                         </div>
 
-                        {/* <DataTable
+                        <DataTable
                           columns={columns}
                           data={filteredIns}
                           sortIcon={<i className='fa fa-arrow-down'></i>}
                           pagination
-                          selectableRows
                           highlightOnHover
                           responsive={true}
 
-                        /> */}
+                        />
 
                       </div>
                     </div>

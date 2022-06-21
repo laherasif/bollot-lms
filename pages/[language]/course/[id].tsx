@@ -1,15 +1,10 @@
 import type { NextPage } from "next";
 import { Dropdown, Spinner } from "react-bootstrap";
-// import ReactStars from "react-rating-stars-component";
-// import { useIntl } from "react-intl";
-// import BlogCard from "../../../src/components/card/BlogCard";
 import Footer from "../../../src/components/footer";
 import Navbar from "../../../src/components/header/Navbar";
 import Icons from "../../../src/icons";
 import CourseAccordian from "../../../src/components/accordian";
-import FeaturedReview from "../../../src/components/FeaturedReview";
 import BoughtCourseCard from "../../../src/components/BoughtCourseCard";
-import FBCBox from "../../../src/components/FBCBox";
 import InstructorCard from "../../../src/components/InstructorCard";
 import RatingBar from "../../../src/components/RatingBar";
 import Review from "../../../src/components/Review";
@@ -28,10 +23,9 @@ import { SweetAlert } from "../../../src/function/hooks";
 
 
 const Home: NextPage = ({ Course }: any) => {
-  // const intl = useIntl();
 
+  // React State hooks 
   const [message, setMessage] = useState(false)
-  const [bookMark, setBookMark] = useState(false)
   const [loader, setLoader] = useState(false)
   const [popUp, setPopUp] = useState(false)
   const [Info, setInfo] = useState(false)
@@ -39,12 +33,16 @@ const Home: NextPage = ({ Course }: any) => {
   const [preview, setPreview] = useState(false)
   const [course_show, setCourse_show] = useState(false)
 
-
+  //  Redux disptach action hook
   const dispatch = useDispatch()
+
+  // Router Navigation hook
   const router = useRouter()
 
+  // Redux get state value hook
   const { AddCart, BookMark } = useSelector((state: RootStateOrAny) => state.cartReducer)
   const { User, token } = useSelector((state: RootStateOrAny) => state.userReducer)
+
 
   const AxInstance = axios.create({
     // .. where we make our configurations
@@ -54,8 +52,10 @@ const Home: NextPage = ({ Course }: any) => {
     }
   });
 
+  // React manageState hook like (update , mount )
+
   useEffect(() => {
-    // let findCart = AddCart?.includes({id : 3} )
+    // base javascript for loop 
     for (let index = 0; index < AddCart?.length; index++) {
       const element = AddCart[index].id;
       if (element === Course?.id) {
@@ -66,21 +66,15 @@ const Home: NextPage = ({ Course }: any) => {
   }, [])
 
 
+  // Find bookmark object 
   let find = BookMark?.some((f: any) => f.id === Course?.id)
 
-
-
-
-
-
-
-
-
+  // Find no of lectures in a course 
   let numberofLect = 0
   Course?.sections?.forEach((datum: any) => numberofLect += datum.lectures.length)
 
 
-
+  // Register cart function 
   const RegisterCart = async () => {
     if (message === true) {
       setPopUp(false)
@@ -90,6 +84,7 @@ const Home: NextPage = ({ Course }: any) => {
       let pair = { Quantity: 1 };
       let newObj = { ...Course, ...pair }
       dispatch(SaveCart(newObj))
+      // Timmer stopper function 
       setTimeout(() => {
         setPopUp(false)
         setMessage(true)
@@ -99,13 +94,14 @@ const Home: NextPage = ({ Course }: any) => {
     }
   }
 
+  // Register bookmark course  
   const RegisterBookMark = async () => {
     if (User) {
       let pair = { Quantity: 1 };
       let newObj = { ...Course, ...pair }
       try {
         setLoader(true)
-        let res = await AxInstance.post('api//student/bookmarks/save', { course_id: Course?.id })
+        await AxInstance.post('api//student/bookmarks/save', { course_id: Course?.id })
         dispatch(SaveBookmark(newObj))
         setLoader(false)
       } catch (error) {
@@ -180,23 +176,7 @@ const Home: NextPage = ({ Course }: any) => {
                 </div>
               </div>
               : null}
-            {/* <div className="learning-jsiae">
-              <h5>Top companies offer this course to their employees</h5>
-              <div className="jdisad0ewew-2edsad">
-                <h6 className="kasjdasd-aweaidae">
-                  This course was selected for our collection of top-rated
-                  courses trusted by businesses worldwide.
-                  <a>Learn more</a>
-                </h6>
-                <div className="com-fsf">
-                  <Icons name="cp1" />
-                  <Icons name="cp2" />
-                  <Icons name="cp3" />
-                  <Icons name="cp4" />
-                  <Icons name="cp5" />
-                </div>
-              </div>
-            </div> */}
+
             {Course?.sections?.length > 0 ?
               <div className="learning-jsiae">
                 <h5>Course content</h5>
@@ -205,12 +185,8 @@ const Home: NextPage = ({ Course }: any) => {
                     <h6 className="kasjdasd-aweaidae">• {Course?.sections_count} sections</h6>
                     <h6 className="kasjdasd-aweaidae">• {Course?.lectures_count} lectures </h6>
                     <h6 className="kasjdasd-aweaidae"></h6>
-                    {/* <h6 className="kasjdasd-aweaidae">• 8h 39m total length</h6> */}
                   </div>
 
-                  {/* <div className="kjdkdsa-ekodd">
-                    <h6>Expand all Sections</h6>
-                  </div> */}
                 </div>
                 <div className="cosaidjse-wea">
                   <div style={course_show ? { display: 'block' } : { display: 'block' }}>
@@ -270,12 +246,6 @@ const Home: NextPage = ({ Course }: any) => {
 
             </div>
 
-            {/* <div className="learning-jsiae">
-              <FeaturedReview
-                instructor={Course?.instructor}
-                allCourses={Course?.all_courses_count}
-                reviews={Course?.reviews_count} />
-            </div> */}
             {Course?.other_courses.length > 0 ?
               <div className="learning-jsiae no-brd ">
                 <h5>See Also</h5>
@@ -290,11 +260,10 @@ const Home: NextPage = ({ Course }: any) => {
                 </div>
                 {Course?.other_courses.length > 3 ?
                   <button className="mt-3" onClick={() => setShow(!show)}>{show ? "Show less" : "Show more"}</button>
-                : null 
+                  : null
                 }
               </div>
               : null}
-            {/* <FBCBox /> */}
             <div className="learning-jsiae no-brd">
               <h5>Instructor</h5>
               <InstructorCard
@@ -331,46 +300,14 @@ const Home: NextPage = ({ Course }: any) => {
               <div className="learning-jsiae">
                 <h5>Reviews</h5>
 
-
-                {/* <div className="kjsakdad-a3med">
-                  <div className="sijadas-awjie">
-                    <input
-                      type="text"
-                      className=""
-                      placeholder="Search  Reviews"
-                    />
-                    <button>
-                      <Icons name="ipc5" />
-                    </button>
-                  </div>
-                  <Dropdown>
-                    <Dropdown.Toggle variant="success" id="dropdown-basic">
-                      All Ratngs
-                    </Dropdown.Toggle>
-
-                    <Dropdown.Menu>
-                      <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-                      <Dropdown.Item href="#/action-2">
-                        Another action
-                      </Dropdown.Item>
-                      <Dropdown.Item href="#/action-3">
-                        Something else
-                      </Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
-                </div> */}
                 {Course?.reviews.map((rev: any, index: number) => (
                   <Review item={rev} key={index} />
 
                 ))}
 
-                {/* <div>
-                  <button className="kasjdfsa-eaidas w-100">
-                    See More Reviews
-                  </button>
-                </div> */}
+
                 <h4 className="jkdasfasd-neidasd">
-                  More Courses{" "}
+                  More Courses
                   <span>
                     by {Course?.instructor?.fullname}
                   </span>
@@ -378,7 +315,6 @@ const Home: NextPage = ({ Course }: any) => {
                 {Course?.other_courses.length > 0 ?
                   <>
                     < MulticarouselCourse OtherCourse={Course?.other_courses} />
-                    {/* <button className="kasjdfsa-eaidas w-100">Report Abuse</button> */}
                   </>
                   : null}
               </div>
@@ -387,9 +323,11 @@ const Home: NextPage = ({ Course }: any) => {
           <section className="kasjdsaidw-asjew">
             <div className="card-bar-sec-1">
               <div className="image_containers" onClick={() => Course?.previews.length ? setPreview(true) : null}>
-                <img src={Course?.cover_image} />
+                <img src={Course?.cover_image}
+                  alt="course_image"
+                />
                 {Course?.previews.length ?
-                  <div className="play_icon">
+                  <div className="play_icons">
                     <i className="fa fa-play-circle"  ></i>
                   </div>
                   : null
@@ -400,9 +338,7 @@ const Home: NextPage = ({ Course }: any) => {
                 <div className="num-flex-1">
                   <h3>${Course?.price}</h3>
                   <h5 className="text-decoration-line">${Course?.discounted_price}</h5>
-                  {/* <h5>84% off</h5>4 */}
                 </div>
-                {/* <p className="text-center day-one">1 day left at this price!</p> */}
                 <div className="">
                   <div className="d-flex-wh align-items-center">
 
@@ -417,7 +353,6 @@ const Home: NextPage = ({ Course }: any) => {
                               <p> {"Proceed to cart"}</p>
                             </Link>
                             : <p> {"Add to cart"}</p>
-
                         }
                       </div>
 
@@ -432,7 +367,6 @@ const Home: NextPage = ({ Course }: any) => {
                             <i className="fa fa-heart"></i>
                           </div>
                         }
-                        {/* <Icons name="ipc6" /> */}
                       </span>
                     </button>
                   </div>
@@ -443,20 +377,6 @@ const Home: NextPage = ({ Course }: any) => {
                   </Link>
                 </div>
                 <h6 className="text-center">3-Day Money-Back Guarantee</h6>
-                {/* <h5>This course includes:</h5>
-                <p>8.5 hours on-demand video</p>
-                <p>6 articles</p>
-                <p>Access on mobile and TV</p>
-                <p>Certificate of completion</p> */}
-                {/* <div className="apply-coupon">
-                  <button>Apply Coupon</button>
-                  <button>Gift this course</button>
-                </div> */}
-                {/* <h2>Training 5 or more people?</h2>
-                <h4>
-                  Get your team access to 6,000+ top Udemy courses anytime,
-                  anywhere.
-                </h4> */}
                 <Link href="/en/bollotBusiness">
                   <button className="try-it">Try Bolloot Business</button>
                 </Link>

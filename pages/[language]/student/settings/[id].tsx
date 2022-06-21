@@ -13,10 +13,14 @@ import { useRouter } from 'next/router'
 import axios from "axios";
 import { getAuth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider } from "firebase/auth";
 import { Firebaseapp } from "../../../../src/confiq/firebase/firebase";
+import { useEffect, useState } from "react";
+import { Small } from "../../../../src/components/student/loader";
 
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
+
+  const [loading, setLoading] = useState(true)
 
   const { token, User } = useSelector((state: RootStateOrAny) => state?.userReducer)
   const dispatch = useDispatch()
@@ -29,12 +33,22 @@ const Home: NextPage = () => {
     }
   });
 
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false)
+
+    }, 2000);
+
+  })
+
   const DelAccount = () => {
     Swal.fire({
       title: 'Are your sure?',
-      text: "You want to delete this user ?",
       icon: "warning",
       showDenyButton: true,
+      text: "You want to delete this account?",
+      confirmButtonText: "Yes"
+
 
     }).then((result) => {
       /* Read more about isConfirmed, isDenied below */
@@ -52,7 +66,7 @@ const Home: NextPage = () => {
             router.push('/en/login')
           });
       } else if (result.isDenied) {
-        Swal.fire('User are not deleted', '', 'info')
+        Swal.fire('Account are not deleted', '', 'info')
       }
     })
 
@@ -90,58 +104,61 @@ const Home: NextPage = () => {
       <section className="dash-board">
         <div className="dash-board-1">
           <Sidebar />
+
           <div className="dash-2">
             <div className="my-course">
               <TopNavbar />
-              <div className="hdsf0s-sadmsa">
-                <h3>Settings</h3>
-                <div className="complete-web-1">
-                  <div className="umpire w-100">
-                    <div className="umpire-1 umpire-1-cst ">
-                      <div className="maxima">
-                        <button className="upload-1 sdisad-dsdactive">Account Security</button>
-                        <Link href="/en/student/payments">
-                          <button className="upload-1">Payment</button>
-                        </Link>
-                        <Link href="/en/student/notification">
-                          <button className="upload-1">Notification</button>
-                        </Link>
-                        <Link href="/en/student/device">
-                          <button className="upload-1">Manage Devices</button>
-                        </Link>
-                        <button className="upload-1" onClick={() => DelAccount()}>Close Account</button>
+              {loading ? Small() :
+                <div className="hdsf0s-sadmsa">
+                  <h3>Settings</h3>
+                  <div className="complete-web-1">
+                    <div className="umpire w-100">
+                      <div className="umpire-1 umpire-1-cst ">
+                        <div className="maxima">
+                          <button className="upload-1 sdisad-dsdactive" id="activetab">Account Security</button>
+                          <Link href="/en/student/payments">
+                            <button className="upload-1">Payment</button>
+                          </Link>
+                          <Link href="/en/student/notification">
+                            <button className="upload-1">Notification</button>
+                          </Link>
+                          <Link href="/en/student/device">
+                            <button className="upload-1">Manage Devices</button>
+                          </Link>
+                          <button className="upload-1" onClick={() => DelAccount()}>Close Account</button>
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  <div className="hjsaisa-sdnjassd" style={{ position: 'relative' }}>
-                    <h5>Linked Accounts</h5>
-                    <div className="logo-2 sadjasoad-sad">
+                    <div className="hjsaisa-sdnjassd" style={{ position: 'relative' }}>
+                      <h5>Linked Accounts</h5>
+                      <div className="logo-2 sadjasoad-sad">
 
-                      <button onClick={() => signInFb()}>
-                        <Icons name="c21" />
-                        <p>Link with Facebook</p>
-                        <div style={{ marginRight: '10px' }}>
-                          {User?.fb_user_id !== null && User?.fb_user_id ?
+                        <button onClick={() => signInFb()}>
+                          <Icons name="c21" />
+                          <p>Link with Facebook</p>
+                          <div style={{ marginRight: '10px' }}>
+                            {User?.fb_user_id !== null && User?.fb_user_id ?
+                              <i className="fa fa-check-circle"></i>
+                              : null}
+
+                          </div>
+                        </button>
+                        <button onClick={() => signInGog()}>
+                          <Icons name="c22" />
+                          <p>Link with Google</p>
+                          {User?.google_user_id !== null && User?.google_user_id ?
                             <i className="fa fa-check-circle"></i>
                             : null}
+                        </button>
+                      </div>
 
-                        </div>
-                      </button>
-                      <button onClick={() => signInGog()}>
-                        <Icons name="c22" />
-                        <p>Link with Google</p>
-                        {User?.google_user_id !== null && User?.google_user_id ?
-                          <i className="fa fa-check-circle"></i>
-                          : null}
-                      </button>
+
+
                     </div>
-
-
-
                   </div>
                 </div>
-              </div>
+              }
             </div>
           </div>
         </div>

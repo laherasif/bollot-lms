@@ -57,10 +57,10 @@ const Home: NextPage = () => {
                   <div className="umpire w-100">
                     <div className="umpire-1 umpire-1-cst ">
                       <div className="d-flex mb-3 course w-100">
-                        <button className={ins === false ? "upload-1 sdisad-dsdactive" : "upload-1"} onClick={() => setIns(false)}>
+                        <button id={ins === false  ? "activetab" : "" } className={ins === false ? "upload-1 sdisad-dsdactive" : "upload-1"} onClick={() => setIns(false)}>
                           Manage Students
                         </button>
-                        <button className={ins ? "upload-1 sdisad-dsdactive" : "upload-1"} onClick={() => setIns(true)} >Manage Instructor</button>
+                        <button id={ins ? "activetab" : "" } className={ins ? "upload-1 sdisad-dsdactive"  : "upload-1"} onClick={() => setIns(true)} >Manage Instructor</button>
 
 
 

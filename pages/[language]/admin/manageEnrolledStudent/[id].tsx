@@ -1,19 +1,19 @@
 import type { NextPage } from "next";
 import Dropdown from "../../../../src/components/admin/dropdown";
-import { useIntl } from "react-intl";
+// import { useIntl } from "react-intl";
 import Sidebar from "../../../../src/components/admin/sidebar2";
-import { FiSearch } from "react-icons/fi";
-import { BiBell } from "react-icons/bi";
-import { IoMailOutline } from "react-icons/io5";
-import Icons from "../../../../src/icons";
-import TopNavbar from "../../../../src/components/admin/TopNavbar";
+// import { FiSearch } from "react-icons/fi";
+// import { BiBell } from "react-icons/bi";
+// import { IoMailOutline } from "react-icons/io5";
+// import Icons from "../../../../src/icons";
+// import TopNavbar from "../../../../src/components/admin/TopNavbar";
 import NavigationBar1 from "../../../../src/components/admin/NavigationBar3";
-import Chart from "../../../../src/components/admin/chart";
-import Chart1 from "../../../../src/components/admin/chart1";
-import BarChart from "../../../../src/components/admin/barchart";
+// import Chart from "../../../../src/components/admin/chart";
+// import Chart1 from "../../../../src/components/admin/chart1";
+// import BarChart from "../../../../src/components/admin/barchart";
 import Link from "next/link";
-import CourseCard from "../../../../src/components/admin/CourseCard1";
-import NewCourse from "../../../../src/components/admin/newCourse";
+// import CourseCard from "../../../../src/components/admin/CourseCard1";
+// import NewCourse from "../../../../src/components/admin/newCourse";
 import { useEffect, useState } from "react";
 import { RootStateOrAny, useSelector } from "react-redux";
 import axios from "axios";
@@ -23,7 +23,7 @@ import moment from "moment";
 import { useRouter } from "next/router";
 import { Breadcrumb } from "react-bootstrap";
 import AdminAuth from "../../../../src/components/Hoc/adminRoute";
-const options = ["one", "two", "three"];
+// const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
   const [course, setCourse] = useState([])
@@ -129,7 +129,7 @@ const Home: NextPage = () => {
                       return (
                         <div className="first-rev-sec p-3" >
                           <div className="rev-img pb-41 w-100" style={{ justifyContent: 'center', maxWidth: '90%' }}  >
-                            <img src={q?.user?.image || "/assets/images/first-sec.svg"} alt="" style={{ width: '25%', height: '25%' }} />
+                            <img src={q?.user?.image || "/assets/images/first-sec.svg"} alt="quiz_image" style={{ width: '25%', height: '25%' }} />
                           </div>
                           <h3 className="text-center">{q?.user?.fullname || "Your Name"}</h3>
                           <div className="p-3">

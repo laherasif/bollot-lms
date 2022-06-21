@@ -217,6 +217,7 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
                     </button>
                     <button
                       className="upload-1 sdisad-dsdactive"
+                      id="activetab"
                       onClick={() => UpdateQuiz()}
                     >
                       <i className="fa fa-save" style={{ marginRight: '10px' }}></i>

@@ -168,7 +168,7 @@ const Home: NextPage = () => {
                     {/* <Search /> */}
                     <Link href="/en/admin/manageNews">
                       <div className="d-flex idfadsf-sads">
-                        <button className="upload-1 sdisad-dsdactive" >
+                        <button className="upload-1 sdisad-dsdactive" id= "activetab">
                           + Add New News </button>
                       </div>
                     </Link>
@@ -185,7 +185,7 @@ const Home: NextPage = () => {
                             Blog
                           </button>
                         </Link>
-                        <button className="upload-1 sdisad-dsdactive"> News and Event</button>
+                        <button className="upload-1 sdisad-dsdactive" id= "activetab"> News and Event</button>
                         {/* <Link href="/en/admin/manageHeader">
                           <button className="upload-1" > Header Menu</button>
                         </Link> */}

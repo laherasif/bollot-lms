@@ -51,8 +51,17 @@ const Home: NextPage = () => {
   useEffect(() => {
     let fetchPayment = async () => {
       try {
+        setLoading(true )
         let res = await AxInstance.get(`api//my-devices`)
-        setDevice(res.data.response.devices)
+        if(res.data.success === true ){
+          setDevice(res.data.response.devices)
+          setLoading(false )
+
+        }
+        else{
+        setLoading(false )
+
+        }
       }
       catch (error) {
         SweetAlert({ icon: "error", text: error })
@@ -63,16 +72,17 @@ const Home: NextPage = () => {
     fetchPayment()
   }, [courseId])
 
-  const filteredIns = device?.filter(item => item.operating_system && item.operating_system.toLowerCase().includes(filterText.toLowerCase()));
+  const filteredIns = device?.filter((item:any) => item.operating_system && item.operating_system.toLowerCase().includes(filterText.toLowerCase()));
 
-  const DelEmp = (id: number,) => {
+  const DelAccount = () => {
 
     Swal.fire({
       title: 'Are your sure?',
-      text: "You want to delete this user ?",
+      text: "You want to delete this Account  ?",
       icon: "warning",
       showDenyButton: true,
-      showConfirmButton: true
+      confirmButtonText : "Yes" 
+      
 
 
     }).then((result) => {
@@ -92,7 +102,7 @@ const Home: NextPage = () => {
 
           });
       } else if (result.isDenied) {
-        Swal.fire('Changes are not saved', '', 'info')
+        Swal.fire('Account are not saved', '', 'info')
       }
     })
 
@@ -120,24 +130,7 @@ const Home: NextPage = () => {
       sortable: true,
 
     },
-    {
-      name: "Action",
-      selector: "id",
-      sortable: true,
-      cell: (d: any) => (
-        <div className='d-flex pl-2'>
-
-          {/* <div style={{ marginLeft: '20px' }} onClick={() => { setEdit(d), setShow(true) }}>
-            <i className='fa fa-edit'></i>
-          </div> */}
-          <div style={{ marginLeft: '20px' }} onClick={() => DelEmp(d.id)}>
-            <i className='fa fa-trash'></i>
-          </div>
-
-
-        </div>
-      )
-    }
+    
   ];
 
 
@@ -155,18 +148,24 @@ const Home: NextPage = () => {
               {loading ? Small()
                 :
                 <div className="hdsf0s-sadmsa">
-                  <Link href="/en/student/settings">
                     <h3 className="back-arrow">
-                      <i className="fa fa-arrow-left"></i>
-                      Back
+                    Devices 
                     </h3>
-                  </Link>
-                  <h3>My Devices</h3>
                   <div className="complete-web-1">
                     <div className="umpire w-100">
                       <div className="umpire-1 umpire-1-cst">
                         <div className="maxima">
-                          <button className="upload-1  sdisad-dsdactive">Devices</button>
+                          <Link href="/en/student/settings">
+                            <button className="upload-1 " >Account Security</button>
+                          </Link>
+                          <Link href="/en/student/payments">
+                            <button className="upload-1 " >Payment</button>
+                          </Link>
+                          <Link href="/en/student/notification">
+                            <button className="upload-1">Notification</button>
+                          </Link>
+                          <button className="upload-1 sdisad-dsdactive" id="activetab">Manage Devices</button>
+                          <button className="upload-1" onClick={() => DelAccount()}>Close Account</button>
                         </div>
                       </div>
                     </div>
@@ -189,7 +188,6 @@ const Home: NextPage = () => {
                           data={filteredIns}
                           sortIcon={<i className='fa fa-arrow-down'></i>}
                           pagination
-                          selectableRows
                           highlightOnHover
                           responsive={true}
 

@@ -182,7 +182,7 @@ const Home: NextPage = () => {
                           </button>
                         </Link>
                         <Link href="/en/admin/newsEvent">
-                          <button className="upload-1" >News and Event</button>
+                          <button className="upload-1  " id= "activetab" >News and Event</button>
                         </Link>
                         {/* <Link href="/en/admin/manageHeader">
                           <button className="upload-1" > Header Menu</button>
@@ -190,7 +190,7 @@ const Home: NextPage = () => {
                         <Link href="/en/admin/banner">
                           <button className="upload-1 " > Banners</button>
                         </Link>
-                        <button className="upload-1 sdisad-dsdactive" >Contact Us Forms</button>
+                        <button className="upload-1 sdisad-dsdactive" id= "activetab" >Contact Us Forms</button>
 
                       </div>
 

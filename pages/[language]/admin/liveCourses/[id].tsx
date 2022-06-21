@@ -66,7 +66,7 @@ const Home: NextPage = () => {
                     {/* <Search /> */}
                     <div className="d-flex idfadsf-sads">
                       <Link href='/en/admin/addCourse/?live'>
-                        <button className="upload-1 sdisad-dsdactive">
+                        <button className="upload-1 sdisad-dsdactive" >
                           + Add Live Course </button>
                       </Link>
                     </div>
@@ -85,7 +85,7 @@ const Home: NextPage = () => {
                         <Link href="/en/admin/coupon">
                           <button className="upload-1 " >Coupons</button>
                         </Link>
-                        <button className="upload-1 sdisad-dsdactive" >Live Courses</button>
+                        <button className="upload-1 sdisad-dsdactive" id="activetab">Live Courses</button>
                         <Link href="/en/admin/catagories">
                           <button className="upload-1" >Course Categories</button>
                         </Link>

@@ -11,44 +11,6 @@ import {
 } from "recharts";
 import {FaCircle} from 'react-icons/fa'
 
-const data = [
-  {
-    name: "01 Jan",
-    uv: 9,
-    pv: 4,
-  },
-
-  {
-    name: "06 Jan",
-    uv: 11,
-    pv: 14,
-  },
-  {
-    name: "07 Jan",
-    uv: 19,
-    pv: 16,
-  },
-  {
-    name: "08 Jan",
-    uv: 18,
-    pv: 12,
-  },
-  {
-    name: "09 Jan",
-    uv: 24,
-    pv: 10,
-  },
-  {
-    name: "10 Jan",
-    uv: 12,
-    pv: 10,
-  },
-  {
-    name: "11 Jan",
-    uv: 16,
-    pv: 13,
-  },
-];
 
 const Chart = ({ color, strokeColor, label, value , chart }) => {
   const CustomizedDot = (props) => {
@@ -92,7 +54,6 @@ const Chart = ({ color, strokeColor, label, value , chart }) => {
             <Line
               type="monotone"
               dataKey="uv"
-              name="Heading 2"
               stroke={color}
               dot={<CustomizedDot />}
               strokeWidth={3}

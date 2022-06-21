@@ -49,7 +49,6 @@ const Chart = ({ color, strokeColor, label, value, chart }) => {
             <Line
               type="monotone"
               dataKey="uv"
-              name="Heading 2"
               stroke={color}
               dot={<CustomizedDot />}
               strokeWidth={3}

@@ -1,25 +1,27 @@
 import type { NextPage } from "next";
-import { Dropdown, Form, Spinner } from "react-bootstrap";
-import { useEffect, useState, useRef } from "react";
-// import { useCollection } from 'react-firebase-hooks/firestore';
-// import { collection, addDoc } from "@firebase/firestore";
-import Sidebar from "../../../../src/components/student/sidebar";
 import TopNavbar from "../../../../src/components/student/TopNavbar";
-import NavigationBar1 from "../../../../src/components/student/NavigationBar1";
+import NavigationBar2 from "../../../../src/components/student/NavigationBar2";
+import { useEffect, useState } from "react";
 import axios from "axios";
+import CriculumCard from '../../../../src/components/student/criculumCard'
+import Link from "next/link";
+import Conversation from "../../../../src/components/student/messageForm";
+import CricculumSidebar from "../../../../src/components/student/cricculumSidebar";
 import { SweetAlert } from "../../../../src/function/hooks";
 import CodeEditorWindow from "../../../../src/components/student/codeEditor";
 import useKeyPress from "../../../../src/components/Hoc/useKeyPress";
-import { languageOptions } from "../../../../src/constant/languageOptions";
 import OutputWindow from "../../../../src/components/student/codeResult";
-import instance from "../../../../src/confiq/axios/instance";
-
-
+import { Form } from "react-bootstrap";
+import { RootStateOrAny, useSelector } from "react-redux";
+import { Small } from "../../../../src/components/student/loader";
+import withAuth from "../../../../src/components/Hoc/authRoute";
 
 const Home: NextPage = () => {
-  // const intl = useIntl();
+
   const [code, setCode] = useState(null);
   const [selectLanguage, setselectLanguage] = useState({});
+  const [loading, setLoading] = useState(true)
+  const [courseId, setCourseId] = useState('')
   const [outputDetails, setOutputDetails] = useState(null);
   const [processing, setProcessing] = useState(null);
   const [theme, setTheme] = useState("cobalt");
@@ -32,7 +34,17 @@ const Home: NextPage = () => {
     setselectLanguage(lang);
   };
 
+  // const { Lectures } = useSelector((state: RootStateOrAny) => state.studentCourse)
+
+
   useEffect(() => {
+
+
+    setTimeout(() => {
+      setLoading(false)
+
+    }, 2000);
+
     let fetchLanuage = async () => {
       const options: Object = {
         method: 'GET',
@@ -104,7 +116,7 @@ const Home: NextPage = () => {
           //   10000
           // );
         }
-        console.log("Err" , err)
+        console.log("Err", err)
         setProcessing(false);
         if (code === null) {
           SweetAlert({ icon: 'error', text: error.language_id[1] })
@@ -152,86 +164,112 @@ const Home: NextPage = () => {
   };
 
 
+
   return (
     <>
-      <NavigationBar1 />
-      <section className="dash-board jadsifd-asdasid">
-        <div className="dash-board-1">
-          <Sidebar />
-          <div className="dash-2">
-            <div className="my-course">
-              <TopNavbar />
-              <div className="hdsf0s-sadmsa">
-                <div>
-                  <h3>Inbox</h3>
-                </div>
+      <NavigationBar2 />
+      {loading ? Small() :
+        <section className="dash-board">
+          <div className="dash-board-1">
+            <div className="aksldnsd-sdnaskdse">
+
+              <CricculumSidebar
+              // lecture={(value: any) => setLectures(value)}
+              // courseId={(value: any) => setCourseId(value)}
+              />
+            </div>
 
 
-              </div>
-              <br />
-              <div style={{ display: 'flex', marginBottom: '20px', justifyContent: 'space-between' }}>
-                <div style={{ flexDirection: 'row', display: 'flex' , alignItems:'center'}}>
-                  <div style={{ width: '350px' }}>
-                    <Form.Select onChange={(e) => onSelectChange(e)}>
-                      <option>please select </option>
 
-                      {language && language.map((lang: any, index: number) => (
-                        <option value={index} key={lang?.id}>{lang?.name}</option>
-                      ))}
-                    </Form.Select>
+
+            <div className="w-100">
+              <div className="sad-ds-asajd">
+                <div className="dash-2 m-0">
+                  <div className="my-course">
+                    <TopNavbar />
                   </div>
-
-                  <button className="btn-1s mx-2" onClick={handleCompile} >
-
-                    {processing ? "Processing..." : "Compile and Execute"}
-
-                  </button>
-                </div>
-                <div>
                 </div>
               </div>
+              <div className="my-course jdsad-snd">
 
-              <div className="d-flex justify-content-between align-items-center">
-                <div className="card-daskfj-e " style={{ padding: '0px', width: '50%' }}>
-                  <div className="user-card-inbox ">
-                    <CodeEditorWindow
-                      code={code}
-                      onChange={onChange}
-                      language={language?.value}
-                      theme={theme.value}
-                    />
 
+
+                {/* {lectures.length ?
+                <CriculumCard lectures={lectures}  CourseId={Lectures?.id}  />
+                :
+
+                <> */}
+
+                <div style={{ display: 'flex', marginBottom: '20px', justifyContent: 'space-between' }}>
+                  <div style={{ flexDirection: 'row', display: 'flex', alignItems: 'center' }}>
+                    <div style={{ width: '350px' }}>
+                      <Form.Select onChange={(e) => onSelectChange(e)}>
+                        <option>Select Language </option>
+
+                        {language && language.map((lang: any, index: number) => (
+                          <option value={index} key={lang?.id}>{lang?.name}</option>
+                        ))}
+                      </Form.Select>
+                    </div>
+
+                    <button className="btn-1s mx-2" onClick={handleCompile} >
+
+                      {processing ? "Processing..." : "Compile and Execute"}
+
+                    </button>
                   </div>
-                  {/* <div className="spinner-chatbox">
+                  <div>
+                  </div>
+                </div>
+
+                <div className="d-flex justify-content-between align-items-center">
+                  <div className="card-daskfj-e " style={{ padding: '0px', width: '50%' }}>
+                    <div className="user-card-inbox ">
+                      <CodeEditorWindow
+                        code={code}
+                        onChange={onChange}
+                        language={language?.value}
+                        theme={theme.value}
+                      />
+
+                    </div>
+                    {/* <div className="spinner-chatbox">
                     <Spinner animation="border" />
                   </div> */}
 
 
 
-                </div>
-                <div className="card-daskfj-e " style={{ padding: '0px 2px ', width: '50%' }}>
+                  </div>
+                  <div className="card-daskfj-e " style={{ padding: '0px 2px ', width: '50%' }}>
 
 
-                  <div className="user-card-inbox mt-0"  >
-                    <OutputWindow outputDetails={outputDetails} />
+                    <div className="user-card-inbox mt-0"  >
+                      <OutputWindow outputDetails={outputDetails} />
+                    </div>
+
                   </div>
 
+
+
+
+
+
+
                 </div>
 
-
-
-
-
+                {/* </>
+              } */}
 
 
               </div>
             </div>
           </div>
-        </div >
 
-      </section >
+        </section>
+      }
     </>
   );
 };
 
-export default Home;
+
+export default withAuth( Home );
