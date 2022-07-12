@@ -97,7 +97,10 @@ const ReviewForm = ({ Toggle, permition, reviewss }: any) => {
                 </textarea>
               </div>
               <div className="d-flex mt-3 add-rating" >
-                <button className="upload-1 sdisad-dsdactive w-100 " style={{ textAlign: 'center' }} onClick={() => handleSubmit()}>
+                <button className="upload-1 sdisad-dsdactive w-100 "
+                  id="activetab"
+
+                  style={{ textAlign: 'center' }} onClick={() => handleSubmit()}>
                   {loading ?
                     <Spinner animation="border" />
                     :

@@ -5,6 +5,7 @@ import { BsWallet2 } from "react-icons/bs";
 import Icons from "./icons";
 import { Container, Nav, Navbar, Offcanvas } from "react-bootstrap";
 import { useRouter } from "next/router";
+import { RootStateOrAny, useSelector } from "react-redux";
 export default () => {
   const openPan = () => {
     const element = document.querySelector("#sidebar-cst");
@@ -22,7 +23,65 @@ export default () => {
   };
 
   const SideBarChild = () => {
+
+
+    const { Admin } = useSelector((state: RootStateOrAny) => state.admin)
+
+
+
+
+
     const router = useRouter()
+    let sidebar = [
+      {
+        id: 1,
+        link: "/en/admin/courses",
+        text: "Courses",
+        icon: "i2"
+      },
+      {
+        id: 2,
+        link: "/en/admin/employe",
+        text: "Users",
+        icon: "i3"
+
+      },
+      {
+        id: 3,
+        link: "/en/admin/website",
+        text: "Website",
+        icon: "i4"
+
+      },
+      {
+        id: 4,
+        link: "/en/admin/transaction",
+        text: "Transaction",
+        icon: "i3"
+      },
+      {
+        id: 5,
+        link: "/en/admin/penddingPurchase",
+        text: "Pendding Purchase",
+        icon: "i2"
+
+      },
+      {
+        id: 6,
+        link: "/en/admin/membership",
+        text: "Membership",
+        icon: "i4"
+
+      },
+      {
+        id: 7,
+        link: "/en/admin/subAdmin",
+        text: "Membership",
+        icon: "i4"
+
+      },
+    ]
+
     return (
       <div className="inst-side" style={{ height: '100%', width: '150px' }}>
         <div className="admin-1" id="sidebar-cst" style={{ height: '100%' }}>
@@ -32,48 +91,23 @@ export default () => {
               <h3>Dashboard</h3>
             </div>
           </Link>
-          <Link href="/en/admin/courses">
-            <div className={`dash-ch-2 sdisad-dsd ${router.asPath === "/en/admin/courses" ? "dash-ch-2 sdisad-dsdactive" : ""}`}>
-              <Icons name="i2" />
-              <h3> Courses</h3>
-            </div>
-          </Link>
-          <Link href="/en/admin/employe">
-            <div className={`dash-ch-2 sdisad-dsd ${router.asPath === "/en/admin/employe" ? "dash-ch-2 sdisad-dsdactive" : ""}`}>
-              <Icons name="i2" />
-              <h3> Users</h3>
-            </div>
-          </Link>
-          <Link href="/en/admin/website">
-            <div className={`dash-ch-2 sdisad-dsd ${router.asPath === "/en/admin/website" ? "dash-ch-2 sdisad-dsdactive" : ""}`}>
-              <Icons name="i3" />
-              <h3> Website</h3>
-            </div>
-          </Link>
-          <Link href="/en/admin/transaction">
-            <div className={`dash-ch-2 sdisad-dsd ${router.asPath === "/en/admin/transaction" ? "dash-ch-2 sdisad-dsdactive" : ""}`}>
-              <Icons name="i3" />
-              <h3> Transaction</h3>
-            </div>
-          </Link>
-          {/* <Link href="/en/admin/certificate">
-            <div className={`dash-ch-2 sdisad-dsd ${router.asPath === "/en/admin/certificate" ? "dash-ch-2 sdisad-dsdactive" : ""}`}>
-              <Icons name="i4" />
-              <h3> Certificate</h3>
-            </div>
-          </Link> */}
-          <Link href="/en/admin/membership">
-            <div className={`dash-ch-2 sdisad-dsd ${router.asPath === "/en/admin/membership" ? "dash-ch-2 sdisad-dsdactive" : ""}`}>
-              <Icons name="i4" />
-              <h3>MemberShip</h3>
-            </div>
-          </Link>
-          <Link href="/en/admin/profile">
-            <div className={`dash-ch-2 sdisad-dsd ${router.asPath === "/en/admin/profile" ? "dash-ch-2 sdisad-dsdactive" : ""}`}>
-              <Icons name="i5" />
-              <h3>Profile</h3>
-            </div>
-          </Link>
+          {
+            sidebar.map((sid) => {
+              if (Admin?.roles?.some((s) => s.id === sid.id)) {
+                return (
+                  <Link href={sid.link}>
+                    <div className={`dash-ch-2 sdisad-dsd ${router.asPath === sid?.link ? "dash-ch-2 sdisad-dsdactive" : ""}`}>
+                      <Icons name={sid.icon} />
+                      <h3 className="text-center"> {sid.text}</h3>
+                    </div>
+                  </Link>
+                )
+              }
+            }
+            )
+          }
+
+
         </div>
       </div>
     );

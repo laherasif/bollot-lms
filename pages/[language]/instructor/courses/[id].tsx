@@ -15,7 +15,7 @@ import Link from "next/link";
 import CourseCard from "../../../../src/components/instructor/CourseCard1";
 // import NewCourse from "../../../../src/components/instructor/newCourse";
 import { useEffect, useState } from "react";
-import { RootStateOrAny, useSelector } from "react-redux";
+import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { Small } from "../../../../src/components/instructor/loader";
 import Invitation from "../../../../src/components/instructor/invitationForm";
@@ -23,6 +23,7 @@ import Search from "../../../../src/components/instructor/search";
 import { Breadcrumb } from "react-bootstrap";
 import { SweetAlert } from "../../../../src/function/hooks";
 import withAuth from "../../../../src/components/Hoc/authRoute";
+import { clearStates } from "../../../../src/redux/actions/instructor/preview";
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
@@ -30,6 +31,9 @@ const Home: NextPage = () => {
   const [loading, setLoading] = useState(false)
   const [email, setemail] = useState(false)
   const { User, token } = useSelector((state: RootStateOrAny) => state?.userReducer)
+
+
+  const dispatch = useDispatch()
 
   const AxInstance = axios.create({
     // .. where we make our configurations
@@ -59,6 +63,11 @@ const Home: NextPage = () => {
     }
     fetchCourse()
   }, [])
+
+
+  const ClearState = () => {
+    dispatch(clearStates())
+  }
 
   return (
     <div className="inst">
@@ -91,8 +100,11 @@ const Home: NextPage = () => {
                   <div className=" jidfjsd-asjreid">
                     <Search />
                     <div className="d-flex idfadsf-sads">
-                      <Link href='/en/instructor/addCourse'>
-                        <button className="upload-1 sdisad-dsdactive">
+                      <Link href='/en/instructor/addCourse' >
+                        <button 
+                        onClick={() => ClearState()}
+                        className="upload-1 sdisad-dsdactive"
+                         id="activetab">
                           + Add New Course </button>
                       </Link>
                     </div>
@@ -103,14 +115,14 @@ const Home: NextPage = () => {
                   <div className="umpire w-100">
                     <div className="umpire-1 umpire-1-cst ">
                       <div className="d-flex mb-3 idfadsf-sads" id="course_btns">
-                        <button className="upload-1 sdisad-dsdactive">
+                        <button className="upload-1 sdisad-dsdactive" id="activetab">
                           My Courses
                         </button>
                         <Link href="/en/instructor/liveCourses">
-                          <button className="upload-1" >My Live Courses</button>
+                          <button className="upload-1" id="activetab" >My Live Courses</button>
                         </Link>
                         <Link href="/en/instructor/coupon">
-                          <button className="upload-1" >Generate Coupon</button>
+                          <button className="upload-1" id="activetab">Generate Coupon</button>
                         </Link>
                         {User?.role === "company" &&
                           <button className="upload-1 sdisad-dsd" onClick={() => setemail(true)}>

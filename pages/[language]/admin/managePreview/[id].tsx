@@ -47,6 +47,8 @@ const Home: NextPage = () => {
   let router = useRouter()
 
   let courseId = router.query.id
+  const courseTitle = router.query.live
+  const Title = router.query.title
 
 
 
@@ -142,26 +144,28 @@ const Home: NextPage = () => {
 
   const removeInputField = (index: number,) => {
 
+
+
     const row = [...section];
     row.splice(index, 1);
     setSection(row);
+
+    if (errors) {
+      delete errors[index];
+      while (++index in errors) {
+        errors[index - 1] = errors[index];
+        delete errors[index];
+      }
+
+    }
 
 
   }
 
 
 
-
-
-
-
-
   const SaveCriculum = async () => {
     let arr = []
-
-
-
-
     try {
 
       let saveCri = {
@@ -173,7 +177,13 @@ const Home: NextPage = () => {
       if (res.data.success === true) {
         setLoader(false)
         SweetAlert({ icon: "success", text: res.data.message })
+        if (courseTitle) {
+          router.push('/en/admin/liveCourses')
+        }
+        else {
+          router.push('/en/admin/courses')
 
+        }
       }
       else {
         setLoader(false)
@@ -229,8 +239,10 @@ const Home: NextPage = () => {
 
                     <Breadcrumb>
                       <Breadcrumb.Item linkAs={Link} href="/en/admin/dashboard">Dashboard</Breadcrumb.Item>
-                      <Breadcrumb.Item linkAs={Link} href="/en/admin/liveCourses">Live Courses</Breadcrumb.Item>
-                      <Breadcrumb.Item active>Manage Previews </Breadcrumb.Item>
+                      <Breadcrumb.Item linkAs={Link} href={courseTitle ? "/en/admin/liveCourses" : "/en/admin/courses"} >
+                        {courseTitle ? "Live Courses" : "Courses"}
+                      </Breadcrumb.Item>
+                      <Breadcrumb.Item active>Course : {courseTitle || Title} </Breadcrumb.Item>
                     </Breadcrumb>
 
                     {/* <Link href="/en/admin/courses" >
@@ -254,12 +266,15 @@ const Home: NextPage = () => {
                       <div className="d-flex mb-3 idfadsf-sads">
 
                         <button className="upload-1 sdisad-dsdactive"
+                          id="activetab"
                           disabled={red ? true : false}
                           style={red ? { opacity: '0.5' } : { opacity: 1 }}
                           onClick={() => AddmoreSection()}
                         >
                           + Add more preview </button>
                         <button className="upload-1 sdisad-dsdactive"
+                          id="activetab"
+
                           disabled={red ? true : false}
                           style={red ? { opacity: '0.5' } : { opacity: 1 }}
                           onClick={() => SaveCriculum()}
@@ -314,7 +329,7 @@ const Home: NextPage = () => {
                       <div className={lec.thumbnail && lec.id || lec.progressbar === 100 || network ? "image-container" : ""}
 
                       >
-                        <label>Video / PDF file for this Lecture</label>
+                        <label>Video  file for this Lecture</label>
                         <div className="drop-box img-box w-100"
                           style={errors && errors[index]?.object_key && { border: '1pt solid red' }}
 
@@ -368,4 +383,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default AdminAuth( Home );
+export default AdminAuth(Home);

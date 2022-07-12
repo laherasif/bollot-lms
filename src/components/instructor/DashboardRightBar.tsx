@@ -51,7 +51,9 @@ export default () => {
                   <h4>Zoom  id : {item?.zoom_meeting_id}</h4>
                   <h4>Zoom password : {item?.zoom_meeting_password}</h4>
                   <div className="d-flex mb-3 idfadsf-sads">
-                    <button  onClick={() => window.open(item?.zoom_url_for_teacher)} className="upload-1 sdisad-dsdactive">Join Meeting</button>
+                    <button  onClick={() => window.open(item?.zoom_url_for_teacher)} className="upload-1 sdisad-dsdactive" 
+                        id="activetab"
+                        >Join Meeting</button>
                   </div>
                 </div>
 

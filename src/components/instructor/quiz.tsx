@@ -36,6 +36,7 @@ export default () => {
         const rows = [...ques];
         rows.splice(index, 1);
         setQues(rows);
+        
     }
     const handleChange = (index: number, evnt: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = evnt.target;

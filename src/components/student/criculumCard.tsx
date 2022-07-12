@@ -13,11 +13,11 @@ export default ({ lectures, CourseId }: any) => {
   const [index, setIndex] = useState(0);
   const [value, setValue] = useState('');
   const [errors, setErorrs] = useState(false);
-  const [played, setPlayed] = useState(0)
   const handleSelect = (selectedIndex: number) => {
     setIndex(selectedIndex);
     GetLect(lectures[index]?.object_key)
   };
+
 
   const { User, token } = useSelector((state: RootStateOrAny) => state.userReducer)
 
@@ -34,7 +34,7 @@ export default ({ lectures, CourseId }: any) => {
 
       let value = {
         course_id: CourseId,
-        course_section_lecture_id: lectures[index].id,
+        course_section_lecture_id: lectures ? lectures[index].id : null,
         minutes: 1
       }
       let res = await AxInstance.post('api//student/my-courses/progress/record', value)
@@ -69,7 +69,7 @@ export default ({ lectures, CourseId }: any) => {
 
     const paramss = {
       Bucket: S3_BUCKET,
-      Key: lectures[0]?.object_key
+      Key: lectures ? lectures[0]?.object_key : null
     };
     try {
       const url = myBucket.getSignedUrl('getObject', paramss);
@@ -115,32 +115,33 @@ export default ({ lectures, CourseId }: any) => {
   }
 
 
-
+  let obj = Object.assign({}, lectures)
+  console.log("obj", obj)
   return (
     <>
       <div className="videos-title">
         <div>
           <h4>
             <>
-              Title : {lectures[index].title}
-              {/* <span>
-                {lectures[index]?.is_completed  &&
+              Title : {obj[index]?.title}
+              <span>
+                {obj[index]?.is_completed &&
                   <>
                     <i style={{ color: 'green' }} className="fa fa-check-circle"></i>
                   </>
-                  }
-              </span> */}
+                }
+              </span>
             </>
           </h4>
         </div>
         <div>
-          Lectures : {index + 1} / {lectures.length}
+          Lectures : {index + 1} / {lectures?.length}
         </div>
       </div>
 
-      {lectures.some((s: any) => s.file_type === "Video") && lectures.length === 1 ?
+      {lectures?.some((s: any) => s.file_type === "Video") && lectures?.length === 1 ?
 
-        lectures.length && lectures?.map((lec: any, i: number) => (
+        lectures?.length && lectures?.map((lec: any, i: number) => (
 
           <ReactPlayer
             width="100%"
@@ -150,10 +151,10 @@ export default ({ lectures, CourseId }: any) => {
             controls
             url={value} />
         ))
-        : lectures.some((s) => s.file_type === "Video") && lectures.length > 1 ?
+        : lectures?.some((s) => s.file_type === "Video") && lectures?.length > 1 ?
           <Carousel activeIndex={index} interval={null} indicators={false} onSelect={handleSelect}>
             {
-              lectures.length && lectures?.map((lec: any, i: number) => (
+              lectures?.length && lectures?.map((lec: any, i: number) => (
 
                 <Carousel.Item key={i} style={{ width: '100%' }}>
                   <ReactPlayer
@@ -171,9 +172,9 @@ export default ({ lectures, CourseId }: any) => {
             }
           </Carousel>
 
-          : lectures.some((s) => s.file_type === "PDF") && lectures.length > 1 ?
+          : lectures?.some((s) => s.file_type === "PDF") && lectures?.length > 1 ?
             <Carousel activeIndex={index} interval={null} indicators={false} onSelect={handleSelect}>
-              {lectures.length && lectures?.map((lec: any, i: number) => (
+              {lectures?.length && lectures?.map((lec: any, i: number) => (
                 <Carousel.Item style={{ width: '100%' }}>
                   <div style={{ textAlign: '-webkit-center' }}>
 
@@ -193,12 +194,16 @@ export default ({ lectures, CourseId }: any) => {
                           <div className="d-flex mb-3 maxima d-flex justify-content-center">
                             <button
                               className="upload-1 sdisad-dsdactive "
+                              id="activetab"
+
                               disabled={pageNumber <= 1} onClick={previousPage}
                             >
                               Previous
                             </button>
                             <button
                               className="upload-1 sdisad-dsdactive"
+                              id="activetab"
+
                               disabled={pageNumber >= numPages}
                               onClick={nextPage}
                             >
@@ -218,7 +223,7 @@ export default ({ lectures, CourseId }: any) => {
             </Carousel>
 
             :
-            lectures.length === 1 && lectures?.map((lec: any, i: number) => (
+            lectures?.length === 1 && lectures?.map((lec: any, i: number) => (
               <div style={{ textAlign: '-webkit-center' }}>
 
                 <Document
@@ -237,12 +242,16 @@ export default ({ lectures, CourseId }: any) => {
                       <div className="d-flex mb-3 maxima d-flex justify-content-center">
                         <button
                           className="upload-1 sdisad-dsdactive "
+                          id="activetab"
+
                           disabled={pageNumber <= 1} onClick={previousPage}
                         >
                           Previous
                         </button>
                         <button
                           className="upload-1 sdisad-dsdactive"
+                          id="activetab"
+
                           disabled={pageNumber >= numPages}
                           onClick={nextPage}
                         >

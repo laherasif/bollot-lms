@@ -18,7 +18,7 @@ export default () => {
 
   const { token } = useSelector((state: RootStateOrAny) => state?.admin)
 
-  const dispatch = useDispatch()
+  // const dispatch = useDispatch()
 
   const AxInstance = axios.create({
     // .. where we make our configurations
@@ -71,6 +71,7 @@ export default () => {
         }
         // setLoading(true)
         let res = await AxInstance.post('api//admin/courses', value)
+
         if (res.data.success === true) {
           // setLoading(false)
           setCourse(res.data.response.courses)
@@ -83,7 +84,7 @@ export default () => {
       }
     }
     fetchCourse()
-  }, [ del === true ])
+  }, [del === true])
 
 
 
@@ -157,10 +158,10 @@ export default () => {
             </Dropdown.Toggle>
 
             <Dropdown.Menu className="drop_down_ins">
-              <Dropdown.Item as={Link} href={`/en/admin/manageLiveClasses/${d?.id}`}>Schedule</Dropdown.Item>
-              <Dropdown.Item as={Link} href={`/en/admin/manageCriculum/${d?.id}`}> Curriculum</Dropdown.Item>
-              <Dropdown.Item as={Link} href={`/en/admin/manageQuiz/${d?.id}`}> Quiz</Dropdown.Item>
-              <Dropdown.Item as={Link} href={`/en/admin/manageEnrolledStudent/${d?.id}`}> Enrolled Student</Dropdown.Item>
+              <Dropdown.Item as={Link} href={`/en/admin/manageLiveClasses?live=${d?.title}&id=${d?.id}`}>Schedule</Dropdown.Item>
+              <Dropdown.Item as={Link} href={`/en/admin/managePreQuiz?live=${d?.title}&id=${d?.id}`}> Pre Quiz</Dropdown.Item>
+              <Dropdown.Item as={Link} href={`/en/admin/manageQuiz?live=${d?.title}&id=${d?.id}`}> Quiz</Dropdown.Item>
+              <Dropdown.Item as={Link} href={`/en/admin/manageEnrolledStudent?live=${d?.title}&id=${d?.id}`}> Enrolled Student</Dropdown.Item>
               {/* <Dropdown.Item as={Link} href={`/en/admin/manageProgressStudent/${d?.id}`}>Student Progress</Dropdown.Item> */}
 
             </Dropdown.Menu>

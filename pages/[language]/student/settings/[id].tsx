@@ -1,5 +1,4 @@
 import type { NextPage } from "next";
-// import { useIntl } from "react-intl";
 import Sidebar from "../../../../src/components/student/sidebar";
 import Icons from "../../../../src/icons";
 import TopNavbar from "../../../../src/components/student/TopNavbar";
@@ -7,7 +6,7 @@ import NavigationBar1 from "../../../../src/components/student/NavigationBar1";
 import Link from "next/link";
 import withAuth from "../../../../src/components/Hoc/authRoute";
 import Swal from "sweetalert2";
-import { AddSocialRegMedia, LogoutIns, SocialRegMedia } from '../../../../src/redux/actions/auth/user'
+import { AddSocialRegMedia, LogoutIns } from '../../../../src/redux/actions/auth/user'
 import { RootStateOrAny, useSelector, useDispatch } from "react-redux";
 import { useRouter } from 'next/router'
 import axios from "axios";
@@ -16,15 +15,18 @@ import { Firebaseapp } from "../../../../src/confiq/firebase/firebase";
 import { useEffect, useState } from "react";
 import { Small } from "../../../../src/components/student/loader";
 
-const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   // const intl = useIntl();
 
   const [loading, setLoading] = useState(true)
 
   const { token, User } = useSelector((state: RootStateOrAny) => state?.userReducer)
+
+
   const dispatch = useDispatch()
   const router = useRouter()
+
+
   const AxInstance = axios.create({
     // .. where we make our configurations
     baseURL: 'https://dev.thetechub.us/bolloot/',
@@ -80,8 +82,8 @@ const Home: NextPage = () => {
 
   const signInGog = async () => {
     const { user } = await signInWithPopup(firebaseAuth, provider);
-    const { refreshToken, providerData }: any = user;
-    dispatch(AddSocialRegMedia(providerData, User))
+    const { providerData }: any = user;
+    dispatch(AddSocialRegMedia(providerData, User , AxInstance))
 
   };
 
@@ -89,8 +91,8 @@ const Home: NextPage = () => {
   const signInFb = async () => {
 
     const { user } = await signInWithPopup(firebaseAuth, Fbprovider);
-    const { refreshToken, providerData }: any = user;
-    dispatch(AddSocialRegMedia(providerData, User?.role))
+    const {  providerData }: any = user;
+    dispatch(AddSocialRegMedia(providerData, User?.role , AxInstance))
 
   };
 
@@ -110,7 +112,6 @@ const Home: NextPage = () => {
               <TopNavbar />
               {loading ? Small() :
                 <div className="hdsf0s-sadmsa">
-                  <h3>Settings</h3>
                   <div className="complete-web-1">
                     <div className="umpire w-100">
                       <div className="umpire-1 umpire-1-cst ">

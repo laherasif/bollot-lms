@@ -10,14 +10,14 @@ import { Small } from "../../../../src/components/student/loader";
 import Link from "next/link";
 import { SweetAlert } from "../../../../src/function/hooks";
 import Card from "../../../../src/components/student/quizCard";
-import { Spinner } from "react-bootstrap";
+import { Spinner, Table } from "react-bootstrap";
 const Home: NextPage = () => {
   // const intl = useIntl();
 
   const router = useRouter()
 
   const [quiz, setQuiz] = useState([])
-  const [quizValue, setQuizValue] = useState<any>([])
+  const [quizResult, setQuizResult] = useState<any>([])
   const { User, token } = useSelector((state: RootStateOrAny) => state.userReducer)
   let [currentStep, setCurrentStep] = useState(0)
   const [loading, setLoading] = useState(false)
@@ -46,9 +46,11 @@ const Home: NextPage = () => {
       try {
         setLoading(true)
         let res = await AxInstance.get(`api//student/my-courses/quiz/${courseId}`)
+        let resResult = await AxInstance.post(`api//student/my-courses/quiz/results`, { course_id: courseId })
         if (res.data.success === true) {
           setLoading(false)
           setQuiz(res.data.response.course_with_quiz)
+          setQuizResult(resResult.data.response.results)
         }
       }
       catch (err) {
@@ -155,13 +157,13 @@ const Home: NextPage = () => {
                     <div className="d-flex justify-content-between">
                       <h3>Title : {quiz?.title} </h3>
                       {
-                        quiz?.quiz?.length > 0 ? 
-                        <>
-                          <h3>Total Questions : {quiz?.quiz?.length}  </h3>
-                          <h3>Attempt Questions : {currentStep + 1} </h3>
+                        quiz?.quiz?.length > 0 ?
+                          <>
+                            <h3>Total Questions : {quiz?.quiz?.length}  </h3>
+                            <h3>Attempt Questions : {currentStep + 1} </h3>
 
-                        </>
-                        :  null 
+                          </>
+                          : null
                       }
                     </div>
 
@@ -191,7 +193,44 @@ const Home: NextPage = () => {
                       : <div> Quiz not uploaded yet </div>}
 
                   </div>
+
+                  {quizResult && quizResult.length ?
+                    <div>
+                      <div className="mt-3">
+                        <h3>Quiz Results</h3>
+
+                        <Table responsive="md" >
+                          <thead>
+                            <tr>
+                              <th>Attempt Questions</th>
+                              <th>Correct Answers</th>
+                              <th>Percantage</th>
+
+                            </tr>
+
+                          </thead>
+                          <tbody >
+                            {quizResult && quizResult.map((item:any ) => (
+                              <tr style={{ cursor: 'pointer' }} key={item.id}>
+                                <td>
+                                  {item.out_of}
+                                </td>
+                                <td>
+                                  {item.correct_answers}
+                                </td>
+                                <td>
+                                  {item.percent}
+                                </td>
+                              </tr>
+
+                            ))}
+                          </tbody>
+                        </Table>
+                      </div>
+                    </div>
+                    : null}
                 </div>
+
               }
             </div>
           </div>
@@ -205,7 +244,7 @@ const Home: NextPage = () => {
   )
 }
 
-// export const getServerSideProps = async ({ params }: any) => {
+// export const getServerSideProps = async ({params}: any) => {
 
 //   const res = await instance.get(
 //     `api//courses/${params.id}`,

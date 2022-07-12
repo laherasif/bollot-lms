@@ -1,29 +1,17 @@
 import type { NextPage } from "next";
-import Dropdown from "../../../../src/components/student/dropdown";
-import { useIntl } from "react-intl";
 import Sidebar from "../../../../src/components/student/sidebar";
-import { FiSearch } from "react-icons/fi";
-import { BiBell } from "react-icons/bi";
-import { IoMailOutline } from "react-icons/io5";
-import Icons from "../../../../src/icons";
 import TopNavbar from "../../../../src/components/student/TopNavbar";
-import CourseCard from "../../../../src/components/student/CourseCard";
-import BookmarkCard from "../../../../src/components/student/BookmarkCard";
-import { FaStar } from "react-icons/fa";
 import NavigationBar1 from "../../../../src/components/student/NavigationBar1";
 import withAuth from "../../../../src/components/Hoc/authRoute";
 import React, { useState, useEffect } from 'react'
 import { useSelector, RootStateOrAny } from "react-redux";
 import axios from 'axios'
 import { useRouter } from 'next/router'
-import Rating from '../../../../src/components/ratingStar'
 import moment from 'moment'
 import Link from "next/link";
 import { SweetAlert } from "../../../../src/function/hooks";
 import { Small } from "../../../../src/components/student/loader";
-const options = ["one", "two", "three"];
 const Home: NextPage = () => {
-  // const intl = useIntl();
 
   const [reviews, setReviews] = useState([])
   const [loading, setLoading] = useState(false)
@@ -69,12 +57,7 @@ const Home: NextPage = () => {
               <TopNavbar />
               {loading ? Small() :
                 <div className="hdsf0s-sadmsa">
-                  <Link href="/en/student/courses" >
-                    <h3 style={{ cursor: 'pointer' }}>
-                      <i className="fa fa-arrow-left "></i>
-                      <span className="pl-2">Back</span>
-                    </h3>
-                  </Link>
+
                   <h3>Your Reviews</h3>
                   <div className="complete-web-1">
                     <div className="umpire w-100">
@@ -112,7 +95,7 @@ const Home: NextPage = () => {
                               {/* <h6>Complete Web &amp; Mobile Designer in 2022...</h6> */}
                             </div>
                           </div>
-                        )) : null}
+                        )) : <div>Record not found</div>}
 
                       </div>
 

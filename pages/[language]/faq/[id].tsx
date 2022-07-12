@@ -31,7 +31,7 @@ const Home: NextPage = () => {
               Frequency Asked Question
             </h3>
             <p className="text-center">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            See our FAQs
             </p>
           </div>
           <div>

@@ -79,12 +79,14 @@ const Home: NextPage = () => {
               {loading ? Small()
                 :
                 <div className="hdsf0s-sadmsa">
-                  <h3>My purchase</h3>
                   <div className="complete-web-1">
                     <div className="umpire w-100">
                       <div className="umpire-1 umpire-1-cst">
                         <div className="maxima">
-                          <button className="upload-1 sdisad-dsdactive">Transactions</button>
+                          <button
+                            className="upload-1 sdisad-dsdactive"
+                            id="activetab"
+                          >Transactions</button>
                           <Link href="/en/student/refund">
                             <button className="upload-1" >Refund</button>
                           </Link>

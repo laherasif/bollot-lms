@@ -5,13 +5,17 @@ import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Conversation from "./messageForm";
-const CricculumSidebar = ({ lecture, courseId }: any) => {
-    // const [courseId, setCourseId] = useState('')
+const CricculumSidebar = ({ lecture }: any) => {
+    const [courseId, setCourseId] = useState(0)
     const [section, setSections] = useState([])
     const [conversation, setConversation] = useState(false)
 
     const router = useRouter()
     const { Lectures } = useSelector((state: RootStateOrAny) => state.studentCourse)
+    console.log("lectures", Lectures)
+    useEffect(() => {
+        lecture(Lectures?.sections[courseId])
+    }, [lecture])
 
 
     let courseTitle = router.query.id
@@ -60,8 +64,8 @@ const CricculumSidebar = ({ lecture, courseId }: any) => {
                     <div className="content-section" style={path === `/en/student/details/${courseTitle}` ? { display: 'block' } : { display: 'none' }}>
                         {Lectures && Lectures?.sections?.length ? Lectures?.sections?.map((sec: any, i: number) => {
                             return (
-                                <div className="ksajdfds-sads" onClick={() => { lecture(sec?.lectures), courseId(sec?.id) }} key={i}>
-                                    {sec.id === courseId || sec?.is_completed === 1 ? (
+                                <div className="ksajdfds-sads" onClick={() => { lecture(sec?.lectures), setCourseId(i) }} key={i}>
+                                    {i === courseId || sec?.is_completed === 1 ? (
                                         <svg
                                             width={18}
                                             height={18}
@@ -114,8 +118,8 @@ const CricculumSidebar = ({ lecture, courseId }: any) => {
                         <h2>Quiz</h2>
                     </Link>
                 </div>
-                <div className={path === "/en/student/codeEditor" ? " ksdfhd-active activelink" : ""}>
-                    <Link href={`/en/student/codeEditor`}>
+                <div className={path === `/en/student/codeEditor/${courseTitle}` ? " ksdfhd-active activelink" : ""}>
+                    <Link href={`/en/student/codeEditor/${courseTitle}`}>
                         <h2>CodeEditor</h2>
                     </Link>
                 </div>

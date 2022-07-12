@@ -25,15 +25,15 @@ const Home: NextPage = () => {
 
 
 
-  useEffect(()=>{
+  useEffect(() => {
     setLoading(true)
     setTimeout(() => {
-      setLoading(false )
+      setLoading(false)
     }, 1000);
-  },[])
+  }, [])
 
 
- 
+
   return (
     <div className="inst">
       <NavigationBar1 />
@@ -66,7 +66,7 @@ const Home: NextPage = () => {
                     {/* <Search /> */}
                     <div className="d-flex idfadsf-sads">
                       <Link href='/en/admin/addCourse/?live'>
-                        <button className="upload-1 sdisad-dsdactive" >
+                        <button className="upload-1 sdisad-dsdactive" id="activetab" >
                           + Add Live Course </button>
                       </Link>
                     </div>
@@ -111,4 +111,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default AdminAuth( Home );
+export default AdminAuth(Home);

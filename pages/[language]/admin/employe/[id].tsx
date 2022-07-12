@@ -10,18 +10,21 @@ import { Small } from "../../../../src/components/admin/loader";
 import NewCourse from "../../../../src/components/admin/newCourse";
 import { Breadcrumb } from "react-bootstrap";
 import AdminAuth from "../../../../src/components/Hoc/adminRoute";
+import CompanyCard from "../../../../src/components/admin/CompanyCard";
 const Home: NextPage = () => {
   // const intl = useIntl();
   const [ins, setIns] = useState(false)
   const [loading, setLoading] = useState(false)
-  const { Students, Instructor } = useSelector((state: RootStateOrAny) => state?.admin)
-  const [loader , setLoader ] = useState(false )
+  const [company , setCompany ] = useState(false)
+  const [stu , setStu] = useState(true)
+  const { Students, Instructor, Company } = useSelector((state: RootStateOrAny) => state?.admin)
+  const [loader, setLoader] = useState(false)
   useEffect(() => {
     setLoading(true)
     setTimeout(() => {
       setLoading(false)
     }, 1000);
-  }, [ins || loader ])
+  }, [ins || loader])
 
 
   return (
@@ -49,7 +52,7 @@ const Home: NextPage = () => {
                   </div>
 
                   <div className="my-2">
-                    <NewCourse loader={(value:any)=> setLoader(value)}/>
+                    <NewCourse loader={(value: any) => setLoader(value)} />
                   </div>
                 </div>
 
@@ -57,10 +60,11 @@ const Home: NextPage = () => {
                   <div className="umpire w-100">
                     <div className="umpire-1 umpire-1-cst ">
                       <div className="d-flex mb-3 course w-100">
-                        <button id={ins === false  ? "activetab" : "" } className={ins === false ? "upload-1 sdisad-dsdactive" : "upload-1"} onClick={() => setIns(false)}>
+                        <button id={ins === false && company === false  ? "activetab" : ""} className={ins === false && company === false ? "upload-1 sdisad-dsdactive" : "upload-1"} onClick={() => {setIns(false) , setCompany(false) , setStu(true) }}>
                           Manage Students
                         </button>
-                        <button id={ins ? "activetab" : "" } className={ins ? "upload-1 sdisad-dsdactive"  : "upload-1"} onClick={() => setIns(true)} >Manage Instructor</button>
+                        <button id={ins ? "activetab" : ""} className={ins ? "upload-1 sdisad-dsdactive" : "upload-1"} onClick={() => {setIns(true) , setCompany(false) , setStu(false)}} >Manage Instructor</button>
+                        <button id={company ? "activetab" : ""} className={company ? "upload-1 sdisad-dsdactive" : "upload-1"} onClick={() => { setCompany(true) , setStu(false) , setIns(false)}} >Manage Company</button>
 
 
 
@@ -87,7 +91,7 @@ const Home: NextPage = () => {
                 </div> */}
                 <div className="complete-web-1">
                   {
-                    ins ? <CourseCard Instructor={Instructor} /> : <CourseCard Student={Students} role={"student"} />
+                    ins ? <CourseCard Instructor={Instructor} /> : stu ? <CourseCard Student={Students} role={"student"} /> : <CompanyCard Company={Company} />
                   }
 
 

@@ -27,8 +27,8 @@ const Role = ({ Toggle, permition }: any) => {
                 <Modal.Header closeButton>
                     <Modal.Title>Please Select Login As</Modal.Title>
                 </Modal.Header>
-                <Modal.Body style={{padding:'40px'}}>
-                    <div className="wrapper mb-3 w-100" style={{marginTop:'20px'}}>
+                <Modal.Body style={{ padding: '40px' }}>
+                    <div className="wrapper mb-3 w-100" style={{ marginTop: '20px' }}>
                         <div className="row w-100">
                             <div className="col-12 col-md-6 mt-10 col-md-offset-1  " >
                                 <div
@@ -114,6 +114,8 @@ const Role = ({ Toggle, permition }: any) => {
                         <div className="idfadsf-sads kajfds-sdfe hfdajss-3ersad">
                             <button
                                 className="upload-1 sdisad-dsdactive "
+                                id="activetab"
+
                                 onClick={() => handleClose()}
                             >
                                 Close
@@ -123,6 +125,8 @@ const Role = ({ Toggle, permition }: any) => {
                             <button
                                 onClick={(e: any) => handleSubmit(e)}
                                 className="upload-1 sdisad-dsdactive"
+                                id="activetab"
+
                             >
                                 Login
 

@@ -2651,6 +2651,7 @@
 }
 
 #progressbar {
+  display: flex;
   padding: 0px 10%
 }
 
@@ -2666,7 +2667,7 @@
 }
 
 .form_card {
-  max-width: 70%;
+  max-width: 80%;
   margin: auto
 }
 
@@ -3916,20 +3917,13 @@
   margin: 10px 0px;
 }
 
-.user-card-inbox:hover {
-  background-color: rgb(251, 249, 249);
-}
 
-/* .active{
-  background-color: rgb(251, 249, 249);
 
-} */
 
 .user-card-inbox p {
   font-weight: 400;
   font-size: 14px;
   line-height: 14px;
-
   color: #a2a2a2;
 }
 

@@ -37,7 +37,7 @@ const AddCoupon = ({ Toggle, permition, User }: any) => {
     });
 
     const handleClose = () => {
-        Toggle({type: "close" })
+        Toggle({ type: "close" })
     }
 
 
@@ -77,7 +77,7 @@ const AddCoupon = ({ Toggle, permition, User }: any) => {
             if (res.data.success === true) {
                 setLoading(false)
                 SweetAlert({ icon: 'success', text: res.data.message })
-                Toggle({ type : "load"})
+                Toggle({ type: "load" })
             }
             else {
                 setErrors(res.data.errors)
@@ -126,7 +126,7 @@ const AddCoupon = ({ Toggle, permition, User }: any) => {
 
                                             <label>Coupon Code </label>
                                             <div className="">
-                                                <input type="text"  placeholder="Write here...." name="coupon_code" value={state.coupon_code} onChange={(e) => handleChange(e)} />
+                                                <input type="text" placeholder="Write here...." name="coupon_code" value={state.coupon_code} onChange={(e) => handleChange(e)} />
                                                 {error && error?.coupon_code ? <div className="invalid mt-1">{error?.coupon_code[0]}</div> : null}
 
                                             </div>
@@ -158,7 +158,7 @@ const AddCoupon = ({ Toggle, permition, User }: any) => {
                                                         e.preventDefault();
                                                     }}
                                                     // selected={state.valid_till}
-                                                    placeholderText={'YYYY-MM-DD'} 
+                                                    placeholderText={'YYYY-MM-DD'}
                                                     selected={Object.keys(User).length ? new Date(state?.valid_till) : state.valid_till}
                                                     onChange={(date) => setState({ ...state, valid_till: date })}
                                                     dateFormat="yyyy-MM-dd"
@@ -180,13 +180,19 @@ const AddCoupon = ({ Toggle, permition, User }: any) => {
                 </Modal.Body>
                 <Modal.Footer>
                     <div className="idfadsf-sads kajfds-sdfe">
-                        <button onClick={() => handleClose()} className="upload-1 sdisad-dsdactive">
+                        <button onClick={() => handleClose()}
+                            className="upload-1 sdisad-dsdactive"
+                            id="activetab"
+                        >
 
                             Close
                         </button>
                     </div>
                     <div className="idfadsf-sads kajfds-sdfe">
-                        <button onClick={() => SaveProfile()} className="upload-1 sdisad-dsdactive">
+                        <button onClick={() => SaveProfile()}
+                            className="upload-1 sdisad-dsdactive"
+                            id="activetab"
+                        >
                             {loading ?
                                 <Spinner animation="border" />
                                 :

@@ -36,10 +36,11 @@ export default ({ course, key }: any) => {
           </Dropdown.Toggle>
 
           <Dropdown.Menu >
-            <Dropdown.Item as={Link} href={`/en/instructor/managePreview/${course?.id}`}>Manage Previews </Dropdown.Item>
-            <Dropdown.Item as={Link} href={ `/en/instructor/manageCriculum/${course?.id}`}>Manage Curriculum</Dropdown.Item>
-            <Dropdown.Item as={Link} href={ `/en/instructor/manageQuiz/${course?.id}`}>Manage Quiz</Dropdown.Item>
-            <Dropdown.Item as={Link} href={`/en/instructor/manageEnrolledStudent/${course?.id}`}> Enrolled Student</Dropdown.Item>
+            <Dropdown.Item as={Link} href={`/en/instructor/managePreview?title=${course?.title}&id=${course?.id}`}>Manage Previews </Dropdown.Item>
+            <Dropdown.Item as={Link} href={ `/en/instructor/manageCriculum?title=${course?.title}&id=${course?.id}`}>Manage Curriculum </Dropdown.Item>
+            <Dropdown.Item as={Link} href={ `/en/instructor/managePreQuiz?title=${course?.title}&id=${course?.id}`}>Manage PreQuiz</Dropdown.Item>
+            <Dropdown.Item as={Link} href={ `/en/instructor/manageQuiz?title=${course?.title}&id=${course?.id}`}>Manage Quiz</Dropdown.Item>
+            <Dropdown.Item as={Link} href={`/en/instructor/manageEnrolledStudent?title=${course?.title}&id=${course?.id}`}> Enrolled Student</Dropdown.Item>
             {/* <Dropdown.Item as={Link} href={`/en/instructor/manageProgressStudent/${course?.id}`}>Student Progress</Dropdown.Item> */}
 
           </Dropdown.Menu>

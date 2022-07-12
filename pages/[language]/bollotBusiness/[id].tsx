@@ -42,7 +42,7 @@ const Home: NextPage = () => {
       }
       fetchMembership()
     }
-    catch (err) { 
+    catch (err) {
       SweetAlert({ icon: "error", text: err })
 
     }
@@ -85,7 +85,9 @@ const Home: NextPage = () => {
                   student, 3% if you refer an Instructor and 5% if you refer a
                   company.
                 </p>
-                <button className="get-started-btn">Get Started</button>
+                <Link href="/en/businessSignup">
+                  <button className="get-started-btn">Get Started</button>
+                </Link>
               </div>
               <div className="boost-ch-2 col-md-6">
                 <img className="w-100" src="/girls-doc.svg" alt="" />

@@ -1,21 +1,12 @@
 import {
-  Container,
-  Form,
-  Nav,
-  Navbar,
-  NavDropdown,
-  Offcanvas,
   ProgressBar,
   Spinner,
 } from "react-bootstrap";
 import Icons from "../../insIcons";
-import { useState, useEffect, useRef, useCallback } from "react";
-import { ListObjectsCommand, S3Client } from "@aws-sdk/client-s3";
-import AWS from "aws-sdk";
+import { useState } from "react";
 import Secdule from "./secdule";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import Router, { useRouter } from "next/router";
 import { S3_BUCKET, myBucket } from "../../confiq/aws/aws";
 import { bytesToSize, generateVideoThumbnail, SweetAlert } from "../../function/hooks";
 import { pdfThumnail } from '../../constant/constant'
@@ -32,22 +23,12 @@ import {
 } from '../../redux/actions/instructor/criculum'
 import Icon from '../../../src/components/admin/icons'
 export default ({ onStepChange, onPrevStep, step }: any) => {
-  
+
+
+
   const [type, setType] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState([]);
-  const [section, setSection] = useState([{
-    title: "",
-    lectures: [
-      {
-        title: "",
-        file_type: "",
-        object_key: "",
-        thumbnail: "",
-        progressbar: "",
-      },
-    ],
-  }]);
+  const [errors, setErrors] = useState({});
 
 
 
@@ -197,12 +178,33 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
 
 
   const removeInputFields = (index: number, i: number) => {
+    if (errors) {
+      let convert = errors.sections ? Object?.values(errors.sections) : {}
+      const error: any = [...convert];
+      for (let j = 0; j < convert.length; j++) {
+        if (j === index) {
+          const element = error[j];
+          let find = element.lectures
+          find.splice(i, 1)
+        }
+
+      }
+      setErrors({ sections: error })
+    }
 
     dispatch(delLecture({ index, i }))
   };
 
   const removeInputField = (index: number) => {
+    if (errors) {
+      let findIndex = errors?.sections?.filter((item, i) => {
+        return i !== index
+      })
+      setErrors({ sections: findIndex })
+    }
     dispatch(delCriculumSection(index))
+
+
 
   };
   const delThumnail = (index: number, i: number) => {
@@ -245,13 +247,6 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
     }
   };
 
-  let red = section?.some((ac: any) =>
-    ac.lectures.some((sa: any) => sa.progressbar < 100)
-  );
-
-
-  // const f = 
-  // console.log("f" , f )
   return (
     <>
       <div className="p-fields"  >
@@ -275,17 +270,17 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
                     onChange={(e) => setType(0)}
                   />
                   <span className="up-checkbox-replacement-helper">
-                    {/**/} {/**/}{" "}
-                  </span>{" "}
+                    {/**/} {/**/}
+                  </span>
                 </label>
-              </div>{" "}
+              </div>
               <div className="up-illustrations">
-                <Icon name="cricculum"/>
-              </div>{" "}
+                <Icon name="cricculum" />
+              </div>
               <div id="button-box-1" className="up-button-box-labels">
                 <div className="up-button-box-label">
                   <h4>I will upload lectures for students</h4>
-                </div>{" "}
+                </div>
                 {/**/}
               </div>
             </div>
@@ -305,20 +300,18 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
                     checked={type === 1}
                     name="instructor"
                     onChange={(e) => setType(1)}
-                  />{" "}
+                  />
                   <span className="up-checkbox-replacement-helper">
-                    {/**/} {/**/}{" "}
-                  </span>{" "}
+                  </span>
                 </label>
-              </div>{" "}
+              </div>
               <div className="up-illustrations">
-                <Icon name="live"/>
-              </div>{" "}
+                <Icon name="live" />
+              </div>
               <div id="button-box-2" className="up-button-box-labels">
                 <div className="up-button-box-labels">
                   <h4>I will conduct all the classes personally, online </h4>
-                </div>{" "}
-                {/**/}
+                </div>
               </div>
             </div>
           </div>
@@ -357,8 +350,6 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
                           lec?.length !== -1 && <div style={lec?.progressbar > 0 && lec?.progressbar < 100 ? { cursor: 'not-allowed' } : { cursor: 'pointer' }} onClick={lec?.progressbar > 0 && lec?.progressbar < 100 ? null : () => removeInputFields(index, i)} ><i className="fa fa-trash"></i></div>
 
                         }
-                        {/* {lec?.length !== -1 && <div onClick={() => removeInputFields(index, i)} style={{ cursor: 'pointer' }}><i className="fa fa-trash"></i></div>} */}
-
                       </div>
 
                       <div >
@@ -433,7 +424,6 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
               }
 
             </div>
-            {/* <span style={{ fontSize: '12px', color: 'red', fontWeight: '500' }}>Note : During uploading leacture progressbar Section and Save will not created till leature upload </span> */}
 
             <h3 id="more-section" style={Criculums.some((s) => s.lectures.some((l) => l.progressbar > 0 && l.progressbar < 100)) ? { cursor: 'not-allowed' } : { cursor: 'pointer' }} onClick={() => AddmoreSection()} >
               + Add more lectures and more sections
@@ -447,17 +437,18 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
                     id="activetab"
                     onClick={() => onPrevStep(1 - 1)}
                     disabled={Criculums.some((s) => s.lectures.some((l) => l.progressbar > 0 && l.progressbar < 100)) ? true : false}
-                    style={Criculums.some((s) => s.lectures.some((l) => l.progressbar > 0 && l.progressbar < 100)) ? {opacity:'0.5'} : {opacity:'1'}}
-                    
-                 >
+                    style={Criculums.some((s) => s.lectures.some((l) => l.progressbar > 0 && l.progressbar < 100)) ? { opacity: '0.5' } : { opacity: '1' }}
+
+                  >
                     Previous
                   </button>
                   <button
                     className="upload-1 sdisad-dsdactive"
+                    id="activetab"
                     onClick={() => SaveCriculum()}
                     disabled={Criculums.some((s) => s.lectures.some((l) => l.progressbar > 0 && l.progressbar < 100)) ? true : false}
-                    style={Criculums.some((s) => s.lectures.some((l) => l.progressbar > 0 && l.progressbar < 100)) ? {opacity:'0.5'} : {opacity:'1'}}
-                 >
+                    style={Criculums.some((s) => s.lectures.some((l) => l.progressbar > 0 && l.progressbar < 100)) ? { opacity: '0.5' } : { opacity: '1' }}
+                  >
                     <i className="fa fa-save" style={{ marginRight: '10px' }}></i>
                     {loading ? <Spinner animation="border" /> : "Save & Next"}
                   </button>
@@ -465,24 +456,7 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
 
               </div>
             </div>
-            {/* <div className="d-flex justify-content-center mt-2">
-              <div className="idfadsf-sads kajfds-sdfe hfdajss-3ersad">
-                <button
-                  className="upload-1 sdisad-dsdactive "
-                  onClick={() => onPrevStep(1 - 1)}
-                >
-                  Preview
-                </button>
-              </div>
-              <div className="idfadsf-sads kajfds-sdfe ">
-                <button
-                  className="upload-1 sdisad-dsdactive"
-                  onClick={() => SaveCriculum()}
-                >
-                  {loading ? <Spinner animation="border" /> : "Save & Next"}
-                </button>
-              </div>
-            </div> */}
+
           </>
         ) : (
           <Secdule

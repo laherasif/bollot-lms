@@ -4775,24 +4775,27 @@ body .multi-range-slider .bar-inner {
     width: 70%;
   }
 
-  .our{
+  .our {
     padding-top: 10px;
   }
-  .our h3{
+
+  .our h3 {
     font-size: 18px !important;
   }
-  .our p{
+
+  .our p {
     font-size: 14px !important;
   }
 
-  .asdjfi-dasd{
+  .asdjfi-dasd {
     margin-top: 15px;
   }
 
-  .jadsf-dsddasdn h5{
+  .jadsf-dsddasdn h5 {
     font-size: 16px !important;
   }
-  .forms-switch{
+
+  .forms-switch {
     font-size: 16px !important;
     padding-left: 10px;
   }
@@ -5971,7 +5974,7 @@ body .multi-range-slider .bar-inner {
   margin-bottom: 9px;
 }
 
-.play_icons{
+.play_icons {
   position: absolute;
   top: 40%;
   left: 0;
@@ -5979,7 +5982,7 @@ body .multi-range-slider .bar-inner {
   bottom: 0;
 }
 
-.play_icons svg{
+.play_icons svg {
   font-size: 4rem;
   color: darkgray;
 
@@ -6797,4 +6800,35 @@ del {
 .min_max_value input {
   width: 30%;
   margin-left: 10px;
+}
+
+
+/* whtassppp */
+
+
+.home_wrapper {
+  position: relative;
+}
+
+
+.whatsapp {
+  text-align: center;
+  position: fixed;
+  background-color: lightgreen;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  bottom: 20px;
+  right: 30px;
+  cursor: pointer;
+}
+
+.whtaspp_icon {
+  color: white;
+  font-size: 30px;
+  margin-top: 2px;
+}
+.whtaspp_icon a{
+  color: white;
+ 
 }

@@ -24,16 +24,12 @@ export default () => {
   });
   const { User, token } = useSelector((state: RootStateOrAny) => state?.userReducer)
 
-  const router = useRouter()
-  const [loading, setLoading] = useState(false)
   const [mesg, setMesg] = useState(false)
   const [notif, setNotif] = useState(false)
   const [notifications, setNotifications] = useState([])
   const [messagess, setMessagess] = useState([])
-  const [unRead, setUnRead] = useState()
   const messanger = useRef();
   const notify = useRef();
-
 
   const AxInstance = axios.create({
     // .. where we make our configurations
@@ -42,6 +38,10 @@ export default () => {
       token: token,
     },
   });
+
+
+  const router = useRouter()
+  const route = router.asPath
 
 
 
@@ -95,7 +95,7 @@ export default () => {
 
 
   const Logout = () => {
-    
+
     // setLoading(true)
     dispatch(LogoutIns())
     dispatch(clearStates())
@@ -196,10 +196,13 @@ export default () => {
                       </Dropdown.Toggle>
 
                       <Dropdown.Menu >
-                        <Dropdown.Item as={Link} href="/" >Go to website</Dropdown.Item>
+                        <Dropdown.Item as={Link} href={route === "/en/instructor/withdraw" ? "/en/instructor/dashboard" : "/"}>
+                          {route === "/en/instructor/withdraw" ? "Go to Dashboard" : "Go to website"
+                          }
+                        </Dropdown.Item>
                         <Dropdown.Item as={Link} href="/en/instructor/courses" >My Courses</Dropdown.Item>
                         <Dropdown.Item as={Link} href="/en/instructor/profile" >My Profile </Dropdown.Item>
-                        <Dropdown.Item ><span onClick={() => Logout()}>Logout</span></Dropdown.Item>
+                        <Dropdown.Item onClick={() => Logout()} >Logout</Dropdown.Item>
 
                       </Dropdown.Menu>
                     </Dropdown>

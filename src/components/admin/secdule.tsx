@@ -10,7 +10,7 @@ import { format, parse } from 'date-fns'
 import { Spinner } from 'react-bootstrap';
 import { addMoreLive, addLiveInput, delPreview } from '../../redux/actions/instructor/live'
 import { SweetAlert } from '../../function/hooks';
-const Secdule = ({  onStepChange, onPrevStep, step }: any) => {
+const Secdule = ({ onStepChange, onPrevStep, step }: any) => {
     // const [date, setdate] = useState(new Date());
     // const [from_time, setfrom_time] = useState(new Date());
 
@@ -92,11 +92,18 @@ const Secdule = ({  onStepChange, onPrevStep, step }: any) => {
     }
 
 
-    const DelSedule = (i: number) => {
-        dispatch(delPreview(i))
-       
+    const DelSedule = (index: number) => {
+        if (errors) {
+            let findIndex = errors?.schedule?.filter((item, i) => {
+                return i !== index
+            })
+            setErrors({ schedule: findIndex })
+        }
+        dispatch(delPreview(index))
+
     }
 
+    console.log("Classes" , Classes)
 
 
     return (
@@ -125,73 +132,73 @@ const Secdule = ({  onStepChange, onPrevStep, step }: any) => {
 
                                 </div>
                                 <DatePicker
-                              onKeyDown={(e) => {
-                                e.preventDefault();
-                              }}
-                              selected={dat?.id || dat.date !== '' ? parse(dat.date, "yyyy-MM-dd", new Date()) : dat.date}
-                            //   selected={dat.date}
-                              locale="en-GB"
-                              placeholderText={'YYYY-MM-DD'} 
-                              timeIntervals={30}
+                                    onKeyDown={(e) => {
+                                        e.preventDefault();
+                                    }}
+                                    selected={dat?.id || dat.date !== '' ? parse(dat.date, "yyyy-MM-dd", new Date()) : dat.date}
+                                    //   selected={dat.date}
+                                    locale="en-GB"
+                                    placeholderText={'YYYY-MM-DD'}
+                                    timeIntervals={30}
 
-                              showWeekNumbers
-                              onChange={(date) => handleDateChange("date", i, date)}
-                              dateFormat="yyyy-MM-dd"
-                            />
+                                    showWeekNumbers
+                                    onChange={(date) => handleDateChange("date", i, date)}
+                                    dateFormat="yyyy-MM-dd"
+                                />
 
-                            {errors && errors?.schedule ? <div className="invalid mt-1">{errors?.schedule[i]?.date}</div> : null}
+                                {errors && errors?.schedule ? <div className="invalid mt-1">{errors?.schedule[i]?.date}</div> : null}
 
 
-                          </div>
-                          <div className="p-field mt-2 ">
-                            <div className="d-flex">
-                              {/* <Icons name="i24" /> */}
-                              <label>From</label>
                             </div>
-                            <DatePicker
-                              onKeyDown={(e) => {
-                                e.preventDefault();
-                              }}
-                              placeholderText={'HH-MM'} 
+                            <div className="p-field mt-2 ">
+                                <div className="d-flex">
+                                    {/* <Icons name="i24" /> */}
+                                    <label>From</label>
+                                </div>
+                                <DatePicker
+                                    onKeyDown={(e) => {
+                                        e.preventDefault();
+                                    }}
+                                    placeholderText={'HH-MM'}
 
-                              selected={dat?.id || dat.from_time !== '' ? parse(dat.from_time, "HH:mm:ss", new Date()) : dat.from_time}
-                            //   selected={dat.from_time}
-                              onChange={(date) => handleDateChange("from_time", i, date)}
-                              showTimeSelect
-                              showTimeSelectOnly
-                              timeIntervals={30}
-                              timeCaption="Time"
-                              dateFormat="h:mm"
-                            />
-                            {errors && errors?.schedule ? <div className="invalid mt-1">{errors?.schedule[i]?.from_time}</div> : null}
+                                    selected={dat?.id || dat.from_time !== '' ? parse(dat.from_time, "HH:mm:ss", new Date()) : dat.from_time}
+                                    //   selected={dat.from_time}
+                                    onChange={(date) => handleDateChange("from_time", i, date)}
+                                    showTimeSelect
+                                    showTimeSelectOnly
+                                    timeIntervals={30}
+                                    timeCaption="Time"
+                                    dateFormat="h:mm"
+                                />
+                                {errors && errors?.schedule ? <div className="invalid mt-1">{errors?.schedule[i]?.from_time}</div> : null}
 
-                          </div>
-                          <div className="p-field mt-2 ">
-                            <div className="d-flex">
-                              {/* <Icons name="i24" /> */}
-                              <label>To </label>
                             </div>
-                            <DatePicker
-                              onKeyDown={(e) => {
-                                e.preventDefault();
-                              }}
-                              placeholderText={'HH-MM'} 
+                            <div className="p-field mt-2 ">
+                                <div className="d-flex">
+                                    {/* <Icons name="i24" /> */}
+                                    <label>To </label>
+                                </div>
+                                <DatePicker
+                                    onKeyDown={(e) => {
+                                        e.preventDefault();
+                                    }}
+                                    placeholderText={'HH-MM'}
 
-                              name="to_time"
-                              selected={dat?.id || dat.to_time !== '' ? parse(dat.to_time, "HH:mm:ss", new Date()) : dat.to_time}
-                              // selected={dat.to_time}
-                              onChange={(date) => handleDateChange("to_time", i, date)}
-                              showTimeSelect
-                              showTimeSelectOnly
-                              timeIntervals={30}
-                              timeCaption="Time"
-                              dateFormat="h:mm"
-                            />
+                                    name="to_time"
+                                    selected={dat?.id || dat.to_time !== '' ? parse(dat.to_time, "HH:mm:ss", new Date()) : dat.to_time}
+                                    // selected={dat.to_time}
+                                    onChange={(date) => handleDateChange("to_time", i, date)}
+                                    showTimeSelect
+                                    showTimeSelectOnly
+                                    timeIntervals={30}
+                                    timeCaption="Time"
+                                    dateFormat="h:mm"
+                                />
 
-                            {errors && errors?.schedule ? <div className="invalid mt-1">{errors?.schedule[i]?.to_time}</div> : null}
+                                {errors && errors?.schedule ? <div className="invalid mt-1">{errors?.schedule[i]?.to_time}</div> : null}
 
 
-                          </div>
+                            </div>
                         </div>
 
                     )
@@ -205,12 +212,15 @@ const Secdule = ({  onStepChange, onPrevStep, step }: any) => {
                     <div className="d-flex mb-3 idfadsf-sads">
                         <button
                             className="upload-1 sdisad-dsdactive "
+                            id="activetab"
                             onClick={() => onPrevStep(step - 1)}
                         >
                             Previous
                         </button>
                         <button
                             className="upload-1 sdisad-dsdactive"
+                            id="activetab"
+
                             onClick={() => SaveLiveClasses()}
                         >
                             <i className="fa fa-save" style={{ marginRight: '10px' }}></i>

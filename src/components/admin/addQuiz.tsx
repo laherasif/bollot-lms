@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import { useSelector, RootStateOrAny, useDispatch } from "react-redux";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from 'axios'
 import { Spinner } from "react-bootstrap";
 import { SweetAlert } from "../../function/hooks";
@@ -12,19 +12,19 @@ import {
   addOptionInput,
   addQuestionInput, addOptionRadio
 } from '../../redux/actions/instructor/quiz'
-const options = ["one", "two", "three"];
 export default ({ onStepChange, onPrevStep, step }: any) => {
   // const intl = useIntl();
 
-  const [loading, setLoading] = useState(true)
+  // const [loading, setLoading] = useState(true)
   const [saveQuiz, setSaveQuiz] = useState(false)
   const [errors, setErrors] = useState([])
+  const [newError, setNewError] = useState('')
 
   const dispatch = useDispatch()
 
 
 
-  const {token} = useSelector((state: RootStateOrAny) => state?.admin)
+  const { token } = useSelector((state: RootStateOrAny) => state?.admin)
   const { Quiz } = useSelector((state: RootStateOrAny) => state?.quiz)
   const { courseId } = useSelector((state: RootStateOrAny) => state?.addCourse)
 
@@ -55,6 +55,8 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
   }
 
   const removeInputField = (index: number) => {
+    let find = errors.filter((item, i) => { return i !== index })
+    setErrors(find)
     dispatch(delQuiz(index))
 
   }
@@ -79,7 +81,7 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
 
   const UpdateQuiz = async () => {
     let value = {
-      course_id: courseId,
+      course_id: courseId ,
       questions: Quiz
     }
 
@@ -95,6 +97,10 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
       else {
         setSaveQuiz(false)
         setErrors(res.data.error.questions)
+        let check = res.data.error
+        if (typeof check === "string") {
+          setNewError(check)
+        }
       }
 
     } catch (error) {
@@ -121,7 +127,11 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
                   <div className="umpire-1 umpire-1-cst ">
                     <div className="maxima ">
                       <div className="idfadsf-sads">
-                        <button onClick={() => Questions()} className="upload-1 sdisad-dsdactive">
+                        <button onClick={() => Questions()}
+                          className="upload-1 sdisad-dsdactive"
+                          id="activetab"
+
+                        >
                           + Add More
                         </button>
                       </div>
@@ -194,7 +204,7 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
                     }
 
                     <div>
-                      {errors && errors[0]?.options ? <div className="invalid mt-1">{errors[0]?.options}</div> : null}
+                      {newError ? <div className="invalid mt-1">{newError}</div> : null}
                     </div>
 
                   </div>
@@ -211,6 +221,7 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
                   <div className="d-flex mb-3 idfadsf-sads">
                     <button
                       className="upload-1 sdisad-dsdactive "
+                      id="activetab"
                       onClick={() => onPrevStep(step - 1)}
                     >
                       Previous

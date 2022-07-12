@@ -18,6 +18,8 @@ import {
   UPDATE_ADMIN,
   ADD_STUDENT,
   ADD_INSTRUCTOR,
+  GET_ALL_COMPANIES,
+  GET_CODE_LANGUAGE,
 } from "../../types/types";
 
 const initialState = {
@@ -27,6 +29,7 @@ const initialState = {
   Transaction: {},
   Students: [],
   Instructor: [],
+  Company: [],
   Catagories: [],
   AllCourses: [],
   LiveCourses: [],
@@ -34,9 +37,7 @@ const initialState = {
   Blogs: [],
   News: [],
   MemberShips: [],
-
-
-
+  Language : [],
 };
 
 const AdminReducer = (state = initialState, action) => {
@@ -82,6 +83,12 @@ const AdminReducer = (state = initialState, action) => {
         Instructor: action.payload,
       };
 
+    case GET_CODE_LANGUAGE:
+      return {
+        ...state,
+        Language: action.payload
+      }
+
     case ADD_STUDENT:
       return {
         ...state,
@@ -95,6 +102,12 @@ const AdminReducer = (state = initialState, action) => {
         ...state,
         Students: action.payload,
       };
+
+    case GET_ALL_COMPANIES:
+      return {
+        ...state,
+        Company: action.payload
+      }
     case ADD_CATAGORY:
 
       return {

@@ -73,6 +73,7 @@ const Home: NextPage = () => {
 
                     <Breadcrumb>
                       <Breadcrumb.Item linkAs={Link} href="/en/instructor">Dashboard</Breadcrumb.Item>
+                      <Breadcrumb.Item linkAs={Link} href="/en/instructor/courses">Courses</Breadcrumb.Item>
                       <Breadcrumb.Item active>Live Courses</Breadcrumb.Item>
                     </Breadcrumb>
                     {/* <Link href="/en/instructor/courses" > */}
@@ -90,7 +91,7 @@ const Home: NextPage = () => {
                 <div className="complete-web-1 ">
                   <div className="umpire w-100">
                     <div className="umpire-1 umpire-1-cst ">
-
+                   
                     </div>
                   </div>
                 </div>

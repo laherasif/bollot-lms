@@ -10,46 +10,52 @@ import Link from "next/link";
 import { Small } from "../../../../src/components/admin/loader";
 import { Breadcrumb } from "react-bootstrap";
 import AdminAuth from "../../../../src/components/Hoc/adminRoute";
+import moment from "moment";
 
 const columns: any = [
   {
-    name: "User Id",
-    selector: "user_id",
-    sortable: true,
-
-  },
-
-  {
-    name: "Perticular",
-    selector: "particular",
+    name: "Transaction",
+    selector: "stripe_charge_id",
     sortable: true,
 
 
   },
 
   {
-    name: "Validate",
-    selector: "valid_till",
-    sortable: true,
-
-  },
-  {
-    name: "Action",
-    selector: "id",
+    name: "User",
     sortable: true,
     cell: (d: any) => (
-      <div className='d-flex pl-2'>
-
-        <div >
-          <i className='fa fa-edit'></i>
-        </div>
-
-        <div style={{ marginLeft: '20px' }}>
-          <i className='fa fa-trash'></i>
-        </div>
-
-      </div >
+      <div> {d?.user?.fullname}</div>
     )
+
+  },
+
+  {
+    name: "Request Date",
+    // selector: "created_At",
+    sortable: true,
+    cell: (d: any) => (
+      <div>  {moment(d?.created_At).format('ll')}</div>
+    )
+
+
+  },
+  {
+    name: "Total Amount",
+    selector: "amount",
+    sortable: true,
+    cell: (d: any) => (
+      <div>  ${d?.amount}</div>
+    )
+  },
+  {
+    name: "Paid Amount",
+    selector: "valid_till",
+    sortable: true,
+    cell: (d: any) => (
+      <div>  ${d?.amount}</div>
+    )
+
   }
 ];
 
@@ -65,7 +71,7 @@ const Home: NextPage = () => {
   }, [])
 
   const { Transaction } = useSelector((state: RootStateOrAny) => state?.admin)
-  const filteredItems = Transaction.transactions?.filter(item => item?.particular && item?.particular.toLowerCase().includes(filterText.toLowerCase()));
+  const filteredItems = Transaction.transactions?.filter(item => item?.user?.fullname && item?.user?.fullname.toLowerCase().includes(filterText.toLowerCase()));
   return (
     <div className="inst">
       <NavigationBar1 />
@@ -89,43 +95,60 @@ const Home: NextPage = () => {
                       </Breadcrumb>
                     </div>
                   </div>
-                  <div className="">
-                    <div className="">
-                      <div className="kjdaf-sadasnqeow-samd w-100">
 
-                        <div style={{ display: 'flex', justifyContent: 'center', width: '100%', marginBottom: '20px' }}>
-                          <div className="dsnodi-sdjsad">
-                            <div className="searchbar-icon">
-                              <FiSearch color="#8A8A8A" size={17} />
 
-                            </div>
-                            <input type="text" placeholder="Search" onChange={(e) => setFilterText(e.target.value)} value={filterText} />
-                          </div>
+                  <div className="complete-web-1 mt-2">
+                    <div className="umpire w-100">
+                      <div className="umpire-1 umpire-1-cst ">
+                        <div className="d-flex mb-3 course">
+                          <button className="upload-1 sdisad-dsdactive" id="activetab">
+                            Transactions
+                          </button>
+                          <Link href="/en/admin/cashTransaction">
+                            <button className="upload-1" >Cash Transaction</button>
+                          </Link>
+                          
+
 
                         </div>
-                        <div className="w-100">
-                          <DataTable
-                            columns={columns}
-                            data={filteredItems}
-                            sortIcon={<i className='fa fa-arrow-down'></i>}
-                            pagination
-                            // selectableRows
-                            highlightOnHover
-                          />
-                        </div>
+
                       </div>
+                    </div>
+                  </div>
 
 
+
+                  <div style={{ display: 'flex', justifyContent: 'center', width: '100%', marginBottom: '20px' }}>
+                    <div className="dsnodi-sdjsad">
+                      <div className="searchbar-icon">
+                        <FiSearch color="#8A8A8A" size={17} />
+
+                      </div>
+                      <input type="text" placeholder="Search" onChange={(e) => setFilterText(e.target.value)} value={filterText} />
                     </div>
 
                   </div>
+                  <div className="w-100">
+                    <DataTable
+                      columns={columns}
+                      data={filteredItems}
+                      sortIcon={<i className='fa fa-arrow-down'></i>}
+                      pagination
+                      // selectableRows
+                      highlightOnHover
+                    />
+                  </div>
                 </div>
+
+
+
+
               </div>
             </div>
         }
-      </section>
-    </div>
+      </section >
+    </div >
   );
 };
 
-export default AdminAuth( Home );
+export default AdminAuth(Home);

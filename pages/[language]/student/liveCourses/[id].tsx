@@ -1,17 +1,9 @@
 import type { NextPage } from "next";
-import Dropdown from "../../../../src/components/student/dropdown";
-import { useIntl } from "react-intl";
 import Sidebar from "../../../../src/components/student/sidebar";
-import { FiSearch } from "react-icons/fi";
-import { BiBell } from "react-icons/bi";
-import { IoMailOutline } from "react-icons/io5";
-import Icons from "../../../../src/icons";
 import TopNavbar from "../../../../src/components/student/TopNavbar";
 import LiveCourses from "../../../../src/components/student/LiveCourses";
 import NavigationBar1 from "../../../../src/components/student/NavigationBar1";
-const options = ["one", "two", "three"];
 import React, { useState, useEffect } from 'react'
-import instance from "../../../../src/confiq/axios/instance";
 import withAuth from "../../../../src/components/Hoc/authRoute";
 import { useSelector, RootStateOrAny } from "react-redux";
 import axios from 'axios'
@@ -20,8 +12,8 @@ import Link from "next/link";
 import { SweetAlert } from "../../../../src/function/hooks";
 
 const Home: NextPage = () => {
-  // const intl = useIntl();
   const [course, setCourse] = useState([])
+  const [unApCourses, setUnApCourses] = useState([])
   const [loading, setLoading] = useState(false)
   const token = useSelector((state: RootStateOrAny) => state?.userReducer?.token)
 
@@ -41,6 +33,7 @@ const Home: NextPage = () => {
         if (res.data.success === true) {
           setLoading(false)
           setCourse(res.data.response.courses)
+          setUnApCourses(res.data.response.unapproved_courses)
         }
       } catch (error) {
         SweetAlert({ icon: "error", text: error })
@@ -49,6 +42,8 @@ const Home: NextPage = () => {
     }
     fetchCourse()
   }, [])
+
+  console.log("unp", unApCourses)
 
   return (
     <>
@@ -75,6 +70,21 @@ const Home: NextPage = () => {
                       if (course?.schedule.length)
                         return (
                           <LiveCourses course={course} key={course.id} />
+                        )
+                    })
+                      : <div>Record not found </div>
+                    }
+
+                  </div>
+
+                  <h3>Waiting for Admin's Approval</h3>
+
+                  <div className="complete-web-1">
+
+                    {unApCourses && unApCourses.length > 0 ? unApCourses.map((course: any) => {
+                      if (course?.schedule.length)
+                        return (
+                          <LiveCourses course={course} key={course.id} unapprove={true} />
                         )
                     })
                       : <div>Record not found </div>

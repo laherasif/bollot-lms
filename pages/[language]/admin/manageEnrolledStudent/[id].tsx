@@ -42,6 +42,8 @@ const Home: NextPage = () => {
 
   let router = useRouter()
   let courseId = router.query.id
+  let courseLive = router.query.live
+  let courseTitle = router.query.title
 
   useEffect(() => {
     let fetchCourse = async () => {
@@ -88,10 +90,10 @@ const Home: NextPage = () => {
 
                     <Breadcrumb>
                       <Breadcrumb.Item linkAs={Link} href="/en/admin/dashboard">Dashboard</Breadcrumb.Item>
-                      <Breadcrumb.Item linkAs={Link} href="/en/admin/courses" >
-                        Courses
+                      <Breadcrumb.Item linkAs={Link} href={courseTitle ? "/en/admin/courses" : "/en/admin/liveCourses"}>
+                        {courseTitle ? "Courses" : "Live Course"}
                       </Breadcrumb.Item>
-                      <Breadcrumb.Item active>Enrolled Students </Breadcrumb.Item>
+                      <Breadcrumb.Item active>Course : {courseLive || courseTitle}</Breadcrumb.Item>
                     </Breadcrumb>
 
                     {/* <Link href="/en/admin/" >
@@ -161,4 +163,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default AdminAuth( Home );
+export default AdminAuth(Home);

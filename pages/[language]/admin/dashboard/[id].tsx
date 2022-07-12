@@ -1,19 +1,25 @@
 import type { NextPage } from "next";
-import { useIntl } from "react-intl";
 import Sidebar from "../../../../src/components/admin/sidebar2";
-// import { FiSearch } from "react-icons/fi";
-// import { BiBell } from "react-icons/bi";
-// import { IoMailOutline } from "react-icons/io5";
-// import Icons from "../../../src/icons";
-// import TopNavbar from "../../../src/components/TopNavbar";
 import NavigationBar1 from "../../../../src/components/admin/NavigationBar3";
 import Chart from "../../../../src/components/admin/chart";
 import Chart1 from "../../../../src/components/admin/chart1";
 import BarChart from "../../../../src/components/admin/barchart";
 // import DashboardRightBar from "../../../../src/components/admin/DashboardRightBar";
 import React, { useState, useEffect } from 'react'
-import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
-import { getAllInstructor, getAllStudent, getCatagories, getStatistic, getTransaction } from '../../../../src/redux/actions/admin'
+import {
+  RootStateOrAny,
+  useDispatch,
+  useSelector
+} from "react-redux";
+import {
+  getAllInstructor,
+  getAllStudent,
+  getAllCompany,
+  getCatagories,
+  getStatistic,
+  getTransaction,
+  getCodeLanguage,
+} from '../../../../src/redux/actions/admin'
 import axios from "axios";
 import { Small } from "../../../../src/components/admin/loader";
 import { SweetAlert } from "../../../../src/function/hooks";
@@ -22,8 +28,7 @@ import AdminAuth from "../../../../src/components/Hoc/adminRoute";
 const Home: NextPage = () => {
   // const intl = useIntl();
   const [loading, setLoading] = useState(false)
-  const { token, Admin } = useSelector((state: RootStateOrAny) => state?.admin)
-  const { Statistic } = useSelector((state: RootStateOrAny) => state?.admin)
+  const { token, Admin, Statistic } = useSelector((state: RootStateOrAny) => state?.admin)
 
   const AxInstance = axios.create({
     // .. where we make our configurations
@@ -33,6 +38,8 @@ const Home: NextPage = () => {
     }
   });
 
+  console.log("token", token)
+
 
   const dispatch = useDispatch()
 
@@ -41,15 +48,28 @@ const Home: NextPage = () => {
   useEffect(() => {
     let fetchCourse = async () => {
       try {
+        const options: Object = {
+          method: 'GET',
+          url: 'https://judge0-ce.p.rapidapi.com/languages',
+          headers: {
+            'X-RapidAPI-Key': "dc684477damsh4a8d57199134a8ep144f2fjsndb99bad0d80a",
+            'X-RapidAPI-Host': "judge0-ce.p.rapidapi.com"
+          }
+        };
+
         setLoading(true)
         let res = await AxInstance.get('api//admin/students')
         let resIns = await AxInstance.get('api//admin/instructors')
+        let resComp = await AxInstance.get('api//admin/businesses')
         let resCata = await AxInstance.get('api//admin/categories')
         let resStat = await AxInstance.get('api//admin/dashboard-stats')
         let resTran = await AxInstance.get('api//admin/transactions')
+        let resLang = await axios.request(options);
         if (res.data.success === true) {
+          dispatch(getCodeLanguage(resLang.data))
           dispatch(getAllStudent(res.data))
           dispatch(getAllInstructor(resIns.data))
+          dispatch(getAllCompany(resComp.data))
           dispatch(getCatagories(resCata.data.response.categories))
           dispatch(getStatistic(resStat.data.response.data))
           dispatch(getTransaction(resTran.data.response))
@@ -57,28 +77,36 @@ const Home: NextPage = () => {
         }
       }
       catch (err) {
-        SweetAlert({icon : "error" , text: err})
+        SweetAlert({ icon: "error", text: err })
       }
     }
     fetchCourse()
   }, [])
 
   return (
+    // <div className="inst">
+
+    //   <NavigationBar1 />
+    //   {/* <div className="kjfads0-asdi3">
+    //     <Sidebar />
+    //   </div> */}
+    //   <section className="dash-board jadsifd-asdasid">
+    //     <div className="jcoiasd03-eakw3e1" >
+    //       <Sidebar />
+    //     </div>
+
     <div className="inst">
-
       <NavigationBar1 />
-      <div className="kjfads0-asdi3">
-        <Sidebar />
-
-      </div>
       <section className="dash-board jadsifd-asdasid">
-        <div className="jcoiasd03-eakw3e1" >
-          <Sidebar />
+        <div className="ksadsa-w4a3k4">
+          <div className="jcoiasd03-eakw3e1">
+            <Sidebar />
+          </div>
         </div>
 
         {
           loading ?
-              Small()
+            Small()
             :
             <div className="dash-board-1">
               <div className="dash-2 ">
@@ -107,7 +135,7 @@ const Home: NextPage = () => {
                     </div>
                     <div className="cards">
                       <Chart1
-                        label="Student Enrolled"
+                        label="Students Enrolled This Month"
                         value={Statistic?.total_students_learning}
                         color={"green"}
                         strokeColor="green"
@@ -188,4 +216,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default AdminAuth( Home );
+export default AdminAuth(Home);

@@ -84,28 +84,21 @@ const userReducer = (state = initialState, action) => {
     case ADD_SOCIAL_MEDIA:
       debugger
       if (action.payload.provided.providerId === "google.com") {
-        let Google = state.User.map((item) => {
-         item.id === action.payload.data.id ? 
-        //  if (item.id === action.payload.data.id) ;
-          item.google_user_id = action.payload.provided.uid
-          : item 
-          
-        })
         return {
           ...state,
-          User: Google
+          User: state.User.id === action.payload.data.id ?
+            //  if (item.id === action.payload.data.id) ;
+            state.User.google_user_id = action.payload.provided.uid
+            : state.User
         }
       }
       else {
-        let Facebook = state.User.map((item) => {
-          if (item.id === action.payload.data.id) {
-            return item.fb_user_id = action.payload.data.fb_user_id
-          }
-          return item
-        })
+
         return {
           ...state,
-          User: Facebook
+          User: state.User.item.id === action.payload.data.id ?
+          state.User.fb_user_id = action.payload.data.fb_user_id
+        : state.User
         }
       }
     case LOGOUT_INST: {

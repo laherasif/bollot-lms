@@ -226,7 +226,10 @@ const EditUser = ({ Toggle, permition }: any) => {
                 <Modal.Footer>
 
                     <div className="idfadsf-sads kajfds-sdfe">
-                        <button onClick={() => SaveProfile()} className="upload-1 sdisad-dsdactive">
+                        <button onClick={() => SaveProfile()} 
+                        className="upload-1 sdisad-dsdactive"
+                        id="activetab"
+                        >
                             {loading ?
                                 <Spinner animation="border" />
 

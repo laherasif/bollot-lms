@@ -1,25 +1,18 @@
 import type { NextPage } from "next";
 import { Form, Spinner } from "react-bootstrap";
 
-import { useIntl } from "react-intl";
-// import OrderDetailCard from "../../../src/components/card/OrderDetailCard";
 import React, { useState, useEffect } from "react";
 import Footer from "../../../src/components/footer";
 import Navbar from "../../../src/components/header/Navbar";
-import Icons from "../../../src/icons";
 import { useSelector, RootStateOrAny, useDispatch } from "react-redux";
 // import cart from "../cart";
 import { ResetCart, SaveCard } from "../../../src/redux/actions/course/course";
 import axios from "axios";
-import instance from "../../../src/confiq/axios/instance";
 import {
   formatCreditCardNumber,
   formatCVC,
   formatMonth,
 } from "../../../src/components/util";
-import StripeContainer from "../../../src/components/payment/stripContainer";
-import withAuth from '../../../src/components/Hoc/authRoute'
-import SucessCheckout from '../../../src/components/sucessCheckout'
 import { useRouter } from 'next/router'
 import { SweetAlert } from "../../../src/function/hooks";
 import { Small } from "../../../src/components/student/loader";
@@ -37,6 +30,7 @@ const Home: NextPage = () => {
   const [loading, setLoading] = useState(true);
   const [errors, setErrors] = useState('')
   const [cardType, setCardType] = useState(0)
+  const [type, setType] = useState(null)
   const [cvc, setCvc] = useState('');
   const [card, setCard] = useState('');
   const [exMoth, setExMoth] = useState('');
@@ -209,8 +203,12 @@ const Home: NextPage = () => {
     }
     try {
 
+      let payment = { courses: courses, payment_method: cardType }
+      let cash = { courses: courses, is_cash: 1 }
+
+
       setComplPay(true)
-      let res = await AxInstance.post('api//checkout', { courses: courses, payment_method: cardType })
+      let res = await AxInstance.post('api//checkout', type === 0 ? cash : payment  )
       if (res.data.success === true) {
         setComplPay(false)
         dispatch(ResetCart())
@@ -219,12 +217,16 @@ const Home: NextPage = () => {
       }
       else {
         setLoader(false)
+        setComplPay(false)
+
         SweetAlert({ icon: "error", text: res.data.error })
 
       }
     }
     catch (err) {
       setLoader(false)
+      setComplPay(false)
+
       SweetAlert({ icon: "error", text: err })
 
     }
@@ -273,44 +275,52 @@ const Home: NextPage = () => {
           <div className="container-3">
             <div className="shipping-2">
               <h3>Checkout</h3>
-              <p className="msakdo-sda">Billing Address:</p>
+              <p className="msakdo-sda">Payement Method:</p>
             </div>
             <div className="d-flex justify-content-between hdsafjf-dsa ">
               <div className="jasdf-dsandase">
-                {cardDetail ? cardDetail.map((card) => (
-                  <div key={card?.id}>
-                    <button className="btn" onClick={() => setCardType(card?.id)}>
-                      <div>
-                        <span>
-                          <input
-                            type="radio"
-                            name="cardType"
-                            checked={cardType === card?.id}
-                            onChange={(e) => setCardType(card?.id)}
-                          />
-                        </span>
-                        {card?.brand} ( {card?.last4} )
-                      </div>
-                      <div style={{ display: 'flex' }}>
-                        <img src={`/assets/images/${card?.brand}.svg`} alt="cards" style={{ border: '1pt solid ', marginLeft: '5px', width: '40px', padding: '2px', height: '30px' }} />
+                {type === 1 ?
+                  <>
+                    {
+                      cardDetail ? cardDetail.map((card) => (
+                        <div key={card?.id}>
+                          <button className="btn" onClick={() => setCardType(card?.id)}>
+                            <div>
+                              <span>
+                                <input
+                                  type="radio"
+                                  name="cardType"
+                                  checked={cardType === card?.id}
+                                  onChange={(e) => setCardType(card?.id)}
+                                />
+                              </span>
+                              {card?.brand} ( {card?.last4} )
+                            </div>
+                            <div style={{ display: 'flex' }}>
+                              <img src={`/assets/images/${card?.brand}.svg`} alt="cards" style={{ border: '1pt solid ', marginLeft: '5px', width: '40px', padding: '2px', height: '30px' }} />
 
-                      </div>
-                    </button>
-                  </div>
-                ))
-                  : Small()
-                }
+                            </div>
+                          </button>
+                        </div>
+                      ))
+                        : Small()
+                    }
 
-                <div>
-                  <span
-                    style={{ cursor: 'pointer', color: 'blue' }}
-                    onClick={() => setPayments(!payments)}
-                  >
-                    + Add another payment method
-                  </span>
-                </div>
+                    <div>
+                      <span
+                        style={{ cursor: 'pointer', color: 'blue' }}
+                        onClick={() => setPayments(!payments)}
+                      >
+                        + Add another payment method
+                      </span>
+                    </div>
+                  </>
+                  : null}
 
-                {payments ?
+
+
+
+                {payments && type === 1 ?
                   <>
                     <div className="d-flex justify-content-between flex-wrap mt-3">
 
@@ -361,6 +371,69 @@ const Home: NextPage = () => {
                   </>
                   : null}
 
+                <div className="row mt-4">
+                  <div className="col-12 col-md-6 mt-10 col-md-offset-1 " >
+                    <div
+                      data-cy="button-box"
+                      id="up-button-box"
+                      className={`up-button-box ${type === 0 ? 'up-button-box  up-button-box-radio active' : ''} `}
+                      style={{ height: '100%', display: 'flex', alignItems: 'center' }}
+                      onClick={() => setType((0))}
+                    >
+
+                      <div className="up-radio">
+
+                        <label className="up-checkbox-label" htmlFor="up-button-box">
+                          <input
+                            type="radio"
+                            checked={type === 0}
+                            name="student"
+                            onChange={(e) => setType(0)}
+                          />
+                          <span className="up-checkbox-replacement-helper">
+                            {/**/} {/**/}{" "}
+                          </span>{" "}
+                        </label>
+                      </div>{" "}
+                      <div className="mt-2" >
+                        <h4>Cash</h4>
+                      </div>
+
+
+                    </div>
+                  </div>
+                  <div className="col-12 col-md-6 mt-10 col-md-offset-1 " >
+                    <div
+                      data-cy="button-box"
+                      id="up-button-box"
+                      style={{ height: '100%', display: 'flex', alignItems: 'center' }}
+                      className={`up-button-box ${type === 1 ? 'up-button-box  up-button-box-radio active' : ''} `}
+                      onClick={() => setType((1))}
+                    >
+
+                      <div className="up-radio">
+
+                        <label className="up-checkbox-label" htmlFor="up-button-box">
+                          <input
+                            type="radio"
+                            checked={type === 1}
+                            name="student"
+                            onChange={(e) => setType(1)}
+                          />
+                          <span className="up-checkbox-replacement-helper">
+                            {/**/} {/**/}{" "}
+                          </span>{" "}
+                        </label>
+                      </div>{" "}
+                      <div className="mt-2" >
+                        <h4>Debit / Credit Card</h4>
+                      </div>
+
+
+                    </div>
+                  </div>
+                </div>
+
                 <div className="mt-3">
                   <h3 style={{ fontSize: '18px', fontWeight: '600' }}>Order Summary</h3>
                   {
@@ -376,6 +449,7 @@ const Home: NextPage = () => {
 
 
               </div>
+
               <div className="photo-maker-2">
 
                 <h4>Summary</h4>
@@ -408,8 +482,8 @@ const Home: NextPage = () => {
                 <button
                   className="btn-2s w-100 mt-3"
                   onClick={(e) => handleSubmit(e)}
-                  disabled={cardType ? false : true}
-                  style={cardType ? { opacity: 1 } : { opacity: 0.5 }}
+                  disabled={cardType || type ===  0 ? false : true}
+                  style={cardType || type ===  0 ? { opacity: 1 } : { opacity: 0.5 }}
                 >
                   {complPay ?
                     <div className="spinner-border text-light" style={{ marginBottom: '-5px', fontSize: '20px', width: '25px', height: '25px' }} role="status">

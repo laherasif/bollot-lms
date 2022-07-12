@@ -6,19 +6,15 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import AddCourse from "../../../../src/components/admin/addCourse";
 import AddQuiz from "../../../../src/components/admin/addQuiz";
+import AddPreQuiz from "../../../../src/components/admin/addPreQuiz";
 import Criculum from "../../../../src/components/admin/circulum";
 import Previews from "../../../../src/components/admin/preview";
 import { Small } from "../../../../src/components/admin/loader";
-import { useRouter } from "next/router";
-// import instance from "../../../../src/confiq/axios/instance";
-import { clearStates } from "../../../../src/redux/actions/instructor/preview";
-import { useDispatch } from "react-redux";
-// import { SweetAlert } from "../../../../src/function/hooks";
 import { Breadcrumb } from "react-bootstrap";
 import AdminAuth from "../../../../src/components/Hoc/adminRoute";
+import { useRouter } from "next/router";
 // const options = ["one", "two", "three"];
 const Home: NextPage = () => {
-  // const intl = useIntl();
   const [step, setStep] = useState(0);
   const [loading, setLoading] = useState(false);
 
@@ -26,28 +22,10 @@ const Home: NextPage = () => {
     { one: true },
 
   ]);
-  const dispatch = useDispatch()
-
-  // const [courseId, setCourseId] = useState('');
 
   const router = useRouter()
-  const id = router.query.id
-  const live = router.query.live
 
-
-  // useEffect(() => {
-  //   try {
-  //     let fetchCourse = async () => {
-  //       // await instance.get(`api//admin/courses/${id}`)
-  //     }
-  //     fetchCourse()
-  //   }
-  //   catch (err) {
-  //     SweetAlert({ icon: 'error', text: err })
-  //   }
-  // }, [id])
-
-
+  const liveCourse = router.query.live
 
 
 
@@ -57,13 +35,6 @@ const Home: NextPage = () => {
       setLoading(false)
     }, 2000);
   }, [])
-
-
-  const ClearState = () => {
-    dispatch(clearStates())
-  }
-
-
 
 
   const stepChangeHandler = () => {
@@ -79,8 +50,12 @@ const Home: NextPage = () => {
     else if (step + 1 === 3) {
       setStepn([...stepn, { fr: true }])
     }
+    else if (step + 1 === 4) {
+      setStepn([...stepn, { fv: true }])
+    }
 
     setStep(step + 1);
+    // dispatch(pageNo(step + 1))
 
   }
   return (
@@ -101,17 +76,13 @@ const Home: NextPage = () => {
                   <div className="back-btn">
 
                     <Breadcrumb>
-                      <Breadcrumb.Item linkAs={Link} href="/en/admin/dashboard" onClick={() => ClearState()}>Dashboard</Breadcrumb.Item>
-                      <Breadcrumb.Item linkAs={Link} href={live === '' ? '/en/admin/liveCourses' : "/en/admin/courses" } onClick={() => ClearState()}>Courses</Breadcrumb.Item>
-                      <Breadcrumb.Item active>{id ? "Edit Course" : "Add Course"}</Breadcrumb.Item>
+                      <Breadcrumb.Item linkAs={Link} href="/en/admin/dashboard">Dashboard</Breadcrumb.Item>
+                      <Breadcrumb.Item href= {liveCourse === '' ? "/en/admin/liveCourses" :"/en/admin/courses"}>
+                        {liveCourse === '' ? "Live Courses" : "Courses"}
+                      </Breadcrumb.Item>
+                      <Breadcrumb.Item active>Add Course</Breadcrumb.Item>
                     </Breadcrumb>
-
-                    {/* <Link href="/en/admin/courses" >
-                    <h3 onClick={() => ClearState()} className="back-arrow">
-                      <i className="fa fa-arrow-left"></i>
-                      Back</h3>
-                  </Link>
-                  <h3>Add New Courses</h3> */}
+                    <h3>Add New Courses</h3>
                   </div>
 
                 </div>
@@ -124,53 +95,62 @@ const Home: NextPage = () => {
                 <div className="complete-web-1">
                   <div className="container-fluid">
                     <div className="row justify-content-center">
-                      <div className="col-11 col-sm-10 col-md-10 col-lg-6 col-xl-5  p-0 mt-3 mb-2" style={{ width: '60%' }}>
-                        <div className="card px-0 pt-4 pb-0 mt-3 mb-3">
+                      <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12  p-0 mt-3 mb-2" >
+                        <div className="card px-0 pt-4 pb-0 mt-3 form_card" >
                           <div id="msform">
                             {/* progressbar */}
-                            <ul id="progressbar" style={{ padding: '0px 10%' }}>
+                            <ul id="progressbar" >
                               <li className="active" id="account">
                                 <strong>Add Course</strong>
                               </li>
-                              <li className={stepn[1]?.tw ? "active" : ''} id="personal">
+                              <li className={stepn[1]?.tw ? "active" : ''} id="prequiz">
+                                <strong>Add Pre Quiz</strong>
+                              </li>
+                              <li className={stepn[2]?.th ? "active" : ''} id="personal">
                                 <strong>Plan Your Course </strong>
                               </li>
-                              <li className={stepn[2]?.th ? "active" : ''} id="payment">
+                              <li className={stepn[3]?.fr ? "active" : ''} id="payment">
                                 <strong>Add Quiz</strong>
                               </li>
-                              <li className={stepn[3]?.fr ? "active" : ''} id="confirm">
+                              <li className={stepn[4]?.fv ? "active" : ''} id="confirm">
                                 <strong>Add Preview</strong>
                               </li>
                             </ul>
 
                             <br /> {/* fieldsets */}
                             <fieldset>
-                              <div style={{ textAlign: 'left', padding: '0px 30px' }}>
+                              <div className="course_padding">
                                 {/* {stepPages[step]} */}
                                 {step === 0 && <AddCourse
+                                  // handleCourseId={(value: any) => setCourseId(value)}
                                   onStepChange={stepChangeHandler}
                                 // errors={errors}
                                 />}
-                                {step === 1 && <Criculum
+
+                                {step === 1 && <AddPreQuiz
                                   onStepChange={stepChangeHandler}
                                   onPrevStep={(step: any) => setStep(step)}
                                   step={1}
                                 // errors={errors}
                                 />}
-                                {step === 2 &&
-                                  <AddQuiz
-                                    onStepChange={stepChangeHandler}
-                                    onPrevStep={(step: any) => setStep(step)}
-                                    step={2}
-                                  // errors={errors}
-                                  />}
-                                {step === 3 &&
-                                  <Previews
-                                    onStepChange={stepChangeHandler}
-                                    onPrevStep={(step: any) => setStep(step)}
-                                    step={3}
-                                  // errors={errors}
-                                  />}
+                                {step === 2 && <Criculum
+                                  onStepChange={stepChangeHandler}
+                                  onPrevStep={(step: any) => setStep(step)}
+                                  step={2}
+                                // errors={errors}
+                                />}
+                                {step === 3 && <AddQuiz
+                                  onStepChange={stepChangeHandler}
+                                  onPrevStep={(step: any) => setStep(step)}
+                                  step={3}
+                                // errors={errors}
+                                />}
+                                {step === 4 && <Previews
+                                  onStepChange={stepChangeHandler}
+                                  onPrevStep={(step: any) => setStep(step)}
+                                  step={4}
+                                // errors={errors}
+                                />}
 
                               </div>
                             </fieldset>
@@ -193,4 +173,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default  AdminAuth(Home);
+export default AdminAuth(Home);

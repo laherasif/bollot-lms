@@ -101,10 +101,14 @@ const Home: NextPage = () => {
             getMessages(finds?.user_id == User?.id ? finds?.user_two_details : finds?.user_details, CovId)
           }
         }
+        else {
+          setLoaders(false)
+
+        }
       }
       catch (err) {
         setLoader(false)
-        SweetAlert({ icon:  "error" , text : err})
+        SweetAlert({ icon: "error", text: err })
 
       }
     }
@@ -215,13 +219,7 @@ const Home: NextPage = () => {
           <div className="dash-2">
             <div className="my-course">
               <TopNavbar />
-              <div className="hdsf0s-sadmsa">
-                <div>
-                  <h3>Inbox</h3>
-                </div>
-
-
-              </div>
+              
               <br />
 
               {/* <div className="complete-web-1 ">
@@ -258,7 +256,7 @@ const Home: NextPage = () => {
                     <FiSearch color="#8A8A8A" size={17} />
                     <input type="text" placeholder="Search" name="filterText" value={filterText} onChange={(e) => setFilterText(e.target.value)} />
                   </div>
-                  {filteredCon?.length ? filteredCon?.map((ins: any, index: number) => {
+                  {filteredCon?.length > 0 ? filteredCon?.map((ins: any, index: number) => {
                     if (ins?.user_id == User?.id)
                       return (
                         <div className={CovId == ins?.id || convId == ins?.id ? "user-card-inbox active" : "user-card-inbox "} onClick={() => getMessages(ins.user_two_details, ins.id)} key={index}>
@@ -277,12 +275,15 @@ const Home: NextPage = () => {
                         // <UserChatCard users={ins.user_two_details} key={index} handleClick={(value) => getMessages(value)} />
                       )
                   })
-                    :
+                    : <div style={{ padding: '20px' }}>No conversation </div>
+
+                  }
+
+                  {loaders ?
                     <div className="spinner-chatbox">
                       <Spinner animation="border" />
                     </div>
-                  }
-
+                    : null}
 
 
                 </div>

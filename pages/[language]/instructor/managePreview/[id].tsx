@@ -31,7 +31,7 @@ const Home: NextPage = () => {
   const [loading, setLoading] = useState(false)
   const [loader, setLoader] = useState(false)
   const [network, setNetwork] = useState(false)
-  const [errors, setErrors] = useState({})
+  const [errors, setErrors] = useState([])
 
   const token = useSelector((state: RootStateOrAny) => state?.userReducer?.token)
 
@@ -47,6 +47,8 @@ const Home: NextPage = () => {
   let router = useRouter()
 
   let courseId = router.query.id
+  let courseTitle = router.query.title
+  let courseLive = router.query.live
 
 
 
@@ -70,13 +72,19 @@ const Home: NextPage = () => {
     fetchCourse()
   }, [courseId])
 
+  console.log("errors", errors)
+
 
 
   const AddmoreSection = () => {
+
+    // setErrors({})
+
     setSection([
       ...section,
       { title: "", file_type: '', object_key: '', thumbnail: '', progressbar: '', file_size: '', uuid: '' },
     ])
+
 
   }
 
@@ -87,6 +95,7 @@ const Home: NextPage = () => {
     lists[index][name] = value;
     setSection(lists);
   }
+
 
 
 
@@ -146,12 +155,20 @@ const Home: NextPage = () => {
     const row = [...section];
     row.splice(index, 1);
     setSection(row);
+    if (errors) {
+      delete errors[index];
+      while (++index in errors) {
+        errors[index - 1] = errors[index];
+        delete errors[index];
+      }
+
+    }
 
 
   }
 
 
-
+  console.log("error", errors)
 
 
 
@@ -168,9 +185,16 @@ const Home: NextPage = () => {
       setLoader(true)
       let res = await AxInstance.post('api//instructor/courses/previews/update', saveCri)
       if (res.data.success === true) {
-        setErrors({})
+        // setErrors({})
         setLoader(false)
         SweetAlert({ icon: "success", text: res.data.message })
+        if (courseTitle) {
+          router.push('/en/admin/liveCourses')
+        }
+        else {
+          router.push('/en/admin/courses')
+
+        }
       }
       else {
         setLoader(false)
@@ -186,8 +210,10 @@ const Home: NextPage = () => {
   }
 
 
+
+
   const delThumnail = (index: number,) => {
-    
+
     const lists: any = [...section];
     for (let j = 0; j < lists.length; j++) {
       if (j === index) {
@@ -230,10 +256,10 @@ const Home: NextPage = () => {
 
                     <Breadcrumb>
                       <Breadcrumb.Item linkAs={Link} href="/en/instructor/">Dashboard</Breadcrumb.Item>
-                      <Breadcrumb.Item linkAs={Link} href="/en/instructor/courses" >
-                        Courses
+                      <Breadcrumb.Item linkAs={Link} href={courseTitle ? "/en/instructor/courses" : "/en/instructor/liveCourses"}>
+                        {courseTitle ? "Courses" : "Live Course"}
                       </Breadcrumb.Item>
-                      <Breadcrumb.Item active>Manage Previews </Breadcrumb.Item>
+                      <Breadcrumb.Item active>Course : {courseTitle || courseLive} </Breadcrumb.Item>
                     </Breadcrumb>
                     {/* <h3>Manage Preview Video</h3> */}
                   </div>
@@ -252,9 +278,13 @@ const Home: NextPage = () => {
                           disabled={red ? true : false}
                           style={red ? { opacity: '0.5' } : { opacity: 1 }}
                           onClick={() => AddmoreSection()}
+                          id="activetab"
+
                         >
                           + Add more preview </button>
                         <button className="upload-1 sdisad-dsdactive"
+                          id="activetab"
+
                           disabled={red ? true : false}
                           style={red ? { opacity: '0.5' } : { opacity: 1 }}
                           onClick={() => SaveCriculum()}
@@ -363,4 +393,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default withAuth( Home );
+export default withAuth(Home);

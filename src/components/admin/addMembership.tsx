@@ -38,7 +38,7 @@ const MemberShip = ({ Toggle, permition, User }: any) => {
     });
 
     const handleClose = () => {
-        Toggle({ type: "close"})
+        Toggle({ type: "close" })
     }
 
 
@@ -220,13 +220,19 @@ const MemberShip = ({ Toggle, permition, User }: any) => {
                 </Modal.Body>
                 <Modal.Footer>
                     <div className="idfadsf-sads kajfds-sdfe">
-                        <button onClick={() => handleClose()} className="upload-1 sdisad-dsdactive">
+                        <button onClick={() => handleClose()}
+                            className="upload-1 sdisad-dsdactive"
+                            id="activetab"
+                        >
 
                             Close
                         </button>
                     </div>
                     <div className="idfadsf-sads kajfds-sdfe">
-                        <button onClick={() => SaveProfile()} className="upload-1 sdisad-dsdactive">
+                        <button onClick={() => SaveProfile()}
+                            className="upload-1 sdisad-dsdactive"
+                            id="activetab"
+                        >
                             {loading ?
                                 <Spinner animation="border" />
                                 :

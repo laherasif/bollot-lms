@@ -63,13 +63,11 @@ const Card: React.FC<QuestionTypes> = ({  options, question, questionId ,  callb
                                         >
                                             prev </button> */}
                                         <button className="upload-1 sdisad-dsdactive mt-2"
+                                        id="activetab"
                                         // onClick={() => SaveCriculum()}
                                         >
                                             <i className="fa fa-save" style={{ marginRight: '10px' }}></i>
-                                            {/* {loader ? <Spinner animation="border" /> */}
-                                            {/* : */}
                                             Next
-                                            {/* } */}
                                         </button>
 
                                     </div>

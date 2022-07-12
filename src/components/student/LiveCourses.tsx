@@ -3,7 +3,7 @@ import React from "react";
 import { Dropdown } from "react-bootstrap";
 import Icons from "../../icons";
 import blackIcon from '../../assets/images/apple.svg'
-export default ({ course, key }: any) => {
+export default ({ course, key, unapprove }: any) => {
   return (
     <div className="cm-web" key={key}>
       <Link href={`/en/student/details/${course?.slug}`}>
@@ -21,7 +21,8 @@ export default ({ course, key }: any) => {
             <div className="dhafusd9we0sd">
               <div className="dhafusd9we0sd1" style={{ border: '1pt solid ' }}>
                 <Icons name="c42" />
-                <p style={{color:'green'}} >{course?.status}</p>
+                <p style={unapprove ? { color: 'orange' } : { color: 'green' }} >{unapprove ? "pendding" : course?.status}</p>
+
               </div>
             </div>
           </div>
@@ -31,19 +32,19 @@ export default ({ course, key }: any) => {
           </div>
         </div>
       </Link>
-      <div className="assahdwe0-ass">
+      <div className="assahdwe0-ass" style={unapprove ? { display : "none" } : { display:'flex'}}>
         <Dropdown>
           <Dropdown.Toggle variant="success" id="dropdown-basic">
-          <i className="fa fa-ellipsis-h" style={{fontSize:'20px' , color:'black'}}></i>
+            <i className="fa fa-ellipsis-h" style={{ fontSize: '20px', color: 'black' }}></i>
 
             {/* <img src='../../assets/images/black..svg' alt="" style={{ width: '20px' }} /> */}
           </Dropdown.Toggle>
 
           <Dropdown.Menu>
-              <>
-                <Dropdown.Item as={Link} href={`/en/student/liveClasses/${course?.id}`}>Live Classes </Dropdown.Item>
-                <Dropdown.Item as={Link} href={`/en/student/quiz/${course?.id}`}>Quiz</Dropdown.Item>
-              </>
+            <>
+              <Dropdown.Item as={Link} href={`/en/student/liveClasses/${course?.id}`}>Live Classes </Dropdown.Item>
+              <Dropdown.Item as={Link} href={`/en/student/quiz/${course?.id}`}>Quiz</Dropdown.Item>
+            </>
           </Dropdown.Menu>
         </Dropdown>
       </div>

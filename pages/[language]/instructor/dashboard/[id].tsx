@@ -109,7 +109,7 @@ const Home: NextPage = () => {
                       <div className="aljskdfids-asdawe adofjiads-dfjiads">
                         <div className="aisdad-j3n2eidaw dsjfasdo-sadasd">
                           <h4>List Your Course</h4>
-                          <p>Lorem Ipsum is simply dummy text of the printing and typesetting</p>
+                          {/* <p>Lorem Ipsum is simply dummy text of the printing and typesetting</p> */}
                           <Link href="/en/instructor/addCourse">
                             <button className="withdraw">Add new course</button>
                           </Link>

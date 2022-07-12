@@ -5070,3 +5070,73 @@ textarea::placeholder {
   height: 100%;
   transform: translate(-92%, -50%) !important;
 }
+
+
+
+/* checkout pennding page css */
+
+.checkout_pendding{
+  border: 1pt solid rgb(214, 157, 13);
+  padding: 3px;
+  border-radius: 15px;
+  color: rgb(214, 157, 13);
+}
+
+.checkout_approve{
+  border: 1pt solid rgb(115, 210, 6);
+  padding: 3px;
+  border-radius: 15px;
+  color: rgb(115, 210, 6);
+}
+
+.checkout_approved{
+  padding: 6px 10px ;
+  border: 1pt solid lightgray;
+  border-radius: 10px;
+  font-weight: 500;
+  background-color: transparent;
+  cursor: pointer;
+}
+.checkout_after_approve{
+  padding: 6px 10px ;
+  border: 1pt solid rgb(115, 210, 6);
+  border-radius: 10px;
+  font-weight: 500;
+  background-color: green;
+  cursor: pointer;
+}
+
+.checkout_approved:hover{
+  background-color: gray;
+  color: white;
+}
+
+
+/* sub-admin */
+
+.checkbox-field{
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: center;
+}
+
+.checkbox_wrapper{
+  border: 1pt solid lightgray;
+  display: flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 20px;
+  margin-left: 10px;
+  margin-bottom: 10px;
+
+  
+}
+
+.checkbox_wrapper input[type="checkbox"]{
+  cursor: pointer;
+}
+
+.checkbox_wrapper span{
+  padding-left: 10px;
+}

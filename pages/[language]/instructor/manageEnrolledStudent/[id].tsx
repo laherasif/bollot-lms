@@ -43,6 +43,8 @@ const Home: NextPage = () => {
 
   let router = useRouter()
   let courseId = router.query.id
+  let courseTitle = router.query.title
+  let courseLive = router.query.live
 
   useEffect(() => {
     let fetchCourse = async () => {
@@ -50,9 +52,9 @@ const Home: NextPage = () => {
         setLoading(true)
         let res = await AxInstance.post('api//instructor/courses/stundets-enrolled', { course_id: courseId })
         let quizResult = await AxInstance.post('api//instructor/courses/quiz/results', { course_id: courseId })
-        if (res.data.response.students.length) {
+        if (res.data.success === true ) {
           setLoading(false)
-          setCourse(res.data.response.courses)
+          setCourse(res.data.response.students)
           setQuiz(quizResult.data.response.results)
         }
         else {
@@ -67,7 +69,7 @@ const Home: NextPage = () => {
       }
     }
     fetchCourse()
-  }, [])
+  }, [courseId])
 
 
   return (
@@ -89,10 +91,10 @@ const Home: NextPage = () => {
                   <div className="back-btn">
                     <Breadcrumb>
                       <Breadcrumb.Item linkAs={Link} href="/en/instructor/">Dashboard</Breadcrumb.Item>
-                      <Breadcrumb.Item linkAs={Link} href="/en/instructor/courses" >
-                        Courses
+                      <Breadcrumb.Item linkAs={Link} href={ courseTitle ?  "/en/instructor/courses" : "/en/instructor/liveCourses"} >
+                       {courseTitle ? "Courses" : "Live Courses" }
                       </Breadcrumb.Item>
-                      <Breadcrumb.Item active>Enrolled Students </Breadcrumb.Item>
+                      <Breadcrumb.Item active>Course : {courseTitle || courseLive} </Breadcrumb.Item>
                     </Breadcrumb>
                     {/* <Link href="/en/instructor/" >
                       <h3>

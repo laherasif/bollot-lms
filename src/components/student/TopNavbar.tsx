@@ -215,7 +215,7 @@ export default () => {
               <Dropdown.Item as={Link} href='/' >Go to Website</Dropdown.Item>
               <Dropdown.Item as={Link} href={User?.role === "student" ? "/en/student/courses" : "/en/instructor/courses"} >My Courses</Dropdown.Item>
               <Dropdown.Item as={Link} href={User?.role === "student" ? "/en/student/profile" : "/en/instructor/profile"} >Profile</Dropdown.Item>
-              <Dropdown.Item ><span onClick={() => Logout()}>Logout</span></Dropdown.Item>
+              <Dropdown.Item onClick={() => Logout()} >Logout</Dropdown.Item>
 
             </Dropdown.Menu>
           </Dropdown>

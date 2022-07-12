@@ -25,6 +25,8 @@ const Home: NextPage = () => {
 
 
   const courseId = router.query.id
+  const courseTitle = router.query.live
+  const Title = router.query.title
 
 
   const token = useSelector((state: RootStateOrAny) => state?.admin?.token)
@@ -44,6 +46,7 @@ const Home: NextPage = () => {
   const [loading, setLoading] = useState(false)
   const [saveQuiz, setSaveQuiz] = useState(false)
   const [errors, setErrors] = useState([])
+  const [newError , setNewError] = useState('')
   const [allQuiz, setAllQuiz] = useState([
 
   ])
@@ -117,6 +120,20 @@ const Home: NextPage = () => {
 
     }
     setAllQuiz(list)
+
+    if (errors) {
+      let convert = errors ? Object?.values(errors) : {}
+      const error: any = [...convert];
+      for (let j = 0; j < convert.length; j++) {
+        if (j === index) {
+          const element = error[j];
+          let find = element.options
+          find.splice(i, 1)
+        }
+
+      }
+      setErrors(Object.assign({}, error))
+    }
   }
 
   const removeInputField = (index: number,) => {
@@ -132,7 +149,7 @@ const Home: NextPage = () => {
 
 
   const handleChangeOptions = (index: number, i: number, evnt: React.ChangeEvent<HTMLInputElement>) => {
-    
+
     const { name, value } = evnt.target;
     const list: any = [...allQuiz];
     for (let j = 0; j < list.length; j++) {
@@ -190,10 +207,21 @@ const Home: NextPage = () => {
       let res = await AxInstance.post('api//admin/courses/quiz/edit/question', value)
       if (res.data.success === true) {
         setSaveQuiz(false)
-        SweetAlert({ icon: "success", text: "Quiz are successfully updated" })
+        SweetAlert({ icon: "success", text: res.data.message })
+        if (courseTitle) {
+          router.push('/en/admin/liveCourses')
+        }
+        else {
+          router.push('/en/admin/courses')
+
+        }
       }
       else {
         setErrors(res.data.error.questions)
+        let check = res.data.error
+          if(typeof check === "string"){
+            setNewError(check)
+          }
         setSaveQuiz(false)
 
       }
@@ -230,10 +258,10 @@ const Home: NextPage = () => {
 
                     <Breadcrumb>
                       <Breadcrumb.Item linkAs={Link} href="/en/admin/dashboard">Dashboard</Breadcrumb.Item>
-                      <Breadcrumb.Item linkAs={Link} href="/en/admin/courses" >
-                        Courses
+                      <Breadcrumb.Item linkAs={Link} href={courseTitle ? "/en/admin/liveCourses" : "/en/admin/courses"} >
+                        {courseTitle ? "Live Courses" : "Courses"}
                       </Breadcrumb.Item>
-                      <Breadcrumb.Item active>Manage Quiz </Breadcrumb.Item>
+                      <Breadcrumb.Item active>Course : {courseTitle || Title} </Breadcrumb.Item>
                     </Breadcrumb>
 
                     {/* <Link href={"/en/admin/courses"} >
@@ -252,9 +280,16 @@ const Home: NextPage = () => {
                   <div className="umpire w-100">
                     <div className="umpire-1 umpire-1-cst ">
                       <div className="d-flex mb-3 idfadsf-sads">
-                        <button className="upload-1 sdisad-dsdactive" onClick={() => Questions()}>
+                        <button
+                          className="upload-1 sdisad-dsdactive"
+                          id="activetab"
+                          onClick={() => Questions()}>
                           + Add more questions </button>
-                        <button className="upload-1 sdisad-dsdactive" onClick={() => UpdateQuiz()}>
+                        <button
+                          className="upload-1 sdisad-dsdactive"
+                          id="activetab"
+
+                          onClick={() => UpdateQuiz()}>
 
                           <i className="fa fa-save" style={{ marginRight: '10px' }}></i>
                           {saveQuiz ? <Spinner animation="border" /> :
@@ -332,7 +367,7 @@ const Home: NextPage = () => {
                           : ""
                         }
                         <div>
-                          {/* {errors && errors[index]?.options ? <div className="invalid mt-1">{ errors && errors[index]?.options}</div> : null} */}
+                          {newError ? <div className="invalid mt-1">{ newError}</div> : null}
 
                           {/* {errors && errors[0]?.options[0] ? <div className="invalid mt-1">{errors[0]?.options[0]}</div> : null} */}
                         </div>
@@ -355,4 +390,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default AdminAuth( Home );
+export default AdminAuth(Home);

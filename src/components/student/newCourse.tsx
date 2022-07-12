@@ -17,7 +17,9 @@ export default () => {
       <Container fluid>
         <Navbar.Toggle aria-controls="offcanvasNavbar">
           <div className="idfadsf-sads">
-            <button className="upload-1 sdisad-dsdactive">
+            <button className="upload-1 sdisad-dsdactive"
+              id="activetab"
+            >
               <Icons name="i9" />
               Add New Course
             </button>
@@ -188,17 +190,21 @@ export default () => {
 
             </div>
             <div className="d-flex">
-                <div className="idfadsf-sads kajfds-sdfe hfdajss-3ersad">
-                  <button className="upload-1 sdisad-dsdactive ">
+              <div className="idfadsf-sads kajfds-sdfe hfdajss-3ersad">
+                <button className="upload-1 sdisad-dsdactive "
+                  id="activetab"
+                >
                   Preview
-                  </button>
-                </div>
-                <div className="idfadsf-sads kajfds-sdfe">
-                  <button className="upload-1 sdisad-dsdactive">
-                  Submit for review
-                  </button>
-                </div>
+                </button>
               </div>
+              <div className="idfadsf-sads kajfds-sdfe">
+                <button className="upload-1 sdisad-dsdactive"
+                  id="activetab"
+                >
+                  Submit for review
+                </button>
+              </div>
+            </div>
           </Offcanvas.Body>
         </Navbar.Offcanvas>
       </Container>

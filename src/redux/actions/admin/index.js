@@ -22,6 +22,8 @@ import {
     GET_MEMBERSHIP,
     ADD_INSTRUCTOR,
     ADD_STUDENT,
+    GET_ALL_COMPANIES,
+    GET_CODE_LANGUAGE,
 
 } from '../../types/types'
 
@@ -48,7 +50,7 @@ export const logoutAdmin = () => async dispatch => {
 
 }
 
-export const updateAdmin = (data ) => async dispatch => {
+export const updateAdmin = (data) => async dispatch => {
     dispatch({
         type: UPDATE_ADMIN,
         payload: data
@@ -64,7 +66,7 @@ export const addStudent = (data) => async dispatch => {
     try {
         dispatch({
             type: ADD_STUDENT,
-            payload: data 
+            payload: data
         })
     }
     catch (err) {
@@ -94,7 +96,7 @@ export const addInstructor = (data) => async dispatch => {
     try {
         dispatch({
             type: ADD_INSTRUCTOR,
-            payload: data 
+            payload: data
         })
     }
     catch (err) {
@@ -102,7 +104,20 @@ export const addInstructor = (data) => async dispatch => {
     }
 }
 
-export const getAllInstructor = (data) => async dispatch => {
+export const getCodeLanguage = (data) => dispatch => {
+    try {
+
+        dispatch({
+            type: GET_CODE_LANGUAGE,
+            payload: data
+        })
+    }
+    catch (err) {
+
+    }
+}
+
+export const getAllInstructor = (data) => dispatch => {
     try {
 
         dispatch({
@@ -114,6 +129,20 @@ export const getAllInstructor = (data) => async dispatch => {
 
     }
 }
+export const getAllCompany = (data) => async dispatch => {
+    try {
+
+        dispatch({
+            type: GET_ALL_COMPANIES,
+            payload: data.response.businesses
+        })
+    }
+    catch (err) {
+
+    }
+}
+
+
 
 export const delStuIns = ({ id, role }) => async (dispatch) => {
     try {

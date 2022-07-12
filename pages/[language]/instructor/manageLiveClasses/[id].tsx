@@ -47,6 +47,7 @@ const Home: NextPage = () => {
   });
 
   let courseId = router.query.id
+  let courseLive = router.query.live
 
   useEffect(() => {
     let fetchLive = async () => {
@@ -89,7 +90,7 @@ const Home: NextPage = () => {
   }
 
   const addFormFields = () => {
-
+    setErrors({})
     setDateTime([
       ...dateTime,
       {
@@ -123,6 +124,13 @@ const Home: NextPage = () => {
       if (res.data.success === true) {
         setLoader(false)
         SweetAlert({ icon: "success", text: res.data.message })
+        if (courseTitle) {
+          router.push('/en/admin/liveCourses')
+        }
+        else{
+          router.push('/en/admin/courses')
+
+        }
       }
       else {
         setLoader(false)
@@ -137,10 +145,18 @@ const Home: NextPage = () => {
   }
 
 
-  const DelSedule = (i: number) => {
+  const DelSedule = (index: number) => {
     const rows = [...dateTime];
-    rows.splice(i, 1);
+    rows.splice(index, 1);
     setDateTime(rows);
+
+    if (errors.schedule) {
+      let convert = errors.schedule ? Object?.values(errors.schedule) : {}
+      let find = convert.filter((item, i) => {
+        return i !== index
+      })
+      setErrors({ schedule: Object.assign({}, find ) })
+    }
   }
 
   return (
@@ -163,7 +179,7 @@ const Home: NextPage = () => {
                     <Breadcrumb>
                       <Breadcrumb.Item linkAs={Link} href="/en/instructor">Dashboard</Breadcrumb.Item>
                       <Breadcrumb.Item linkAs={Link} href="/en/instructor/liveCourses">Live Courses</Breadcrumb.Item>
-                      <Breadcrumb.Item active>Manage Schedule</Breadcrumb.Item>
+                      <Breadcrumb.Item active>Course : {courseLive}</Breadcrumb.Item>
                     </Breadcrumb>
                     {/* <Link href={`/en/instructor/liveCourses`} >
                       <h3>
@@ -183,11 +199,13 @@ const Home: NextPage = () => {
                       <div className="d-flex mb-3 idfadsf-sads">
 
                         <button className="upload-1 sdisad-dsdactive"
+                          id="activetab"
                           onClick={() => addFormFields()}
 
                         >
                           +  Add more classes </button>
                         <button className="upload-1 sdisad-dsdactive"
+                        id="activetab"
                           onClick={() => SaveLiveClasses()}
                         >
                           <i className="fa fa-save" style={{ marginRight: '10px' }}></i>
@@ -217,7 +235,7 @@ const Home: NextPage = () => {
                                 {/* <Icons name="i24" /> */}
                                 <label>Date</label>
                               </div>
-                              {(dateTime.length === 1) ?
+                              {(dateTime.length !== 1) ?
                                 <div onClick={() => DelSedule(i)}>
                                   <i className='fa fa-trash'></i>
                                 </div>
@@ -313,4 +331,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default withAuth( Home );
+export default withAuth(Home);

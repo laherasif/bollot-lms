@@ -17,6 +17,7 @@ const initialState = {
     AddCourse: {
         instructor_id: '',
         category_id: '',
+        language_id : '',
         title: '',
         short_desc: '',
         long_desc: '',

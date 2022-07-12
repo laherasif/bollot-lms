@@ -210,7 +210,9 @@ const Home: NextPage = () => {
                   <div className="my-2">
                     {/* <Search /> */}
                     <div className="d-flex idfadsf-sads">
-                      <button className="upload-1 sdisad-dsdactive" onClick={() => setShowBlog(true)} >
+                      <button className="upload-1 sdisad-dsdactive" 
+                      id="activetab"
+                      onClick={() => setShowBlog(true)} >
                         + Add New membership </button>
                     </div>
                   </div>

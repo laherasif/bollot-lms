@@ -65,7 +65,7 @@ const Home: NextPage = () => {
                     {/* <Search /> */}
                     <div className="d-flex idfadsf-sads">
                       <Link href='/en/admin/addCourse'>
-                        <button className="upload-1 sdisad-dsdactive" onClick={() => ClearData()}>
+                        <button className="upload-1 sdisad-dsdactive" id="activetab" onClick={() => ClearData()}>
                           + Add New Course </button>
                       </Link>
                     </div>

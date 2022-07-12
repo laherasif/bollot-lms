@@ -73,7 +73,10 @@ const Role = ({ Toggle, permition, link }: any) => {
                 </Modal.Body>
                 <Modal.Footer>
                     <div className="idfadsf-sads kajfds-sdfe hfdajss-3ersad">
-                        <button className="upload-1 sdisad-dsdactive" onClick={() => handleClose()}>
+                        <button className="upload-1 sdisad-dsdactive"
+                        id="activetab"
+                        
+                        onClick={() => handleClose()}>
                             close
                         </button>
                     </div>

@@ -145,23 +145,29 @@
   content: "1"
 }
 
+#progressbar #prequiz:before {
+  font-family: FontAwesome;
+  /* content: "\f13e" */
+  content: "2"
+}
+
 #progressbar #personal:before {
   font-family: FontAwesome;
   /* content: "\f007" */
-  content: "2"
+  content: "3"
 }
 
 #progressbar #payment:before {
   font-family: FontAwesome;
   /* content: "\f030" */
-  content: "3"
+  content: "4"
 
 }
 
 #progressbar #confirm:before {
   font-family: FontAwesome;
   /* content: "\f00c" */
-  content: "4"
+  content: "5"
 
 }
 

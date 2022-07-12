@@ -200,10 +200,30 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
 
   const removeInputFields = (index: number, i: number) => {
 
+    if (errors) {
+      let convert = errors.sections ? Object?.values(errors.sections) : {}
+      const error: any = [...convert];
+      for (let j = 0; j < convert.length; j++) {
+        if (j === index) {
+          const element = error[j];
+          let find = element.lectures
+          find.splice(i, 1)
+        }
+
+      }
+      setErrors({ sections: error })
+    }
+
     dispatch(delLecture({ index, i }))
   };
 
   const removeInputField = (index: number) => {
+    if (errors) {
+      let findIndex = errors?.sections?.filter((item, i) => {
+        return i !== index
+      })
+      setErrors({ sections: findIndex })
+    }
     dispatch(delCriculumSection(index))
 
   };
@@ -494,6 +514,7 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
                 <div className="d-flex mb-3 idfadsf-sads">
                   <button
                     className="upload-1 sdisad-dsdactive "
+                    id="activetab"
                     onClick={() => onPrevStep(1 - 1)}
                     disabled={Criculums.some((s) => s.lectures.some((l) => l.progressbar > 0 && l.progressbar < 100)) ? true : false}
                     style={Criculums.some((s) => s.lectures.some((l) => l.progressbar > 0 && l.progressbar < 100)) ? { opacity: '0.5' } : { opacity: '1' }}

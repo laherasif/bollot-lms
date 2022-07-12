@@ -1,6 +1,5 @@
 import axios from 'axios'
 import { useSelector, RootStateOrAny, useDispatch } from "react-redux";
-import type { NextPage } from "next";
 import { Form, Spinner } from "react-bootstrap";
 import { SweetAlert } from "../../function/hooks";
 import React, { useState, useEffect, } from 'react';
@@ -23,25 +22,11 @@ interface Course {
 
 }
 
-interface Outcomes {
-  outcomes: Array<string>,
 
-}
-interface Requirements {
-  requirements: Array<string>,
-
-}
-interface Courses {
-  course_for: Array<string>
-
-}
 
 export default ({ onStepChange }: any) => {
   // const intl = useIntl();
-  const [item, setItem] = useState<Outcomes[]>([''])
-  const [request, setRequest] = useState<Requirements[]>([''])
-  const [course, setCourse] = useState<Courses[]>([''])
-  const [state, setState] = useState<Course>('')
+  const [language, setLanguage] = useState([])
   const [Courses, setCourses] = useState([])
   const [url, setUrl] = useState()
   const [errors, setErrors] = useState()
@@ -72,8 +57,19 @@ export default ({ onStepChange }: any) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const options: Object = {
+          method: 'GET',
+          url: 'https://judge0-ce.p.rapidapi.com/languages',
+          headers: {
+            'X-RapidAPI-Key': "dc684477damsh4a8d57199134a8ep144f2fjsndb99bad0d80a",
+            'X-RapidAPI-Host': "judge0-ce.p.rapidapi.com"
+          }
+        };
+
         let res = await AxInstance.get('api//instructor/courses/categories')
+        let resLang = await axios.request(options);
         setCourses(res.data.response.categories)
+        setLanguage(resLang.data)
       }
       catch (err) {
         SweetAlert({ icon: 'error', text: err })
@@ -118,8 +114,6 @@ export default ({ onStepChange }: any) => {
       reader.onload = (e) => {
         let name = "cover_image"
         let value = e.target?.result
-        // let imageUrl = URL.createObjectURL(event.target.files[0])
-        let names = "url"
         dispatch(addCourseInput({ name, value }))
 
       }
@@ -134,6 +128,7 @@ export default ({ onStepChange }: any) => {
 
     let data = {
       course_id: courseId ? courseId : "",
+      language_id: AddCourse.language_id,
       title: AddCourse.title,
       category_id: AddCourse.category_id,
       short_desc: AddCourse.short_desc,
@@ -146,7 +141,6 @@ export default ({ onStepChange }: any) => {
       course_for: course_for
 
     }
-
 
 
     try {
@@ -192,6 +186,24 @@ export default ({ onStepChange }: any) => {
             ))}
           </Form.Select>
           {errors?.category_id && <div className="invalid mt-1">{errors?.category_id[0]}</div>}
+
+
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', margin: ' 10px' }}>
+          <label>Programming Language</label>
+          <span>Please specify which programming language is being taught in this course</span>
+
+        </div>
+        <div className="kns-sanweso02e" style={{ padding: '0px 10px' }}>
+          <Form.Select name="language_id"
+            value={AddCourse?.language_id} onChange={(e) => hendleFields(e)}>
+            <option defaultChecked>Select Language </option>
+            {language && language.map((cata) => (
+              <option key={cata.id} value={cata.id}>{cata.name}</option>
+            ))}
+          </Form.Select>
+          {errors?.language_id && <div className="invalid mt-1">{errors?.language_id[0]}</div>}
 
 
         </div>
@@ -251,8 +263,8 @@ export default ({ onStepChange }: any) => {
             </div>
             <input type="file" accept="image/png, image/gif, image/jpeg" name="cover_image" onChange={(e) => handleInputChange(e)} id="img" style={{ display: 'none' }} />
           </label>
+          {errors?.cover_image && <div className="invalid mt-1">{errors?.cover_image[0]}</div>}
         </div>
-        {errors?.cover_image && <div className="invalid mt-1">{errors?.cover_image[0]}</div>}
 
         <div>
           <div className="p-field  mt-0">

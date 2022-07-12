@@ -12,7 +12,7 @@ const LogoImage = require("../../images/logo.png");
 import { useRouter } from 'next/router'
 import { useSelector, RootStateOrAny, useDispatch } from "react-redux";
 import { LogoutIns } from '../../redux/actions/auth/user';
-import {  logoutAdmin } from "../../redux/actions/admin";
+import { logoutAdmin } from "../../redux/actions/admin";
 import { clearStates } from "../../redux/actions/instructor/preview";
 const App = () => {
 
@@ -20,12 +20,12 @@ const App = () => {
   const carts = useSelector((state: RootStateOrAny) => state.cartReducer.AddCart)
   const { User } = useSelector((state: RootStateOrAny) => state.userReducer)
   const { Admin } = useSelector((state: RootStateOrAny) => state.admin)
-  
+
   const router = useRouter()
 
   const dispatch = useDispatch()
 
-  const searchCourse = (e:any ) => {
+  const searchCourse = (e: any) => {
     e.preventDefault()
     // let removeSpace = search.split(" ").join("");
     router.push(`/en/courses/?search=${search}`)
@@ -141,7 +141,11 @@ const App = () => {
                     <img style={{ borderRadius: '50%' }} src={User?.image || Admin?.image || "/assets/images/umpire-1.svg"} alt="profile_img" />
                   </Dropdown.Toggle>
                   <Dropdown.Menu >
-                    <Dropdown.Item as={Link} href={User?.role === "student" ? "/en/student/dashboard" : User?.role === "instructor" ? "/en/instructor" : User?.role === "company" ? "/en/instructor" : "/en/admin/dashboard"} >Dashboard</Dropdown.Item>
+                    <Dropdown.Item as={Link}
+                      href={User?.role === "student" ? "/en/student/dashboard"
+                        : User?.role === "instructor" ? "/en/instructor"
+                          : User?.role === "company" ? "/en/instructor"
+                            : "/en/admin/dashboard"} >Dashboard</Dropdown.Item>
                     {User && <Dropdown.Item as={Link} href={User?.role === "student" ? "/en/student/courses" : "/en/instructor/courses"} >My Courses</Dropdown.Item>}
                     <Dropdown.Item as={Link} href={User?.role === "student" ? "/en/student/profile" : User?.role === "instructor" ? "/en/instructor/profile" : "/en/admin/profile"} >Profile</Dropdown.Item>
                     <Dropdown.Item ><span onClick={() => Logout()}>Logout</span></Dropdown.Item>
@@ -152,10 +156,10 @@ const App = () => {
               :
               <>
                 <Link href="/en/signup">
-                  <button className="btn-2s" style={{fontSize:'15px'}}>Sign Up</button>
+                  <button className="btn-2s" style={{ fontSize: '15px' }}>Sign Up</button>
                 </Link>
                 <Link href="/en/login">
-                  <button className="btn-1s" style={{fontSize:'15px'}}>Log in</button>
+                  <button className="btn-1s" style={{ fontSize: '15px' }}>Log in</button>
                 </Link>
               </>
             }

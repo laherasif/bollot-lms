@@ -18,6 +18,7 @@ import { useState, useEffect } from "react";
 import EditProfile from '../../../../src/components/instructor/editProfile'
 import withAuth from "../../../../src/components/Hoc/authRoute";
 import { Small } from "../../../../src/components/instructor/loader";
+import { Breadcrumb } from "react-bootstrap";
 // const options = ["one", "two", "three"];
 
 
@@ -46,14 +47,12 @@ const Home: NextPage = () => {
         {loading ? Small() :
           <div className="dash-board-1">
             <div className="dash-2 ">
-              <Link href="/en/instructor">
-                <div className="my-course jifas-saw3iesd9">
-                  <h5>
-                    <i className="fa fa-arrow-left"></i>
-                    Go back
-                  </h5>
-                </div>
-              </Link>
+              <div className="my-course jifas-saw3iesd9">
+                <Breadcrumb>
+                  <Breadcrumb.Item linkAs={Link} href="/en/instructor">Dashboard</Breadcrumb.Item>
+                  <Breadcrumb.Item active>Profile</Breadcrumb.Item>
+                </Breadcrumb>
+              </div>
               <div className="jdsfaf-sdfni3e-d">
                 <div>
                   <div className="jfoadsf-sadmad">
@@ -61,7 +60,10 @@ const Home: NextPage = () => {
                     <div>
                       <h5>{User?.fullname}</h5>
                       <div className="idfadsf-sads adsjkfdsao-sadsk">
-                        <button className="upload-1 sdisad-dsdactive" onClick={() => setEdit(true)}>
+                        <button className="upload-1 sdisad-dsdactive"
+                        id="activetab"
+
+                         onClick={() => setEdit(true)}>
                           <i className="fa fa-edit"></i>
                           Profile
 

@@ -23,8 +23,10 @@ const Home: NextPage = () => {
 
   const router = useRouter()
 
-
   const courseId = router.query.id
+  const courseTitle = router.query.title
+  const courseLive = router.query.live
+
 
 
   const token = useSelector((state: RootStateOrAny) => state?.userReducer?.token)
@@ -44,6 +46,7 @@ const Home: NextPage = () => {
   const [loading, setLoading] = useState(false)
   const [saveQuiz, setSaveQuiz] = useState(false)
   const [errors, setErrors] = useState([])
+  const [newError, setNewError] = useState('')
   const [allQuiz, setAllQuiz] = useState([
 
   ])
@@ -51,6 +54,8 @@ const Home: NextPage = () => {
 
 
   const Questions = () => {
+
+
     setAllQuiz([
       ...allQuiz,
       {
@@ -60,7 +65,7 @@ const Home: NextPage = () => {
           { option: "", correct: false, },
           { option: "", correct: false, },
           { option: "", correct: false, },
-          
+
 
         ]
       },
@@ -102,7 +107,7 @@ const Home: NextPage = () => {
     for (let i = 0; i < list.length; i++) {
       if (i === index) {
         const element = list[i];
-        element?.options.push({ name: "", correct: false, } )
+        element?.options.push({ name: "", correct: false, })
       }
 
     }
@@ -123,6 +128,20 @@ const Home: NextPage = () => {
 
     }
     setAllQuiz(list)
+
+    if (errors) {
+      let convert = errors ? Object?.values(errors) : {}
+      const error: any = [...convert];
+      for (let j = 0; j < convert.length; j++) {
+        if (j === index) {
+          const element = error[j];
+          let find = element.options
+          find.splice(i, 1)
+        }
+
+      }
+      setErrors(Object.assign({}, error))
+    }
   }
 
   const removeInputField = (index: number,) => {
@@ -138,7 +157,7 @@ const Home: NextPage = () => {
 
 
   const handleChangeOptions = (index: number, i: number, evnt: React.ChangeEvent<HTMLInputElement>) => {
-    
+
     const { name, value } = evnt.target;
     const list: any = [...allQuiz];
     for (let j = 0; j < list.length; j++) {
@@ -153,7 +172,7 @@ const Home: NextPage = () => {
   }
 
   const handleChangeRadio = (index: number, i: number, evnt: React.ChangeEvent<HTMLInputElement>) => {
-    
+
     const { name, value } = evnt.target;
     const list: any = [...allQuiz];
     for (let j = 0; j < list.length; j++) {
@@ -194,13 +213,24 @@ const Home: NextPage = () => {
 
     try {
       setSaveQuiz(true)
-      let res = await AxInstance.post('api//instructor/courses/quiz/edit/question', value)
+      let res = await AxInstance.post('api//instructor/courses/quiz/store', value)
       if (res.data.success === true) {
         setSaveQuiz(false)
-        SweetAlert({ icon: "success", text: "Quiz are successfully updated" })
+        SweetAlert({ icon: "success", text: res.data.message })
+        if (courseTitle) {
+          router.push('/en/instructor/liveCourses')
+        }
+        else {
+          router.push('/en/instructor/courses')
+
+        }
       }
       else {
         setErrors(res.data.error.questions)
+        let check = res.data.error
+        if (typeof check === "string") {
+          setNewError(check)
+        }
         setSaveQuiz(false)
 
       }
@@ -237,10 +267,10 @@ const Home: NextPage = () => {
                   <div className="back-btn">
                     <Breadcrumb>
                       <Breadcrumb.Item linkAs={Link} href="/en/instructor/">Dashboard</Breadcrumb.Item>
-                      <Breadcrumb.Item linkAs={Link} href="/en/instructor/courses" >
-                        Courses
+                      <Breadcrumb.Item linkAs={Link} href={courseTitle ? "/en/instructor/courses" : "/en/instructor/liveCourses"}>
+                        {courseTitle ? "Courses" : "Live Courses"}
                       </Breadcrumb.Item>
-                      <Breadcrumb.Item active>Manage Quiz </Breadcrumb.Item>
+                      <Breadcrumb.Item active>Course : {courseTitle || courseLive} </Breadcrumb.Item>
                     </Breadcrumb>
                     {/* <Link href={"/en/instructor/courses"} >
                       <h3>
@@ -249,16 +279,17 @@ const Home: NextPage = () => {
                     </Link>
                     <h3>My Courses</h3> */}
                   </div>
-                
+
                 </div>
 
                 <div className="complete-web-1 ">
                   <div className="umpire w-100">
                     <div className="umpire-1 umpire-1-cst ">
                       <div className="d-flex mb-3 idfadsf-sads">
-                        <button className="upload-1 sdisad-dsdactive" onClick={() => Questions()}>
+
+                        <button className="upload-1 sdisad-dsdactive" id="activetab" onClick={() => Questions()}>
                           + Add more question </button>
-                        <button className="upload-1 sdisad-dsdactive" onClick={() => UpdateQuiz()}>
+                        <button className="upload-1 sdisad-dsdactive" id="activetab" onClick={() => UpdateQuiz()}>
 
                           <i className="fa fa-save" style={{ marginRight: '10px' }}></i>
                           {saveQuiz ? <Spinner animation="border" /> :
@@ -328,6 +359,7 @@ const Home: NextPage = () => {
                             {errors ? <div className="invalid mt-1">{errors[index]?.options}</div> : null}
                           </div>
 
+
                         }
                         {q.options.length < 6 ?
                           <p className="add-more"
@@ -336,9 +368,11 @@ const Home: NextPage = () => {
                           : ""
                         }
                         <div>
-                          {/* {errors && errors[index]?.options ? <div className="invalid mt-1">{ errors && errors[index]?.options}</div> : null} */}
+                          <div className="ml-3">
+                            {newError ? <div className="invalid mt-1">{newError}</div> : null}
 
-                          {/* {errors && errors[0]?.options[0] ? <div className="invalid mt-1">{errors[0]?.options[0]}</div> : null} */}
+                          </div>
+
                         </div>
 
                       </div>
@@ -359,4 +393,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default withAuth( Home );
+export default withAuth(Home);

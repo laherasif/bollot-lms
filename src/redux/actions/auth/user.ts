@@ -15,7 +15,7 @@ import { Dispatch } from 'redux';
 import instance from '../../../confiq/axios/instance'
 import Platform from 'react-platform-js'
 import { SweetAlert } from '../../../function/hooks';
-
+import { userRequest } from '../../../confiq/axios/requestMethod'
 // export enum ActionType {
 //     REGISTER_SOCIAL_MEDIA = 'REGISTER_SOCIAL_MEDIA',
 //     GET_POST_COMMENTS_SUCCESS = 'GET_POST_COMMENTS_SUCCESS',
@@ -65,7 +65,7 @@ export const OtpVarif = (data: boolean) => async (dispatch: any) => {
 // }
 
 export const forgotEmail = (email: string) => async (dispatch: any) => {
-    
+
     try {
         dispatch({
             type: FORGOT_PASSWORD_EMAIL,
@@ -85,14 +85,14 @@ export const CleanState = () => async (dispatch: any) => {
     try {
         dispatch({
             type: CLEAN_STATE,
-            
+
         })
     } catch (error) {
 
     }
 }
 
-export const SocialRegComp = (providerData: [], role: string) => async (dispatch: any) => {
+export const SocialRegComp = (providerData: [], role: string ) => async (dispatch: any) => {
     try {
         let object = Object.assign({}, ...providerData)
 
@@ -184,13 +184,13 @@ export const SocialRegMedia = (providerData: [], role: any) => async (dispatch: 
         })
     }
     catch (err) {
-        SweetAlert({icon:'error' , text : err })
+        SweetAlert({ icon: 'error', text: err })
     }
 }
 
 
 export const AddSocialRegMedia = (providerData: [], user: any) => async (dispatch: any) => {
-   debugger
+    debugger
     try {
         let object = Object.assign({}, ...providerData)
 
@@ -210,7 +210,7 @@ export const AddSocialRegMedia = (providerData: [], user: any) => async (dispatc
         // }
 
         let fb = {
-            user_id : user.id,
+            user_id: user.id,
             fullname: object.displayName,
             email: object.email,
             fb_user_id: object.uid,
@@ -221,7 +221,7 @@ export const AddSocialRegMedia = (providerData: [], user: any) => async (dispatc
             role: user?.role
         }
         let google = {
-            user_id : user.id,
+            user_id: user.id,
             fullname: object.displayName,
             email: object.email,
             google_user_id: object.uid,
@@ -236,11 +236,10 @@ export const AddSocialRegMedia = (providerData: [], user: any) => async (dispatc
 
 
         let res = await instance.post('api//social-signin', object.providerId === "facebook.com" ? fb : google)
-       console.log("ERs" , res )
-        let provide = object.providerId === "facebook.com" ? "facebook" : "google" 
+        let provide = object.providerId === "facebook.com" ? "facebook" : "google"
         dispatch({
             type: ADD_SOCIAL_MEDIA,
-            payload:{ data :  res.data.response.student , provided :  object} 
+            payload: { data: res.data.response.student, provided: object }
         })
     }
     catch (err) {
@@ -265,7 +264,7 @@ export const loginUser = (data: []) => {
 
     return async (dispatch: Dispatch<actionSuccess>) => {
         try {
-            
+
             dispatch({
                 type: LOGIN_USER,
                 payload: data
@@ -273,7 +272,7 @@ export const loginUser = (data: []) => {
 
         }
         catch (err) {
-        SweetAlert({icon :'error' , text : err })
+            SweetAlert({ icon: 'error', text: err })
 
             // console.log("error in token ")
         }
@@ -284,7 +283,7 @@ export const loginUser = (data: []) => {
 
 export const updateUser = (data: any) => {
     return async (dispatch: Dispatch<actionSuccess>) => {
-        
+
         try {
 
             dispatch({

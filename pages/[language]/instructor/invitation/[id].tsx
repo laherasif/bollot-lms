@@ -88,7 +88,9 @@ const Home: NextPage = () => {
                       <input type="text" placeholder="Search" />
                     </div>
                     <div className="d-flex idfadsf-sads">
-                      <button className="upload-1 sdisad-dsdactive" onClick={() => setemail(true)}>
+                      <button className="upload-1 sdisad-dsdactive"
+                        id="activetab"
+                        onClick={() => setemail(true)}>
                         + Add Invitation </button>
                     </div>
                   </div>
@@ -129,4 +131,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default withAuth( Home );
+export default withAuth(Home);

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ReactMultiEmail, isEmail } from "react-multi-email";
 import "react-multi-email/style.css";
-import { Modal, Button, Form , Spinner } from "react-bootstrap";
+import { Modal, Button, Form, Spinner } from "react-bootstrap";
 import { useSelector, RootStateOrAny } from "react-redux";
 import { SweetAlert } from '../../function/hooks'
 import axios from "axios";
@@ -10,8 +10,8 @@ const Invitation = ({ Toggle, permition }: any) => {
   const [loading, setLoading] = useState(false);
   const [loader, setLoader] = useState(false);
   const [emails, setEmails] = useState([]);
-  const [course , setCourse] =  useState([])
-  const [state , setState] =  useState('')
+  const [course, setCourse] = useState([])
+  const [state, setState] = useState('')
   const handleClose = () => {
     Toggle(false);
   };
@@ -50,19 +50,19 @@ const Invitation = ({ Toggle, permition }: any) => {
   const handleSubmit = async () => {
     try {
       let values = {
-        course_id : state ,
-        emails : emails
+        course_id: state,
+        emails: emails
       }
       setLoading(true)
-      let res = await AxInstance.post('api//company/send-invite',values )
-      if(res.data.success === true){
+      let res = await AxInstance.post('api//company/send-invite', values)
+      if (res.data.success === true) {
         setLoading(false)
         Toggle(false);
-        SweetAlert({ icon : "success" , text : res.data.message})
+        SweetAlert({ icon: "success", text: res.data.message })
       }
-      else{
+      else {
         setLoading(false)
-        SweetAlert({ icon : "error" , text : res.data.error})
+        SweetAlert({ icon: "error", text: res.data.error })
       }
     } catch (error) {
       setLoading(false);
@@ -137,6 +137,7 @@ const Invitation = ({ Toggle, permition }: any) => {
             <div className="idfadsf-sads kajfds-sdfe hfdajss-3ersad">
               <button
                 className="upload-1 sdisad-dsdactive "
+                id="activetab"
                 onClick={() => handleClose()}
               >
                 Close
@@ -146,9 +147,10 @@ const Invitation = ({ Toggle, permition }: any) => {
               <button
                 onClick={() => handleSubmit()}
                 className="upload-1 sdisad-dsdactive"
+                id="activetab"
               >
                 {loading ? (
-                  <Spinner animation="border"/>
+                  <Spinner animation="border" />
                 ) : (
                   "Send"
                 )}

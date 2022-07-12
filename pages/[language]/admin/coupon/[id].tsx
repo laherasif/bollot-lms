@@ -193,7 +193,9 @@ const Home: NextPage = () => {
                   <div className=" jidfjsd-asjreid">
                     {/* <Search /> */}
                     <div className="d-flex idfadsf-sads">
-                      <button className="upload-1 sdisad-dsdactive" onClick={() => setShowBlog(true)} >
+                      <button className="upload-1 sdisad-dsdactive"
+                        id="activetab"
+                        onClick={() => setShowBlog(true)} >
                         + Add New Coupon </button>
                     </div>
                   </div>
@@ -261,6 +263,6 @@ const Home: NextPage = () => {
   );
 };
 
-export default AdminAuth( Home );
+export default AdminAuth(Home);
 
 

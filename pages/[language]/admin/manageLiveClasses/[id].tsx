@@ -1,20 +1,8 @@
 import type { NextPage } from "next";
-import Dropdown from "../../../../src/components/admin/dropdown";
-import { useIntl } from "react-intl";
 import Sidebar from "../../../../src/components/admin/sidebar2";
-import { FiSearch } from "react-icons/fi";
-import { BiBell } from "react-icons/bi";
-import { IoMailOutline } from "react-icons/io5";
-import Icons from "../../../../src/icons";
-import TopNavbar from "../../../../src/components/admin/TopNavbar";
 import NavigationBar1 from "../../../../src/components/admin/NavigationBar3";
-import Chart from "../../../../src/components/admin/chart";
-import Chart1 from "../../../../src/components/admin/chart1";
-import BarChart from "../../../../src/components/admin/barchart";
 import Link from "next/link";
-import CourseCard from "../../../../src/components/admin/CourseCard1";
-import NewCourse from "../../../../src/components/admin/newCourse";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { RootStateOrAny, useSelector } from "react-redux";
 import axios from "axios";
 import { useRouter } from 'next/router'
@@ -23,14 +11,11 @@ import { SweetAlert } from "../../../../src/function/hooks";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment'
-const options = ["one", "two", "three"];
-import { format, parse } from 'date-fns'
+import { parse } from 'date-fns'
 import { Breadcrumb, Spinner } from "react-bootstrap";
 import AdminAuth from "../../../../src/components/Hoc/adminRoute";
 const Home: NextPage = () => {
-  // const intl = useIntl();
   let router = useRouter()
-  const [course, setCourse] = useState([])
   const [loading, setLoading] = useState(false)
   const [loader, setLoader] = useState(false)
   const [dateTime, setDateTime] = useState([])
@@ -47,6 +32,9 @@ const Home: NextPage = () => {
   });
 
   let courseId = router.query.id
+  const courseTitle = router.query.live
+  const Title = router.query.title
+
 
   useEffect(() => {
     let fetchLive = async () => {
@@ -64,6 +52,7 @@ const Home: NextPage = () => {
       }
       catch (err) {
         setLoading(false)
+        SweetAlert({ icon: "error", text: err })
 
       }
     }
@@ -123,6 +112,13 @@ const Home: NextPage = () => {
       if (res.data.success === true) {
         setLoader(false)
         SweetAlert({ icon: "success", text: res.data.message })
+        if (courseTitle) {
+          router.push('/en/admin/liveCourses')
+        }
+        else{
+          router.push('/en/admin/courses')
+
+        }
       }
       else {
         setLoader(false)
@@ -136,12 +132,22 @@ const Home: NextPage = () => {
   }
 
 
-  const DelSedule = (i: number) => {
+  const DelSedule = (index: number) => {
     const rows = [...dateTime];
-    rows.splice(i, 1);
+    rows.splice(index, 1);
     setDateTime(rows);
+
+    if (errors.schedule) {
+      let convert = errors.schedule ? Object?.values(errors.schedule) : {}
+      let find = convert.filter((item, i) => {
+        return i !== index
+      })
+      setErrors({ schedule: Object.assign({}, find) })
+    }
+
   }
 
+  console.log("error", errors)
   return (
     <div className="inst">
       <NavigationBar1 />
@@ -161,9 +167,12 @@ const Home: NextPage = () => {
                   <div className="back-btn">
                     <Breadcrumb>
                       <Breadcrumb.Item linkAs={Link} href="/en/admin/dashboard">Dashboard</Breadcrumb.Item>
-                      <Breadcrumb.Item linkAs={Link} href="/en/admin/liveCourses">Live Courses</Breadcrumb.Item>
-                      <Breadcrumb.Item active>Live Classes </Breadcrumb.Item>
+                      <Breadcrumb.Item linkAs={Link} href={courseTitle ? "/en/admin/liveCourses" : "/en/admin/courses"} >
+                        {courseTitle ? "Live Courses" : "Courses"}
+                      </Breadcrumb.Item>
+                      <Breadcrumb.Item active>Course : {courseTitle ||  Title} </Breadcrumb.Item>
                     </Breadcrumb>
+
                     {/* <Link href={`/en/admin/liveCourses`} >
                       <h3>
                         <i className="fa fa-arrow-left"></i>
@@ -182,11 +191,14 @@ const Home: NextPage = () => {
                       <div className="d-flex mb-3 idfadsf-sads">
 
                         <button className="upload-1 sdisad-dsdactive"
+                          id="activetab"
                           onClick={() => addFormFields()}
 
                         >
                           + Add more classes </button>
                         <button className="upload-1 sdisad-dsdactive"
+                          id="activetab"
+
                           onClick={() => SaveLiveClasses()}
                         >
                           <i className="fa fa-save" style={{ marginRight: '10px' }}></i>
@@ -216,7 +228,7 @@ const Home: NextPage = () => {
                                 {/* <Icons name="i24" /> */}
                                 <label>Date</label>
                               </div>
-                              {(dateTime.length === 1) ?
+                              {(dateTime.length !== 1) ?
                                 <div onClick={() => DelSedule(i)}>
                                   <i className='fa fa-trash'></i>
                                 </div>
@@ -311,4 +323,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default AdminAuth( Home );
+export default AdminAuth(Home);

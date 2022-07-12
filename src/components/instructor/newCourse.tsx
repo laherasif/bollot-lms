@@ -55,7 +55,7 @@ export default (catagory: any) => {
   const [state, setState] = useState<Course>('')
   const [Courses, setCourses] = useState([])
   const [url, setUrl] = useState()
-  const [showCirculm, setShowCirculm] = useState(true )
+  const [showCirculm, setShowCirculm] = useState(true)
   const [errors, setErrors] = useState()
   const [loading, setLoading] = useState(false)
   const [courseId, setcourseId] = useState('')
@@ -81,7 +81,7 @@ export default (catagory: any) => {
       }
       catch (err) {
         // console.log("err", err)
-        SweetAlert({icon :'error' , text : err })
+        SweetAlert({ icon: 'error', text: err })
 
       }
     }
@@ -196,7 +196,7 @@ export default (catagory: any) => {
         setLoading(false)
       }
     } catch (err) {
-      SweetAlert({icon :'error' , text : err })
+      SweetAlert({ icon: 'error', text: err })
 
     }
   }
@@ -209,7 +209,9 @@ export default (catagory: any) => {
       <Container fluid>
         <Navbar.Toggle aria-controls="offcanvasNavbar">
           <div className="idfadsf-sads">
-            <button className="upload-1 sdisad-dsdactive">
+            <button className="upload-1 sdisad-dsdactive"
+              id="activetab"
+            >
               <Icons name="i9" />
               Add New Course
             </button>
@@ -234,7 +236,7 @@ export default (catagory: any) => {
             <Offcanvas.Body>
 
               <div className="p-field">
-                <div style={{display:'flex' , flexDirection:'column'}}>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
                   <label>Category</label>
                   <span>Which category suites the best for this course</span>
 
@@ -406,7 +408,10 @@ export default (catagory: any) => {
                 </button>
               </div> */}
                 <div className="idfadsf-sads kajfds-sdfe">
-                  <button onClick={() => SaveCourse()} className="upload-1 sdisad-dsdactive">
+                  <button onClick={() => SaveCourse()} className="upload-1 sdisad-dsdactive"
+                    id="activetab"
+
+                  >
                     {loading ?
                       // <Spinner animation="border" varient="loght" />
                       <div className="spinner-border text-light" role="status">

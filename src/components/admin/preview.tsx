@@ -29,24 +29,25 @@ import {
 } from "../../redux/actions/instructor/preview";
 import { coursesId } from "../../redux/actions/instructor/addcourse";
 
-export default ({ changeState, onPrevStep, step }: any) => {
+export default ({ onPrevStep, step }: any) => {
 
   const [loading, setLoading] = useState(false);
   const [loader, setLoader] = useState(false);
   const [live, setLive] = useState('');
   const [errors, setErrors] = useState([]);
   const [preview, setPreview] = useState([]);
-  const [section, setSection] = useState([]);
 
 
 
-  const inputFile = useRef(null)
   const router = useRouter()
+
+  const route = router.query.live
+
 
   const dispatch = useDispatch()
 
   const token = useSelector((state: RootStateOrAny) => state?.admin?.token)
-  const { Previews, lectures } = useSelector((state: RootStateOrAny) => state?.preview)
+  const { Previews, } = useSelector((state: RootStateOrAny) => state?.preview)
   const { courseId } = useSelector((state: RootStateOrAny) => state?.addCourse)
 
   const AxInstance = axios.create({
@@ -133,6 +134,12 @@ export default ({ changeState, onPrevStep, step }: any) => {
   }
 
   const removeInputField = (index: number,) => {
+    if (errors) {
+      let findIndex = errors?.filter((item, i) => {
+        return i !== index
+      })
+      setErrors(findIndex)
+    }
     dispatch(delLecturepreview(index))
 
 
@@ -176,9 +183,17 @@ export default ({ changeState, onPrevStep, step }: any) => {
       if (res.data.success === true) {
         setLoading(false)
         SweetAlert({ icon: "success", text: res.data.message })
-        router.push('/en/admin/courses')
-        dispatch(clearStates())
-        dispatch(coursesId(""))
+        if (route === '') {
+          router.push('/en/admin/liveCourses')
+          dispatch(clearStates())
+          dispatch(coursesId(""))
+        }
+        else {
+          router.push('/en/admin/courses')
+          dispatch(clearStates())
+          dispatch(coursesId(""))
+        }
+
       }
       else {
         setLoading(false)
@@ -208,7 +223,10 @@ export default ({ changeState, onPrevStep, step }: any) => {
             <div className="umpire-1 umpire-1-cst ">
               <div className="maxima ">
                 <div className="idfadsf-sads">
-                  <button onClick={() => AddmoreSection()} className="upload-1 sdisad-dsdactive">
+                  <button onClick={() => AddmoreSection()}
+                    className="upload-1 sdisad-dsdactive"
+                    id="activetab"
+                  >
                     + Add peview video
                   </button>
                 </div>
@@ -248,147 +266,151 @@ export default ({ changeState, onPrevStep, step }: any) => {
 
                             </td>
                             <>
-                              <td  onClick ={lec?.file_type === "PDF" ? null : () => VideoShow(lec)}>
-                              <div className="video_section" >
-                                <img src={lec?.thumbnail} alt="previews" />
-                                {lec?.file_type === "Video" ?
-                                  <div className="video-icon">
-                                    <i className="fas fa-play-circle"></i>
-                                  </div>
-                                  : null}
-                              </div>
-                            </td>
-                            <td>
-                              <div className="video-title">
-                                {lec?.title}
+                              <td onClick={lec?.file_type === "PDF" ? null : () => VideoShow(lec)}>
+                                <div className="video_section" >
+                                  <img src={lec?.thumbnail} alt="previews" />
+                                  {lec?.file_type === "Video" ?
+                                    <div className="video-icon">
+                                      <i className="fas fa-play-circle"></i>
+                                    </div>
+                                    : null}
+                                </div>
+                              </td>
+                              <td>
+                                <div className="video-title">
+                                  {lec?.title}
 
-                              </div>
-                            </td>
-                          </>
+                                </div>
+                              </td>
+                            </>
 
-                        </tr>
-                      </tbody>
+                          </tr>
+                        </tbody>
                       </Table>
 
 
-                ))}
+                    ))}
 
-            </div>
+                  </div>
 
-            )
+                )
               })
-            : <div>Preview video not found </div>
+                : <div>Preview video not found </div>
               }
 
 
+            </div>
           </div>
         </div>
-      </div>
 
 
-      {Previews ? Previews?.map((lec: any, index: number) => {
-        if (!lec.course_section_lecture_id)
-          return (
-            <div className="drop-box" style={{ marginLeft: '40px', maxWidth: '80%', marginTop: '30px' }}>
-              <div className="kvjadsd-j43rm">
-                <div className="jodsa-wnedas">
-                  <h6>Preview</h6>
+        {Previews ? Previews?.map((lec: any, index: number) => {
+          if (!lec.course_section_lecture_id)
+            return (
+              <div className="drop-box" style={{ marginLeft: '40px', maxWidth: '80%', marginTop: '30px' }}>
+                <div className="kvjadsd-j43rm">
+                  <div className="jodsa-wnedas">
+                    <h6>Preview</h6>
+                  </div>
+                  {lec?.length !== -1 && <div onClick={() => removeInputField(index)} style={{ cursor: 'pointer' }}><i className="fa fa-trash"></i></div>}
+
                 </div>
-                {lec?.length !== -1 && <div onClick={() => removeInputField(index)} style={{ cursor: 'pointer' }}><i className="fa fa-trash"></i></div>}
 
-              </div>
+                <div className="">
+                  <div className="d-flex">
+                    <Icons name="i24" />
+                    <label>Title</label>
+                  </div>
+                  <input
+                    type="text"
+                    name="title"
+                    value={lec.title}
+                    onChange={(e) => handleChangeSection(index, e)}
+                    style={errors && errors[index]?.title ? errors[index]?.title && { border: '1pt solid red ' } : null}
+                    placeholder="Write here..." />
+                  {errors && errors[index]?.title ? <div className="invalid mt-1">{errors[index]?.title}</div> : null}
 
-              <div className="">
-                <div className="d-flex">
-                  <Icons name="i24" />
-                  <label>Title</label>
                 </div>
-                <input
-                  type="text"
-                  name="title"
-                  value={lec.title}
-                  onChange={(e) => handleChangeSection(index, e)}
-                  style={errors && errors[index]?.title ? errors[index]?.title && { border: '1pt solid red ' } : null }
-                  placeholder="Write here..." />
-                {errors && errors[index]?.title ? <div className="invalid mt-1">{errors[index]?.title}</div> : null}
-
-              </div>
 
 
-              <div className={lec.thumbnail && lec.id || lec.progressbar === 100 ? "image-container" : ""}>
-                <label>Video file for this Lecture</label>
-                <div className="drop-box img-box"
-                  style={errors && errors[index]?.object_key ? errors[index]?.object_key && { border: '1pt solid red ' } : null }
-                >
-                  <div className="kvjadsd-j43rm iasdufhvs-ernd" >
-                    <Icons name="i29" />
-                    {lec?.id ? <img src={lec.thumbnail} alt="course_img" className="thum_img" /> : lec?.object_key}
-                    <div style={{ display: 'flex', flexDirection: 'column' }}>
-                      {lec?.file_size > 0 && <p className="mt-2">File Size : {bytesToSize(lec?.file_size)}</p>}
-                      {lec?.progressbar === 100 && <p className="mt-2">File Uploaded <i style={{ color: 'green' }} className="fa fa-check-circle"></i></p>}
-                    </div>
+                <div className={lec.thumbnail && lec.id || lec.progressbar === 100 ? "image-container" : ""}>
+                  <label>Video file for this Lecture</label>
+                  <div className="drop-box img-box"
+                    style={errors && errors[index]?.object_key ? errors[index]?.object_key && { border: '1pt solid red ' } : null}
+                  >
+                    <div className="kvjadsd-j43rm iasdufhvs-ernd" >
+                      <Icons name="i29" />
+                      {lec?.id ? <img src={lec.thumbnail} alt="course_img" className="thum_img" /> : lec?.object_key}
+                      <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        {lec?.file_size > 0 && <p className="mt-2">File Size : {bytesToSize(lec?.file_size)}</p>}
+                        {lec?.progressbar === 100 && <p className="mt-2">File Uploaded <i style={{ color: 'green' }} className="fa fa-check-circle"></i></p>}
+                      </div>
 
-                    {/* <p>{lec.object_key}</p> */}
-                    {/* {lec.progressbar === 100 ? <p className="mt-2">File Uploaded</p> : " "} */}
+                      {/* <p>{lec.object_key}</p> */}
+                      {/* {lec.progressbar === 100 ? <p className="mt-2">File Uploaded</p> : " "} */}
 
-                    {/* <>
+                      {/* <>
                         {lec.thumbnail ? <img src={lec.thumbnail} alt="course_img" className="thum_img" /> : ""}
                         {lec.thumbnail || lec.file_type === "Video" ? "" : lec.object_key ? lec?.object_key : <p>Drag file here / Choose file</p>}
                       </> */}
 
-                  </div>
-                  {lec?.object_key ? "" :
-                    <input type="file" accept="pdf/*" onChange={(e) => handleChangeLectureFile(index, e)} className="custom-file-input" />
-                  }
-                  {errors && errors[index]?.object_key ? <div className="invalid mt-1">{errors[index]?.object_key}</div> : null}
-
-                </div>
-                <div className="mt-2">
-                  {lec.progressbar === 100 ? " "
-                    :
-                    lec.progressbar && <ProgressBar animated now={lec.progressbar} />}
-                </div>
-                {lec?.object_key && lec.progressbar === 100 ?
-                  <>
-                    <div className="overlay"></div>
-                    <div id="icon" onClick={() => delThumnail(index)}>
-                      <i className="fa fa-close" ></i>
                     </div>
-                  </>
-                  : null
-                }
+                    {lec?.object_key ? "" :
+                      <input type="file" accept="pdf/*" onChange={(e) => handleChangeLectureFile(index, e)} className="custom-file-input" />
+                    }
+                    {errors && errors[index]?.object_key ? <div className="invalid mt-1">{errors[index]?.object_key}</div> : null}
+
+                  </div>
+                  <div className="mt-2">
+                    {lec.progressbar === 100 ? " "
+                      :
+                      lec.progressbar && <ProgressBar animated now={lec.progressbar} />}
+                  </div>
+                  {lec?.object_key && lec.progressbar === 100 ?
+                    <>
+                      <div className="overlay"></div>
+                      <div id="icon" onClick={() => delThumnail(index)}>
+                        <i className="fa fa-close" ></i>
+                      </div>
+                    </>
+                    : null
+                  }
+                </div>
+
+
               </div>
+            )
+        })
+          : <div>Record not found </div>
+        }
 
+        <div className="umpire w-100 " >
+          <div className="umpire-1 umpire-1-cst d-flex justify-content-center mt-3 ">
+            <div className="d-flex mb-3 idfadsf-sads">
+              <button
+                className="upload-1 sdisad-dsdactive "
+                id="activetab"
 
+                onClick={() => onPrevStep(step - 1)}
+              >
+                Previous
+              </button>
+              <button
+                className="upload-1 sdisad-dsdactive"
+                id="activetab"
+
+                onClick={() => SaveCriculum()}
+              >
+                <i className="fa fa-save" style={{ marginRight: '10px' }}></i>
+                {loading ? <Spinner animation="border" /> : "Finish"}
+              </button>
             </div>
-          )
-      })
-        : <div>Record not found </div>
-      }
 
-      <div className="umpire w-100 " >
-        <div className="umpire-1 umpire-1-cst d-flex justify-content-center mt-3 ">
-          <div className="d-flex mb-3 idfadsf-sads">
-            <button
-              className="upload-1 sdisad-dsdactive "
-              onClick={() => onPrevStep(step - 1)}
-            >
-              Previous
-            </button>
-            <button
-              className="upload-1 sdisad-dsdactive"
-              onClick={() => SaveCriculum()}
-            >
-              <i className="fa fa-save" style={{ marginRight: '10px' }}></i>
-              {loading ? <Spinner animation="border" /> : "Finish"}
-            </button>
           </div>
-
         </div>
-      </div>
 
 
-      {/* <div className="d-flex mt-2 justify-content-center mt-2">
+        {/* <div className="d-flex mt-2 justify-content-center mt-2">
           <div className="idfadsf-sads kajfds-sdfe hfdajss-3ersad">
             <button className="upload-1 sdisad-dsdactive " onClick={() => onPrevStep(step - 1)}>
               Previous
@@ -406,13 +428,13 @@ export default ({ changeState, onPrevStep, step }: any) => {
         </div> */}
 
 
-    </div>
+      </div>
 
 
       {
-    live ?
-      <LiveVideo link={live} Toggle={(value) => setLive(value)} /> : null
-  }
+        live ?
+          <LiveVideo link={live} Toggle={(value) => setLive(value)} /> : null
+      }
 
 
     </>

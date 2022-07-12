@@ -27,27 +27,41 @@ import instance from "../../src/confiq/axios/instance";
 import { GET_CATAGORY } from "../../src/redux/types/types";
 import { SweetAlert } from "../../src/function/hooks";
 import { CatagoryCard, CatagoryList } from "../../src/skeleton/course";
+import { BsWhatsapp } from 'react-icons/bs'
+import axios from "axios";
 const Home: NextPage = () => {
   // const intl = useIntl();
 
   const [state, setState] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState({})
+  const [whatsApp, setwhatsApp] = useState({})
 
   const dispatch = useDispatch()
 
   const { Catagory, loader } = useSelector((state: RootStateOrAny) => state.course)
 
   useEffect(() => {
+    let fetchWhatsapp = async () => {
+      try {
+        let res = await instance.get('api//whatsapp')
+        if (res.data.success === true) {
+          setwhatsApp(res.data.response.whatsapp)
+        }
+      }
+      catch (err) { }
+    }
+    fetchWhatsapp()
     dispatch(GetCourse())
   }, [])
 
- 
+
 
   const subsNews = async () => {
     try {
       setLoading(true)
       let res = await instance.post('api//newsletter', { email: state })
+
       if (res.data.success === true) {
         setState('')
         SweetAlert({ icon: "success", text: res.data.message })
@@ -59,32 +73,34 @@ const Home: NextPage = () => {
         setLoading(false)
       }
     }
-    catch (err) { 
+    catch (err) {
       SweetAlert({ icon: "error", text: err })
 
     }
 
   }
+  
 
 
   return (
-    <>
+    <div className="home_wrapper">
       <div className="navBar-cst" >
         <div className="container-nav">
           <Navbar />
         </div>
       </div>
       <div >
-      <Carousel />
+        <Carousel />
 
       </div>
+
       {loader ? <div style={{ margin: '50px' }}> <Catagories /> </div>
         :
         <div className="">
 
           <section className="container-3 all-head">
             <div className="courses-bar">
-              {Catagory && Catagory.length > 0  ? Catagory?.map((cat: any, i: number) => (
+              {Catagory && Catagory.length > 0 ? Catagory?.map((cat: any, i: number) => (
                 <Link href={`/en/courses/${cat.slug}`}>
                   <span key={i} style={{ cursor: 'pointer' }}>
                     <h3 id="bol" >{cat.name}</h3>
@@ -93,7 +109,7 @@ const Home: NextPage = () => {
 
               ))
                 :
-                  <CatagoryList />
+                <CatagoryList />
               }
 
             </div>
@@ -165,9 +181,7 @@ const Home: NextPage = () => {
           <section className="how container-3  mt-100">
             <h3 className="future brown text-center">How it Works</h3>
             <p className="text-center" >
-              Lorem ipsum dolor sit amet,consectetur sadipiscing elit, sed diam{" "}
-              <br />
-              nonumy eirmod tempor invidunt ut labore at dolore.
+              Join Bolloot today and start learning instantly
             </p>
             <div className="container-3">
               <div className="all-numbers">
@@ -345,10 +359,18 @@ const Home: NextPage = () => {
               </div>
             </div>
           </div>
+
           <Footer />
         </div>
       }
-    </>
+      <div className="whatsapp">
+        <div className="whtaspp_icon">
+          <a href={`https://api.whatsapp.com/send?phone=${whatsApp.value}`} target="_blank" rel="noopener noreferrer" >
+            <BsWhatsapp />
+          </a>
+        </div>
+      </div>
+    </div>
   );
 };
 

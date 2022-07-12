@@ -28,7 +28,7 @@ const Home: NextPage = () => {
 
   const filteredIns = Transaction?.filter(item => item.perticular && item.perticular.toLowerCase().includes(filterText.toLowerCase()));
 
- 
+
 
 
   const columns: any = [
@@ -36,22 +36,22 @@ const Home: NextPage = () => {
       name: "User Id",
       selector: "user_id",
       sortable: true,
-  
+
     },
-   
+
     {
       name: "Perticular",
       selector: "particular",
       sortable: true,
-  
-  
+
+
     },
-  
+
     {
       name: "Validate",
       selector: "valid_till",
       sortable: true,
-  
+
     },
     {
       name: "Action",
@@ -59,21 +59,21 @@ const Home: NextPage = () => {
       sortable: true,
       cell: (d: any) => (
         <div className='d-flex pl-2'>
-  
+
           <div >
             <i className='fa fa-edit'></i>
           </div>
-  
+
           <div style={{ marginLeft: '20px' }}>
             <i className='fa fa-trash'></i>
           </div>
-  
+
         </div >
       )
     }
   ];
-  
-  
+
+
 
 
 
@@ -100,7 +100,10 @@ const Home: NextPage = () => {
                     <div className="umpire w-100">
                       <div className="umpire-1 umpire-1-cst">
                         <div className="maxima">
-                          <button className="upload-1  sdisad-dsdactive">Devices</button>
+                          <button className="upload-1  sdisad-dsdactive"
+                            id="activetab"
+
+                          >Devices</button>
                         </div>
                       </div>
                     </div>

@@ -1,4 +1,6 @@
+import moment from 'moment';
 import React, { useState } from 'react'
+import { ProgressBar } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
 import { FiSearch } from 'react-icons/fi';
 
@@ -30,32 +32,22 @@ const EnrolledStudent = ({ course }: any) => {
     },
     {
       name: "Progress",
-      selector: "is_completed",
       sortable: true,
       cell: (d: any) => (
-        <div className="progress">
-          <div
-            className="progress-bar bg-success"
-            role="progressbar"
-            style={{ width: "10%" }}
-            aria-valuenow={d?.is_completed}
-            aria-valuemin={0}
-            aria-valuemax={100}
-          />
-        </div>
+        <ProgressBar striped  variant="success" now={d?.sections_completed.completed}  style={{width:'200px'}} />
+
       )
     },
     {
-      name: "Purchased Course At",
-      selector: "createdAt",
+      name: "Purchased On",
+      selector: "created_at",
       sortable: true,
-
-
-
+      cell: (d: any) => (
+        <span>{moment(d?.created_at).format('ll')}</span>
+      )
     },
     {
       name: "Lecture Completed",
-      selector: "createdAt",
       sortable: true,
       cell: (d: any) => (
         <span>{d?.lectures_completed.completed} / {d?.lectures_completed.out_of}</span>
@@ -64,14 +56,12 @@ const EnrolledStudent = ({ course }: any) => {
     },
     {
       name: "Section Completed",
-      selector: "createdAt",
       sortable: true,
       cell: (d: any) => (
         <span>{d?.sections_completed.completed} / {d?.sections_completed.out_of}</span>
       )
     },
-  
-  ];
+  ]
   return (
     <>
       <div className="w-100">

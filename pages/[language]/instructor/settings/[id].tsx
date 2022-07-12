@@ -30,7 +30,10 @@ const Home: NextPage = () => {
                   <div className="umpire w-100">
                     <div className="umpire-1 umpire-1-cst ">
                       <div className="maxima">
-                        <button className="upload-1 sdisad-dsdactive">Account Security</button>
+                        <button className="upload-1 sdisad-dsdactive"
+                        id="activetab"
+
+                        >Account Security</button>
                         <Link href="/en/payments">
                         <button className="upload-1">Payment</button></Link>
                         <button className="upload-1">Notification</button>

@@ -22,7 +22,7 @@ import { useRouter } from 'next/router'
 import { Small } from "../../../../src/components/instructor/loader";
 import { bytesToSize, generateVideoThumbnail, getBase64Image, SweetAlert } from "../../../../src/function/hooks";
 import { myBucket, S3_BUCKET } from "../../../../src/confiq/aws/aws";
-import { ProgressBar, Spinner , Breadcrumb } from "react-bootstrap";
+import { ProgressBar, Spinner, Breadcrumb } from "react-bootstrap";
 import withAuth from "../../../../src/components/Hoc/authRoute";
 // import instance from "../../../../src/confiq/axios/instance";
 const options = ["one", "two", "three"];
@@ -34,12 +34,8 @@ const Home: NextPage = () => {
   const [loading, setLoading] = useState(false)
   const [loader, setLoader] = useState(false)
   const [network, setNetwork] = useState(false)
-  const [load, setLoad] = useState(false)
-  const [pregress, setProgress] = useState([])
-  const [errors, setErrors] = useState()
-  const [section, setSection] = useState([
-
-  ])
+  const [errors, setErrors] = useState({})
+  const [section, setSection] = useState([])
 
 
 
@@ -59,6 +55,7 @@ const Home: NextPage = () => {
 
   const router = useRouter()
   let courseId = router.query.id
+  let courseTitle = router.query.title
 
 
   useEffect(() => {
@@ -258,8 +255,14 @@ const Home: NextPage = () => {
       let res = await AxInstance.post('api//instructor/courses/curriculum/section/update', saveCri)
       if (res.data.success === true) {
         setLoader(false);
+        SweetAlert({ icon: "success", text: res.data.message })
+        if (courseTitle) {
+          router.push('/en/admin/liveCourses')
+        }
+        else {
+          router.push('/en/admin/courses')
 
-        SweetAlert({ icon: "success", text: 'Criculum are Successfully updated' })
+        }
       }
       else {
         setLoader(false)
@@ -307,19 +310,36 @@ const Home: NextPage = () => {
 
     }
     setSection(lists)
+
+    if (errors) {
+      delete errors.sections[index].lectures[i];
+      while (++i in errors.sections) {
+        errors.sections[index].lectures[i - 1] = errors.sections[index].lectures[i];
+        delete errors.sections[index].lectures[i];
+      }
+
+    }
   }
 
   const removeInputField = (index: number,) => {
+
     const row = [...section];
     row.splice(index, 1);
-    setSection(row);
+    setSection(row)
+
+
+    if (errors) {
+      delete errors.sections[index];
+      while (++index in errors.sections) {
+        errors.sections[index - 1] = errors.sections[index];
+        delete errors.sections[index];
+      }
+
+    }
+
   }
 
-
   let red = section?.some((ac) => ac.lectures.some((sa) => sa.progressbar > 0 && sa.progressbar < 100))
-  // let red = section.some((ac) => ac.progressbar < 100 && ac.progressbar > 0)
-
-
 
   return (
     <div className="inst">
@@ -343,7 +363,7 @@ const Home: NextPage = () => {
                       <Breadcrumb.Item linkAs={Link} href="/en/instructor/courses" >
                         Courses
                       </Breadcrumb.Item>
-                      <Breadcrumb.Item active>Manage Criculum </Breadcrumb.Item>
+                      <Breadcrumb.Item active>Course : {courseTitle} </Breadcrumb.Item>
                     </Breadcrumb>
                     {/* <Link href="/en/instructor/courses" >
                     n  <h3>
@@ -363,12 +383,14 @@ const Home: NextPage = () => {
                       <div className="d-flex mb-3 idfadsf-sads">
 
                         <button className="upload-1 sdisad-dsdactive"
+                          id="activetab"
                           disabled={red ? true : false}
                           style={red ? { opacity: '0.5' } : { opacity: 1 }}
                           onClick={() => AddmoreSection()}
                         >
                           + Add more sections </button>
                         <button className="upload-1 sdisad-dsdactive"
+                          id="activetab"
                           disabled={red ? true : false}
                           style={red ? { opacity: '0.5' } : { opacity: 1 }}
                           onClick={() => SaveCriculum()}

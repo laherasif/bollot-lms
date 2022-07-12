@@ -125,12 +125,9 @@ const Home: NextPage = () => {
               {loading ? Small()
                 :
                 <div className="hdsf0s-sadmsa">
-                  <Link href="/en/student/settings">
                     <h3 className="back-arrow">
-                      <i className="fa fa-arrow-left"></i>
-                      Back
+                      Notifications
                     </h3>
-                  </Link>
                   <div className="complete-web-1">
                     <div className="umpire w-100">
                       <div className="umpire-1 umpire-1-cst">

@@ -42,43 +42,7 @@ export function ReferenceLabel(props) {
 
   )
 }
-const data = [
-  {
-    name: '01 Jan',
-    uv: 9,
-    pv:4,
-  },
-  {
-    name: '02 Jan',
-    uv: 12,
-    pv: 8,
-  },
-  {
-    name: '03 Jan',
-    uv: 13,
-    pv: 10,
-  },
-  {
-    name: '04 Jan',
-    uv: 16,
-    pv: 14,
-  },
-  {
-    name: '05 Jan',
-    uv: 14,
-    pv: 12,
-  },
-  {
-    name: '06 Jan',
-    uv: 12,
-    pv: 14,
-  },
-  {
-    name: '07 Jan',
-    uv:  9,
-    pv: 16,
-  } 
-];
+
 
 
 const Chart = ({chart}) => {

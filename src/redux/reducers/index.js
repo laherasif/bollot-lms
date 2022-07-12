@@ -10,20 +10,18 @@ import courseReducer from "../reducers/courses/courses";
 import CriculumReducer from "../reducers/instructor/criculum";
 import ClassesReducer from "../reducers/instructor/liveclasses";
 import QuizReducer from "../reducers/instructor/quiz";
+import PreQuizReducer from "../reducers/instructor/prequiz";
 import PreviewReducer from "../reducers/instructor/preview";
 // student 
 import AddCourseReducer from "../reducers/instructor/addcourse";
 import CourseReducer from '../reducers/student/courses';
 // admin course add reducers 
 import AdminReducer from "../reducers/admin/";
+
 // webiste 
 import BlogReducer from "../reducers/blogNews/blogs";
-
 import InsDashboardReducer from "../reducers/instructor/";
-// import AdminClassesReducer from "../reducers/admin/liveclasses";
-// import AdminQuizReducer from "../reducers/admin/quiz";
-// import AdminPreviewReducer from "../reducers/admin/preview";
-// import AdminAddCourseReducer from "../reducers/admin/addcourse";
+
 
 
 const rootPersistConfig = {
@@ -45,9 +43,10 @@ const rootReducer = combineReducers({
   criculum: CriculumReducer,
   live: ClassesReducer,
   quiz: QuizReducer,
+  preQuiz: PreQuizReducer,
   preview: PreviewReducer,
   studentCourse: CourseReducer,
-  blogs : BlogReducer,
+  blogs: BlogReducer,
   InsDash: InsDashboardReducer,
   // admin course add reducers 
   // Admincriculum: AdminCriculumReducer,

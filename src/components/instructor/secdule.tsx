@@ -93,8 +93,14 @@ const Secdule = ({ onStepChange, onPrevStep, step }: any) => {
     }
 
 
-    const DelSedule = (i: number) => {
-        dispatch(delPreview(i))
+    const DelSedule = (index: number) => {
+        if (errors) {
+            let findIndex = errors?.schedule?.filter((item, i) => {
+                return i !== index
+            })
+            setErrors({ schedule: findIndex })
+        }
+        dispatch(delPreview(index))
 
     }
 
@@ -201,12 +207,15 @@ const Secdule = ({ onStepChange, onPrevStep, step }: any) => {
                     <div className="d-flex mb-3 idfadsf-sads">
                         <button
                             className="upload-1 sdisad-dsdactive "
+                            id="activetab"
                             onClick={() => onPrevStep(step - 1)}
                         >
                             Previous
                         </button>
                         <button
                             className="upload-1 sdisad-dsdactive"
+                            id="activetab"
+
                             onClick={() => SaveLiveClasses()}
                         >
                             <i className="fa fa-save" style={{ marginRight: '10px' }}></i>

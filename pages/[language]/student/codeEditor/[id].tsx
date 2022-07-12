@@ -1,57 +1,97 @@
 import type { NextPage } from "next";
-import TopNavbar from "../../../../src/components/student/TopNavbar";
-import NavigationBar2 from "../../../../src/components/student/NavigationBar2";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import CriculumCard from '../../../../src/components/student/criculumCard'
-import Link from "next/link";
-import Conversation from "../../../../src/components/student/messageForm";
-import CricculumSidebar from "../../../../src/components/student/cricculumSidebar";
 import { SweetAlert } from "../../../../src/function/hooks";
-import CodeEditorWindow from "../../../../src/components/student/codeEditor";
 import useKeyPress from "../../../../src/components/Hoc/useKeyPress";
-import OutputWindow from "../../../../src/components/student/codeResult";
-import { Form } from "react-bootstrap";
+import { Form, Spinner } from "react-bootstrap";
 import { RootStateOrAny, useSelector } from "react-redux";
-import { Small } from "../../../../src/components/student/loader";
 import withAuth from "../../../../src/components/Hoc/authRoute";
+import NavigationBar2 from "../../../../src/components/student/NavigationBar2";
+import CricculumSidebar from "../../../../src/components/student/cricculumSidebar";
+import { Small } from "../../../../src/components/student/loader";
+import TopNavbar from "../../../../src/components/student/TopNavbar";
+import CodeEditorWindow from "../../../../src/components/student/codeEditor";
+import OutputWindow from "../../../../src/components/student/codeResult";
+import { myBucket, S3_BUCKET } from "../../../../src/confiq/aws/aws";
+import { useRouter } from "next/router";
+import Link from "next/link";
 
 const Home: NextPage = () => {
 
   const [code, setCode] = useState(null);
-  const [selectLanguage, setselectLanguage] = useState({});
+  const [codeFile, setCodeFile] = useState('');
+  const [selectLanguage, setselectLanguage] = useState(null);
+  const [loader, setLoader] = useState(false)
   const [loading, setLoading] = useState(true)
-  const [courseId, setCourseId] = useState('')
+  const [lecture, setLectures] = useState({})
   const [outputDetails, setOutputDetails] = useState(null);
   const [processing, setProcessing] = useState(null);
   const [theme, setTheme] = useState("cobalt");
   const [language, setLanguage] = useState([]);
+  // const [courseLanguage , setCourseLanguage] = useState('')
   const enterPress = useKeyPress("Enter");
   const ctrlPress = useKeyPress("Control");
 
   const onSelectChange = (e) => {
-    let lang = language[e.target.value]
-    setselectLanguage(lang);
+    let lang = language.find((item) => item.id == e.target.value)
+    setselectLanguage(lang.id);
   };
 
-  // const { Lectures } = useSelector((state: RootStateOrAny) => state.studentCourse)
+  const router = useRouter()
+
+  const { token } = useSelector((state: RootStateOrAny) => state.userReducer)
+
+  const AxInstance = axios.create({
+    // .. where we make our configurations
+    baseURL: 'https://dev.thetechub.us/bolloot/',
+    headers: {
+      token: token
+    }
+  });
+
+  let courseTitle = router.query.id
+
+
+
+  useEffect(() => {
+    let fetchCourse = async () => {
+      try {
+        setLoading(true)
+        let res = await AxInstance.get(`api//student/my-courses/${courseTitle}`)
+        if (res.data.success === true) {
+          setselectLanguage(res.data.response.course.language_id)
+          setLoading(false)
+
+        }
+        else {
+          setLoading(false)
+        }
+
+      } catch (error) {
+        SweetAlert({ icon: "error", text: error })
+
+      }
+
+    }
+    fetchCourse()
+  }, [courseTitle])
 
 
   useEffect(() => {
 
 
-    setTimeout(() => {
-      setLoading(false)
+    // setTimeout(() => {
+    //   setLoading(false)
 
-    }, 2000);
+    // }, 2000);
 
     let fetchLanuage = async () => {
       const options: Object = {
         method: 'GET',
         url: 'https://judge0-ce.p.rapidapi.com/languages',
         headers: {
-          'X-RapidAPI-Key': 'dc684477damsh4a8d57199134a8ep144f2fjsndb99bad0d80a',
-          'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com'
+          'X-RapidAPI-Key': "dc684477damsh4a8d57199134a8ep144f2fjsndb99bad0d80a",
+          'X-RapidAPI-Host': "judge0-ce.p.rapidapi.com"
         }
       };
       try {
@@ -84,7 +124,7 @@ const Home: NextPage = () => {
   const handleCompile = () => {
     setProcessing(true);
     const formData = {
-      language_id: selectLanguage.id,
+      language_id: selectLanguage,
       source_code: btoa(code),
     };
     const options = {
@@ -93,8 +133,8 @@ const Home: NextPage = () => {
       params: { base64_encoded: "true", fields: "*" },
       headers: {
         'content-type': 'application/json',
-        'X-RapidAPI-Key': 'dc684477damsh4a8d57199134a8ep144f2fjsndb99bad0d80a',
-        'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com'
+        'X-RapidAPI-Key': "dc684477damsh4a8d57199134a8ep144f2fjsndb99bad0d80a",
+        'X-RapidAPI-Host': "judge0-ce.p.rapidapi.com"
       },
       data: formData,
     };
@@ -135,8 +175,8 @@ const Home: NextPage = () => {
       url: 'https://judge0-ce.p.rapidapi.com/submissions/' + token,
       params: { base64_encoded: "true", fields: "*" },
       headers: {
-        'X-RapidAPI-Key': 'dc684477damsh4a8d57199134a8ep144f2fjsndb99bad0d80a',
-        'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com'
+        'X-RapidAPI-Key': "dc684477damsh4a8d57199134a8ep144f2fjsndb99bad0d80a",
+        'X-RapidAPI-Host': "judge0-ce.p.rapidapi.com"
       },
     };
     try {
@@ -164,6 +204,58 @@ const Home: NextPage = () => {
   };
 
 
+  const handleCodeFile = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    let files: any = event.target.files;
+    console.log("files", files[0])
+    // if (!files[0].name.match(/.(ppt|docx|doc|csv)$/i)) {
+    //   SweetAlert({ icon: "error", text: 'please select files' })
+
+    // }
+    // else {
+    let file = files[0]
+    setCodeFile(file?.name)
+    const params = {
+      ACL: 'private',
+      Body: file,
+      Bucket: S3_BUCKET,
+      Key: file?.name
+    };
+    myBucket.putObject(params, function (perr, pres) {
+      if (perr) {
+        console.log("Error uploading data: ", perr);
+      } else {
+        console.log("Successfully uploaded data to " + pres);
+      }
+    })
+    // }
+  }
+
+
+
+  const uploadFile = async () => {
+
+    try {
+      setLoader(true)
+      let res = await AxInstance.post('/api/student/file-contents', { file: codeFile })
+      if (res.data.success === true) {
+        setCodeFile('')
+        setCode(res.data.response.data)
+        setLoader(false)
+      }
+      else {
+        setLoader(false)
+        SweetAlert({ icon: "error", text: res.data.error })
+
+      }
+    }
+    catch (err) {
+      setLoader(false)
+      SweetAlert({ icon: "error", text: err })
+    }
+
+  }
+
+
 
   return (
     <>
@@ -174,7 +266,7 @@ const Home: NextPage = () => {
             <div className="aksldnsd-sdnaskdse">
 
               <CricculumSidebar
-              // lecture={(value: any) => setLectures(value)}
+                lecture={(value: any) => setLectures(value)}
               // courseId={(value: any) => setCourseId(value)}
               />
             </div>
@@ -191,7 +283,12 @@ const Home: NextPage = () => {
                 </div>
               </div>
               <div className="my-course jdsad-snd">
-
+                <Link href="/en/student/courses">
+                  <h3 style={{ cursor: 'pointer' }}>
+                    <i className="fa fa-arrow-left"></i>
+                    Back
+                  </h3>
+                </Link>
 
 
                 {/* {lectures.length ?
@@ -203,11 +300,11 @@ const Home: NextPage = () => {
                 <div style={{ display: 'flex', marginBottom: '20px', justifyContent: 'space-between' }}>
                   <div style={{ flexDirection: 'row', display: 'flex', alignItems: 'center' }}>
                     <div style={{ width: '350px' }}>
-                      <Form.Select onChange={(e) => onSelectChange(e)}>
+                      <Form.Select onChange={(e) => onSelectChange(e)} name="selectLanguage" value={selectLanguage}  >
                         <option>Select Language </option>
 
-                        {language && language.map((lang: any, index: number) => (
-                          <option value={index} key={lang?.id}>{lang?.name}</option>
+                        {language && language.map((lang: any) => (
+                          <option value={lang.id} key={lang?.id}>{lang?.name}</option>
                         ))}
                       </Form.Select>
                     </div>
@@ -217,6 +314,28 @@ const Home: NextPage = () => {
                       {processing ? "Processing..." : "Compile and Execute"}
 
                     </button>
+
+
+
+                    {/* <input type="file" /> */}
+                    <div className="d-flex">
+                      <Form.Group controlId="formFile" >
+                        <Form.Control type="file" name="codeFile" onChange={(e) => handleCodeFile(e)} />
+                      </Form.Group>
+                      <button
+                        onClick={() => uploadFile()}
+                        style={{ padding: '0px 10px', border: '1pt solid lightgray' }}
+                      >
+                        {loader ?
+                          <Spinner animation="border" size="sm" />
+                          :
+                          "upload"
+                        }
+
+                      </button>
+
+
+                    </div>
                   </div>
                   <div>
                   </div>
@@ -240,10 +359,8 @@ const Home: NextPage = () => {
 
 
                   </div>
-                  <div className="card-daskfj-e " style={{ padding: '0px 2px ', width: '50%' }}>
-
-
-                    <div className="user-card-inbox mt-0"  >
+                  <div className="card-daskfj-e" style={{ padding: '0px 2px ', width: '50%' }}>
+                    <div className="user-card-inbox mt-0">
                       <OutputWindow outputDetails={outputDetails} />
                     </div>
 
@@ -272,4 +389,4 @@ const Home: NextPage = () => {
 };
 
 
-export default withAuth( Home );
+export default withAuth(Home);

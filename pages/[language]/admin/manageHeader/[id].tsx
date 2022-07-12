@@ -92,69 +92,75 @@ const Home: NextPage = () => {
         </div>
         {loading ? Small()
           :
-        <div className="dash-board-1">
-          <div className="dash-2 ">
-            <div className="my-course">
-              <div className="hdsf0s-sadmsa">
+          <div className="dash-board-1">
+            <div className="dash-2 ">
+              <div className="my-course">
+                <div className="hdsf0s-sadmsa">
 
-                <div className="back-btn">
-                  <Link href="/en/admin/website" >
-                    <h3 className="back-arrow">
-                      <i className="fa fa-arrow-left"></i>
-                      Back</h3>
-                  </Link>
+                  <div className="back-btn">
+                    <Link href="/en/admin/website" >
+                      <h3 className="back-arrow">
+                        <i className="fa fa-arrow-left"></i>
+                        Back</h3>
+                    </Link>
 
-                  <h3> Manage Website Header Manu </h3>
-                </div>
-                <div className=" jidfjsd-asjreid">
-                  <Search />
-                  <div className="d-flex idfadsf-sads">
-                    <button className="upload-1 sdisad-dsdactive" onClick={() => setHeader(true)}>
-                      + Add New Manu </button>
+                    <h3> Manage Website Header Manu </h3>
+                  </div>
+                  <div className=" jidfjsd-asjreid">
+                    <Search />
+                    <div className="d-flex idfadsf-sads">
+                      <button className="upload-1 sdisad-dsdactive"
+                        id="activetab"
+
+                        onClick={() => setHeader(true)}>
+                        + Add New Manu </button>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="complete-web-1 mt-2">
-                <div className="umpire w-100">
-                  <div className="umpire-1 umpire-1-cst ">
-                    <div className="d-flex mb-3 idfadsf-sads">
-                      <button className="upload-1 sdisad-dsdactive">
-                        Header Manus
-                      </button>
+                <div className="complete-web-1 mt-2">
+                  <div className="umpire w-100">
+                    <div className="umpire-1 umpire-1-cst ">
+                      <div className="d-flex mb-3 idfadsf-sads">
+                        <button className="upload-1 sdisad-dsdactive"
+                          id="activetab"
+
+                        >
+                          Header Manus
+                        </button>
+
+                      </div>
 
                     </div>
-
                   </div>
                 </div>
-              </div>
-              <div className="complete-web-1">
-                <div style={{ width: '100%' }}>
-                  <DataTable
-                    columns={columns}
-                    data={course}
-                    sortIcon={<i className='fa fa-arrow-down'></i>}
-                    pagination
-                    selectableRows
-                    defaultSortAsc={true}
-                    highlightOnHover
-                    dense
+                <div className="complete-web-1">
+                  <div style={{ width: '100%' }}>
+                    <DataTable
+                      columns={columns}
+                      data={course}
+                      sortIcon={<i className='fa fa-arrow-down'></i>}
+                      pagination
+                      selectableRows
+                      defaultSortAsc={true}
+                      highlightOnHover
+                      dense
 
-                  />
+                    />
+                  </div>
+
+
                 </div>
-
-
               </div>
             </div>
           </div>
-        </div>
-         } 
+        }
 
-        { header && <AddHeader permition={header} Toggle={(value:any) => setHeader(value)}/>}
+        {header && <AddHeader permition={header} Toggle={(value: any) => setHeader(value)} />}
 
       </section >
     </div >
   );
 };
 
-export default AdminAuth( Home );
+export default AdminAuth(Home);

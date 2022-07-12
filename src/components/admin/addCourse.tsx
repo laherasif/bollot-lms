@@ -23,37 +23,21 @@ interface Course {
 
 }
 
-interface Outcomes {
-  outcomes: Array<string>,
 
-}
-interface Requirements {
-  requirements: Array<string>,
-
-}
-interface Courses {
-  course_for: Array<string>
-
-}
 
 export default ({ onStepChange }: any) => {
-  // const intl = useIntl();
-  // const [item, setItem] = useState<Outcomes[]>([''])
-  // const [request, setRequest] = useState<Requirements[]>([''])
-  // const [course, setCourse] = useState<Courses[]>([''])
-  // const [state, setState] = useState<Course>('')
-  // const [Courses, setCourses] = useState([])
+ 
   const [url, setUrl] = useState()
   const [errors, setErrors] = useState()
   const [loading, setLoading] = useState(false)
-  // const [courseId, setcourseId] = useState('')
+  const [language, setLanguage] = useState([])
 
 
   const dispatch = useDispatch()
   const router = useRouter()
   const courseSlug = router.query.id;
 
-  const { token, Instructor, Catagories } = useSelector((state: RootStateOrAny) => state?.admin)
+  const { token, Instructor, Catagories , Language } = useSelector((state: RootStateOrAny) => state?.admin)
 
   const {
     AddCourse,
@@ -71,29 +55,30 @@ export default ({ onStepChange }: any) => {
     }
   });
 
-console.log("addCourse" , AddCourse)
+
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-
+        // setLanguage(resLang.data)
         let res = await AxInstance.get(`api//admin/courses/${courseSlug}`)
-        
+
         if (res.data.success === true) {
           dispatch(coursesId(res.data.response.course?.id))
           dispatch(EditCourse(res.data.response.course))
+
         }
 
       }
       catch (err) {
-      SweetAlert({ icon: "error", text: err })
+        SweetAlert({ icon: "error", text: err })
 
       }
     }
     if (courseSlug) {
       fetchData()
     }
-  }, [])
+  }, [courseSlug])
 
   const addItem = (field: string) => {
     dispatch(addCourseContentMore(field))
@@ -155,7 +140,7 @@ console.log("addCourse" , AddCourse)
       category_id: AddCourse.category_id,
       short_desc: AddCourse.short_desc,
       long_desc: AddCourse.long_desc,
-      price: convertToNumber ,
+      price: convertToNumber,
       discounted_price: AddCourse.dprice || AddCourse.discounted_price,
       cover_image: AddCourse.cover_image,
       outcomes: outcomes,
@@ -193,7 +178,7 @@ console.log("addCourse" , AddCourse)
 
   return (
     <div className="inst" style={{ padding: '0px 35px' }}>
-      <h3 style={{paddingLeft:"10px"}}> {courseSlug ? "Edit Course" : "Add Course"} </h3>
+      <h3 style={{ paddingLeft: "10px" }}> {courseSlug ? "Edit Course" : "Add Course"} </h3>
       <div className="p-field">
 
         <div style={{ display: 'flex', flexDirection: 'column', }}>
@@ -232,6 +217,23 @@ console.log("addCourse" , AddCourse)
 
         </div>
 
+        <div style={{ display: 'flex', flexDirection: 'column', marginTop: '10px' }}>
+          <label>Programming Language</label>
+          <span>Please specify which programming language is being taught in this course</span>
+
+        </div>
+        <div className="kns-sanweso02e">
+          <Form.Select name="category_id"
+            value={AddCourse?.language_id} onChange={(e) => hendleFields(e)}>
+            <option defaultChecked>Select Language</option>
+            {Language && Language.map((cata) => (
+              <option key={cata.id} value={cata.id}>{cata.name}</option>
+            ))}
+          </Form.Select>
+          {errors?.language_id && <div className="invalid mt-1">{errors?.language_id[0]}</div>}
+
+
+        </div>
 
 
         <div className="mt-2">
@@ -422,7 +424,7 @@ console.log("addCourse" , AddCourse)
 
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 
