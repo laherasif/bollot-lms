@@ -6830,5 +6830,8 @@ del {
 }
 .whtaspp_icon a{
   color: white;
+}
+.whtaspp_icon a:hover{
+  color: white;
  
 }
