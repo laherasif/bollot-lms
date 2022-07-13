@@ -8,12 +8,12 @@ import { useState, useEffect } from "react";
 import { FiSearch } from "react-icons/fi";
 import Link from "next/link";
 import { Small } from "../../../../src/components/admin/loader";
-import { Breadcrumb } from "react-bootstrap";
+import { Breadcrumb, Spinner } from "react-bootstrap";
 import AdminAuth from "../../../../src/components/Hoc/adminRoute";
 import moment from "moment";
 import axios from "axios";
 import { SweetAlert } from "../../../../src/function/hooks";
-
+import { BsFileEarmarkPdf } from 'react-icons/bs'
 const columns: any = [
   // {
   //   name: "Transaction",
@@ -47,7 +47,7 @@ const columns: any = [
     selector: "amount",
     sortable: true,
     cell: (d: any) => (
-      <div>  ${d?.amount}</div>
+      <div>  $ {Math.abs(d?.amount)}</div>
     )
   },
   {
@@ -55,7 +55,15 @@ const columns: any = [
     selector: "valid_till",
     sortable: true,
     cell: (d: any) => (
-      <div>  ${d?.amount}</div>
+      <div>  $ {Math.abs(d?.amount)}</div>
+    )
+
+  },
+  {
+    name: "Pdf",
+    sortable: true,
+    cell: (d: any) => (
+      <div style={{fontSize:'20px'}}> <BsFileEarmarkPdf /></div>
     )
 
   }
@@ -64,8 +72,12 @@ const columns: any = [
 const Home: NextPage = () => {
   // const intl = useIntl();
   const [filterText, setFilterText] = useState('');
-  const [transaction, setTransaction] = useState([]);
+  const [filterDate, setFilterDate] = useState({ from_date: '', to_date: '' });
+  const [transLoad, setTranLoad] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState({})
+  const [transaction, setTransaction] = useState([])
+  const [filterTransaction, setFilterTransaction] = useState([])
   const { token } = useSelector((state: RootStateOrAny) => state?.admin)
 
   const AxInstance = axios.create({
@@ -76,12 +88,21 @@ const Home: NextPage = () => {
     }
   });
 
+
+
+  const handleChang = (e) => {
+    setFilterDate({
+      ...filterDate,
+      [e.target.name]: e.target.value
+    })
+  }
+
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true)
         let res = await AxInstance.get(`api//admin/transactions/cash`)
-        console.log("Res", res)
         if (res.data.success === true) {
           setTransaction(res.data.response.transactions)
           setLoading(false)
@@ -90,13 +111,49 @@ const Home: NextPage = () => {
       } catch (error) {
         setLoading(false)
         SweetAlert({ icon: "error", text: error })
-
-
       }
 
     }
     fetchData()
   }, [])
+
+
+
+  const FilterText = async () => {
+
+    let value = {
+      from_date: filterDate.from_date,
+      to_date: filterDate.to_date,
+      search: filterText
+    }
+    try {
+      setTranLoad(true)
+      let res = await AxInstance.post('api//admin/transactions', value)
+      if (res.data.success === true) {
+        setFilterTransaction(res.data.response.transactions)
+        setError({})
+        setTranLoad(false)
+      }
+      else {
+        setError(res.data.errors)
+        setTranLoad(false)
+
+      }
+
+    }
+    catch (err) {
+
+    }
+
+  }
+
+  const resetData = () => {
+    setFilterDate({ from_date: '', to_date: '' })
+    setFilterText('')
+    setTransaction([])
+
+  }
+
 
   const filteredItems = transaction?.filter(item => item?.user?.fullname && item?.user?.fullname.toLowerCase().includes(filterText.toLowerCase()));
   return (
@@ -145,20 +202,55 @@ const Home: NextPage = () => {
 
 
 
-                  <div style={{ display: 'flex', justifyContent: 'center', width: '100%', marginBottom: '20px' }}>
-                    <div className="dsnodi-sdjsad">
-                      <div className="searchbar-icon">
-                        <FiSearch color="#8A8A8A" size={17} />
+                  <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', marginBottom: '20px' }}>
+                    <div>
+                      <label>Search</label>
+                      <div className="dsnodi-sdjsad">
+                        <div className="searchbar-icon">
+                          <FiSearch color="#8A8A8A" size={17} />
+
+                        </div>
+
+                        <input type="text" placeholder="Search" onChange={(e) => setFilterText(e.target.value)} value={filterText} />
+                      </div>
+                    </div>
+                    <div className="d-flex">
+                      <div>
+                        <label>Start Date</label>
+                        <input type="date" name="from_date" className="form-control" onChange={(e) => handleChang(e)} value={filterDate.from_date} />
+                        {error.from_date && <div className="invalid mt-1">{error?.from_date[0]}</div>}
 
                       </div>
-                      <input type="text" placeholder="Search" onChange={(e) => setFilterText(e.target.value)} value={filterText} />
+                      <div className="mx-2">
+                        <label>End Date</label>
+                        <input type="date" name="to_date" className="form-control" onChange={(e) => handleChang(e)} value={filterDate.to_date} />
+                        {error.to_date && <div className="invalid mt-1">{error?.to_date[0]}</div>}
+
+                      </div>
+                      <div className="filter_wrapper">
+                        <button className="filter" onClick={() => FilterText()}>
+                          <i className="fa fa-filter"></i>
+                          {transLoad ?
+                            <Spinner animation="border" size="sm" />
+                            :
+                            ""
+                          }
+                        </button>
+                      </div>
+
+                      <div className="filter_wrapper mx-2">
+                        <button className="filter" onClick={() => resetData()}>
+                          <i className="fa fa-refresh"></i>
+                        </button>
+                      </div>
                     </div>
 
                   </div>
+
                   <div className="w-100">
                     <DataTable
                       columns={columns}
-                      data={filteredItems}
+                      data={filterTransaction?.length > 0 ? filterTransaction : transaction}
                       sortIcon={<i className='fa fa-arrow-down'></i>}
                       pagination
                       // selectableRows

@@ -76,7 +76,7 @@ export default () => {
       {
         id: 7,
         link: "/en/admin/subAdmin",
-        text: "Membership",
+        text: "Sub Admin",
         icon: "i4"
 
       },

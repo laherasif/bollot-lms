@@ -43,7 +43,6 @@ const Home: NextPage = () => {
     fetchCourse()
   }, [])
 
-  console.log("unp", unApCourses)
 
   return (
     <>

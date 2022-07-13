@@ -147,7 +147,6 @@ const Home: NextPage = () => {
 
   }
 
-  console.log("error", errors)
   return (
     <div className="inst">
       <NavigationBar1 />

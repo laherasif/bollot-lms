@@ -156,7 +156,6 @@ const Home: NextPage = () => {
           //   10000
           // );
         }
-        console.log("Err", err)
         setProcessing(false);
         if (code === null) {
           SweetAlert({ icon: 'error', text: error.language_id[1] })
@@ -197,7 +196,6 @@ const Home: NextPage = () => {
         return;
       }
     } catch (err) {
-      console.log("err", err);
       setProcessing(false);
       // showErrorToast();
     }
@@ -206,7 +204,6 @@ const Home: NextPage = () => {
 
   const handleCodeFile = async (event: React.ChangeEvent<HTMLInputElement>) => {
     let files: any = event.target.files;
-    console.log("files", files[0])
     // if (!files[0].name.match(/.(ppt|docx|doc|csv)$/i)) {
     //   SweetAlert({ icon: "error", text: 'please select files' })
 
@@ -222,7 +219,6 @@ const Home: NextPage = () => {
     };
     myBucket.putObject(params, function (perr, pres) {
       if (perr) {
-        console.log("Error uploading data: ", perr);
       } else {
         console.log("Successfully uploaded data to " + pres);
       }

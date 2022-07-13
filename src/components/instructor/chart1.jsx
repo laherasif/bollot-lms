@@ -1,6 +1,7 @@
 import {
   LineChart,
   Line,
+  XAxis,
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
@@ -53,6 +54,8 @@ const Chart = ({ color, strokeColor, label, value, chart }) => {
               dot={<CustomizedDot />}
               strokeWidth={3}
             />
+            <XAxis fontSize={16} tickMargin={16}
+              tickLine={false} axisLine={false} dataKey="name" style={{ display: 'none' }} />
             {/* <ReferenceLine y={10} x={10} label={<ReferenceLabel value="14222xx" />} strokeWidth={0} /> */}
           </LineChart>
         </ResponsiveContainer>

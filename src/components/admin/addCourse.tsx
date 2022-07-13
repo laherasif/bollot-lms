@@ -26,7 +26,7 @@ interface Course {
 
 
 export default ({ onStepChange }: any) => {
- 
+
   const [url, setUrl] = useState()
   const [errors, setErrors] = useState()
   const [loading, setLoading] = useState(false)
@@ -37,7 +37,7 @@ export default ({ onStepChange }: any) => {
   const router = useRouter()
   const courseSlug = router.query.id;
 
-  const { token, Instructor, Catagories , Language } = useSelector((state: RootStateOrAny) => state?.admin)
+  const { token, Instructor, Catagories, Language } = useSelector((state: RootStateOrAny) => state?.admin)
 
   const {
     AddCourse,
@@ -54,6 +54,7 @@ export default ({ onStepChange }: any) => {
       token: token
     }
   });
+
 
 
 
@@ -135,6 +136,7 @@ export default ({ onStepChange }: any) => {
 
     let data = {
       course_id: courseId ? courseId : "",
+      language_id: AddCourse.language_id,
       instructor_id: AddCourse.instructor_id,
       title: AddCourse.title,
       category_id: AddCourse.category_id,
@@ -223,11 +225,11 @@ export default ({ onStepChange }: any) => {
 
         </div>
         <div className="kns-sanweso02e">
-          <Form.Select name="category_id"
+          <Form.Select name="language_id"
             value={AddCourse?.language_id} onChange={(e) => hendleFields(e)}>
             <option defaultChecked>Select Language</option>
-            {Language && Language.map((cata) => (
-              <option key={cata.id} value={cata.id}>{cata.name}</option>
+            {Language && Language.map((lng) => (
+              <option key={lng.id} value={lng.id}>{lng.name}</option>
             ))}
           </Form.Select>
           {errors?.language_id && <div className="invalid mt-1">{errors?.language_id[0]}</div>}

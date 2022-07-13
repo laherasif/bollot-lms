@@ -120,7 +120,6 @@ export default ({ loader }: any) => {
         }
         else {
           let res = await AxInstance.post('api//admin/instructors/add', data)
-          console.log("REs" , res )
           if (res.data.success === true) {
             setLoading(false)
             dispatch(addInstructor(res.data.response.student))

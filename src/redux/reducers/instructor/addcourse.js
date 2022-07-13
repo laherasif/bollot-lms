@@ -163,23 +163,11 @@ const AddCourseReducer = (state = initialState, action) => {
             }
 
         case EDIT_ADD_COURSE:
-            debugger
             let course = state.AddCourse
             return {
                 ...state,
                 AddCourse: { ...action.payload },
                 AddCourse: { ...course, instructor_id: action.payload.instructor.id },
-
-                // AddCourse: {
-                //     instructor_id: action.payload.instructor.id,
-                //     category_id: action.payload.category_id,
-                //     title: action.payload.title,
-                //     short_desc: action.payload.short_desc,
-                //     long_desc: action.payload.long_desc,
-                //     price: action.payload.price,
-                //     discounted_price: action.payload.discounted_price,
-                //     cover_image: action.payload.cover_image,
-                // },
                 course_for: action.payload.course_for || [''],
                 requirements: action.payload.requirements || [''],
                 outcomes: action.payload.outcomes || [''],
@@ -191,11 +179,14 @@ const AddCourseReducer = (state = initialState, action) => {
                 ...state,
                 courseId: '',
                 AddCourse: {
+                    instructor_id: '',
                     category_id: '',
+                    language_id : '',
                     title: '',
                     short_desc: '',
                     long_desc: '',
                     price: '',
+                    discounted_price: '',
                     cover_image: '',
                 },
                 course_for: [''],

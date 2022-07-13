@@ -24,12 +24,6 @@ const Home: NextPage = () => {
   const [value, setValue] = useState({});
 
 
-
-
-
-  const dispatch = useDispatch()
-
-
   const AxInstance = axios.create({
     // .. where we make our configurations
     baseURL: 'https://dev.thetechub.us/bolloot/',
@@ -81,10 +75,7 @@ const Home: NextPage = () => {
 
 
 
-
   let convtObj = Object.assign({}, state)
-
-  console.log("obj", convtObj)
 
   const updateSetting = async () => {
 
@@ -156,11 +147,9 @@ const Home: NextPage = () => {
 
                           onClick={() => updateSetting()}>
                           <i className="fa fa-save" style={{ marginRight: '10px' }}></i>
-                          Update
-                          {/* <i className="fa fa-save" style={{ marginRight: '10px' }}></i>
-                          {saveSetting ? <Spinner animation="border" /> :
-                            "Save"
-                          } */}
+                          {loader ? <Spinner animation="border" /> :
+                            "Update"
+                          }
                         </button>
                       </div>
 
@@ -178,8 +167,11 @@ const Home: NextPage = () => {
                               type="text"
                               placeholder="Write Here...." />
 
+                            {/* {errors?.field?.key && <div className="invalid mt-1">{errors?.field?.key[0]}</div>} */}
                           </div>
+
                         ))}
+
 
 
 

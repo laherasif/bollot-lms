@@ -141,7 +141,6 @@ export default ({ changeState, onPrevStep, step }: any) => {
     dispatch(delLecturepreview(index))
   }
 
-  console.log("error" , errors)
 
 
   const AddPreviewLect = (data: any) => {

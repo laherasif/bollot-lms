@@ -6,7 +6,7 @@ import Footer from "../../../src/components/footer";
 import Navbar from "../../../src/components/header/Navbar";
 import { useSelector, RootStateOrAny, useDispatch } from "react-redux";
 // import cart from "../cart";
-import { ResetCart, SaveCard } from "../../../src/redux/actions/course/course";
+import { ResetCart, SaveCard, updateCart } from "../../../src/redux/actions/course/course";
 import axios from "axios";
 import {
   formatCreditCardNumber,
@@ -17,6 +17,7 @@ import { useRouter } from 'next/router'
 import { SweetAlert } from "../../../src/function/hooks";
 import { Small } from "../../../src/components/student/loader";
 import CartCard from "../../../src/components/card/cartsCard";
+import instance from "../../../src/confiq/axios/instance";
 const Home: NextPage = () => {
   // const intl = useIntl();
   const [acoountDetail, setAcoountDetail] = useState({
@@ -38,6 +39,9 @@ const Home: NextPage = () => {
   const [cardDetail, setCardDetail] = useState([]);
   const [payments, setPayments] = useState(false);
   const [complPay, setComplPay] = useState(false);
+  const [load, setLoad] = useState(false);
+  const [error, setError] = useState({});
+  const [coupon, setCoupon] = useState('')
   const [buynow, setBuyNow] = useState([])
   const [cards, setCards] = useState([
     '/assets/images/card-amex.svg',
@@ -83,6 +87,30 @@ const Home: NextPage = () => {
       token: token
     }
   });
+
+
+  const saveDiscount = async () => {
+    try {
+      setLoad(true)
+      let res = await instance.post('api//check-coupon', { coupon_code: coupon })
+      if (res.data.success === true) {
+        dispatch(updateCart(res.data.response.coupon))
+        setLoad(false)
+
+        SweetAlert({ icon: 'success', text: res.data.message })
+        setCoupon('')
+      }
+      else {
+        setError(res.data.error)
+        setLoad(false)
+      }
+    }
+    catch (err) {
+      SweetAlert({ icon: 'error', text: err })
+
+    }
+
+  }
 
 
   useEffect(() => {
@@ -208,7 +236,7 @@ const Home: NextPage = () => {
 
 
       setComplPay(true)
-      let res = await AxInstance.post('api//checkout', type === 0 ? cash : payment  )
+      let res = await AxInstance.post('api//checkout', type === 0 ? cash : payment)
       if (res.data.success === true) {
         setComplPay(false)
         dispatch(ResetCart())
@@ -471,19 +499,22 @@ const Home: NextPage = () => {
                   <h6>${Object.keys(buynow).length > 0 ? buynow?.price : discountAmount > 0 ? discountAmount : totalamount}</h6>
                   {/* <h6>${discountAmount !== "0.00" ? discountAmount : buynow?.price}</h6> */}
                 </div>
-                {/* <h6 className="mb-0">
-                    <Icons name="c34" />
-                    MARCH-T22122 is applied
-                  </h6>
-                  <h6 className="mb-0">
-                    <Icons name="c34" />
-                    ST11MT22122 is applied
-                  </h6> */}
+                <div className="btnn-1">
+                  <input placeholder="Enter Coupon" name="coupon" value={coupon} onChange={(e) => setCoupon(e.target.value)} />
+                  <button onClick={() => saveDiscount()}>
+                    {load ?
+                      <Spinner animation="border" />
+                      :
+                      "Apply"}
+                  </button>
+
+                </div>
+                {error?.coupon_code && <div className="invalid mt-1">{error?.coupon_code[0]}</div>}
                 <button
                   className="btn-2s w-100 mt-3"
                   onClick={(e) => handleSubmit(e)}
-                  disabled={cardType || type ===  0 ? false : true}
-                  style={cardType || type ===  0 ? { opacity: 1 } : { opacity: 0.5 }}
+                  disabled={cardType || type === 0 ? false : true}
+                  style={cardType || type === 0 ? { opacity: 1 } : { opacity: 0.5 }}
                 >
                   {complPay ?
                     <div className="spinner-border text-light" style={{ marginBottom: '-5px', fontSize: '20px', width: '25px', height: '25px' }} role="status">
@@ -493,6 +524,7 @@ const Home: NextPage = () => {
                   }
 
                 </button>
+
               </div>
             </div>
           </div>

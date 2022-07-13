@@ -103,7 +103,6 @@ const Secdule = ({ onStepChange, onPrevStep, step }: any) => {
 
     }
 
-    console.log("Classes" , Classes)
 
 
     return (

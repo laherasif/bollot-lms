@@ -72,7 +72,6 @@ const Home: NextPage = () => {
     fetchCourse()
   }, [courseId])
 
-  console.log("errors", errors)
 
 
 
@@ -168,7 +167,6 @@ const Home: NextPage = () => {
   }
 
 
-  console.log("error", errors)
 
 
 

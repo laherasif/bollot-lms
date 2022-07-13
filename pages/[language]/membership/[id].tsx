@@ -29,7 +29,6 @@ const Home: NextPage = () => {
     }
   });
 
-  console.log("member", member)
 
   useEffect(() => {
     try {

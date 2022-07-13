@@ -128,7 +128,6 @@ export default ({ onStepChange, onPrevStep, step }: any) => {
 
 
 
-  console.log("errors", errors)
 
   return (
 

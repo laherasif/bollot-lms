@@ -38,7 +38,6 @@ const Home: NextPage = () => {
     }
   });
 
-  console.log("token", token)
 
 
   const dispatch = useDispatch()
@@ -95,7 +94,7 @@ const Home: NextPage = () => {
     //       <Sidebar />
     //     </div>
 
-    <div className="inst">
+    <div className="inst mb-4" >
       <NavigationBar1 />
       <section className="dash-board jadsifd-asdasid">
         <div className="ksadsa-w4a3k4">
@@ -199,7 +198,7 @@ const Home: NextPage = () => {
                   <div className="d-flex w-100 kafsdfidsa-fen">
                     <div className="w-100 kdsafjdas-sadn">
                       <h5 className="jdiofsdf-fndsf">Total Revenue</h5>
-                      <div className="odsafoskdf-dsnaier" style={{ height: '100%', width: '50%' }}>
+                      <div className="odsafoskdf-dsnaier">
                         <BarChart chart={Statistic?.revenue_chart} />
 
                       </div>

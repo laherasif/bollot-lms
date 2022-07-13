@@ -143,7 +143,7 @@ const Home: NextPage = () => {
             >
               {loader ? <Spinner animation="border" size="sm" />
                 :
-                "Approved"
+                "Approve"
               }
             </button>
           </div>

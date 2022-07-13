@@ -231,7 +231,6 @@ const Home: NextPage = () => {
   }
 
 
-  console.log("allquiz", allQuiz)
 
 
   return (

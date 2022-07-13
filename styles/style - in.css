@@ -5140,3 +5140,24 @@ textarea::placeholder {
 .checkbox_wrapper span{
   padding-left: 10px;
 }
+
+
+/* filter  */
+
+.filter_wrapper{
+  width: 50px;
+}
+
+.filter{
+  width: 100%;
+  margin-top: 25px;
+  border: 1pt solid lightgray;
+  height: 53%;
+}
+
+
+.react-pdf__Page__canvas {
+    margin: 0 auto;
+    width: 80% !important;
+    height: 100% !important;
+}
