@@ -182,7 +182,6 @@ const AddCoupon = ({ Toggle, permition, User }: any) => {
                     <div className="idfadsf-sads kajfds-sdfe">
                         <button onClick={() => handleClose()}
                             className="upload-1 sdisad-dsdactive"
-                            id="activetab"
                         >
 
                             Close

@@ -11,9 +11,11 @@ import { getDashbaordStatic, getTransactionStatic, getTransactions } from "../..
 import { SweetAlert } from "../../../../src/function/hooks";
 import withAuth from "../../../../src/components/Hoc/authRoute";
 import { Small } from "../../../../src/components/instructor/loader";
+import ZyBooks from "../../../../src/components/instructor/zyCourses";
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
   const [loading, setLoading] = useState(false)
+  const [course, setCourse] = useState([])
   const { User, token } = useSelector((state: RootStateOrAny) => state?.userReducer)
   const { Statistic } = useSelector((state: RootStateOrAny) => state?.InsDash)
 
@@ -34,7 +36,9 @@ const Home: NextPage = () => {
         let res = await AxInstance.get('api//instructor/dashboard-stats')
         let transaction = await AxInstance.get('api//instructor/transaction-stats')
         let Alltransaction = await AxInstance.get('api//instructor/transactions')
+        let resCourse = await AxInstance.get('api//instructor/courses')
         if (res.data.success === true) {
+          setCourse(resCourse.data.response.courses)
           dispatch(getDashbaordStatic(res.data.response.data))
           dispatch(getTransactionStatic(transaction.data.response.data))
           dispatch(getTransactions(Alltransaction.data.response.transactions))
@@ -50,9 +54,10 @@ const Home: NextPage = () => {
   }, [])
 
 
+
   if (loading === true) {
     return (
-      <div className="inst" style={{paddingTop:'20rem'}}>
+      <div className="inst" style={{ paddingTop: '20rem' }}>
 
         {Small()}
       </div>
@@ -89,7 +94,7 @@ const Home: NextPage = () => {
                     </h3>
                     <h3>Welcome back👋</h3>
                   </div>
-                 
+
                 </div>
                 <div className="sanlsad-ajw3e">
                   <div className="row">
@@ -154,6 +159,19 @@ const Home: NextPage = () => {
 
                     />
                   </div>
+
+                </div>
+
+                <div >
+                  <h3>Courses</h3>
+                </div>
+                <br/>
+                <div className="zybook_container">
+                  {course && course.map((item) => (
+                    <ZyBooks item={item} key={item.id} />
+                  ))}
+
+
                 </div>
               </div>
             </div>

@@ -187,10 +187,10 @@ const Home: NextPage = () => {
         setLoader(false)
         SweetAlert({ icon: "success", text: res.data.message })
         if (courseTitle) {
-          router.push('/en/admin/liveCourses')
+          router.push('/en/instructor/liveCourses')
         }
         else {
-          router.push('/en/admin/courses')
+          router.push('/en/instructor/courses')
 
         }
       }

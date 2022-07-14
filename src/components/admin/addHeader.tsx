@@ -191,7 +191,6 @@ const AddHeader = ({ Toggle, permition, Data }: any) => {
                         <div className="idfadsf-sads kajfds-sdfe hfdajss-3ersad">
                             <button
                                 className="upload-1 sdisad-dsdactive "
-                                id="activetab"
                                 onClick={() => handleClose()}
                             >
                                 Close
