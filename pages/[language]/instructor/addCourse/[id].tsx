@@ -32,8 +32,6 @@ const Home: NextPage = () => {
 
   const stepChangeHandler = () => {
 
-
-
     if (step + 1 === 1) {
       setStepn([...stepn, { tw: true }])
     }

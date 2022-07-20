@@ -29,6 +29,7 @@ const Home: NextPage = () => {
   const [section, setSection] = useState([])
 
   const { token } = useSelector((state: RootStateOrAny) => state?.userReducer)
+  const { Courses } = useSelector((state: RootStateOrAny) => state?.InsDash)
 
   const AxInstance = axios.create({
     // .. where we make our configurations
@@ -69,8 +70,8 @@ const Home: NextPage = () => {
     fetchCourse()
   }, [courseId])
 
-  console.log("sections", section)
 
+  let findCourse = Courses.find((c) => c.id == courseId)
 
   return (
     <div className="inst">
@@ -120,11 +121,11 @@ const Home: NextPage = () => {
                 </div>
               </div>
               <div className="col-md-4">
-                <div className="course_right_wrapper">
-                  <div className="right_header">
+                <div className="course_right_wrapper" >
+                  <div className="right_header" style={{ backgroundImage: `url(${findCourse?.cover_image})` }}>
                     <div className="header_text">
                       <h4 className="header_title">Digital Course</h4>
-                      <h6 className="header_date">Digital Course</h6>
+                      <h6 className="header_date">Expires { moment(findCourse?.created_at).format('ll')}</h6>
                     </div>
                   </div>
                   <div className="right_main">

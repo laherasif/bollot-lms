@@ -7,7 +7,7 @@ import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { getDashbaordStatic, getTransactionStatic, getTransactions } from "../../../../src/redux/actions/instructor/courses";
+import { getDashbaordStatic, getTransactionStatic, getTransactions, getAllCourse } from "../../../../src/redux/actions/instructor/courses";
 import { SweetAlert } from "../../../../src/function/hooks";
 import withAuth from "../../../../src/components/Hoc/authRoute";
 import { Small } from "../../../../src/components/instructor/loader";
@@ -17,7 +17,7 @@ const Home: NextPage = () => {
   const [loading, setLoading] = useState(false)
   const [course, setCourse] = useState([])
   const { User, token } = useSelector((state: RootStateOrAny) => state?.userReducer)
-  const { Statistic } = useSelector((state: RootStateOrAny) => state?.InsDash)
+  const { Statistic , Courses } = useSelector((state: RootStateOrAny) => state?.InsDash)
 
   const dispatch = useDispatch()
 
@@ -33,12 +33,12 @@ const Home: NextPage = () => {
     try {
       setLoading(true)
       let fetchStatic = async () => {
+        let resCourse = await AxInstance.get('api//instructor/courses')
         let res = await AxInstance.get('api//instructor/dashboard-stats')
         let transaction = await AxInstance.get('api//instructor/transaction-stats')
         let Alltransaction = await AxInstance.get('api//instructor/transactions')
-        let resCourse = await AxInstance.get('api//instructor/courses')
         if (res.data.success === true) {
-          setCourse(resCourse.data.response.courses)
+          dispatch(getAllCourse(resCourse.data.response.courses))
           dispatch(getDashbaordStatic(res.data.response.data))
           dispatch(getTransactionStatic(transaction.data.response.data))
           dispatch(getTransactions(Alltransaction.data.response.transactions))
@@ -163,11 +163,12 @@ const Home: NextPage = () => {
                 </div>
 
                 <div >
-                  <h3>Courses</h3>
+                  <h3>Courses </h3>
+                  <Link href="/en/instructor/adopt">Add Adopt</Link>
                 </div>
                 <br/>
                 <div className="zybook_container">
-                  {course && course.map((item) => (
+                  {Courses && Courses.map((item) => (
                     <ZyBooks item={item} key={item.id} />
                   ))}
 

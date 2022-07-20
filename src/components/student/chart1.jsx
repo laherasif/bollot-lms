@@ -2,11 +2,7 @@ import {
   LineChart,
   Line,
   XAxis,
-  YAxis,
-  CartesianGrid,
   Tooltip,
-  Legend,
-  ReferenceLine,
   ResponsiveContainer,
 } from "recharts";
 import {FaCircle} from 'react-icons/fa'
@@ -59,6 +55,8 @@ const Chart = ({ color, strokeColor, label, value , chart }) => {
               strokeWidth={3}
             />
             {/* <ReferenceLine y={10} x={10} label={<ReferenceLabel value="14222xx" />} strokeWidth={0} /> */}
+            <XAxis fontSize={16} tickMargin={16}
+              tickLine={false} axisLine={false} dataKey="name" style={{ display: 'none' }} />
           </LineChart>
         </ResponsiveContainer>
       </div>
