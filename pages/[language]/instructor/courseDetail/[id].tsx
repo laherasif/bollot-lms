@@ -14,6 +14,7 @@ import { FaBookReader, FaClipboardList } from 'react-icons/fa'
 import { AiTwotoneAppstore } from 'react-icons/ai'
 import { IoStatsChart } from 'react-icons/io'
 import { useRouter } from "next/router";
+import { Welcome, Report, Class, Assignment, Test, } from '../../../../src/components/instructor/zybooksRight'
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
 
@@ -30,6 +31,8 @@ const Home: NextPage = () => {
 
   const { token } = useSelector((state: RootStateOrAny) => state?.userReducer)
   const { Courses } = useSelector((state: RootStateOrAny) => state?.InsDash)
+
+  let comp = [Welcome(), Class(), Report(), Assignment(), Test()]
 
   const AxInstance = axios.create({
     // .. where we make our configurations
@@ -125,11 +128,15 @@ const Home: NextPage = () => {
                   <div className="right_header" style={{ backgroundImage: `url(${findCourse?.cover_image})` }}>
                     <div className="header_text">
                       <h4 className="header_title">Digital Course</h4>
-                      <h6 className="header_date">Expires { moment(findCourse?.created_at).format('ll')}</h6>
+                      <h6 className="header_date">Expires {moment(findCourse?.created_at).format('ll')}</h6>
                     </div>
                   </div>
                   <div className="right_main">
-
+                    {
+                      comp.map((cp , index) => (
+                        activeIndex === index ? cp : null 
+                      ))
+                    }
                   </div>
                   <div className="right_footer">
                     <div className="tabs">

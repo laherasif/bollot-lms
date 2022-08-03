@@ -16,6 +16,7 @@ import PreviewReducer from "../reducers/instructor/preview";
 import AddCourseReducer from "../reducers/instructor/addcourse";
 import AddZyBookCourseReducer from "../reducers/instructor/zybooks";
 import CourseReducer from '../reducers/student/courses';
+import AddSectionReducer from '../reducers/instructor/addsection'
 // admin course add reducers 
 import AdminReducer from "../reducers/admin/";
 
@@ -50,6 +51,7 @@ const rootReducer = combineReducers({
   blogs: BlogReducer,
   InsDash: InsDashboardReducer,
   zybooks: AddZyBookCourseReducer,
+  createSection: AddSectionReducer,
   // admin course add reducers 
   // adminlive: AdminClassesReducer,
   // adminquiz: AdminQuizReducer,
