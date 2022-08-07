@@ -1,16 +1,16 @@
 import type { NextPage } from "next";
 import NavigationBar1 from "../../../../src/components/instructor/NavigationBar3";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { Small } from "../../../../src/components/instructor/loader";
-import { Accordion, Breadcrumb, Tab, Tabs } from "react-bootstrap";
-import moment from "moment";
+import { Breadcrumb, } from "react-bootstrap"
+// import moment from "moment";
 import { RiArrowDropUpLine, RiArrowDropDownLine } from 'react-icons/ri'
 import withAuth from "../../../../src/components/Hoc/authRoute";
-import Editor from "../../../../src/components/instructor/sectionEditor";
-import CodeEditorWindow from "../../../../src/components/instructor/codeEditor";
+import CkEditor from "../../../../src/components/instructor/sectionEditor";
+// import CodeEditorWindow from "../../../../src/components/instructor/codeEditor";
 import { myBucket, S3_BUCKET } from "../../../../src/confiq/aws/aws";
 import { SweetAlert } from "../../../../src/function/hooks";
 import useKeyPress from "../../../../src/components/Hoc/useKeyPress";
@@ -18,6 +18,7 @@ import { useRouter } from "next/router";
 import OutputWindow from "../../../../src/components/instructor/codeResult";
 import { addQuestionsAnswers, addSectionsValues, createCodeEditor, createCodes, createImage, createMultipleChoice, createShortQuestion, createTable, createText, createVideo, deleQuestionAnwser, IncDescOptions } from "../../../../src/redux/actions/instructor/zybooks";
 import ReactPlayer from "react-player";
+import Editor from "@monaco-editor/react";
 const Home: NextPage = () => {
   const [loading, setLoading] = useState(false)
   const [editorLoaded, setEditorLoaded] = useState(false);
@@ -30,8 +31,7 @@ const Home: NextPage = () => {
   const [processing, setProcessing] = useState(null);
   const [theme, setTheme] = useState("cobalt");
   const [language, setLanguage] = useState([]);
-  const [table , setTable] = useState(false)
-  // const [courseLanguage , setCourseLanguage] = useState('')
+  const [table, setTable] = useState(false)
   const enterPress = useKeyPress("Enter");
   const ctrlPress = useKeyPress("Control");
 
@@ -44,42 +44,34 @@ const Home: NextPage = () => {
     // setLoading(true)
     setEditorLoaded(true);
 
-
-  }, [])
-
+  }, [editorLoaded])
 
 
-  // let p = [{user:[]} , {table:[] }, {code:[]} , {multi:[{}]} , {short:[{}]} ]
-
-
-
-
-
-  const onSelectChange = (e) => {
-    let lang = language.find((item) => item.id == e.target.value)
-    setselectLanguage(lang.id);
-  };
+  // const onSelectChange = (e) => {
+  //   let lang = language.find((item) => item.id == e.target.value)
+  //   setselectLanguage(lang.id);
+  // };
 
   const router = useRouter()
 
   const dispatch = useDispatch()
 
-  const { token } = useSelector((state: RootStateOrAny) => state.userReducer)
+  // const { token } = useSelector((state: RootStateOrAny) => state.userReducer)
   const sections = useSelector((state: RootStateOrAny) => state.createSection)
   let sectionData = sections.section
 
-  const AxInstance = axios.create({
-    // .. where we make our configurations
-    baseURL: 'https://dev.thetechub.us/bolloot/',
-    headers: {
-      token: token
-    }
-  });
+  // const AxInstance = axios.create({
+  //   // .. where we make our configurations
+  //   baseURL: 'https://dev.thetechub.us/bolloot/',
+  //   headers: {
+  //     token: token
+  //   }
+  // });
 
-  console.log("sectionData", table)
+  console.log("sectionData", sectionData)
 
 
-  let courseTitle = router.query.id
+  // let courseTitle = router.query.id
 
   useEffect(() => {
 
@@ -114,22 +106,13 @@ const Home: NextPage = () => {
     }
 
   }, [ctrlPress, enterPress]);
-  const onChange = (action, data) => {
-    switch (action) {
-      case "code": {
-        setCode(data);
-        break;
-      }
-      default: {
-        console.warn("case not handled!", action, data);
-      }
-    }
-  };
+
+
   const handleCompile = () => {
     setProcessing(true);
     const formData = {
-      language_id: selectLanguage,
-      source_code: btoa(code),
+      language_id: sectionData.find((item) => item.name === "code").codesValue.language,
+      source_code: btoa(sectionData.find((item) => item.name === "code").codesValue.code),
     };
     const options = {
       method: "POST",
@@ -147,7 +130,7 @@ const Home: NextPage = () => {
       .request(options)
       .then(function (response) {
         const token = response.data.token;
-        console.log("token" , token)
+        console.log("token", token)
         checkStatus(token);
       })
       .catch((err) => {
@@ -233,9 +216,14 @@ const Home: NextPage = () => {
 
 
   const addEvent = (type: string) => {
+
+
+
     switch (type) {
       case "text":
+        // setEditorLoaded(true);
         dispatch(createText())
+
         break;
       case "table":
         // dispatch(createTable())
@@ -265,57 +253,57 @@ const Home: NextPage = () => {
   }
 
 
-  const addmoreQues = (type: string, pIndex: number, cIndex: number) => {
-    debugger
-    if (type === "short_answer") {
-      let values = {
-        pIndex: pIndex,
-        cIndex: cIndex
-      }
-      dispatch(addQuestionsAnswers(type, values))
+  const addmoreQues = (type: string, pIndex: number, cIndex: number, ccIndex: number) => {
+    let values = {
+      pIndex: pIndex,
+      cIndex: cIndex,
+      ccIndex: ccIndex
+    }
+    dispatch(addQuestionsAnswers(type, values))
 
-    }
-    else {
-      dispatch(addQuestionsAnswers(type))
-    }
   }
 
 
-  const delQuestionAns = (type: string, index: number, i: number, ansIndex: number) => {
-    if (type === "short_answer") {
-      let value = {
-        pIndex: index,
-        cIndex: i,
-        ansIndex: ansIndex
-      }
-      dispatch(deleQuestionAnwser(type, value))
+  const delQuestionAns = (name:string , pIndex: number , cIndex:number , ccIndex:number , cccIndex:number) => {
+     
+    let value = {
+      name : name , 
+      pIndex: pIndex,   
+      cIndex: cIndex,
+      ccIndex: ccIndex,
+      cccIndex: cccIndex
     }
-    else {
-      let value = {
-        pIndex: index,
-        cIndex: i,
-      }
 
-      dispatch(deleQuestionAnwser(type, value))
-
-    }
+    dispatch(deleQuestionAnwser(value))
   }
 
   // increase and descrese options
 
-  const InAndDesOpt = (type: string, pIndex: number, cIndex: number) => {
-    dispatch(IncDescOptions(type, pIndex, cIndex))
+  const InAndDesOpt = (type: string, pIndex: number, cIndex: number, ccIndex: number) => {
+    dispatch(IncDescOptions(type, pIndex, cIndex, ccIndex))
+  }
+
+
+  const handleInputCkEditor = (name: string, index: number, data: any) => {
+
+    let values = {
+      value: data,
+      index: index,
+      targetName: name
+    }
+
+    dispatch(addSectionsValues({ name, values }))
+
   }
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>, name: string, index: number) => {
-    debugger
     let values = {
       value: e.target.value,
-      i: index,
+      index: index,
       targetName: e.target.name
     }
 
-    if (name === "code") {
+    if (e.target.name === "language") {
       setselectLanguage(e.target.value)
     }
     dispatch(addSectionsValues({ name, values }))
@@ -323,16 +311,31 @@ const Home: NextPage = () => {
   }
 
   const handleInputChoice = (e: React.ChangeEvent<HTMLInputElement>, name: string, index: number, i: number, ccIndex: number, checkValue: number) => {
-    debugger
-    let values = {
-      value: e.target.value || checkValue,
-      index: index,
-      i: i,
-      ccIndex: ccIndex,
-      targetName: e.target.name
+    if (e.target.name === "checkOption") {
+      let values = {
+        value: checkValue,
+        index: index,
+        i: i,
+        ccIndex: ccIndex,
+        cccIndex: checkValue,
+        targetName: e.target.name
+      }
+      dispatch(addSectionsValues({ name, values }))
+
+    }
+    else {
+
+      let values = {
+        value: e.target.name === "choice" ? checkValue : e.target.value,
+        index: index,
+        i: i,
+        ccIndex: ccIndex,
+        cccIndex: checkValue,
+        targetName: e.target.name
+      }
+      dispatch(addSectionsValues({ name, values }))
     }
 
-    dispatch(addSectionsValues({ name, values }))
 
   }
 
@@ -365,7 +368,23 @@ const Home: NextPage = () => {
   }
 
 
+  const editorRef = useRef()
+  // const [ editorLoaded, setEditorLoaded ] = useState( false )
+  const { CKEditor, ClassicEditor }: any = editorRef.current || {}
 
+  useEffect(() => {
+    editorRef.current = {
+      CKEditor: require('@ckeditor/ckeditor5-react').CKEditor, //Added .CKEditor
+      ClassicEditor: require('@ckeditor/ckeditor5-build-classic'),
+    }
+    // setEditorLoaded( true )
+  }, [])
+
+
+
+
+
+  console.log("editorLoaded", editorLoaded)
   return (
     <div className="inst">
       <NavigationBar1 />
@@ -388,7 +407,7 @@ const Home: NextPage = () => {
                         <div className="add_text">
                           <h3>Add content <i className="fa fa-caret-down"></i></h3>
                           <span onClick={() => addEvent("text")}>Text Block</span>
-                          <span onClick={() => addEvent("table")}>Table</span>
+                          {/* <span onClick={() => addEvent("table")}>Table</span> */}
                           <span onClick={() => addEvent("code")}>Code Editor</span>
                           <h5 className="text-gray">Question sets</h5>
                           <span onClick={() => addEvent("multiple")}>Multiple choice</span>
@@ -404,142 +423,181 @@ const Home: NextPage = () => {
                 </div>
                 <div className="col-md-10 section ">
                   <div className="section_wrapper " style={{ marginRight: '20px' }}>
-                    <div className="ckd_wrapper">
-                      <Editor
-                        name="description"
-                        value={data?.full_content}
-                        style={{display:'none'}}
-                        onChange={(data) => {
-                          setData({ ...data, full_content: data })
-                        }}
-                        editorLoaded={editorLoaded}
-                      />
 
-                    </div>
 
                     <div className="section_container">
                       {sectionData && sectionData.map((d: any, index: number) => (
                         <>
                           <>
-
-                            <div className="content_section">
-                              <h3 >1.17</h3>
-                              <input type="text" value={d.title} onChange={(e) => handleInput(e, "title", index)} name="title" className="form-control" placeholder="Section Title" />
-                            </div>
+                            {d?.name === "title" &&
+                              <>
+                                <h3 style={{ fontSize: '16px' }}>1.17 : Section Title</h3>
+                                <div className="content_section">
+                                  <CkEditor
+                                    name="description"
+                                    value={d?.value}
+                                    onChange={(data) => {
+                                      handleInputCkEditor("value", index, data)
+                                    }}
+                                    editorLoaded={editorLoaded}
+                                  />
+                                  {/* <input type="text" value={d.title} onChange={(e) => handleInput(e, "title", index)} name="title" className="form-control" placeholder="Section Title" /> */}
+                                </div>
+                              </>
+                            }
                             {
-                              d.text?.map((tx: any, index: number) => (
+                              d?.name === "text" &&
+                              // d.text?.map((tx: any, index: number) => (
+                              <>
+                                <h3 style={{ marginTop: '30px', fontSize: '15px' }}>1.1.27 Text Block</h3>
                                 <div className="text_block">
-                                  <input type="text" value={tx} onChange={(e) => handleInput(e, "text", index)} name="text" placeholder="Text here" />
-                                  <span onClick={() => delQuestionAns("text", index, 0, 0)}>
-                                    <i className="fa fa-trash" ></i>
+                                  <div className="content_section">
+
+                                    
+                                    {editorLoaded ? (
+                                      <CKEditor
+                                        type=""
+                                        // name={name}
+                                        editor={ClassicEditor}
+                                        style={{ height: "10%" }}
+                                        data={d?.textValue}
+
+                                        config={{
+                                          // extraPlugins: [uploadPlugin],
+                                          // plugins: [ Bold,],
+                                          // toolbar: ['heading' ,'bold', 'italic', 'link', 'undo', 'redo', 'numberedList', 'bulletedList'  , 'insertTable'],
+                                          toolbar: [
+                                            'heading', '|',
+                                            'fontfamily', 'fontsize', '|',
+                                            'alignment', '|',
+                                            'fontColor', 'fontBackgroundColor', '|',
+                                            'bold', 'italic', 'strikethrough', 'underline', 'subscript', 'superscript', '|',
+                                            'link', '|',
+                                            'outdent', 'indent', '|',
+                                            'bulletedList', 'numberedList', 'todoList', '|',
+                                            'code', 'codeBlock', '|',
+                                            'insertTable', '|',
+                                            // 'uploadImage', 'blockQuote', '|',
+                                            'undo', 'redo'
+                                          ]
+                                        }}
+                                        onChange={(event, editor) => {
+                                          const data = editor.getData();
+                                          if (event) {
+                                            handleInputCkEditor("textValue", index, data)
+                                          }
+                                        }}
+                                      />
+                                    ) : (
+                                      <div>Editor loading</div>
+                                    )}
+                                  </div>
+                                  <span onClick={() => delQuestionAns("text",index , 0  , 0 , 0 )}>
+                                    <i  className="fa fa-trash" ></i>
                                   </span>
                                 </div>
-                              ))
+                              </>
+                              // ))
                             }
 
-                            {d.table?.map((tb) => (
-                              <div className="table_section">
-                                <div className="table_heading">
-                                  <div className="heading_left">
-                                    <h3>table</h3>
-                                    <input type="text" className="form-control" />
-                                  </div>
-                                  <div className="heading_right">
-                                    <i className="fa fa-trash"></i>
-                                  </div>
-                                </div>
-                                <div className="add_table">
-                                  <span>Click to set row and column</span>
-                                </div>
-                              </div>
-                            ))}
 
                           </>
 
 
                           {
-                            d.code?.map((c: any, i: number) => (
+                            // d.code?.map((c: any, i: number) => (
+                            d?.name === "code" &&
 
-                              <div className="code_block">
-                                <div className="table_heading">
-                                  <div className="heading_left">
-                                    <h3 style={{fontSize:'13px'}}>CodeEditor : 17.1.10</h3>
-                                    <input type="text" value={c?.title} name="title" onChange={(e) => handleInput(e, "code", i)} className="form-control" />
-                                  </div>
-                                  <div className="heading_right">
-                                    <div className="code_right">
-                                      <select className="mx-3" value={c?.language} name="language" onChange={(e) => handleInput(e, "code", i)}>
-                                        {language?.map((lang) => (
-                                          <option value={lang?.id} key={lang?.id}>{lang?.name}</option>
+                            <div className="code_block">
+                              <div className="table_heading">
+                                <div className="heading_left">
+                                  <h3 style={{ fontSize: '15px' }}>CodeEditor </h3>
+                                  <input type="text" value={d?.codesValue?.title} name="title"
+                                    onChange={(e) => handleInput(e, "code", index,)}
+                                    placeholder="Title"
+                                    className="form-control" />
+                                </div>
+                                <div className="heading_right">
+                                  <div className="code_right">
+                                    <select className="mx-3" value={d?.codesValue?.language} name="language" onChange={(e) => handleInput(e, "code", index)}>
+                                      {language?.map((lang) => (
+                                        <option value={lang?.id} key={lang?.id}>{lang?.name}</option>
 
-                                        ))}
+                                      ))}
 
-                                      </select>
-                                      <span onClick={() => delQuestionAns("code", i, 0, 0)}>
-                                        <i className="fa fa-trash"></i>
-                                      </span>
-                                      {/* <i className="fa fa-trash"></i> */}
+                                    </select>
+                                    <span onClick={() => delQuestionAns("code",index , 0 , 0 ,0  )}>
+                                      <i className="fa fa-trash"></i>
+                                    </span>
 
-                                    </div>
                                   </div>
                                 </div>
-                                <div className="code_instuction">
-                                  <input type="text" name="instruction" value={c?.instruction} onChange={(e) => handleInput(e, i, 0)} placeholder="code instruction" />
-                                </div>
+                              </div>
+                              <div className="code_instuction">
+                                <input type="text" name="instruction" value={d?.codeValue?.instruction} onChange={(e) => handleInput(e, "code", index,)}
+                                  placeholder="Instruction for running code" />
+                              </div>
 
 
-                                <div className="code_editor">
-                                  <CodeEditorWindow
-                                    code={code}
-                                    onChange={onChange}
-                                    language={c?.language}
-                                    theme={theme.value}
+                              <div className="code_editor">
+                                <div className="w-100 ">
+                                  <Editor
+                                    height="50vh"
+                                    language={d?.codesValues?.language}
+                                    value={d?.codeValue?.code}
+                                    theme={theme}
+                                    onChange={(data) => {
+                                      // setData({ ...data, full_content: data })
+                                      handleInputCkEditor("code", index, data)
+
+                                    }}
                                   />
                                 </div>
-
-                                <div className="code_save_btn" >
-                                  <button onClick={handleCompile}>Run</button>
-                                </div>
-
-                                <div className="code_output">
-                                  <h4>Code Result </h4>
-                                  <OutputWindow outputDetails={outputDetails} />
-                                </div>
-
-
                               </div>
-                            ))
+
+                              <div className="code_save_btn" >
+                                <button onClick={handleCompile}>Run</button>
+                              </div>
+
+                              <div className="code_output">
+                                <h4>Code Result </h4>
+                                <OutputWindow outputDetails={outputDetails} />
+                              </div>
+
+
+                            </div>
+                            // ))
                           }
 
                           {
-                            d.multiple?.map((c: any, index: number) => (
+                            d?.name === "multiple" &&
+                            d.questionValue?.map((c: any, i: number) => (
                               < div className="multiple_choice" >
                                 <div className="multiple_heading">
                                   <div className="multiple_left">
                                     <h3>Participation Activity</h3>
                                     <input type="text" placeholder="Title" name="title" value={c.title} onChange={(e) => handleInputChoice(e, "multiple", index, 0, 0, 0)} />
+                                    <span className="right_border"></span>
                                   </div>
-                                  <div className="multiple_right" onClick={() => delQuestionAns("multipl_choice", index, 0, 0)}>
+                                  <div className="multiple_right" onClick={() => delQuestionAns("multiple",index , 0 , 0 , 0 )}>
                                     <i className="fa fa-trash" ></i>
                                   </div>
                                 </div>
                                 <div className="multple_sugest">
                                   <input type="text" name="instruction" value={c.instruction} onChange={(e) => handleInputChoice(e, "multiple", index, 0, 0, 0)} placeholder="Optioanl shared instructions for all questions" />
                                 </div>
-                                {c?.questions.map((qs: any, i: number) => (
-                                  console.log("qs", qs),
+                                {c?.questions.map((qs: any, ind: number) => (
                                   <div className="multiple_option">
                                     <div className="row">
                                       <div className="col-md-7" >
                                         <>
-                                          <div className="question" key={i}>
-                                            {index + 1}) <input type="text" value={qs?.question} name="question" onChange={(e) => handleInputChoice(e, "multiple", index, i, 0, 0)} placeholder="questions" />
+                                          <div className="question" key={ind}>
+                                            {i + 1}) <input type="text" value={qs?.question} name="question" onChange={(e) => handleInputChoice(e, "multiple", index, i, 0, 0)} placeholder="questions" />
                                           </div>
-                                          {qs?.options?.map((op, ind) => (
-                                            console.log("qs", ind),
-                                            <div className="options_data" key={ind}>
-                                              <input type="radio" name="checkOption" checked={qs?.checkOption === ind} onChange={(e) => handleInputChoice(e, "multiple", index, i, ind, 0)} />
-                                              <input type="text" placeholder="type option" name="option" value={op} onChange={(e) => handleInputChoice(e, "multiple", index, i, ind, 0)} />
+                                          {qs?.options?.map((op: any, opIndex: number) => (
+                                            <div className="options_data" key={opIndex}>
+                                              <input type="checkbox" value={qs?.checkOption} name="checkOption" checked={qs?.checkOption === opIndex} onChange={(e) => handleInputChoice(e, "multiple", index, i, ind, opIndex)} />
+                                              <input type="text" placeholder="type option" name="option" value={op} onChange={(e) => handleInputChoice(e, "multiple", index, i, ind, opIndex)} />
                                             </div>
                                           ))}
                                         </>
@@ -549,30 +607,32 @@ const Home: NextPage = () => {
                                       </div>
                                       <div className="col-md-5">
                                         <div className="right_question_block">
-                                          <div className={qs?.choice === "0" ? " on_option  " : qs?.choice === "1" ? " of_option  " : "question_wrapper"}>
-                                            <div className={"question_corect"}>
-                                              <div className="correct_wrong">
-                                                <input type="radio" name="choice" checked={qs?.choice === '0'} onChange={(e) => handleInputChoice(e, "multiple", index, i, 0, 0)} />
-                                                <span>Write</span>
-                                              </div>
-                                              <div className="correct_wrong">
-                                                <input type="radio" name="choice" checked={qs?.choice === '1'} onChange={(e) => handleInputChoice(e, "multiple", index, i, 0, 1)} />
-                                                <span>wrong</span>
+                                          {qs?.checkOption !== '' &&
+                                            <div className={qs?.choice === 1 ? " on_option  " : qs?.choice === 0 ? " of_option  " : "question_wrapper"}>
+                                              <div className="question_corect">
+                                                <div className="correct_wrong">
+                                                  <input type="checkbox" name="choice" checked={qs?.choice === 0} onChange={(e) => handleInputChoice(e, "multiple", index, i, ind, 0)} />
+                                                  <span>Incorrect</span>
+                                                </div>
+                                                <div className="correct_wrong mx-5" >
+                                                  <input type="checkbox" name="choice" checked={qs?.choice === 1} onChange={(e) => handleInputChoice(e, "multiple", index, i, ind, 1)} />
+                                                  <span>Correct</span>
 
+                                                </div>
+                                              </div>
+                                              <div className="explaination">
+                                                <input type="text" placeholder="Explanation" name="choiceDesc" value={qs?.choiceDesc} onChange={(e) => handleInputChoice(e, "multiple", index, i, 0, 0)} />
                                               </div>
                                             </div>
-                                            <div className="explaination">
-                                              <input type="text" placeholder="Explanation" name="choiceDesc" value={qs?.choiceDesc} onChange={(e) => handleInputChoice(e, "multiple", index, i, 0, 0)} />
-                                            </div>
-                                          </div>
-                                          <div className="choice">
+                                          }
+                                          <div className={" choice"}  >
                                             choice
 
                                             <div className="arrows">
-                                              <RiArrowDropUpLine style={qs?.options?.length === 5 ? { cursor: 'not-allowed', opacity: '0.2' } : { cursor: 'pointer' }} size={30} onClick={() => InAndDesOpt("inc", index, i)} />
+                                              <RiArrowDropUpLine style={qs?.options?.length === 5 ? { cursor: 'not-allowed', opacity: '0.2' } : { cursor: 'pointer' }} size={30} onClick={() => InAndDesOpt("inc", index, i, ind)} />
                                               {qs?.options?.length}
-                                              <RiArrowDropDownLine size={30} style={qs?.options?.length === 2 ? { cursor: 'not-allowed', opacity: '0.2' } : { cursor: 'pointer' }} onClick={() => InAndDesOpt("desc", index, i)} />
-                                              <span onClick={() => delQuestionAns("multipl_question", index, i, 0)}>
+                                              <RiArrowDropDownLine size={30} style={qs?.options?.length === 2 ? { cursor: 'not-allowed', opacity: '0.2' } : { cursor: 'pointer' }} onClick={() => InAndDesOpt("desc", index, i, ind)} />
+                                              <span onClick={() => delQuestionAns("multiple_question",index , i , ind , 0  )}>
                                                 <i className="fa fa-trash" ></i>
                                               </span>
                                             </div>
@@ -584,26 +644,23 @@ const Home: NextPage = () => {
                                     </div>
                                   </div>
                                 ))}
-                                <span className="add_ques" onClick={() => addmoreQues("question", 0, 0)}>Add question</span>
+                                <span className="add_ques" onClick={() => addmoreQues("question", index, i, 0)}>Add question</span>
 
                               </div>
                             ))
                           }
                           {
-                            d.short?.map((c: any, index: number) => (
+                            // d.short?.map((c: any, index: number) => (
+                            d?.name === "short" &&
+                            d.shortValue?.map((s: any, i: number) => (
                               <div className="multiple_choice">
                                 <div className="multiple_heading">
                                   <div className="multiple_left">
                                     <h3>Participation Activity</h3>
-                                    {/* <h4>Figure: 1.17.1</h4> */}
-                                    <input
-                                      type="text"
-                                      name="title"
-                                      placeholder="title"
-                                      value={c?.title}
-                                      onChange={(e) => handleInputChoice(e, "short", index, 0, 0, 0)} />
+                                    <input type="text" placeholder="Title" name="title" value={s?.title} onChange={(e) => handleInputChoice(e, "short", index, 0, 0, 0)} />
+                                    <span className="right_border"></span>
                                   </div>
-                                  <div className="multiple_right" onClick={() => delQuestionAns("short", index, 0, 0)}>
+                                  <div className="multiple_right" onClick={() => delQuestionAns("short",index , 0 , 0 , 0)}>
                                     <i className="fa fa-trash"></i>
                                   </div>
                                 </div>
@@ -611,36 +668,36 @@ const Home: NextPage = () => {
                                   <input type="text"
                                     name="instruction"
                                     placeholder="Optional shared instruction for all questions"
-                                    value={c?.instruction}
-                                    onChange={(e) => handleInputChoice(e, "short", index, 0, 0, 0)}
+                                    value={s?.instruction}
+                                    onChange={(e) => handleInputChoice(e, "short", index, i, 0, 0)}
                                   />
                                 </div>
-                                {c?.questions.map((q: any, i: number) => (
+                                {s?.questions?.map((q: any, ind: number) => (
                                   <div className="multiple_option">
                                     <div className="row">
                                       <div className="col-md-7" >
                                         <>
                                           <div className="question">
-                                            {index + 1})
+                                            {i + 1})
                                             <input type="text"
                                               name="question"
                                               placeholder="Type question prompt"
-                                              value={q?.question}
+                                              value={s?.question}
                                               onChange={(e) => handleInputChoice(e, "short", index, i, 0, 0)}
                                             />
 
                                           </div>
-                                          {q?.answers.map((ans: any, ind: number) => (
+                                          {q?.answers?.map((ans: any, aIndex: number) => (
                                             <div className="options_data">
                                               <input type="text"
                                                 value={ans}
                                                 name="answer"
                                                 style={{ border: '1pt solid lightgray', width: '80%', marginRight: '10px' }} placeholder="type option"
 
-                                                onChange={(e) => handleInputChoice(e, "short", index, i, ind, 0)}
+                                                onChange={(e) => handleInputChoice(e, "short", index, i, ind, aIndex)}
                                               />
 
-                                              <span onClick={() => delQuestionAns("short_answer", i, index, ind)}>
+                                              <span onClick={() => delQuestionAns("short_answer",index , i , ind , aIndex)}>
                                                 <i className="fa fa-close "></i>
                                               </span>
                                             </div>
@@ -650,13 +707,13 @@ const Home: NextPage = () => {
                                         </>
 
 
-                                        <span className="add_ques mx-3" onClick={() => addmoreQues("short_answer", i, index)}>Add Answer </span>
+                                        <span className="add_ques mx-3" onClick={() => addmoreQues("short_answer", index, i, ind)}>Add Answer </span>
 
 
                                       </div>
                                       <div className="col-md-5">
-                                        {q?.length !== 1 &&
-                                          <span onClick={() => delQuestionAns("short_question", i, index, 0)}>
+                                        {s?.length !== 1 &&
+                                          <span onClick={() => delQuestionAns("short_question",index , i , ind , 0)}>
                                             <i className="fa fa-trash" ></i>
                                           </span>
                                         }
@@ -669,9 +726,9 @@ const Home: NextPage = () => {
                                               <input
                                                 type="text"
                                                 name="incorrect"
-                                                value={q?.incorrect}
+                                                value={s?.incorrect}
                                                 onChange={(e) => handleInputChoice(e, "short", index, i, 0, 0)}
-                                                placeholder="Explanation" />
+                                                placeholder="(Required) hint for an incorrect submittion" />
                                             </div>
                                           </div>
 
@@ -684,9 +741,9 @@ const Home: NextPage = () => {
                                             <div className="explaination">
                                               <input type="text"
                                                 name="correct"
-                                                value={q?.correct}
+                                                value={s?.correct}
                                                 onChange={(e) => handleInputChoice(e, "short", index, i, 0, 0)}
-                                                placeholder="Explanation" />
+                                                placeholder="(Required) Explaination for an incorrect submittion" />
                                             </div>
                                           </div>
 
@@ -697,104 +754,127 @@ const Home: NextPage = () => {
                                     </div>
                                   </div>
                                 ))}
-                                <span className="add_ques" onClick={() => addmoreQues("short_question", 0, 0)}>Add question</span>
+                                <span className="add_ques" onClick={() => addmoreQues("short_question", index, 0, 0)}>Add question</span>
 
                               </div>
-                            ))}
+                            ))
+                          }
 
                           {
-                            d.images?.map((im: any, i: number) => (
-                              <div className="table_section">
-                                <div className="table_heading">
-                                  <div className="heading_left">
-                                    <h3>Figure 1.17.3</h3>
+                            // d.images?.map((im: any, i: number) => (
+                            d?.name === "images" &&
+                            <div className="table_section">
+                              <div className="table_heading">
+                                <div className="heading_left">
+                                  <h3>Figure 1.17.3</h3>
 
-                                    <input type="text" name="title" value={im?.title} onChange={(e) => handleFiles(e, "images", i)} className="form-control" placeholder="Title" />
-                                  </div>
-                                  <div className="heading_right" onClick={() => delQuestionAns("images", i, 0, 0)}>
-                                    <i className="fa fa-trash"></i>
-                                  </div>
+                                  <input type="text" name="title" value={d.imageValue?.title} onChange={(e) => handleFiles(e, "images", index)} className="form-control" placeholder="Title" />
                                 </div>
-                                {im?.file ? <div>
-                                  <img src={im?.file} className="image_show" alt="slected_image" />
+                                <div className="heading_right" onClick={() => delQuestionAns("images",index , 0 , 0 , 0 )}>
+                                  <i className="fa fa-trash"></i>
                                 </div>
-                                  :
-                                  <div className="add_image">
-                                    <span>Drag and drop images onto this area to upload them or
-                                      <label htmlFor="file_img">
-                                        <span id="image_upload">Click to add an Image</span>
-                                      </label>
+                              </div>
+                              {d?.imageValue.file ? <div>
+                                <img src={d.imageValue?.file} className="image_show" alt="slected_image" />
+                              </div>
+                                :
+                                <div className="add_image">
+                                  <span>Drag and drop images onto this area to upload them or
+                                    <label htmlFor="file_img">
+                                      <span id="image_upload">Click to add an Image</span>
+                                    </label>
+                                  </span>
+                                  <input type="file" style={{ display: 'none' }} id="file_img" name="file" accept="/images" onChange={(e) => handleFiles(e, "images", index)} />
+                                </div>
+                              }
+
+                            </div>
+                            // ))
+                          }
+
+
+                          {
+                            // d.videos?.map((v: any, i: number) => (
+                            d?.name === "videos" &&
+                            <div className="table_section">
+                              <div className="table_heading">
+                                <div className="heading_left">
+                                  <h3>Figure 1.17.3</h3>
+
+                                  <input type="text" name="title" value={d?.videoValue?.title} onChange={(e) => handleFiles(e, "videos", index)} className="form-control" placeholder="Title" />
+                                </div>
+                                <div className="heading_right" onClick={() => delQuestionAns("videos",index , 0 ,0 , 0)}>
+                                  <i className="fa fa-trash"></i>
+                                </div>
+                              </div>
+                              {d.videoValue?.url ?
+                                <div className="video_player">
+                                  <ReactPlayer url={d.videoValue?.url} width="50%" height={300} />
+                                </div>
+                                :
+                                <div className="add_video">
+                                  <input type="text" name="url" value={d.videoValue?.url} onChange={(e) => handleFiles(e, "videos", index)} className="form-control" placeholder="Video upload" />
+                                  <button >Add</button>
+                                </div>
+                              }
+                            </div>
+                            // ))
+                          }
+
+                          {
+                            // d.codes?.map((c: any, i: number) => (
+                            d?.name === "codes" &&
+                            <div className="code_block">
+                              <div className="table_heading">
+                                <div className="heading_left">
+                                  <h3 style={{ fontSize: '15px' }}>CodeEditor </h3>
+                                  <input type="text" value={d?.codeValue?.title} name="title"
+                                    onChange={(e) => handleInput(e, "codes", index,)}
+                                    placeholder="Title"
+                                    className="form-control" />
+                                </div>
+                                <div className="heading_right">
+                                  <div className="code_right">
+                                    <select className="mx-3" value={d?.codeValue?.language} name="language" onChange={(e) => handleInput(e, "codes", index)}>
+                                      {language?.map((lang) => (
+                                        <option value={lang?.id} key={lang?.id}>{lang?.name}</option>
+
+                                      ))}
+
+                                    </select>
+                                    <span onClick={() => delQuestionAns("codes",index , 0 , 0 , 0)}>
+                                      <i className="fa fa-trash"></i>
                                     </span>
-                                    <input type="file" style={{ display: 'none' }} id="file_img" name="file" accept="/images" onChange={(e) => handleFiles(e, "images", i)} />
-                                  </div>
-                                }
 
-                              </div>
-                            ))}
-
-
-                          {
-                            d.videos?.map((v: any, i: number) => (
-                              <div className="table_section">
-                                <div className="table_heading">
-                                  <div className="heading_left">
-                                    <h3>Figure 1.17.3</h3>
-
-                                    <input type="text" name="title" value={v?.title} onChange={(e) => handleFiles(e, "videos", i)} className="form-control" placeholder="Title" />
-                                  </div>
-                                  <div className="heading_right" onClick={() => delQuestionAns("videos", i, 0, 0)}>
-                                    <i className="fa fa-trash"></i>
                                   </div>
                                 </div>
-                                {v?.url ?
-                                  <div className="video_player">
-                                    <ReactPlayer url={v?.url} width="50%" height={300} />
-                                  </div>
-                                  :
-                                  <div className="add_video">
-                                    <input type="text" name="url" value={v?.url} onChange={(e) => handleFiles(e, "videos", i)} className="form-control" placeholder="Video upload" />
-                                    <button >Add</button>
-                                  </div>
-                                }
                               </div>
-                            ))}
+                              <div className="code_instuction">
+                                <input type="text" name="instruction" value={d?.codeValue?.instruction} onChange={(e) => handleInput(e, "codes", index,)}
+                                  placeholder="Instruction for running code" />
+                              </div>
 
-                          {
-                            d.codes?.map((c: any, i: number) => (
-                              <div className="code_block">
-                                <div className="table_heading">
-                                  <div className="heading_left">
-                                    <h3>Figure 1.17.3</h3>
-                                    <input type="text" className="form-control" placeholder="Title" />
-                                  </div>
-                                  <div className="heading_right">
-                                    <div className="code_right">
-                                      <select className="mx-3 ">
-                                        <option>c++</option>
-                                      </select>
-                                      <span onClick={() => delQuestionAns("codes", i, 0, 0)}>
-                                        <i className="fa fa-trash"></i>
 
-                                      </span>
+                              <div className="code_editor">
+                                <div className="w-100 ">
+                                  <Editor
+                                    height="50vh"
+                                    language={d?.codeValue?.language}
+                                    value={d?.codeValue?.code}
+                                    theme={theme}
+                                    onChange={(data) => {
+                                      // setData({ ...data, full_content: data })
+                                      handleInputCkEditor("codes", index, data)
 
-                                    </div>
-                                  </div>
-                                </div>
-
-                                <div className="code_editor">
-                                  <CodeEditorWindow
-                                    code={code}
-                                    onChange={onChange}
-                                    language={language?.value}
-                                    theme={theme.value}
+                                    }}
                                   />
                                 </div>
-
-
-
-
                               </div>
-                            ))}
+
+
+                            </div>
+                            // ))
+                          }
                         </>
                       ))}
 
@@ -809,16 +889,16 @@ const Home: NextPage = () => {
                   <div className="col-md-9">
                     <div className="footer_contents">
                       <div className="left_footers" >
-                        {sectionData?.some((s:any ) => s.text.length || s.code.length || s.multiple.length || s.short.length || s.images.length || s.videos.length || s.codes.length) > 0  ?
-                          <>
-                            <button className="save_publish">Save and publish</button>
-                            <span className="save_draft">Save and publish</span>
-                            <span className="cancel">Cancel</span>
-
-                          </>
-                          :
+                        {/* {sectionData?.some((s:any ) => s.text.length || s.code.length || s.multiple.length || s.short.length || s.images.length || s.videos.length || s.codes.length) > 0  ? */}
+                        <>
+                          <button className="save_publish">Save and publish</button>
+                          <span className="save_draft">Save and publish</span>
                           <span className="cancel">Cancel</span>
-                        }
+
+                        </>
+                        {/* :
+                          <span className="cancel">Cancel</span>
+                        } */}
                       </div>
                       <div className="right_footers">
                         <span className="preview">Student view</span>

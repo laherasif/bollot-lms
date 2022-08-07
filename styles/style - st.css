@@ -6993,18 +6993,16 @@ svg:hover {
 /* create section */
 
 
-/* 
 
-.ckd_wrapper{
-} */
+.ck .ck-editor__main>.ck-editor__editable {
+  height: 5%;
+}
 
 .ck-rounded-corners .ck.ck-editor__top .ck-sticky-panel .ck-toolbar,
 .ck.ck-editor__top .ck-sticky-panel .ck-toolbar.ck-rounded-corners {
   border-radius: var(--ck-border-radius);
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
-  margin-bottom: 20px;
-  border-bottom: 1pt solid lightgray;
   background-color: white;
   padding: 10px;
 }
@@ -7016,36 +7014,6 @@ svg:hover {
   margin-left: 16px;
 }
 
-.cke_inner {
-  display: none;
-}
-
-.ck-editor {
-  display: block !important;
-}
-
-
-
-/* .ck  .ck-editor__main{
-  display: none;
-} */
-
-/* .ck-editor__main {
-  display: none !important;
-  
-}
-
-.ck-editor__editable {
-  display: block !important;
-}
-
-.ck_show{
-  display: block !important;
-} */
-
-/* .code_editor_window{
- display: none;
-} */
 
 
 
@@ -7155,6 +7123,7 @@ svg:hover {
 .code_instuction input {
   width: 100%;
   border: none;
+  padding-left: 10px;
 }
 
 .code_editor {
@@ -7189,7 +7158,7 @@ svg:hover {
 .multiple_heading {
   display: flex;
   justify-content: space-between;
-  background-color: #ddd;
+  background-color: #EEEEEE;
   padding-left: 10px;
   padding-bottom: 10px;
   border-left: 4pt solid orange;
@@ -7199,11 +7168,13 @@ svg:hover {
 
 .multiple_left {
   display: flex;
+  position: relative;
 }
 
 .multiple_left input {
   background-color: white;
   color: black;
+  padding-left: 10px;
 }
 
 .multiple_left h3 {
@@ -7212,8 +7183,18 @@ svg:hover {
   width: 15%;
   height: 100%;
 
-  border-right: 2.5pt solid gray;
+  /* border-right: 2.5pt solid gray; */
 
+}
+
+.right_border {
+  border-right: 2pt solid #BDBDBD;
+  position: absolute;
+  left: 5.4rem;
+  top: 9px;
+  width: 5px;
+  height: 80%;
+  
 }
 
 .multiple_left input {
@@ -7255,12 +7236,13 @@ svg:hover {
   /* padding: 25px; */
   align-items: center;
   padding-left: 20px;
-  padding-top: 10px;
+  padding-top: 5px;
 }
 
 .options_data input[type="radio"] {
   width: 15px;
   height: 15px;
+  margin-top: 15px;
 }
 
 .options_data input {
@@ -7306,7 +7288,7 @@ svg:hover {
 .question_corect {
   padding: 10px;
   display: flex;
-  justify-content: left;
+  
 }
 
 .incorrect {
@@ -7346,6 +7328,11 @@ svg:hover {
 
 .explaination input {
   border: none;
+  width: 100%;
+}
+
+.explaination input::placeholder{
+  font-size: 14px;
 }
 
 .arrows {
@@ -7361,10 +7348,11 @@ svg:hover {
 
 .choice {
   margin-left: 20px;
+  font-weight: 300;
 }
 
 .add_image {
-  background-color: lightgray;
+  background-color: #CBD3D7;
   padding: 20px;
   border-radius: 5px;
   text-align: center;
@@ -7372,9 +7360,13 @@ svg:hover {
 }
 
 #image_upload {
-  color: #0753b0;
+  color: #3199D2;
   font-weight: 600;
   margin-left: 5px;
+}
+
+#image_upload span {
+  font-weight: 400;
 }
 
 .add_video {
@@ -7417,31 +7409,31 @@ svg:hover {
 
 }
 
-.footer_contents{
-  display:flex;
+.footer_contents {
+  display: flex;
   justify-content: space-between;
   width: 100%;
 
 }
 
-.left_footers{
-   padding-bottom: 5px;
-    padding-top: 10px;
+.left_footers {
+  padding-bottom: 5px;
+  padding-top: 10px;
 }
 
 
-.right_footers{
+.right_footers {
   padding-bottom: 5px;
   padding-top: 15px;
 }
 
- .preview{
+.preview {
   color: #0753b0;
   border: none;
   font-weight: 600;
 }
 
-.left_footers .save_publish{
+.left_footers .save_publish {
   background-color: #0753b0;
   color: white;
   /* width: 60%; */
@@ -7451,7 +7443,7 @@ svg:hover {
   font-weight: 600;
 }
 
-.left_footers .save_draft{
+.left_footers .save_draft {
   color: #0753b0;
   /* width: 50%; */
   height: 40px;
@@ -7459,7 +7451,7 @@ svg:hover {
   margin-left: 15px;
 }
 
-.left_footers .cancel{
+.left_footers .cancel {
   color: darkred;
   height: 40px;
   font-size: 16px;

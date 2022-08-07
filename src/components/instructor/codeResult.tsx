@@ -36,7 +36,7 @@ const OutputWindow = ({ outputDetails }:any ) => {
   return (
     <>
      
-      <div className="w-100 rounded-md text-white font-normal text-md py-2 px-2" style={{backgroundColor:'lightgray' , height:'30vh', overflowY:'auto'}}>
+      <div className="w-100 rounded-md text-white font-normal text-md py-2 px-2" style={{backgroundColor:'#F5F5F5' , height:'30vh', overflowY:'auto'}}>
         {outputDetails ? <>{getOutput()}</> : null}
       </div>
     </>

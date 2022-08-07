@@ -7,8 +7,9 @@ import {
     ZYBOOKS_STEP,
     CLEAR_ZYBOOKS_STATE,
     ADD_SECTIONS_VALUES,
-    ADD_SECTIONS_FORM_INPUT_VALUES,
+    // ADD_SECTIONS_VALUES,
     ADD_MORE_QUESTION_ANSWER,
+    ADD_SECTIONS_FORM_INPUT_VALUES,
     DEL_QUESTION_ANSWERS,
     INSE_AND_DESC_MULTI_OPTION
 
@@ -84,12 +85,12 @@ export const ClearStates = () => dispatch => {
 // zybooks class create actions
 
 export const addSectionsValues = ({ name, values }) => dispatch => {
-    
-        dispatch({
-            type: ADD_SECTIONS_FORM_INPUT_VALUES,
-            payload: { name, values }
-        })
-    
+
+    dispatch({
+        type: ADD_SECTIONS_FORM_INPUT_VALUES,
+        payload: { name, values }
+    })
+
 }
 
 
@@ -99,11 +100,11 @@ export const addSectionsValues = ({ name, values }) => dispatch => {
 export const createText = () => dispatch => {
 
     let name = "text"
-    let value = ""
+    let textValue = ""
 
     dispatch({
         type: ADD_SECTIONS_VALUES,
-        payload: { name, value }
+        payload: { name, textValue }
     })
 
 }
@@ -129,16 +130,16 @@ export const createTable = () => dispatch => {
 
 export const createCodeEditor = () => dispatch => {
     let name = "code"
-    let value = {
+    let codesValue = {
         title: '',
         language: '',
-        instruction: '', 
-        code :''
+        instruction: '',
+        code: ''
     }
 
     dispatch({
         type: ADD_SECTIONS_VALUES,
-        payload: { name, value }
+        payload: { name, codesValue }
     })
 
 }
@@ -148,25 +149,25 @@ export const createCodeEditor = () => dispatch => {
 
 export const createMultipleChoice = () => dispatch => {
     let name = "multiple"
-    let value = {
+    let questionValue = [{
         title: '',
         instruction: '',
         questions: [
             {
                 question: '',
-                choice: '',
+                choice: 0,
                 choiceDesc: '',
-                checkOption: '0',
+                checkOption: '',
                 options: [
-                    "", "", "", ""
+                   "" , "" , "" , ""
                 ]
             }
         ]
-    }
+    }]
 
     dispatch({
         type: ADD_SECTIONS_VALUES,
-        payload: { name, value }
+        payload: { name, questionValue }
     })
 
 }
@@ -176,7 +177,7 @@ export const createMultipleChoice = () => dispatch => {
 
 export const createShortQuestion = () => dispatch => {
     let name = "short"
-    let value = {
+    let shortValue = [{
         title: '',
         instruction: '',
         questions: [
@@ -187,11 +188,11 @@ export const createShortQuestion = () => dispatch => {
                 answers: [""]
             }
         ]
-    }
+    }]
 
     dispatch({
         type: ADD_SECTIONS_VALUES,
-        payload: { name, value }
+        payload: { name, shortValue }
     })
 }
 
@@ -199,37 +200,39 @@ export const createShortQuestion = () => dispatch => {
 export const addQuestionsAnswers = (name, values) => dispatch => {
     debugger
     if (name === "question") {
-        let value = {
+        let questionValue = {
             question: '',
-            choice: '',
+            choice: 0,
             choiceDesc: '',
-            options: ["", "", "", ""]
-
+            checkOption: '',
+            options: [
+                "", "", "", ""
+            ]
         }
         dispatch({
             type: ADD_MORE_QUESTION_ANSWER,
-            payload: { name, value }
+            payload: { name, questionValue, values }
         })
     }
     else if (name === "short_question") {
-        let value = {
+        let shortValue = {
             question: '',
             correct: '',
-            incorect: '',
+            incorrect: '',
             answers: [""]
-
         }
-        dispatch({
-            type: ADD_MORE_QUESTION_ANSWER,
-            payload: { name, value }
-        })
-    }
-    else if (name === "short_answer") {
-        let value = ""
         let { pIndex, cIndex } = values
         dispatch({
             type: ADD_MORE_QUESTION_ANSWER,
-            payload: { name, value, pIndex, cIndex }
+            payload: { name, shortValue , pIndex ,cIndex}
+        })
+    }
+    else if (name === "short_answer") {
+        let answerValue = ""
+        let { pIndex, cIndex , ccIndex} = values
+        dispatch({
+            type: ADD_MORE_QUESTION_ANSWER,
+            payload: { name, answerValue, pIndex, cIndex , ccIndex }
         })
     }
 }
@@ -238,14 +241,14 @@ export const addQuestionsAnswers = (name, values) => dispatch => {
 
 export const createImage = () => dispatch => {
     let name = "images"
-    let value = {
+    let imageValue = {
         title: '',
         file: ''
     }
 
     dispatch({
         type: ADD_SECTIONS_VALUES,
-        payload: { name, value }
+        payload: { name, imageValue }
     })
 }
 
@@ -254,14 +257,14 @@ export const createImage = () => dispatch => {
 
 export const createVideo = () => dispatch => {
     let name = "videos"
-    let value = {
+    let videoValue = {
         title: '',
         url: ''
     }
 
     dispatch({
         type: ADD_SECTIONS_VALUES,
-        payload: { name, value }
+        payload: { name, videoValue }
     })
 }
 
@@ -270,31 +273,39 @@ export const createVideo = () => dispatch => {
 
 export const createCodes = () => dispatch => {
     let name = "codes"
-    let value = ""
+    let codeValue = {
+        title: '',
+        language: '',
+        instruction: '',
+        code: ''
+    }
 
     dispatch({
         type: ADD_SECTIONS_VALUES,
-        payload: { name, value }
+        payload: { name, codeValue }
     })
 }
 
 
 // delet sections using types
 
-export const deleQuestionAnwser = (name, value) => dispatch => {
+export const deleQuestionAnwser = (value) => dispatch => {
+   
     dispatch({
         type: DEL_QUESTION_ANSWERS,
-        payload: { name, value }
+        payload: {value}
     })
 }
 
 
 // increse and descrese multiple options
-export const IncDescOptions = (type, pIndex, cIndex) => dispatch => {
+export const IncDescOptions = (type, pIndex, cIndex , ccIndex) => dispatch => {
 
     let value = {
         pIndex: pIndex,
-        cIndex: cIndex
+        cIndex: cIndex,
+        ccIndex : ccIndex,
+        name: "mutiple"
     }
     dispatch({
         type: INSE_AND_DESC_MULTI_OPTION,
