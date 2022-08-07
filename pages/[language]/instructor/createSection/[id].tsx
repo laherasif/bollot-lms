@@ -36,10 +36,10 @@ const Home: NextPage = () => {
   const ctrlPress = useKeyPress("Control");
 
 
-  // const [data, setData] = useState({
-  //   full_content: '',
+  const [data, setData] = useState({
+    full_content: '',
 
-  // });
+  });
   useEffect(() => {
     // setLoading(true)
     setEditorLoaded(true);
