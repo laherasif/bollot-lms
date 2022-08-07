@@ -372,6 +372,17 @@ const Home: NextPage = () => {
   // const [ editorLoaded, setEditorLoaded ] = useState( false )
   const { CKEditor, ClassicEditor }: any = editorRef.current || {}
 
+  const messagesEndRef = useRef(null)
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" , block: "end", inline: "nearest" })
+  }
+
+  useEffect(() => {
+    scrollToBottom()
+  }, [sections])
+
+
   useEffect(() => {
     editorRef.current = {
       CKEditor: require('@ckeditor/ckeditor5-react').CKEditor, //Added .CKEditor
@@ -381,6 +392,7 @@ const Home: NextPage = () => {
   }, [])
 
 
+ 
 
 
 
@@ -398,9 +410,9 @@ const Home: NextPage = () => {
               </Breadcrumb>
             </div>
             <div className="wrapper_container_section">
-              <div className="row first_row">
+              <div className="row first_row " style={{position:'relative'}} >
                 <div className="col-md-2">
-                  <div className="content_wrapper">
+                  <div className="content_wrapper" style={{position:'sticky' , top:'50px'}}>
                     <div className="content_up"></div>
                     <div className="content_down">
                       <div className="content_down_wrapper">
@@ -422,10 +434,10 @@ const Home: NextPage = () => {
                   </div>
                 </div>
                 <div className="col-md-10 section ">
-                  <div className="section_wrapper " style={{ marginRight: '20px' }}>
+                  <div className="section_wrapper " style={{ marginRight: '20px' , marginBottom:'50px' }} >
 
 
-                    <div className="section_container">
+                    <div className="section_container" ref={messagesEndRef} >
                       {sectionData && sectionData.map((d: any, index: number) => (
                         <>
                           <>
@@ -592,7 +604,7 @@ const Home: NextPage = () => {
                                       <div className="col-md-7" >
                                         <>
                                           <div className="question" key={ind}>
-                                            {i + 1}) <input type="text" value={qs?.question} name="question" onChange={(e) => handleInputChoice(e, "multiple", index, i, 0, 0)} placeholder="questions" />
+                                            {i + 1}) <input type="text" value={qs?.question} name="question" onChange={(e) => handleInputChoice(e, "multiple", index, i, ind, 0)} placeholder="questions" />
                                           </div>
                                           {qs?.options?.map((op: any, opIndex: number) => (
                                             <div className="options_data" key={opIndex}>

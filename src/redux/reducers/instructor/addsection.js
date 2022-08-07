@@ -38,25 +38,31 @@ const AddSectionReducer = (state = initialState, action) => {
                         return {
                             ...item,
                             questionValue: item.questionValue.map((qv, i) => {
-                                if (i === payload.i && payload.targetName === 'question' || payload.targetName === 'checkOption' || payload.targetName === 'choiceDesc' || payload.targetName === "choice") {
+                                if (i === payload.i && payload.targetName === 'question' ||  payload.targetName === 'option' ||  payload.targetName === 'checkOption' || payload.targetName === 'choiceDesc' || payload.targetName === "choice") {
+                                    console.log("yhn aya phly")
+                                    
                                     return {
                                         ...qv,
-                                        questions: qv.questions.map((q, cind) => {
-                                            if (payload.targetName === 'option' && cind === payload.ccIndex) {
-
+                                        questions: qv.questions.map((q, cIndex) => {
+                                            if (payload.targetName === 'option' &&  cIndex === payload.ccIndex ) {
+                                               console.log("yhn aya")
                                                 return {
                                                     ...q,
                                                     options: q.options.map((item, cccindex) => {
                                                         if (cccindex === payload.cccIndex) {
                                                             return payload.value
                                                         }
-                                                        return item
+                                                        else {
+                                                            return item
+                                                        }
                                                     })
                                                 }
                                             }
 
                                             else
-                                                if (cind === payload.ccIndex) {
+                                                if (cIndex === payload.ccIndex) {
+                                               console.log("yhn b aya")
+
                                                     return {
                                                         ...q,
                                                         [payload.targetName]: payload.value
@@ -73,6 +79,7 @@ const AddSectionReducer = (state = initialState, action) => {
 
                                 }
                                 else {
+                                    console.log("yhn aya baad mein")
 
                                     return {
                                         ...qv,
@@ -241,7 +248,7 @@ const AddSectionReducer = (state = initialState, action) => {
 
         case DEL_QUESTION_ANSWERS:
             debugger
-            if (action.payload.value.name === "multiple_question" ) {
+            if (action.payload.value.name === "multiple_question") {
                 return {
                     ...state,
                     section: state.section?.map((s, index) => {
@@ -260,7 +267,7 @@ const AddSectionReducer = (state = initialState, action) => {
                                 })
                             }
                         }
-                        else{
+                        else {
                             return s
                         }
                     })
@@ -316,13 +323,13 @@ const AddSectionReducer = (state = initialState, action) => {
                     })
                 }
             }
-               
+
             else {
                 return {
                     ...state,
                     section: state.section?.filter((_, i) => i !== action.payload.value.pIndex)
                 }
-               
+
             }
         case INSE_AND_DESC_MULTI_OPTION:
             return {
