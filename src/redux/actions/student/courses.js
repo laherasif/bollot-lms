@@ -1,0 +1,62 @@
+
+import {
+    GET_COURSES,
+    GET_COURSES_SEARCH,
+    GET_DASHBOARD_STATE,
+    GET_STUDENT_PAYMENT,
+    GET_STUDENT_TRANSACTION,
+    GET_COURSE_LECTURE
+} from '../../types/types'
+
+
+export const getDashboardStatic = (data) => async (dispatch) => {
+    
+    dispatch({
+        type: GET_DASHBOARD_STATE,
+        payload: data,
+    })
+}
+export const getPayemnts = (data) => async (dispatch) => {
+    
+    dispatch({
+        type: GET_STUDENT_PAYMENT,
+        payload: data,
+    })
+}
+export const getTransactions = (data) => async (dispatch) => {
+    
+    dispatch({
+        type: GET_STUDENT_TRANSACTION,
+        payload: data,
+    })
+}
+
+
+
+export const getCourses = (data) => async (dispatch) => {
+    
+    dispatch({
+        type: GET_COURSES,
+        payload: data,
+    })
+}
+
+export const getCourseLecture = (data) => (dispatch) => {
+    dispatch({
+        type: GET_COURSE_LECTURE,
+        payload: data 
+    })
+}
+
+
+export const getSearchCourses = (data) => async (dispatch) => {
+    
+    dispatch({
+        type: GET_COURSES_SEARCH,
+        payload: data,
+    })
+}
+
+
+
+
