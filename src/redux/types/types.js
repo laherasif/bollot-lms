@@ -108,6 +108,8 @@ export const REG_AL_COURSES = "REG_AL_COURSES"
 
 export const ZYBOOKS_STEP =  "ZYBOOKS_STEP"
 
+export const CLEAR_SECTION_STATE  = "CLEAR_SECTION_STATE"
+
 
 // Instructor AddCourse 
 export const ADD_COURSE_INPUTS = "ADD_COURSE_INPUTS"

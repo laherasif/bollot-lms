@@ -16,14 +16,20 @@ import { SweetAlert } from "../../../../src/function/hooks";
 import useKeyPress from "../../../../src/components/Hoc/useKeyPress";
 import { useRouter } from "next/router";
 import OutputWindow from "../../../../src/components/instructor/codeResult";
-import { addQuestionsAnswers, addSectionsValues, createCodeEditor, createCodes, createImage, createMultipleChoice, createShortQuestion, createTable, createText, createVideo, deleQuestionAnwser, IncDescOptions } from "../../../../src/redux/actions/instructor/zybooks";
+import {
+  addQuestionsAnswers, addSectionsValues,
+  sectionClear,
+  createCodeEditor, createCodes, createImage, createMultipleChoice, createShortQuestion, createTable, createText, createVideo, deleQuestionAnwser, IncDescOptions
+} from "../../../../src/redux/actions/instructor/zybooks";
 import ReactPlayer from "react-player";
 import Editor from "@monaco-editor/react";
 const Home: NextPage = () => {
   const [loading, setLoading] = useState(false)
+  const [uploadVideo, setUploadVideo] = useState(false)
   const [editorLoaded, setEditorLoaded] = useState(false);
   const [code, setCode] = useState(null);
   const [codeFile, setCodeFile] = useState('');
+  const [videoFile, setVideoFile] = useState('');
   const [url, setUrl] = useState('')
   const [selectLanguage, setselectLanguage] = useState(null);
   const [loader, setLoader] = useState(false)
@@ -68,6 +74,7 @@ const Home: NextPage = () => {
 
 
   let courseSectionId = router.query.courseId
+  let sectionId = router.query.sectionId
 
   useEffect(() => {
 
@@ -206,6 +213,8 @@ const Home: NextPage = () => {
 
 
   const addEvent = (type: string) => {
+    setCodeFile(type)
+    setUploadVideo(false)
     switch (type) {
       case "text":
         // setEditorLoaded(true);
@@ -380,9 +389,9 @@ const Home: NextPage = () => {
 
   useEffect(() => {
 
-   
+
     scrollToBottom()
-  }, [sectionData])
+  }, [codeFile])
 
 
   useEffect(() => {
@@ -395,11 +404,23 @@ const Home: NextPage = () => {
   }, [])
 
 
+  const AddVideo = (name: any, index: number) => {
+
+    let values = {
+      value: videoFile,
+      i: index,
+      targetName: "url"
+    }
+    dispatch(addSectionsValues({ name, values }))
+    setVideoFile('')
+  }
+
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoader(true);
     let formData = {
-      course_section_id: courseSectionId,
+      course_section_id: sectionId,
       lecture: {
         contents: sectionData
       }
@@ -409,6 +430,8 @@ const Home: NextPage = () => {
       if (res.data.success) {
         setLoader(false);
         SweetAlert({ icon: "success", text: res.data.message })
+        dispatch(sectionClear())
+        router.push(`/en/instructor/createSection?courseId=${courseId}`)
         return;
       }
       else {
@@ -435,12 +458,7 @@ const Home: NextPage = () => {
       <section className="dash-board jadsifd-asdasid">
         {loading ? Small() :
           <div className="inst container-fluid">
-            <div className="mt-4">
-              <Breadcrumb>
-                <Breadcrumb.Item linkAs={Link} href="/en/instructor">Dashboard</Breadcrumb.Item>
-                <Breadcrumb.Item active>Courses Detail</Breadcrumb.Item>
-              </Breadcrumb>
-            </div>
+
             <div className="wrapper_container_section">
               <div className="row first_row " style={{ position: 'relative' }} >
                 <div className="col-md-2">
@@ -466,6 +484,13 @@ const Home: NextPage = () => {
                   </div>
                 </div>
                 <div className="col-md-10 section ">
+                  <div className="mt-4">
+                    <Breadcrumb>
+                      <Breadcrumb.Item linkAs={Link} href="/en/instructor">Dashboard</Breadcrumb.Item>
+                      <Breadcrumb.Item linkAs={Link} href={`/en/instructor/courseDetail/${courseSectionId}`}>Course Detail</Breadcrumb.Item>
+                      <Breadcrumb.Item active>Create Lecture </Breadcrumb.Item>
+                    </Breadcrumb>
+                  </div>
 
                   <div className="section_wrapper " style={{ marginRight: '20px', marginBottom: '50px' }} >
 
@@ -811,7 +836,7 @@ const Home: NextPage = () => {
                             <div className="table_section">
                               <div className="table_heading">
                                 <div className="heading_left">
-                                  <h3>Figure 1.17.3</h3>
+
 
                                   <input type="text" name="title" value={d.imageValue?.title} onChange={(e) => handleFiles(e, "images", index)} className="form-control" placeholder="Title" />
                                 </div>
@@ -826,10 +851,10 @@ const Home: NextPage = () => {
                                 <div className="add_image">
                                   <span>Drag and drop images onto this area to upload them or
                                     <label htmlFor="file_img">
-                                      <span id="image_upload">Click to add an Image</span>
+                                      <span id="image_upload" style={{ cursor: 'pointer' }}>Click to add an Image</span>
                                     </label>
                                   </span>
-                                  <input type="file" style={{ display: 'none' }} id="file_img" name="file" accept="/images" onChange={(e) => handleFiles(e, "images", index)} />
+                                  <input type="file" style={{ display: 'none', }} id="file_img" name="file" accept="/images" onChange={(e) => handleFiles(e, "images", index)} />
                                 </div>
                               }
 
@@ -844,7 +869,6 @@ const Home: NextPage = () => {
                             <div className="table_section">
                               <div className="table_heading">
                                 <div className="heading_left">
-                                  <h3>Figure 1.17.3</h3>
 
                                   <input type="text" name="title" value={d?.videoValue?.title} onChange={(e) => handleFiles(e, "videos", index)} className="form-control" placeholder="Title" />
                                 </div>
@@ -858,8 +882,8 @@ const Home: NextPage = () => {
                                 </div>
                                 :
                                 <div className="add_video">
-                                  <input type="text" name="url" value={d.videoValue?.url} onChange={(e) => handleFiles(e, "videos", index)} className="form-control" placeholder="Video upload" />
-                                  <button >Add</button>
+                                  <input type="text" name="url" value={videoFile} onChange={(e) => setVideoFile(e.target.value)} className="form-control" placeholder="Video upload" />
+                                  <button onClick={() => AddVideo("video", index)} >Add</button>
                                 </div>
                               }
                             </div>
@@ -939,7 +963,9 @@ const Home: NextPage = () => {
                           <button className="save_publish" onClick={(e) => handleSubmit(e)}>
                             {loader ? <Spinner animation="border" variant="light" /> : "Save & Publish"}
                           </button>
-                          <span className="cancel">Cancel</span>
+                          <Link href={`/en/instructor/courseDetail/${courseSectionId}`}>
+                            <span className="cancel"style={{cursor:'pointer'}}>Cancel</span>
+                          </Link>
 
                         </>
                         {/* :
@@ -947,7 +973,7 @@ const Home: NextPage = () => {
                         } */}
                       </div>
                       <div className="right_footers">
-                        <span className="preview">Student view</span>
+                        {/* <span className="preview">Student view</span> */}
                       </div>
                     </div>
                   </div>

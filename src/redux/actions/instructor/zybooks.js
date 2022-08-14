@@ -11,7 +11,8 @@ import {
     ADD_MORE_QUESTION_ANSWER,
     ADD_SECTIONS_FORM_INPUT_VALUES,
     DEL_QUESTION_ANSWERS,
-    INSE_AND_DESC_MULTI_OPTION
+    INSE_AND_DESC_MULTI_OPTION,
+    CLEAR_SECTION_STATE
 
 } from '../../types/types'
 
@@ -313,3 +314,13 @@ export const IncDescOptions = (type, pIndex, cIndex , ccIndex) => dispatch => {
     })
 }
 
+
+// clear states
+
+export const sectionClear = () => dispatch => {
+
+    dispatch({
+        type: CLEAR_SECTION_STATE
+    })
+
+}

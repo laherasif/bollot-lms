@@ -30,6 +30,7 @@ const Home: NextPage = () => {
   const [loading, setLoading] = useState(false)
   const [show, setShow] = useState(false)
   const [section, setSection] = useState([])
+  const [dummy, setDummy] = useState('')
 
   const { token } = useSelector((state: RootStateOrAny) => state?.userReducer)
   const { Courses } = useSelector((state: RootStateOrAny) => state?.InsDash)
@@ -48,6 +49,19 @@ const Home: NextPage = () => {
 
   const router = useRouter()
   let courseId = router.query.id
+
+
+  const handleClose = (type:string ) => {
+    setShow(false)
+    if (type === 'load') {
+      setDummy('')
+      return 
+    }
+
+
+  }
+
+
   // let courseTitle = router.query.title
 
 
@@ -72,13 +86,15 @@ const Home: NextPage = () => {
 
       }
     }
-    fetchCourse()
-  }, [courseId])
+
+    if (dummy === '') {
+      fetchCourse()
+    }
+  }, [courseId, dummy])
 
 
   let findCourse = Courses.find((c) => c.id == courseId)
 
-  console.log("show", show)
 
   return (
     <div className="inst">
@@ -100,7 +116,7 @@ const Home: NextPage = () => {
                       <Search />
                       <h4>Search</h4>
                     </div>
-                    <h4 className="header_view" onClick={() => setShow(true)}>Create Section</h4>
+                    <h4 className="header_view" onClick={() => { setShow(true), setDummy("dummy") }}>Create Section</h4>
                     <h4 className="header_config">View Content explorer</h4>
                   </div>
                 </div>
@@ -109,14 +125,14 @@ const Home: NextPage = () => {
                     <h4>Table of Content</h4>
                   </div>
                   {section && section?.map((sec, index) => (
-                    <Accordion defaultActiveKey={sec?.id} style={{ marginBottom: '5px' }}>
+                    <Accordion defaultActiveKey={0} style={{ marginBottom: '5px' }}>
                       <Accordion.Item eventKey={sec.id}>
                         <Accordion.Header>{sec?.title}</Accordion.Header>
                         {sec?.lectures?.map((lec, i) => (
                           <>
                             <Link href={`/en/instructor/lectureView?courseId=${courseId}&lectId=${lec?.id}`}>
                               <Accordion.Body className="table_body d-flex">
-                                {i + 1} {"."} 
+                                {i + 1} {"."}
                                 <div
                                   dangerouslySetInnerHTML={{ __html: lec?.title }}
                                 />
@@ -130,7 +146,7 @@ const Home: NextPage = () => {
 
                         <Accordion.Body className="section_botton_block">
                           <div >
-                            <Link href={`/en/instructor/createSection?courseId=${sec?.id}`}>
+                            <Link href={`/en/instructor/createSection?sectionId=${sec?.id}&courseId=${courseId}`}>
                               Create Lecture
                             </Link>
                           </div>
@@ -177,7 +193,7 @@ const Home: NextPage = () => {
           </div>
         }
       </section>
-      {show && <CreateSection permition={show} Toggle={(value: any) => setShow(value)} courseId={courseId} />}
+      {show && <CreateSection permition={show} Toggle={(value:string) => handleClose(value)} courseId={courseId} />}
     </div >
   );
 };

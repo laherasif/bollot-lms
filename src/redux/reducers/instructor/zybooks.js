@@ -5,6 +5,7 @@ import {
     DELET_ZYBOOKS_COURSE,
     ADD_INSTRUCTOR_CONTENT,
     DEL_INSTRUCTOR,
+    // CLEAR_SECTION_STATE
     // ADD_ZYBOOKS_COURSE
 } from "../../types/types";
 
@@ -156,6 +157,8 @@ const AddZyBooksReducer = (state = initialState, action) => {
                 mobile_phone: "",
                 additional_comments: ""
             }
+
+         
 
 
 

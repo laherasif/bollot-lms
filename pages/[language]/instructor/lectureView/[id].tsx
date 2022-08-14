@@ -30,6 +30,7 @@ const Home: NextPage = () => {
   const [fileType, setFileType] = useState('')
   const [numPages, setNumPages] = useState(0);
   const [pageNumber, setPageNumber] = useState(1);
+  const [option, setOption] = useState(null );
   function onDocumentLoadSuccess(numPages: number) {
     setNumPages(numPages);
     setPageNumber(1);
@@ -60,15 +61,19 @@ const Home: NextPage = () => {
       try {
         setLoading(true)
         let res = await AxInstance.get(`api//instructor/courses/curriculum/lectures/${lectureId}`)
+        console.log("REs", res)
         if (res.data.success === true) {
           setLoading(false)
-          const paramss = {
-            Bucket: S3_BUCKET,
-            Key: res.data.response.lecture.object_key
-          };
-          const url = myBucket.getSignedUrl('getObject', paramss);
+          if (res.data.response.lecture.key === 'images') {
+            const paramss = {
+              Bucket: S3_BUCKET,
+              Key: res.data.response.lecture.value
+            };
+            const url = myBucket.getSignedUrl('getObject', paramss);
+            setUrl(url)
+          }
+
           setSection(res.data.response.lecture)
-          setUrl(url)
 
         }
         else {
@@ -179,10 +184,10 @@ const Home: NextPage = () => {
         lecture_id: 15,
         title: title,
         file_type: fileType?.file.type,
-        file_url: fileType?.file.name 
+        file_url: fileType?.file.name
       }
       let res = await AxInstance.post('api//instructor/courses/curriculum/lectures/update', value)
-      console.log("Res" , res )
+      console.log("Res", res)
 
     }
     catch (err) {
@@ -190,7 +195,12 @@ const Home: NextPage = () => {
     }
   }
 
+  const handleInputChoice = (d) => {
+    setOption(d)
+  }
 
+
+  console.log("opt", option)
 
   return (
     <div className="inst">
@@ -206,7 +216,7 @@ const Home: NextPage = () => {
               </Breadcrumb>
             </div>
             <div className="lecture_wrapper">
-              <div className="lecture_container">
+              {/* <div className="lecture_container">
                 <div className="lecture_left">
                   <div className="lecture_icon">
                     <BsExclamationLg />
@@ -219,121 +229,125 @@ const Home: NextPage = () => {
                 <div className="lecture_right">
                   <button>Watch Now</button>
                 </div>
-              </div>
+              </div> */}
 
               <div className="lecture_show">
-                <div className="lecture_detail">
-                  <h4>{section?.title}</h4>
-                </div>
-
-                <div className="lecture_edit_Dele">
-
-                  {isEdit ?
-                    <div className="upload_lecture">
-                      <div className="form-group">
-                        <label>Upload Lecture</label>
-                        <br />
-                        <label>lecture Title</label>
-                        <input type="text" className="form-control" onChange={(e) => setTitle(e.target.value)} value={title} />
-                        <label className="mt-3">Video / PDF </label>
-                        <input type="file" name="file" onChange={handleChangeLectureFile} />
-                      </div>
-                      {progressbar === 100 ? "" :
-                        <div className="mt-4">
-                          {progressbar && <ProgressBar animated now={progressbar} />}
-                        </div>
+                {section?.contents?.map((item: any, index: any) => {
+                  return (
+                    <>
+                      {
+                        item.key === 'text' ?
+                          <div className="lecture_detail">
+                            <h4>Text Block </h4>
+                            <iframe src={item?.value} height="100" width="100" title="Iframe Example"></iframe>
+                          </div>
+                          :
+                          null
                       }
-                    </div>
-                    :
-                    <div className="lecture_container">
-                      <div className="lecture_data">
-                        <h4>Instructor notes:</h4>
-                        <p>{section?.title}</p>
-                      </div>
-                      <div className="lecture_Action">
-                        <span>
-                          <i className="fa fa-trash"></i>
-                        </span>
-                        <span onClick={() => setIsEdit(true)}>
-                          <i className="fa fa-edit" ></i>
-                        </span>
-                      </div>
-                    </div>
-                  }
-                  <div className="lecture_upload_btn mt-2">
-                    <button className="save" 
-                    onClick={() =>  EditCourse()}
-                    disabled={progressbar === 100 ? false : true }>Save</button>
-                    <button className="cancel">Cancel</button>
-                  </div>
-                </div>
 
-                <div className="lecture_disply">
-                  {section?.file_type === "Video" ?
-                    <ReactPlayer
-                      width="100%"
-                      height="100%"
-                      preload="none"
-                      pip={true}
-                      playing={true}
-                      controls
-                      url={url}
-                    />
-                    : section?.file_type === "PDF" ?
-                      <div >
-
-                        <Document
-                          file={url}
-                          options={{ workerSrc: "/pdf.worker.js" }}
-                          onLoadSuccess={onDocumentLoadSuccess}
-                        >
-                          <Page pageNumber={pageNumber} />
-                        </Document>
-                        <div style={{ textAlign: 'center' }}>
-                          <p>
-                            Page {pageNumber || (numPages ? 1 : "--")} of {numPages ? 1 : "--"}
-                          </p>
-                          <div className="umpire w-100 " >
-                            <div className="umpire-1 ">
-                              <div className="d-flex mb-3 justify-content-center w-100"  >
-                                <button
-                                  className="upload-1 sdisad-dsdactive "
-                                  id="activetab"
-
-                                  disabled={pageNumber <= 1}
-                                  onClick={previousPage}
-                                >
-                                  Previous
-                                </button>
-                                <button
-                                  className="upload-1 sdisad-dsdactive"
-                                  id="activetab"
-
-                                  disabled={pageNumber >= numPages}
-                                  onClick={nextPage}
-                                >
-                                  Next
-                                </button>
-                              </div>
-
+                      {
+                        item?.key === "multiple" &&
+                        < div className="multiple_choice" >
+                          <div className="multiple_heading">
+                            <div className="multiple_left">
+                              <h3>Participation Activity</h3>
+                              <h4 style={{ paddingLeft: '4rem', paddingTop: '20px', fontSize: '16px' }}>{item?.value?.title}</h4>
+                              <span className="right_border"></span>
                             </div>
+
+                          </div>
+                          <div className="multple_sugest">
+                            <h4 style={{ paddingLeft: '10px' }}>{item?.value?.instruction}</h4>
+                          </div>
+                          {item.value?.questions.map((qs: any, ind: number) => (
+                            <div className="multiple_option">
+                              <div className="row">
+                                <div className="col-md-7" >
+                                  <>
+                                    <div className="question" key={ind}>
+                                      {ind + 1}) <input type="text" value={qs?.question} name="question" onChange={(e) => handleInputChoice(e, "multiple", index, i, ind, 0)} placeholder="questions" />
+                                    </div>
+                                    {qs?.options?.map((op: any, opIndex: number) => (
+                                      <div className="options_data" key={opIndex}>
+                                        <input type="radio" name="option" onChange={(e) => handleInputChoice(op?.is_correct === "1" ? "1" : "0")} />
+                                        {/* <input type="text" placeholder="type option" name="option" value={op?.option}  /> */}
+                                        <span style={{ paddingLeft: '10px' }}>{op?.option}</span>
+                                      </div>
+                                    ))}
+                                  </>
+
+
+
+                                </div>
+                                {option &&
+                                  <div className="col-md-5">
+                                    <div className="right_question_block">
+                                      <div className={ option === "1" ? " on_option  " : option === "0" ? " of_option  " : "question_wrapper"} style={{ height: '70px' }}>
+                                        <div className="explaination" style={{ paddingTop: '20px' }}>
+                                          <span >{qs?.choice_desc}</span>
+                                        </div>
+                                      </div>
+
+                                    </div>
+
+                                  </div>
+                                }
+
+                              </div>
+                            </div>
+                          ))
+                          }
+                        </div>
+
+                      }
+
+
+                      {
+                        // d.images?.map((im: any, i: number) => (
+                        item.key === "images" &&
+                        <div className="table_section">
+                          <div className="table_heading">
+                            <div className="heading_left">
+
+                              <h3>{item?.title}</h3>
+                            </div>
+
+                          </div>
+                          <div>
+                            <img src={item?.value} className="image_show" alt="slected_image" />
                           </div>
 
 
                         </div>
-                      </div>
+                        // ))
+                      }
 
 
+                      {
+                        // d.videos?.map((v: any, i: number) => (
+                        item?.key === "videos" &&
+                        <div className="table_section">
+                          <div className="table_heading">
+                            <div className="heading_left">
+                              <h3>{item?.title}</h3>
+                            </div>
+
+                          </div>
+                          <div className="video_player">
+                            <ReactPlayer url={item?.value} width="50%" height={300} />
+                          </div>
+
+                        </div>
+                        // ))
+                      }
 
 
+                    </>
+                  )
+                })
+                }
 
-                      : null
-                  }
 
-
-
-
-                </div>
 
               </div >
             </div >

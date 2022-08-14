@@ -94,7 +94,9 @@ const Home: NextPage = () => {
                     {courses && courses.length > 0 ? courses.map((course: any) => {
                       if (!course?.schedule.length)
                         return (
-                          <CourseCard course={course} key={course.id} courseId={(value: any) => setReviews(value)} unapprove={true} />
+                        
+                            <CourseCard course={course} key={course.id} courseId={(value: any) => setReviews(value)} unapprove={true} />
+                       
                         )
                     })
                       : <div>Record not found </div>

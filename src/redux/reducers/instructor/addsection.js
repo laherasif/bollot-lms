@@ -5,6 +5,7 @@ import {
     INSE_AND_DESC_MULTI_OPTION,
     // ADD_SECTIONS_INPUT_VALUES,
     ADD_SECTIONS_FORM_INPUT_VALUES,
+    CLEAR_SECTION_STATE
 
 } from "../../types/types";
 
@@ -390,6 +391,12 @@ const AddSectionReducer = (state = initialState, action) => {
                     }
                 })
             }
+
+            case CLEAR_SECTION_STATE:
+                return {
+                    ...state,
+                    section: [{ name : "title", value : "" }]
+                }
 
 
 

@@ -9,7 +9,7 @@ const CreateSection = ({ permition, Toggle, courseId }: any) => {
   const [loading, setLoading] = useState(false);
   const [desc, setDesc] = useState('')
   const handleClose = () => {
-    Toggle(false);
+    Toggle("close");
   };
   
 
@@ -41,7 +41,8 @@ const CreateSection = ({ permition, Toggle, courseId }: any) => {
       let res = await AxInstance.post('api//instructor/courses/curriculum/section/create', values)
       if (res.data.success === true) {
         setLoading(false)
-        Toggle('');
+        Toggle("load");
+
         SweetAlert({ icon: "success", text: res.data.message })
       }
       else {
