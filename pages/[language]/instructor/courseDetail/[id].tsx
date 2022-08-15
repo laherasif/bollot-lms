@@ -46,7 +46,6 @@ const Home: NextPage = () => {
 
   const router = useRouter()
   let courseId = router.query.id
-  // let courseTitle = router.query.title
 
 
   useEffect(() => {
@@ -65,7 +64,6 @@ const Home: NextPage = () => {
       }
       catch (err) {
         setLoading(false)
-        // SweetAlert({ icon: "error", text: err })
 
 
       }
@@ -142,7 +140,6 @@ const Home: NextPage = () => {
                     <div className="tabs">
                       {tabs.map((tap, index) => (
                         <div id={activeIndex === index && "active"} className="tab" onClick={() => setActiveIndex(index)}>
-                          {/* {tap.icon} */}
                           <p >{tap.name}</p>
                         </div>
                       ))}
