@@ -317,7 +317,7 @@
   background: #d0565c !important;
   border-radius: 29px;
   cursor: pointer;
-  color: white ;
+  color: white;
 }
 
 .course button:hover {
@@ -5075,30 +5075,31 @@ textarea::placeholder {
 
 /* checkout pennding page css */
 
-.checkout_pendding{
+.checkout_pendding {
   border: 1pt solid rgb(214, 157, 13);
   padding: 3px;
   border-radius: 15px;
   color: rgb(214, 157, 13);
 }
 
-.checkout_approve{
+.checkout_approve {
   border: 1pt solid rgb(115, 210, 6);
   padding: 3px;
   border-radius: 15px;
   color: rgb(115, 210, 6);
 }
 
-.checkout_approved{
-  padding: 6px 10px ;
+.checkout_approved {
+  padding: 6px 10px;
   border: 1pt solid lightgray;
   border-radius: 10px;
   font-weight: 500;
   background-color: transparent;
   cursor: pointer;
 }
-.checkout_after_approve{
-  padding: 6px 10px ;
+
+.checkout_after_approve {
+  padding: 6px 10px;
   border: 1pt solid rgb(115, 210, 6);
   border-radius: 10px;
   font-weight: 500;
@@ -5106,7 +5107,7 @@ textarea::placeholder {
   cursor: pointer;
 }
 
-.checkout_approved:hover{
+.checkout_approved:hover {
   background-color: gray;
   color: white;
 }
@@ -5114,14 +5115,14 @@ textarea::placeholder {
 
 /* sub-admin */
 
-.checkbox-field{
+.checkbox-field {
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
   align-items: center;
 }
 
-.checkbox_wrapper{
+.checkbox_wrapper {
   border: 1pt solid lightgray;
   display: flex;
   align-items: center;
@@ -5130,25 +5131,25 @@ textarea::placeholder {
   margin-left: 10px;
   margin-bottom: 10px;
 
-  
+
 }
 
-.checkbox_wrapper input[type="checkbox"]{
+.checkbox_wrapper input[type="checkbox"] {
   cursor: pointer;
 }
 
-.checkbox_wrapper span{
+.checkbox_wrapper span {
   padding-left: 10px;
 }
 
 
 /* filter  */
 
-.filter_wrapper{
+.filter_wrapper {
   width: 50px;
 }
 
-.filter{
+.filter {
   width: 100%;
   margin-top: 25px;
   border: 1pt solid lightgray;
@@ -5157,7 +5158,9 @@ textarea::placeholder {
 
 
 .react-pdf__Page__canvas {
-    margin: 0 auto;
-    width: 80% !important;
-    height: 100% !important;
+  margin: 0 auto;
+  width: 80% !important;
+  height: 100% !important;
 }
+
+

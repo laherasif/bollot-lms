@@ -1,7 +1,8 @@
 import {
     DASHBOAD_STATICS,
     TRANSACTION_STATICS,
-    GET_TRANSACTIONS
+    GET_TRANSACTIONS,
+    REG_AL_COURSES
 } from '../../types/types'
 
 
@@ -9,7 +10,8 @@ import {
 const initialState = {
     Statistic: {},
     Transaction: {},
-    Transactions: []
+    Transactions: [],
+    Courses:[],
 
 };
 
@@ -21,6 +23,12 @@ const InsDashboardReducer = (state = initialState, action) => {
             return {
                 ...state,
                 Statistic: action.payload
+            }
+
+        case REG_AL_COURSES:
+            return {
+                ...state,
+                Courses : action.payload
             }
 
         case TRANSACTION_STATICS:

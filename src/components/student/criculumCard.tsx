@@ -116,7 +116,6 @@ export default ({ lectures, CourseId }: any) => {
 
 
   let obj = Object.assign({}, lectures)
-  console.log("obj", obj)
   return (
     <>
       <div className="videos-title">
