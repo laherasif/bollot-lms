@@ -7,7 +7,8 @@ import {
     EDIT_LIVE_CLASSES,
     DASHBOAD_STATICS,
     TRANSACTION_STATICS,
-    GET_TRANSACTIONS
+    GET_TRANSACTIONS,
+    REG_AL_COURSES
 } from '../../types/types'
 
 
@@ -37,6 +38,13 @@ export const getTransactions = (data) => dispatch => {
 
 
 
+export const getAllCourse = (course) => dispatch => {
+    dispatch({
+        type: REG_AL_COURSES,
+        payload: course
+    })
+
+}
 
 
 
