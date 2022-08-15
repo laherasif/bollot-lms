@@ -50,8 +50,9 @@ const Home: NextPage = () => {
 
   const router = useRouter()
   let courseId = router.query.id
-  // let courseTitle = router.query.title
+  let courseTitle = router.query.title
 
+  console.log("courseTitle" , router)
 
   useEffect(() => {
     let fetchCourse = async () => {
@@ -95,13 +96,16 @@ const Home: NextPage = () => {
                 :
                 <div className="hdsf0s-sadmsa">
                   <div className="d-flex mb-3">
-                    <button className="upload-1 sdisad-dsdactive" id="activetab">
-                     Courses Detail </button>
-                   
+                    <Breadcrumb>
+                      <Breadcrumb.Item href="/en/student/dashboard">Home</Breadcrumb.Item>
+                      <Breadcrumb.Item href="/en/student/courses">My Courses</Breadcrumb.Item>
+                      <Breadcrumb.Item >{courseTitle}</Breadcrumb.Item>
+                    </Breadcrumb>
+
                   </div>
 
                   <div className="row">
-                    <div className="col-md-8">
+                    <div className="col-md-12">
                       <div className="course_detail_header">
                         <div className="header_wrapper">
                           {/* <div className="search_bar">
@@ -122,7 +126,7 @@ const Home: NextPage = () => {
                               <Accordion.Header>{sec?.title}</Accordion.Header>
                               {sec?.lectures?.map((lec, i) => (
                                 <>
-                                  <Link href={`/en/student/lectureView?courseId=${courseId}&lectId=${lec?.id}`}>
+                                  <Link href={`/en/student/viewContent?courseId=${courseId}&lectId=${lec?.id}`}>
                                     <Accordion.Body className="table_body d-flex">
                                       {i + 1} {"."}
                                       <div
@@ -152,39 +156,10 @@ const Home: NextPage = () => {
 
                       </div>
                     </div>
-                    <div className="col-md-4">
-                      <div className="course_right_wrapper" >
-                        <div className="right_header" style={{ backgroundImage: `url(${findCourse?.cover_image})` }}>
-                          <div className="header_text">
-                            <h4 className="header_title">Digital Course</h4>
-                            <h6 className="header_date">Expires {moment(findCourse?.created_at).format('ll')}</h6>
-                          </div>
-                        </div>
-                        <div className="right_main">
-                          {
-                            comp.map((cp, index) => (
-                              activeIndex === index ? cp : null
-                            ))
-                          }
-                        </div>
-                        <div className="right_footer">
-                          <div className="tabs">
-                            {tabs.map((tap, index) => (
-                              <div id={activeIndex === index && "active"} className="tab" onClick={() => setActiveIndex(index)}>
-                                {/* {tap.icon} */}
-                                <p >{tap.name}</p>
-                              </div>
-                            ))}
 
-
-                          </div>
-                        </div>
-                      </div>
-                    </div>
                   </div>
                 </div>
               }
-              {show && <CreateSection permition={show} Toggle={(value: any) => setShow(value)} courseId={courseId} />}
 
             </div>
           </div>

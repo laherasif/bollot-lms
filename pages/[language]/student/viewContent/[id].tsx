@@ -219,8 +219,11 @@ const Home: NextPage = () => {
                 :
                 <div className="hdsf0s-sadmsa">
                   <div className="d-flex mb-3">
-                    <button className="upload-1 sdisad-dsdactive" id="activetab">
-                      View Content </button>
+                  <Breadcrumb>
+                      <Breadcrumb.Item href="/student/dashboard">Home</Breadcrumb.Item>
+                      <Breadcrumb.Item href="/student/courses">My Courses</Breadcrumb.Item>
+                      <Breadcrumb.Item >{courseTitle}</Breadcrumb.Item>
+                    </Breadcrumb>
 
                   </div>
                   <div className="lecture_show">

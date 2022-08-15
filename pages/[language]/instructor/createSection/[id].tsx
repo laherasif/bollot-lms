@@ -75,6 +75,7 @@ const Home: NextPage = () => {
 
   let courseSectionId = router.query.courseId
   let sectionId = router.query.sectionId
+  let courseTitle = router.query.courseName
 
   useEffect(() => {
 
@@ -399,7 +400,7 @@ const Home: NextPage = () => {
       CKEditor: require('@ckeditor/ckeditor5-react').CKEditor, //Added .CKEditor
       ClassicEditor: require('@ckeditor/ckeditor5-build-classic'),
     }
-
+    
     setEditorLoaded(true)
   }, [])
 
@@ -487,7 +488,7 @@ const Home: NextPage = () => {
                   <div className="mt-4">
                     <Breadcrumb>
                       <Breadcrumb.Item linkAs={Link} href="/en/instructor">Dashboard</Breadcrumb.Item>
-                      <Breadcrumb.Item linkAs={Link} href={`/en/instructor/courseDetail/${courseSectionId}`}>Course Detail</Breadcrumb.Item>
+                      <Breadcrumb.Item linkAs={Link} href={`/en/instructor/courseDetail/${courseSectionId}`}>{courseTitle}</Breadcrumb.Item>
                       <Breadcrumb.Item active>Create Lecture </Breadcrumb.Item>
                     </Breadcrumb>
                   </div>
@@ -501,17 +502,17 @@ const Home: NextPage = () => {
                           <>
                             {d?.name === "title" &&
                               <>
-                                <h3 style={{ fontSize: '16px' }}>Section Title</h3>
+                                <h3 style={{ fontSize: '16px' }}>Title</h3>
                                 <div className="content_section">
-                                  <CkEditor
+                                  {/* <CkEditor
                                     name="description"
                                     value={d?.value}
                                     onChange={(data) => {
                                       handleInputCkEditor("value", index, data)
                                     }}
                                     editorLoaded={editorLoaded}
-                                  />
-                                  {/* <input type="text" value={d.title} onChange={(e) => handleInput(e, "title", index)} name="title" className="form-control" placeholder="Section Title" /> */}
+                                  /> */}
+                                  <input type="text" value={d.title} onChange={(e) => handleInput(e, "title", index)} name="title" className="form-control" placeholder="Section Title" />
                                 </div>
                               </>
                             }
@@ -678,18 +679,8 @@ const Home: NextPage = () => {
                                       <div className="col-md-5">
                                         <div className="right_question_block">
                                           {qs?.checkOption !== '' &&
-                                            <div className={qs?.choice === 1 ? " on_option  " : qs?.choice === 0 ? " of_option  " : "question_wrapper"}>
-                                              <div className="question_corect">
-                                                <div className="correct_wrong">
-                                                  <input type="checkbox" name="choice" checked={qs?.choice === 0} onChange={(e) => handleInputChoice(e, "multiple", index, i, ind, 0)} />
-                                                  <span>Incorrect</span>
-                                                </div>
-                                                <div className="correct_wrong mx-5" >
-                                                  <input type="checkbox" name="choice" checked={qs?.choice === 1} onChange={(e) => handleInputChoice(e, "multiple", index, i, ind, 1)} />
-                                                  <span>Correct</span>
-
-                                                </div>
-                                              </div>
+                                            <div className={ "question_wrapper"} style={{height:'100%' , padding:'20px 0px' , color:'green'}}>
+                                           
                                               <div className="explaination">
                                                 <input type="text" placeholder="Explanation" name="choiceDesc" value={qs?.choiceDesc} onChange={(e) => handleInputChoice(e, "multiple", index, i, 0, 0)} />
                                               </div>
@@ -849,7 +840,7 @@ const Home: NextPage = () => {
                               </div>
                                 :
                                 <div className="add_image">
-                                  <span>Drag and drop images onto this area to upload them or
+                                  <span>Browse images onto this area to upload them or
                                     <label htmlFor="file_img">
                                       <span id="image_upload" style={{ cursor: 'pointer' }}>Click to add an Image</span>
                                     </label>

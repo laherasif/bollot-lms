@@ -11,7 +11,7 @@ const CreateSection = ({ permition, Toggle, courseId }: any) => {
   const handleClose = () => {
     Toggle("close");
   };
-  
+
 
   const { token } = useSelector(
     (state: RootStateOrAny) => state?.userReducer
@@ -26,7 +26,7 @@ const CreateSection = ({ permition, Toggle, courseId }: any) => {
   });
 
 
-  
+
 
 
 
@@ -69,20 +69,19 @@ const CreateSection = ({ permition, Toggle, courseId }: any) => {
 
               <div className="w-100">
                 <label>Title</label>
-                <textarea
-                  rows={4}
+                <input
                   name="short_desc"
                   value={desc}
                   onChange={(e) => setDesc(e.target.value)}
                   className="asndkmc03e-dm3e"
-                  placeholder="Write Here ...">
+                  placeholder="Write Here ..."
 
-                </textarea>
+                />
               </div>
               <div className=" jidfjsd-asjreid">
                 {/* <Search /> */}
                 <div className="d-flex idfadsf-sads">
-                  <button className="upload-1 sdisad-dsdactive w-100" id="activetab"
+                  <button className="upload-1 sdisad-dsdactive w-100 mt-2" id="activetab"
                     style={{ textAlign: 'center' }} onClick={() => handleSubmit()}>
                     {loading ?
                       <Spinner animation="border" />

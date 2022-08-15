@@ -51,7 +51,7 @@ const Home: NextPage = () => {
   const router = useRouter()
   let courseId = router.query.courseId
   let lectureId = router.query.lectId
-  let courseTitle = router.query.title
+  let courseTitle = router.query.courseName
 
 
   useEffect(() => {
@@ -211,7 +211,7 @@ const Home: NextPage = () => {
             <div className="mt-4">
               <Breadcrumb>
                 <Breadcrumb.Item linkAs={Link} href="/en/instructor">Dashboard</Breadcrumb.Item>
-                <Breadcrumb.Item linkAs={Link} href={`/en/instructor/courseDetail/${courseId}`}>Course Detail</Breadcrumb.Item>
+                <Breadcrumb.Item linkAs={Link} href={`/en/instructor/courseDetail/${courseId}`}>{courseTitle}</Breadcrumb.Item>
                 <Breadcrumb.Item active>Lecture Details</Breadcrumb.Item>
               </Breadcrumb>
             </div>
@@ -238,8 +238,8 @@ const Home: NextPage = () => {
                       {
                         item.key === 'text' ?
                           <div className="lecture_detail">
-                            <h4>Text Block </h4>
-                            <iframe src={item?.value} height="100" width="100" title="Iframe Example"></iframe>
+                            
+                            <iframe src={item?.value} title="Iframe Example"></iframe>
                           </div>
                           :
                           null
@@ -270,7 +270,6 @@ const Home: NextPage = () => {
                                     {qs?.options?.map((op: any, opIndex: number) => (
                                       <div className="options_data" key={opIndex}>
                                         <input type="radio" name="option" onChange={(e) => handleInputChoice(op?.is_correct === "1" ? "1" : "0")} />
-                                        {/* <input type="text" placeholder="type option" name="option" value={op?.option}  /> */}
                                         <span style={{ paddingLeft: '10px' }}>{op?.option}</span>
                                       </div>
                                     ))}

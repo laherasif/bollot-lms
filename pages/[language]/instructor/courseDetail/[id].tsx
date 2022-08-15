@@ -110,12 +110,12 @@ const Home: NextPage = () => {
               <div className="col-md-8">
                 <div className="course_detail_header">
                   <div className="header_wrapper">
-                    <div className="search_bar">
+                    {/* <div className="search_bar">
                       <Search />
                       <h4>Search</h4>
-                    </div>
+                    </div> */}
                     <h4 className="header_view" onClick={() => { setShow(true), setDummy("dummy") }}>Create Section</h4>
-                    <h4 className="header_config">View Content explorer</h4>
+                    {/* <h4 className="header_config">View Content explorer</h4> */}
                   </div>
                 </div>
                 <div className="table_content">
@@ -123,12 +123,12 @@ const Home: NextPage = () => {
                     <h4>Table of Content</h4>
                   </div>
                   {section && section?.map((sec, index) => (
-                    <Accordion defaultActiveKey={0} style={{ marginBottom: '5px' }}>
+                    <Accordion defaultActiveKey={index} style={{ marginBottom: '5px' }}>
                       <Accordion.Item eventKey={sec.id}>
                         <Accordion.Header>{sec?.title}</Accordion.Header>
                         {sec?.lectures?.map((lec, i) => (
                           <>
-                            <Link href={`/en/instructor/lectureView?courseId=${courseId}&lectId=${lec?.id}`}>
+                            <Link href={`/en/instructor/lectureView?courseId=${courseId}&lectId=${lec?.id}&courseName=${sec?.title}`}>
                               <Accordion.Body className="table_body d-flex">
                                 {i + 1} {"."}
                                 <div
@@ -144,7 +144,7 @@ const Home: NextPage = () => {
 
                         <Accordion.Body className="section_botton_block">
                           <div >
-                            <Link href={`/en/instructor/createSection?sectionId=${sec?.id}&courseId=${courseId}`}>
+                            <Link href={`/en/instructor/createSection?sectionId=${sec?.id}&courseId=${courseId}&courseName=${sec?.title}`}>
                               Create Lecture
                             </Link>
                           </div>

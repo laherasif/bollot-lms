@@ -6,7 +6,7 @@ export default ({ course, key, courseId, unapprove }: any) => {
 
   return (
     <div className="cm-web" key={key}>
-      <Link href={`/en/student/courseDetail/${course?.id}`}>
+      <Link href={`/en/student/courseDetail/?courseId=${course?.id}&title=${course?.title}`}>
         <div style={{ cursor: 'pointer', height: '250px' }}>
           <div className="dhafusd9we0sd-p">
             <div>
