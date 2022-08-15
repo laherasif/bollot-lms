@@ -62,8 +62,6 @@ const Home: NextPage = () => {
   }
 
 
-  // let courseTitle = router.query.title
-
 
   useEffect(() => {
     let fetchCourse = async () => {
@@ -179,7 +177,6 @@ const Home: NextPage = () => {
                     <div className="tabs">
                       {tabs.map((tap, index) => (
                         <div id={activeIndex === index && "active"} className="tab" onClick={() => setActiveIndex(index)}>
-                          {/* {tap.icon} */}
                           <p >{tap.name}</p>
                         </div>
                       ))}
