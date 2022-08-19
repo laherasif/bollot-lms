@@ -12,7 +12,13 @@ import {
     ADD_SECTIONS_FORM_INPUT_VALUES,
     DEL_QUESTION_ANSWERS,
     INSE_AND_DESC_MULTI_OPTION,
-    CLEAR_SECTION_STATE
+    CLEAR_SECTION_STATE,
+    EDIT_SECTION_LECTURE,
+    EDIT_SECTIONS_FORM_INPUT_VALUES,
+    EDIT_MORE_QUESTION_ANSWER,
+    EDIT_DEL_QUESTION_ANSWERS,
+    EDIT_INSE_AND_DESC_MULTI_OPTION,
+    EDIT_SECTIONS_VALUES,
 
 } from '../../types/types'
 
@@ -160,7 +166,7 @@ export const createMultipleChoice = () => dispatch => {
                 choiceDesc: '',
                 checkOption: '',
                 options: [
-                   "" , "" , "" , ""
+                    "", "", "", ""
                 ]
             }
         ]
@@ -199,7 +205,7 @@ export const createShortQuestion = () => dispatch => {
 
 
 export const addQuestionsAnswers = (name, values) => dispatch => {
-    
+
     if (name === "question") {
         let questionValue = {
             question: '',
@@ -225,15 +231,15 @@ export const addQuestionsAnswers = (name, values) => dispatch => {
         let { pIndex, cIndex } = values
         dispatch({
             type: ADD_MORE_QUESTION_ANSWER,
-            payload: { name, shortValue , pIndex ,cIndex}
+            payload: { name, shortValue, pIndex, cIndex }
         })
     }
     else if (name === "short_answer") {
         let answerValue = ""
-        let { pIndex, cIndex , ccIndex} = values
+        let { pIndex, cIndex, ccIndex } = values
         dispatch({
             type: ADD_MORE_QUESTION_ANSWER,
-            payload: { name, answerValue, pIndex, cIndex , ccIndex }
+            payload: { name, answerValue, pIndex, cIndex, ccIndex }
         })
     }
 }
@@ -291,21 +297,21 @@ export const createCodes = () => dispatch => {
 // delet sections using types
 
 export const deleQuestionAnwser = (value) => dispatch => {
-   
+
     dispatch({
         type: DEL_QUESTION_ANSWERS,
-        payload: {value}
+        payload: { value }
     })
 }
 
 
 // increse and descrese multiple options
-export const IncDescOptions = (type, pIndex, cIndex , ccIndex) => dispatch => {
+export const IncDescOptions = (type, pIndex, cIndex, ccIndex) => dispatch => {
 
     let value = {
         pIndex: pIndex,
         cIndex: cIndex,
-        ccIndex : ccIndex,
+        ccIndex: ccIndex,
         name: "mutiple"
     }
     dispatch({
@@ -324,3 +330,269 @@ export const sectionClear = () => dispatch => {
     })
 
 }
+
+// Edit leture
+
+export const editSectionLecture = (data) => dispatch => {
+debugger
+    dispatch({
+        type: EDIT_SECTION_LECTURE,
+        payload: data
+    })
+
+}
+
+
+
+
+
+// zybooks class create actions edit
+
+export const EaddSectionsValues = ({ key, values }) => dispatch => {
+
+    dispatch({
+        type: EDIT_SECTIONS_FORM_INPUT_VALUES,
+        payload: { key, values }
+    })
+
+}
+
+
+// text create 
+
+
+export const EcreateText = () => dispatch => {
+    debugger
+    let key = "text"
+    let value = ""
+
+    dispatch({
+        type: EDIT_SECTIONS_VALUES,
+        payload: { key, value }
+    })
+
+}
+
+
+// table create 
+
+
+export const EcreateTable = () => dispatch => {
+
+    let key = "table"
+    let value = ""
+
+    dispatch({
+        type: EDIT_SECTIONS_VALUES,
+        payload: { key, value }
+    })
+
+
+}
+
+// code editor
+
+export const EcreateCodeEditor = () => dispatch => {
+    let key = "code"
+    let value = {
+        title: '',
+        language: '',
+        instruction: '',
+        code: ''
+    }
+
+    dispatch({
+        type: EDIT_SECTION_LECTURE,
+        payload: { key, value }
+    })
+
+}
+
+
+// multiple choice
+
+export const EcreateMultipleChoice = () => dispatch => {
+    let key = "multiple"
+    let value = {
+        title: '',
+        instruction: '',
+        questions: [
+            {
+                question: '',
+                choice_Desc: '',
+                options: [
+                    { option: '', is_correct:'0'},
+                    { option: '', is_correct:'0'},
+                    { option: '', is_correct:'0'},
+                    { option: '', is_correct:'0'}
+                ]
+            }
+        ]
+    }
+
+    dispatch({
+        type: EDIT_SECTIONS_VALUES,
+        payload: { key, value }
+    })
+
+}
+
+// short question
+
+
+export const EcreateShortQuestion = () => dispatch => {
+    let key = "short"
+    let value = {
+        title: '',
+        instruction: '',
+        questions: [
+            {
+                question: '',
+                incorrect_hint: '',
+                correct_reason: '',
+                answers: [
+                    { option: '' }
+
+                ]
+            }
+        ]
+    }
+
+    dispatch({
+        type: EDIT_SECTIONS_VALUES,
+        payload: { key, value }
+    })
+}
+
+
+export const EaddQuestionsAnswers = (key, values) => dispatch => {
+
+    if (key === "question") {
+        let questionValue = {
+            question: '',
+            choice_Desc: '',
+            options: [
+                { option: '', is_correct:'0'  },
+                { option: '', is_correct:'0' },
+                { option: '', is_correct:'0' },
+                { option: '', is_correct:'0' }
+
+
+            ]
+        }
+        dispatch({
+            type: EDIT_MORE_QUESTION_ANSWER,
+            payload: { key, questionValue, values }
+        })
+    }
+    else if (key === "short_question") {
+        let shortValue = {
+            question: '',
+            incorrect_hint: '',
+            correct_reason: '',
+            answers: [
+                { option: '' }
+
+            ]
+        }
+        let { pIndex, cIndex } = values
+        dispatch({
+            type: EDIT_MORE_QUESTION_ANSWER,
+            payload: { key, shortValue, pIndex, cIndex }
+        })
+    }
+    else if (key === "short_answer") {
+        let answerValue = ""
+        let { pIndex, cIndex, ccIndex } = values
+        dispatch({
+            type: EDIT_MORE_QUESTION_ANSWER,
+            payload: { key, answerValue, pIndex, cIndex, ccIndex }
+        })
+    }
+}
+
+// image
+
+export const EcreateImage = () => dispatch => {
+    let key = "images"
+    let value = {
+        title: '',
+        file: ''
+    }
+
+    dispatch({
+        type: EDIT_SECTIONS_VALUES,
+        payload: { key, value }
+    })
+}
+
+// video
+
+
+export const EcreateVideo = () => dispatch => {
+    let key = "videos"
+    let value = {
+        title: '',
+        url: ''
+    }
+
+    dispatch({
+        type: EDIT_SECTIONS_VALUES,
+        payload: { key, value }
+    })
+}
+
+// codes
+
+export const EcreateCodes = () => dispatch => {
+    let key = "codes"
+    let value = {
+        title: '',
+        language: '',
+        instruction: '',
+        code: ''
+    }
+
+    dispatch({
+        type: EDIT_SECTIONS_VALUES,
+        payload: { key, value }
+    })
+}
+
+
+// delet sections using types
+
+export const EdeleQuestionAnwser = (value) => dispatch => {
+
+    dispatch({
+        type: EDIT_DEL_QUESTION_ANSWERS,
+        payload: { value }
+    })
+}
+
+
+// increse and descrese multiple options
+export const EditIncDescOptions = (type, pIndex, cIndex, ccIndex) => dispatch => {
+
+    let value = {
+        pIndex: pIndex,
+        cIndex: cIndex,
+        ccIndex: ccIndex,
+        key: "mutiple"
+    }
+    dispatch({
+        type: EDIT_INSE_AND_DESC_MULTI_OPTION,
+        payload: { type, value }
+    })
+}
+
+
+// clear states
+
+// export const ClearEdit = () => dispatch => {
+
+//     dispatch({
+//         type: CLEAR_EDIT_SECTION_STATE
+//     })
+
+// }

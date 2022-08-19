@@ -1,21 +1,20 @@
 import type { NextPage } from "next";
-import NavigationBar1 from "../../../../src/components/instructor/NavigationBar3";
+import NavigationBar1 from "../../../../src/components/admin/NavigationBar3";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { RootStateOrAny, useSelector } from "react-redux";
 import axios from "axios";
-import { Small } from "../../../../src/components/instructor/loader";
+import { Small } from "../../../../src/components/admin/loader";
 import { Accordion, Breadcrumb, Tab, Tabs } from "react-bootstrap";
 import moment from "moment";
 import withAuth from "../../../../src/components/Hoc/authRoute";
-import Search from "../../../../src/components/instructor/search";
 import { MdClass } from 'react-icons/md'
 import { FaBookReader, FaClipboardList } from 'react-icons/fa'
 import { AiTwotoneAppstore } from 'react-icons/ai'
 import { IoStatsChart } from 'react-icons/io'
 import { useRouter } from "next/router";
-import { Welcome, Report, Class, Assignment, Test, } from '../../../../src/components/instructor/zybooksRight'
-import CreateSection from "../../../../src/components/instructor/CreateSectionPopup";
+import { Welcome, Report, Class, Assignment, Test, } from '../../../../src/components/admin/zybooksRight'
+import CreateSection from "../../../../src/components/admin/CreateSectionPopup";
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
 
@@ -51,11 +50,11 @@ const Home: NextPage = () => {
   let courseId = router.query.id
 
 
-  const handleClose = (type: string) => {
+  const handleClose = (type:string ) => {
     setShow(false)
     if (type === 'load') {
       setDummy('')
-      return
+      return 
     }
 
 
@@ -67,7 +66,7 @@ const Home: NextPage = () => {
     let fetchCourse = async () => {
       try {
         setLoading(true)
-        let res = await AxInstance.get(`api//instructor/courses/curriculum/get/${courseId}`)
+        let res = await AxInstance.get(`api//admin/courses/curriculum/get/${courseId}`)
         if (res.data.success === true) {
           setLoading(false)
 
@@ -102,7 +101,7 @@ const Home: NextPage = () => {
           <div className="inst container">
             <div className="mt-4">
               <Breadcrumb>
-                <Breadcrumb.Item linkAs={Link} href="/en/instructor">Dashboard</Breadcrumb.Item>
+                <Breadcrumb.Item linkAs={Link} href="/en/admin/dashboard">Dashboard</Breadcrumb.Item>
                 <Breadcrumb.Item active>Courses Detail</Breadcrumb.Item>
               </Breadcrumb>
             </div>
@@ -128,28 +127,14 @@ const Home: NextPage = () => {
                         <Accordion.Header>{sec?.title}</Accordion.Header>
                         {sec?.lectures?.map((lec, i) => (
                           <>
-
-                            <Accordion.Body className="table_body ">
-                              <div style={{ display: 'flex', flexDirection: 'row', alignItem: 'center', justifyContent: 'space-between' }}>
-                                <div className="d-flex">
-                                  {i + 1} {"."}
-                                  <div
-                                    dangerouslySetInnerHTML={{ __html: lec?.title }}
-                                  />
-                                </div>
-                                <div className="me-2" >
-                                  <Link href={`/en/instructor/lectureView?courseId=${courseId}&lectId=${lec?.id}&courseName=${sec?.title}`}>
-                                    <i className="fa fa-eye" style={{ marginRight: '30px' }}></i>
-                                  </Link>
-                                  <Link href={`/en/instructor/EditSection?courseId=${courseId}&lectId=${lec?.id}&courseName=${sec?.title}`}>
-                                    <span>
-                                      <i className="fa fa-edit"></i>
-                                    </span>
-                                  </Link>
-                                </div>
-                              </div>
-
-                            </Accordion.Body>
+                            <Link href={`/en/instructor/lectureView?courseId=${courseId}&lectId=${lec?.id}&courseName=${sec?.title}`}>
+                              <Accordion.Body className="table_body d-flex">
+                                {i + 1} {"."}
+                                <div
+                                  dangerouslySetInnerHTML={{ __html: lec?.title }}
+                                />
+                              </Accordion.Body>
+                            </Link>
 
                           </>
 
@@ -158,7 +143,7 @@ const Home: NextPage = () => {
 
                         <Accordion.Body className="section_botton_block">
                           <div >
-                            <Link href={`/en/instructor/createSection?sectionId=${sec?.id}&courseId=${courseId}&courseName=${sec?.title}`}>
+                            <Link href={`/en/admin/createSection?sectionId=${sec?.id}&courseId=${courseId}&courseName=${sec?.title}`}>
                               Create Lecture
                             </Link>
                           </div>
@@ -203,8 +188,8 @@ const Home: NextPage = () => {
             </div>
           </div>
         }
-      </section >
-      {show && <CreateSection permition={show} Toggle={(value: string) => handleClose(value)} courseId={courseId} />}
+      </section>
+      {show && <CreateSection permition={show} Toggle={(value:string) => handleClose(value)} courseId={courseId} />}
     </div >
   );
 };

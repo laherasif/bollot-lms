@@ -7161,7 +7161,7 @@ svg:hover {
   background-color: #EEEEEE;
   padding-left: 10px;
   padding-bottom: 10px;
-  border-left: 4pt solid orange;
+  border-left: 4pt solid #1A92AA;
 
 
 }
@@ -7502,4 +7502,19 @@ svg:hover {
   border-left: 4pt solid blue;
   padding: 5px;
   margin: 0px;
+}
+
+
+/* content image */
+.content_image{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.content_image img{
+  height: 40%;
+  width: 40%;
+  object-fit: cover;
 }

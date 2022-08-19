@@ -1,10 +1,10 @@
 import type { NextPage } from "next";
-import NavigationBar1 from "../../../../src/components/instructor/NavigationBar3";
+import NavigationBar1 from "../../../../src/components/admin/NavigationBar3";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { RootStateOrAny, useSelector } from "react-redux";
 import axios from "axios";
-import { Small } from "../../../../src/components/instructor/loader";
+import { Small } from "../../../../src/components/admin/loader";
 // import moment from "moment";
 import withAuth from "../../../../src/components/Hoc/authRoute";
 import { useRouter } from "next/router";
@@ -57,8 +57,7 @@ const Home: NextPage = () => {
     let fetchCourse = async () => {
       try {
         setLoading(true)
-        let res = await AxInstance.get(`api//instructor/courses/curriculum/lectures/${lectureId}`)
-        console.log("res", res)
+        let res = await AxInstance.get(`api//admin/courses/curriculum/lectures/${lectureId}`)
         if (res.data.success === true) {
           setLoading(false)
           setSection(res.data.response.lecture)
@@ -239,7 +238,7 @@ const Home: NextPage = () => {
               </Breadcrumb>
             </div>
             <div className="lecture_wrapper">
-              {/* <div className="lecture_container">
+              <div className="lecture_container">
                 <div className="lecture_left">
                   <div className="lecture_icon">
                     <BsExclamationLg />
@@ -252,17 +251,9 @@ const Home: NextPage = () => {
                 <div className="lecture_right">
                   <button>Watch Now</button>
                 </div>
-              </div> */}
+              </div>
 
               <div className="lecture_show">
-
-
-                <div className="lecture_detail">
-
-                  {section?.title}
-                </div>
-
-
                 {section?.contents?.map((item: any, index: any) => {
                   return (
                     <>
@@ -276,14 +267,14 @@ const Home: NextPage = () => {
                           null
                       }
 
-                      {
+{
                         // d.codes?.map((c: any, i: number) => (
                         item?.key === "code" &&
                         <div className="code_block">
                           <div className="table_heading">
                             <div className="heading_left">
-
-                              <h4 style={{ paddingTop: '20px', fontSize: '16px' }}>{item?.value?.title}</h4>
+                              
+                              <h4 style={{ paddingLeft: '4rem', paddingTop: '20px', fontSize: '16px' }}>{item?.value?.title}</h4>
                             </div>
                             <div className="heading_right">
                               <div className="code_right">
@@ -424,7 +415,6 @@ const Home: NextPage = () => {
 
                       }
 
-
                       {
                         // d.images?.map((im: any, i: number) => (
                         item.key === "images" &&
@@ -470,8 +460,8 @@ const Home: NextPage = () => {
                         <div className="code_block">
                           <div className="table_heading">
                             <div className="heading_left">
-
-                              <h4 style={{ paddingTop: '20px', fontSize: '16px' }}>{item?.value?.title}</h4>
+                              
+                              <h4 style={{ paddingLeft: '4rem', paddingTop: '20px', fontSize: '16px' }}>{item?.value?.title}</h4>
                             </div>
                             <div className="heading_right">
                               <div className="code_right">

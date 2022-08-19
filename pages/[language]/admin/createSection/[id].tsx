@@ -1,10 +1,10 @@
 import type { NextPage } from "next";
-import NavigationBar1 from "../../../../src/components/instructor/NavigationBar3";
+import NavigationBar1 from "../../../../src/components/admin/NavigationBar3";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import { Small } from "../../../../src/components/instructor/loader";
+import { Small } from "../../../../src/components/admin/loader";
 import { Breadcrumb, Spinner, } from "react-bootstrap"
 // import moment from "moment";
 import { RiArrowDropUpLine, RiArrowDropDownLine } from 'react-icons/ri'
@@ -76,7 +76,7 @@ const Home: NextPage = () => {
   let courseSectionId = router.query.courseId
   let sectionId = router.query.sectionId
   let courseTitle = router.query.courseName
-console.log("da" , sectionData)
+console.log("da" , router)
   useEffect(() => {
 
 
@@ -427,7 +427,7 @@ console.log("da" , sectionData)
       }
     }
     try {
-      const res = await AxInstance.post("api//instructor/courses/curriculum/lectures/store", formData);
+      const res = await AxInstance.post("api//admin/courses/curriculum/lectures/store", formData);
       if (res.data.success) {
         setLoader(false);
         SweetAlert({ icon: "success", text: res.data.message })
@@ -437,7 +437,7 @@ console.log("da" , sectionData)
       }
       else {
         setLoader(false);
-        SweetAlert({ icon: "error", text: res.data.message })
+        SweetAlert({ icon: "error", text: res.data.error })
         return;
       }
     } catch (err) {
@@ -486,7 +486,7 @@ console.log("da" , sectionData)
                 <div className="col-md-10 section ">
                   <div className="mt-4">
                     <Breadcrumb>
-                      <Breadcrumb.Item linkAs={Link} href="/en/instructor">Dashboard</Breadcrumb.Item>
+                      <Breadcrumb.Item linkAs={Link} href="/en/admin/dashboard">Dashboard</Breadcrumb.Item>
                       {/* <Breadcrumb.Item linkAs={Link} href={`/en/instructor/courseDetail/${courseSectionId}`}>{courseTitle}</Breadcrumb.Item> */}
                       <Breadcrumb.Item active>Create Lecture </Breadcrumb.Item>
                     </Breadcrumb>
@@ -511,7 +511,7 @@ console.log("da" , sectionData)
                                     }}
                                     editorLoaded={editorLoaded}
                                   /> */}
-                                  <input type="text" value={d.value} onChange={(e) => handleInput(e, "title", index)} name="title" className="form-control" placeholder="Section Title" />
+                                  <input type="text" value={d.title} onChange={(e) => handleInput(e, "title", index)} name="title" className="form-control" placeholder="Section Title" />
                                 </div>
                               </>
                             }

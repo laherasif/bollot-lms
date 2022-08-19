@@ -49,7 +49,7 @@ const Home: NextPage = () => {
 
 
   const router = useRouter()
-  let courseId = router.query.id
+  let courseId = router.query.courseId
   let courseTitle = router.query.title
 
   console.log("courseTitle" , router)
@@ -59,6 +59,7 @@ const Home: NextPage = () => {
       try {
         setLoading(true)
         let res = await AxInstance.get(`api//student/my-courses/curriculum/${courseId}`)
+        console.log("Daya", res)
         if (res.data.success === true) {
           setLoading(false)
 

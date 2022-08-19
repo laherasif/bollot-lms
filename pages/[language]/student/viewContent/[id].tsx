@@ -22,9 +22,9 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 const options = ["one", "two", "three"];
 const Home: NextPage = () => {
 
-  const [activeIndex, setActiveIndex] = useState(0)
+  // const [activeIndex, setActiveIndex] = useState(0)
   const [loading, setLoading] = useState(false)
-  const [isEdit, setIsEdit] = useState(false)
+  // const [isEdit, setIsEdit] = useState(false)
   const [section, setSection] = useState({})
   const [url, setUrl] = useState('')
   const [progressbar, setProgressbar] = useState()
@@ -32,7 +32,10 @@ const Home: NextPage = () => {
   const [fileType, setFileType] = useState('')
   const [numPages, setNumPages] = useState(0);
   const [pageNumber, setPageNumber] = useState(1);
-  const [option, setOption] = useState(null );
+  const [option, setOption] = useState(null);
+  const [answer, setAnswer] = useState('')
+  const [check, setCheck] = useState(null)
+
 
   function onDocumentLoadSuccess(numPages: number) {
     setNumPages(numPages);
@@ -63,8 +66,7 @@ const Home: NextPage = () => {
 
       try {
         setLoading(true)
-        let res = await AxInstance.get(`api//student/courses/curriculum/lectures/${lectureId}`)
-        console.log("REs", res)
+        let res = await AxInstance.get(`api//student/my-courses/curriculum/lectures-content/${86}`)
         if (res.data.success === true) {
           setLoading(false)
           if (res.data.response.lecture.key === 'images') {
@@ -219,7 +221,7 @@ const Home: NextPage = () => {
                 :
                 <div className="hdsf0s-sadmsa">
                   <div className="d-flex mb-3">
-                  <Breadcrumb>
+                    <Breadcrumb>
                       <Breadcrumb.Item href="/student/dashboard">Home</Breadcrumb.Item>
                       <Breadcrumb.Item href="/student/courses">My Courses</Breadcrumb.Item>
                       <Breadcrumb.Item >{courseTitle}</Breadcrumb.Item>
@@ -233,11 +235,46 @@ const Home: NextPage = () => {
                           {
                             item.key === 'text' ?
                               <div className="lecture_detail">
-                                <h4>Text Block </h4>
-                                <iframe src={item?.value} height="100" width="100" title="Iframe Example"></iframe>
+
+                                <iframe src={item?.value} width={"100%"} title="Iframe Example"></iframe>
                               </div>
                               :
                               null
+                          }
+
+                          {
+                            // d.codes?.map((c: any, i: number) => (
+                            item?.key === "code" &&
+                            <div className="code_block">
+                              <div className="table_heading">
+                                <div className="heading_left">
+
+                                  <h4 style={{ paddingTop: '20px', fontSize: '16px' }}>{item?.value?.title}</h4>
+                                </div>
+                                <div className="heading_right">
+                                  <div className="code_right">
+                                    {/* <span className="code_heading">{item?.value?.language}</span> */}
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="code_instuction">
+                                <span className="code_heading">{item?.value?.instruction}</span>
+
+                              </div>
+
+
+                              <div className="code_editor">
+                                <div className="w-100 ">
+                                  <span className="code_heading">
+                                    <div dangerouslySetInnerHTML={{ __html: item?.value?.code }} />
+                                  </span>
+
+                                </div>
+                              </div>
+
+
+                            </div>
+                            // ))
                           }
 
                           {
@@ -264,9 +301,10 @@ const Home: NextPage = () => {
                                         </div>
                                         {qs?.options?.map((op: any, opIndex: number) => (
                                           <div className="options_data" key={opIndex}>
-                                            <input type="radio" name="option" onChange={(e) => handleInputChoice(op?.is_correct === "1" ? "1" : "0")} />
-                                            {/* <input type="text" placeholder="type option" name="option" value={op?.option}  /> */}
-                                            <span style={{ paddingLeft: '10px' }}>{op?.option}</span>
+                                            <label>
+                                              <input type="radio" name="option" onChange={(e) => handleInputChoice(op?.is_correct === "1" ? "1" : "0")} />
+                                              <span style={{ paddingLeft: '10px' }}>{op?.option}</span>
+                                            </label>
                                           </div>
                                         ))}
                                       </>
@@ -296,11 +334,67 @@ const Home: NextPage = () => {
 
                           }
 
+                          {
+                            item.key === "short" &&
+                            < div className="multiple_choice" >
+                              <div className="multiple_heading">
+                                <div className="multiple_left">
+                                  <h3>Participation Activity</h3>
+                                  <h4 style={{ paddingLeft: '4rem', paddingTop: '20px', fontSize: '16px' }}>{item?.value?.title}</h4>
+                                  <span className="right_border"></span>
+                                </div>
+
+                              </div>
+
+                              {item.value?.questions.map((qs: any, ind: number) => (
+                                <div className="multiple_option mt-3">
+                                  <div className="row">
+                                    <div className="col-md-7" >
+                                      <>
+                                        <div className="question" key={ind}>
+                                          {ind + 1}) {qs?.question}
+                                        </div>
+
+                                        <label className="d-flex flex-column mt-2 mx-3">
+                                          <textarea name="option" value={answer} onChange={(e) => setAnswer(e.target.value)} style={{ border: '1pt solid lightgray', maxWidth: '40%' }} />
+                                          <div className="mt-2">
+                                            <button style={{ width: '10%' }} onClick={() => handleCheck(ind)}>Check</button>
+                                            <span style={{ paddingLeft: '10px' }}>show Answer</span>
+                                          </div>
+                                        </label>
+                                      </>
+
+                                    </div>
+                                    {check === ind &&
+                                      <div className="col-md-5">
+                                        <div className="right_question_block">
+                                          <div className={qs.answers.some(s => s.option === answer) ? " on_option  " : option === "0" ? " of_option  " : "question_wrapper"} style={{ height: '100%' }}>
+                                            <div className="question_corect">
+                                              {qs.answers.some(s => s.option === answer) ? "Correct" : "Incorrect"}
+                                            </div>
+                                            <div className="explaination" >
+                                              <span >{qs.answers.some(s => s.option === answer) ? qs?.correct_reason : qs?.incorrect_hint}</span>
+                                            </div>
+                                          </div>
+
+                                        </div>
+
+                                      </div>
+                                    }
+
+                                  </div>
+                                </div>
+                              ))
+                              }
+                            </div>
+
+                          }
+
 
                           {
                             // d.images?.map((im: any, i: number) => (
                             item.key === "images" &&
-                            <div className="table_section">
+                            <div className="table_section " >
                               <div className="table_heading">
                                 <div className="heading_left">
 
@@ -308,7 +402,7 @@ const Home: NextPage = () => {
                                 </div>
 
                               </div>
-                              <div>
+                              <div className="content_image">
                                 <img src={item?.value} className="image_show" alt="slected_image" />
                               </div>
 
@@ -335,6 +429,42 @@ const Home: NextPage = () => {
                             </div>
                             // ))
                           }
+
+                          {
+                            // d.codes?.map((c: any, i: number) => (
+                            item?.key === "codes" &&
+                            <div className="code_block">
+                              <div className="table_heading">
+                                <div className="heading_left">
+
+                                  <h4 style={{ paddingTop: '20px', fontSize: '16px' }}>{item?.value?.title}</h4>
+                                </div>
+                                <div className="heading_right">
+                                  <div className="code_right">
+                                    {/* <span className="code_heading">{item?.value?.language}</span> */}
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="code_instuction">
+                                <span className="code_heading">{item?.value?.instruction}</span>
+
+                              </div>
+
+
+                              <div className="code_editor">
+                                <div className="w-100 ">
+                                  <span className="code_heading">
+                                    <div dangerouslySetInnerHTML={{ __html: item?.value?.codes }} />
+                                  </span>
+
+                                </div>
+                              </div>
+
+
+                            </div>
+                            // ))
+                          }
+
 
 
                         </>
